@@ -23,10 +23,10 @@
 
   <div class="form-group">
     What is your role? </br>
-    <%= f.radio_button :roles, 'employee', checked: true%>
-    <%= f.label :role_employe, 'Employee' %> </br>
-    <%= f.radio_button :roles, 'employer'%>
-    <%= f.label :role_employer, 'Employer' %>
+    <%= radio_button_tag :role, 'employee', checked: true%>
+    <%= label :role_employee, 'Employee' %> </br>
+    <%= radio_button_tag :role, 'employer'%>
+    <%= label :role_employer, 'Employer' %>
   </div>
 
   <div class="submit">

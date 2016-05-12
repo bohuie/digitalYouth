@@ -1,0 +1,12 @@
+<div class="container">
+	<%= simple_form_for @project do |f| %>
+		<%= f.input :title, required: true %>
+		<%= f.input :description, required: true, as: :text %>
+		<% if @project.image.exists? %>
+  			<%= image_tag @project.image.url %><br/>
+		<% end %>
+		<%= f.input :image, as: :file %>
+		<%= f.check_box :image_delete %>Delete Image<br/>
+		<%= f.button :submit %>
+	<% end %>
+</div>

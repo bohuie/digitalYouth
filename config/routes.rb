@@ -1,15 +1,21 @@
 Rails.application.routes.draw do
   get 'welcome/index'
 
-  #devise_for :users
+  # Devise_for :users
   devise_for :users, controllers: { sessions: "users/sessions", registrations: "users/registrations" }
   resources :users, only: :show, as: :user
 
-  #Job posting routes
+  # Job posting routes
   get '/job_postings/:id' => 'job_postings#show', as: :job_posting
   get '/job_postings/:id/edit' => 'job_postings#edit', as: :edit_job_posting
   patch 'job_postings/:id' => 'job_postings#update'
   post 'job_postings' => 'job_postings#create'
+
+  # Project routes
+  get 'projects/:id' => 'projects#show', as: :project
+  get 'projects/:id/edit' => 'projects#edit', as: :edit_project
+  patch 'projects/:id' => 'projects#update'
+  post 'projects' => 'projects#create'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

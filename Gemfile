@@ -1,14 +1,17 @@
 source 'https://rubygems.org'
 
 
-#figaro gem - security purposes
+# Figaro gem - security purposes
 gem 'figaro'
 
-#bootstrap
+# Bootstrap
 gem 'bootstrap-sass'
 gem 'autoprefixer-rails'
 
-#Devise, Authority, and Rolify
+# Simple Form
+gem 'simple_form'
+
+# Devise, Authority, and Rolify
 gem 'devise'
 gem 'authority'
 gem 'rolify'

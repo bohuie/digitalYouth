@@ -9,7 +9,7 @@ class JobPostingsController < ApplicationController
 	end
 
 	def update
-		@job_posting = Job.Posting.find(params[:id])
+		@job_posting = JobPosting.find(params[:id])
 		if @job_posting.update_attributes(job_posting_params)
 			redirect_to current_user
 		else
@@ -18,7 +18,7 @@ class JobPostingsController < ApplicationController
 	end
 
 	private
-	def job_posting_param
-		params.require(:job_posting).permit(:name, :description, :open_date, :close_date)
+	def job_posting_params
+		params.require(:job_posting).permit(:title, :description, :open_date, :close_date)
 	end
 end

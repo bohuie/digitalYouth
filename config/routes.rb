@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   resources :users, only: :show, as: :user
 
   #Job posting routes
-  get '/job_postings/:id' => 'job_postings#show', as: :posting
+  get '/job_postings/:id' => 'job_postings#show', as: :job_posting
   get '/job_postings/:id/edit' => 'job_postings#edit', as: :edit_job_posting
   patch 'job_postings/:id' => 'job_postings#update'
   # The priority is based upon order of creation: first created -> highest priority.

@@ -5,6 +5,7 @@ class UsersController < ApplicationController
 
 		if @user.has_role? :employer
 			@job_postings = @user.job_postings;
+			@job_posting = current_user.job_postings.build
 		end
 	end
 end

@@ -2,3 +2,14 @@
 <h2>This is your profile!</h2>
 
 <%= @user.email %>
+
+<% if @user.has_role? :employee %>
+<p>Are you looking for a job?  Take a look at some possible matches below!</p>
+
+<% elsif @user.has_role? :employer %>
+<p>Look at your jobs below to see some applicants</p>
+
+<% elsif %>
+
+<% else %>
+<% end %>

@@ -7,9 +7,27 @@
 <p>Are you looking for a job?  Take a look at some possible matches below!</p>
 
 <% elsif @user.has_role? :employer %>
-<p>Look at your jobs below to see some applicants</p>
 
-<% elsif %>
+	<% if !@job_postings.empty? %>
+		<div class="job-postings">
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-12">
+						<% @job_postings.each do |j| %>
+							<h2><%= j.title %></h2>
+							<p><%= j.description %></p>
+							<p>Job Posting available at: <%= j.open_date %></p>
+							<p>Cut off for applicants is: <%=j.close_date%></p>
+							<%= link_to "Edit Posting", edit_job_posting_path(j) %>
+						<% end %>
+					</div>
+				</div>
+			</div>
+		</div>
+	<% else %>
+		<h3>You have no job postings year.  Would you like to create one?</h3>
+	<% end %>
+<% elsif @user.has_role? :admin%>
 
 <% else %>
 <% end %>

@@ -11,10 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160510210907) do
+ActiveRecord::Schema.define(version: 20160512153937) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "job_postings", force: :cascade do |t|
+    t.string   "title"
+    t.text     "description"
+    t.date     "open_date"
+    t.date     "close_date"
+    t.integer  "user_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
 
   create_table "roles", force: :cascade do |t|
     t.string   "name"
@@ -30,6 +40,16 @@ ActiveRecord::Schema.define(version: 20160510210907) do
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "github"
+    t.string   "linkedin"
+    t.string   "twitter"
+    t.string   "company_name"
+    t.string   "company_address"
+    t.string   "company_city"
+    t.string   "company_province"
+    t.string   "company_postal_code"
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"

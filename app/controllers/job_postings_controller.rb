@@ -1,5 +1,8 @@
 class JobPostingsController < ApplicationController
 
+	before_action :authenticate_user!, except: [:show]
+	before_action :job_owner, only: [:edit, :update, :destroy]
+	
 	def new
 		@job_posting
 	end
@@ -33,5 +36,14 @@ class JobPostingsController < ApplicationController
 	private
 	def job_posting_params
 		params.require(:job_posting).permit(:title, :description, :open_date, :close_date)
+	end
+
+	def job_owner
+		@job = Job.find(params[:id])
+		
+		unless @job.user_id == current_user.id
+			flash[:notice] = 'Access denied as you are not owner of this Job'
+			redirect_to current_user
+		end
 	end
 end

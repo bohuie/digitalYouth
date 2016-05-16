@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   # Devise_for :users
   devise_for :users, controllers: { sessions: "users/sessions", registrations: "users/registrations" }
+ #devise_for :users
   resources :users, only: :show, as: :user
 
   # Job posting routes

@@ -1,8 +1,10 @@
 class CreateSkills < ActiveRecord::Migration
-  def change
-    create_table :skills do |t|
+	def change
+		create_table :skills do |t|
 
-      t.timestamps null: false
-    end
-  end
+			t.string :name
+
+			t.timestamps null: false
+		end
+	end
 end

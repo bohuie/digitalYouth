@@ -1,15 +1,24 @@
 class UsersController < ApplicationController
-
+#before_action :authenticate_user!
 	def show
 		@user = User.find(params[:id])
 
 		if @user.has_role? :employee
 			@projects = @user.projects;
-			@project = current_user.projects.build
+
+			if user_signed_in? && current_user.id == @user.id
+				@project = current_user.projects.build
+			end
+
+			@user_skills = @user.user_skills
+			
+			logger.debug "skill info: #{@user_skills.inspect}"
 
 		elsif @user.has_role? :employer
 			@job_postings = @user.job_postings;
-			@job_posting = current_user.job_postings.build
+			if user_signed_in? && current_user.id == @user.id
+				@job_posting = current_user.job_postings.build
+			end
 		end
 	end
 end

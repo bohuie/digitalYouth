@@ -1,6 +1,10 @@
 class Project < ActiveRecord::Base
 
 	belongs_to :user
+
+	has_many :project_skills
+	has_many :skills, through: :project_skills
+
 	has_attached_file :image
 
 	validates_attachment :image, content_type: { content_type: ["image/jpg", "image/jpeg", "image/png", "image/gif"] }

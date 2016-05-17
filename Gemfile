@@ -8,6 +8,9 @@ gem 'figaro'
 gem 'bootstrap-sass'
 gem 'autoprefixer-rails'
 
+# Paperclip gem for images
+gem 'paperclip'
+
 # Simple Form
 gem 'simple_form'
 

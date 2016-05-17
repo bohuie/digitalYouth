@@ -6,4 +6,8 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
     has_many :job_postings
+    has_many :projects
+    
+    has_many :user_skills
+    has_many :skills, through: :user_skills
 end

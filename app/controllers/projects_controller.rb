@@ -3,9 +3,9 @@ class ProjectsController < ApplicationController
 	before_action :authenticate_user!, except: [:show]
 	before_action :project_owner, only: [:edit, :update, :destroy]
 
-	def new
-		@jproject
-	end
+#	def new
+#		@jproject
+#	end
 
 	def show
 		@project = Project.find(params[:id])

@@ -3,9 +3,9 @@ class JobPostingsController < ApplicationController
 	before_action :authenticate_user!, except: [:show]
 	before_action :job_owner, only: [:edit, :update, :destroy]
 	
-	def new
-		@job_posting
-	end
+#	def new
+#		@job_posting
+#	end
 
 	def show
 		@job_posting = JobPosting.find(params[:id])

@@ -10,9 +10,11 @@ class UsersController < ApplicationController
 				@project = current_user.projects.build
 			end
 
-			@user_skills = @user.user_skills
-			
-			logger.debug "skill info: #{@user_skills.inspect}"
+			@user_skills = @user.user_skills #current user skills
+
+			if user_signed_in? && current_user.id == @user.id
+				@user_skill = current_user.user_skills.build
+			end 
 
 		elsif @user.has_role? :employer
 			@job_postings = @user.job_postings;

@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   #reference routes
   get 'users/:id/references/new' => 'references#new', as: :new_reference
   post 'references' => 'references#create'
+  get 'references/delete/:id' => 'references#delete', as: :delete_reference
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

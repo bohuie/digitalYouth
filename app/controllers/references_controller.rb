@@ -1,14 +1,7 @@
 class ReferencesController < ApplicationController
 
-def show
-	##preliminary code
-	if @user.has_role? :employee
-		@references = @user.references
-
-		if user_signed_in? && current_user.id == @user.id
-			##If user is signed in and the reference is theirs				
-		end
-	end
+def delete
+	Reference.find(params[:id]).destroy
 end
 
 def new

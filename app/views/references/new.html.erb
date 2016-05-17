@@ -10,7 +10,7 @@
 			<%= r.input :email %>
 			<%= r.input :company %>
 			<%= r.input :position %>
-			<%= r.input :phone_number%>
+			<%= r.input :phone_number, :input_html => { :type => "tel", :pattern => "[\+]\d{1}[\(]\d{3}[\)]\d{3}[\-]\d{4}", :placeholder => "+9(999)999-9999" }%>
 			<%= r.input :reference_body%>
 			<%= r.hidden_field :user_id, :value => @user.id %>
 			<%= r.button :submit %>

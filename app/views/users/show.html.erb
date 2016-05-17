@@ -19,7 +19,7 @@
 							<h6>Contact: Email: <%= r.email %> , Phone: <%= r.phone_number %> </h6>
 							<p><%= r.reference_body %></p>
 							<% if user_signed_in? && @current_user==@user %>
-								<p> Delete Link (need to add this later)</p>
+								<p> <%= link_to "Delete Ref", delete_reference_path(r) %><br /></p>
 							<% end %>
 						<% end %>
 					</div>
@@ -28,7 +28,7 @@
 		</div>
 	<% else %>
 		<% if user_signed_in? && @current_user==@user %>
-			<h3>You have no references. Do this to get references!</h3>
+			<h3>You have no references. Click this <%= link_to "link", new_reference_path(@user) %> and get your referers to fill out the forum!</h3>
 		<% end %>
 	<% end %>
 

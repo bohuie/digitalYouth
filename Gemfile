@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+# rails_admin gem - admin functionality
+gem 'rails_admin'
 
 # Figaro gem - security purposes
 gem 'figaro'

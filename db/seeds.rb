@@ -16,6 +16,9 @@ user2 = User.create(first_name: 'Foo', last_name: 'Bar', email: 'foo@bar.com', p
 	company_name: 'Google', company_address: '123 Fake Street', company_city: 'Kelowna', company_province: 'BC', company_postal_code: 'V1V 1V1')
 user2.add_role :employer
 
+user3 = User.create(first_name: 'admin', last_name: 'admin', email: 'admin@admin.com', password: 'password', password_confirmation: 'password')
+user3.add_role :admin
+
 JobPosting.create(title: 'Social Media Manager', description: 'Handling our Facebook and Twitter account, posting messages, and responding to clients.', open_date: '2016-01-01', close_date: '2016-04-01', user_id: user2.id)
 
 skill1 = Skill.create(name: 'Facebook Posting')

@@ -8,26 +8,25 @@ def show
 		if user_signed_in? && current_user.id == @user.id
 			##If user is signed in and the reference is theirs				
 		end
+	end
 end
 
 def new
 	@user = User.find(params[:id])
-	@reference
+	@reference = Reference.new
 end
 
 def create
-	@reference = @user.references.build(reference_params)
+	@reference = Reference.create(reference_params)
 		if @reference.save
-			redirect_to references_path
+			redirect_to root_path ##temporary
 		else
-			render references_path
+			render root_path ##temporary
 		end
 end
 
 private
 	def reference_params
-		params.require(:reference).permit(:first_name, :last_name, :email, :company, :position, :phone_number, reference_body)
+		params.require(:reference).permit(:first_name, :last_name, :email, :company, :position, :phone_number, :reference_body, :user_id)
 	end
-end
-
 end

@@ -5,6 +5,7 @@ class UsersController < ApplicationController
 
 		if @user.has_role? :employee
 			@projects = @user.projects;
+			@references = Reference.where(user_id: @user.id)
 
 			if user_signed_in? && current_user.id == @user.id
 				@project = current_user.projects.build

@@ -54,8 +54,9 @@ ActiveRecord::Schema.define(version: 20160517193345) do
     t.string   "email"
     t.string   "company"
     t.string   "position"
+    t.string   "phone_number"
     t.text     "reference_body"
-    t.integer  "phone_number"
+    t.integer  "user_id"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
   end

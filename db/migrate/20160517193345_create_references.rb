@@ -7,9 +7,10 @@ class CreateReferences < ActiveRecord::Migration
       t.string	:email
       t.string	:company
       t.string	:position
+      t.string :phone_number
       t.text	:reference_body
-      t.integer :phone_number
 
+      t.references :user
       t.timestamps null: false
     end
   end

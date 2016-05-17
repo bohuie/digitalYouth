@@ -2,7 +2,6 @@
 <% ##if @user.has_role? :employee %>
 
 <div class ="container">
-		<% byebug %>
 		<p>Refer: <%= @user.first_name %> <%= @user.last_name %></p>
 
 		<%= simple_form_for @reference do |r| %>
@@ -13,6 +12,7 @@
 			<%= r.input :position %>
 			<%= r.input :phone_number%>
 			<%= r.input :reference_body%>
+			<%= r.hidden_field :user_id, :value => @user.id %>
 			<%= r.button :submit %>
 		<% end -%>
 		

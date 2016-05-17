@@ -37,13 +37,24 @@
 			</div>
 		</div>
 	<% end %>
-	<div class="container">
-		<div class="row">
-			<div class="col-xs-4">
-				<h2>Here is a summary of your skill base</h2>
-				
+	<% if !@user_skills.empty? %>
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-4">
+					<h2>Here is a summary of your skill base</h2>
+					<% @user_skills.each do |us| %>
+						<%= us.skill.name %> with a rating of <%= us.rating %> / <%= ENV['MAX_RATING'] %>
+					<% end %>
 			</div>
 		</div>
+	<% end %>
+	<% if user_signed_in? && @current_user==@user %>
+		<%= simple_form_for @user_skill do |g| %>
+			<%= g.input :name %>	
+			<%= g.input :rating, as: :radio_buttons, collection: 0..Integer(ENV['MAX_RATING'])%>
+			<%= g.button :submit %>
+		<% end %>
+	<% end %>
 	</div>
 <% elsif @user.has_role? :employer %>
 

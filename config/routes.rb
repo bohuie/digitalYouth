@@ -7,6 +7,19 @@ Rails.application.routes.draw do
  #devise_for :users
   resources :users, only: :show, as: :user
 
+
+  # Skill routes
+  get '/skills/:id' => 'skills#show', as: :skill
+  get '/skills/:id/edit' => 'skills#edit', as: :edit_skill
+  patch 'skills/:id' => 'skills#update'
+  post 'skills' => 'skills#create'
+
+  # User-skill routes
+  get '/user_skills/:id' => 'user_skills#show', as: :user_skill
+  get '/user_skills/:id/edit' => 'user_skills#edit', as: :edit_user_skill
+  patch '/user_skills/:id' => 'user_skills#update'
+  post '/user_skills' => 'user_skills#create'
+
   # Job posting routes
   get '/job_postings/:id' => 'job_postings#show', as: :job_posting
   get '/job_postings/:id/edit' => 'job_postings#edit', as: :edit_job_posting

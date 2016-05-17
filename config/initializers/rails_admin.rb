@@ -8,12 +8,12 @@ RailsAdmin.config do |config|
   # end
   # config.current_user_method(&:current_user)
 
-   ## == Devise ==
+   ## == Rolify ==
    config.authenticate_with do
-     byebug
-     config.attr_accessible_role {_current_user.has_role? :admin}
+     config.authorize_with do |controller|
+      redirect_to main_app.root_path unless current_user.has_role? :admin
+     end
    end
-   config.current_user_method(&:current_user)
 
   ## == Cancan ==
   # config.authorize_with :cancan

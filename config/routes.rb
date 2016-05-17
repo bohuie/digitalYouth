@@ -19,6 +19,10 @@ Rails.application.routes.draw do
   patch 'projects/:id' => 'projects#update'
   post 'projects' => 'projects#create'
 
+  #reference routes
+  get 'users/:id/references/new' => 'references#new', as: :new_reference
+  post 'references' => 'references#create'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

@@ -1,0 +1,19 @@
+<!-- if employee is here just in case for now. -->
+<% ##if @user.has_role? :employee %>
+
+<div class ="container">
+		<% byebug %>
+		<p>Refer: <%= @user.first_name %> <%= @user.last_name %></p>
+
+		<%= simple_form_for @reference do |r| %>
+			<%= r.input :first_name %>
+			<%= r.input :last_name %>
+			<%= r.input :email %>
+			<%= r.input :company %>
+			<%= r.input :position %>
+			<%= r.input :phone_number%>
+			<%= r.input :reference_body%>
+			<%= r.button :submit %>
+		<% end -%>
+		
+	</div>

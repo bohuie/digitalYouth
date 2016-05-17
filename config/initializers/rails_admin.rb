@@ -8,6 +8,13 @@ RailsAdmin.config do |config|
   # end
   # config.current_user_method(&:current_user)
 
+   ## == Devise ==
+   config.authenticate_with do
+     byebug
+     config.attr_accessible_role {_current_user.has_role? :admin}
+   end
+   config.current_user_method(&:current_user)
+
   ## == Cancan ==
   # config.authorize_with :cancan
 

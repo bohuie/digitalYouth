@@ -1,4 +1,11 @@
 <% if @user.has_role? :employee %>
+	
+	<div class ="container">
+		<p> User Information </p>
+		<p> <%= @user.first_name %> </p>
+		<p> <%= @user.last_name %> </p>
+		<p> <%= @user.email %> </p>
+	</div>
 
 	<% if !@projects.empty? %>
 		<div class="projects">

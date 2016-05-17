@@ -9,6 +9,7 @@
 							<%= image_tag p.image.url %>
 							<h2><%= p.title %></h2>
 							<p><%= p.description %></p>
+							
 							<% if user_signed_in? && @current_user==@user %>
 								<%= link_to "Edit Project", edit_project_path(p) %><br />
 							<% end %>
@@ -39,13 +40,14 @@
 	<% end %>
 	<% if !@user_skills.empty? %>
 		<div class="container">
-			<div class="row">
-				<div class="col-xs-4">
-					<h2>Here is a summary of your skill base</h2>
-					<% @user_skills.each do |us| %>
+			<h2>Here is a summary of your skill base</h2>
+			<% @user_skills.each do |us| %>
+				<div class="row">
+					<div class="col-xs-4">
 						<%= us.skill.name %> with a rating of <%= us.rating %> / <%= ENV['MAX_RATING'] %>
-					<% end %>
-			</div>
+					</div>
+				</div>
+			<% end %>
 		</div>
 	<% end %>
 	<% if user_signed_in? && @current_user==@user %>

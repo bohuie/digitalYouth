@@ -7,7 +7,7 @@
 					<h3> Confirmed References </h3>
 					<% @confirmed_references.each do |r| %>
 						<h3><%= r.first_name%> <%= r.last_name %></h3>
-						<h4><%= r.company%> <%= r.position %></h4>
+						<h4><%= r.company%>: <%= r.position %></h4>
 						<h6>Contact: Email: <%= r.email %> , Phone: <%= r.phone_number %> </h6>
 						<p><%= r.reference_body %></p>
 						<p> <%= link_to "Unconfirm", update_reference_path(r) %><br /> </p>
@@ -19,7 +19,7 @@
 					<h3> Unconfirmed References </h3>
 					<% @unconfirmed_references.each do |r| %>
 						<h3><%= r.first_name%> <%= r.last_name %></h3>
-						<h4><%= r.company%> <%= r.position %></h4>
+						<h4><%= r.company%>: <%= r.position %></h4>
 						<h6>Contact: Email: <%= r.email %> , Phone: <%= r.phone_number %> </h6>
 						<p><%= r.reference_body %></p>
 						<%= link_to "Confirm", update_reference_path(r) %><br />
@@ -30,7 +30,7 @@
 			</div>
 
 			<% if @unconfirmed_references.empty? && @confirmed_references.empty? %>
-					<h3>You have no references. Click this <%= link_to "link", new_reference_path(current_user) %> and get your referers to fill out the forum!</h3>
+					<h3>You have no references. Click this <%= link_to "link", email_reference_path(current_user) %> and get your referers to fill out the forum!</h3>
 			<% end %>
 		</div>
 	</div>

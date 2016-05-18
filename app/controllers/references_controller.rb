@@ -1,5 +1,19 @@
 class ReferencesController < ApplicationController
 
+def show
+	if user_signed_in?
+		@confirmed_references = Reference.where(user_id: current_user.id, confirmed: true)
+		@unconfirmed_references = Reference.where(user_id: current_user.id, confirmed: false)
+	else
+		redirect_to root_path
+	end
+end
+
+def update
+	@reference = Reference.find(params[:id])
+	Reference.find(params[:id]).update(confirmed: !@reference.confirmed)
+end
+
 def delete
 	Reference.find(params[:id]).destroy
 end

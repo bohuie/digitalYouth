@@ -12,7 +12,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-xs-6">
-					<h2> References </h2>
+					<h2> <%= link_to "References", references_path %> </h2>
 						<% @references.each do |r| %>
 							<h3><%= r.first_name%> <%= r.last_name %></h3>
 							<h4><%= r.company%> <%= r.position %></h4>
@@ -28,7 +28,8 @@
 		</div>
 	<% else %>
 		<% if user_signed_in? && @current_user==@user %>
-			<h3>You have no references. Click this <%= link_to "link", new_reference_path(@user) %> and get your referers to fill out the forum!</h3>
+			<h5>You have no confirmed references. Check out your <%= link_to "references", references_path %> to confirm
+			 some or Click this <%= link_to "link", new_reference_path(@user) %> and get your referers to fill out the forum!</h5>
 		<% end %>
 	<% end %>
 

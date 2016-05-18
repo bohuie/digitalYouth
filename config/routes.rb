@@ -20,7 +20,9 @@ Rails.application.routes.draw do
   post 'projects' => 'projects#create'
 
   #reference routes
+  get 'references' => 'references#show'
   get 'users/:id/references/new' => 'references#new', as: :new_reference
+  get 'references/confirm/:id' => 'references#update', as: :update_reference
   post 'references' => 'references#create'
   get 'references/delete/:id' => 'references#delete', as: :delete_reference
 

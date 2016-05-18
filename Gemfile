@@ -1,5 +1,8 @@
 source 'https://rubygems.org'
 
+# ActionMailer gem for sending emails
+gem 'actionmailer'
+
 # rails_admin gem - admin functionality
 gem 'rails_admin'
 

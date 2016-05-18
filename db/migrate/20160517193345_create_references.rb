@@ -9,6 +9,7 @@ class CreateReferences < ActiveRecord::Migration
       t.string	:position
       t.string :phone_number
       t.text	:reference_body
+      t.boolean :confirmed, default: false
 
       t.references :user
       t.timestamps null: false

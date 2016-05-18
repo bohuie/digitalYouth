@@ -56,9 +56,10 @@ ActiveRecord::Schema.define(version: 20160517193345) do
     t.string   "position"
     t.string   "phone_number"
     t.text     "reference_body"
+    t.boolean  "confirmed",      default: false
     t.integer  "user_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
   end
 
   create_table "roles", force: :cascade do |t|

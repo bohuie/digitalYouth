@@ -11,21 +11,34 @@ end
 
 def update
 	@reference = Reference.find(params[:id])
-	Reference.find(params[:id]).update(confirmed: !@reference.confirmed)
+	if user_signed_in? && @current_user.id==@reference.user_id 
+		Reference.find(params[:id]).update(confirmed: !@reference.confirmed)
+	else
+		redirect_to root_path
+	end
 end
 
 def delete
-	Reference.find(params[:id]).destroy
+	@reference = Reference.find(params[:id])
+	if user_signed_in? && @current_user.id==@reference.user_id 
+		Reference.find(params[:id]).destroy
+	else
+		redirect_to root_path
+	end
 end
 
 def email
-	url_string = ""
-	loop do
-		url_string = SecureRandom.urlsafe_base64(10)
-		break if ReferenceRedirection.where(reference_url: url_string).empty?
+	if user_signed_in?
+		url_string = ""
+		loop do
+			url_string = SecureRandom.urlsafe_base64(10)
+			break if ReferenceRedirection.where(reference_url: url_string).empty?
+		end
+		ReferenceRedirection.create(user_id: current_user.id, reference_url: url_string)
+		@url = request.host + new_reference_path(url_string)
+	else
+		redirect_to root_path
 	end
-	ReferenceRedirection.create(user_id: current_user.id, reference_url: url_string)
-	@url = request.host + new_reference_path(url_string)
 end
 
 def new

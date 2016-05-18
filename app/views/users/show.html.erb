@@ -12,7 +12,16 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-xs-6">
-					<h2> <%= link_to "References", references_path %> </h2>
+						<% if user_signed_in? && @current_user==@user %>
+							<% if @num_unconfirmed_references > 0 %>
+								<h2> <%= link_to "References - (#{@num_unconfirmed_references})", references_path %> </h2>
+							<% else %>
+								<h2> <%= link_to "References", references_path %> </h2>	
+							<% end %>
+						<% else %>
+							<h2> References </h2>
+						<% end %>
+						
 						<% @references.each do |r| %>
 							<h3><%= r.first_name%> <%= r.last_name %></h3>
 							<h4><%= r.company%>: <%= r.position %></h4>

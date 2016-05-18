@@ -6,6 +6,7 @@ class UsersController < ApplicationController
 		if @user.has_role? :employee
 			@projects = @user.projects;
 			@references = Reference.where(user_id: current_user.id, confirmed: true)
+			@num_unconfirmed_references = Reference.where(user_id: current_user.id, confirmed: false).count
 
 			if user_signed_in? && current_user.id == @user.id
 				@project = current_user.projects.build

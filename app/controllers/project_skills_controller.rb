@@ -1,10 +1,10 @@
 class ProjectSkillsController < ApplicationController
 
 	def create
-		byebug
 		@skill = Skill.find_by(name: params[:project_skill][:name])
+		params[:project_skill][:skill_id] = @skill.id
 		@project = Project.find(params[:project_skill][:project_id])
-		@project_skill = @project.project_skills.create(skill_id: @skill.id)
+		@project_skill = @project.project_skills.create(project_skill_params)
 		if @project_skill.save
 			redirect_to current_user
 		else
@@ -13,8 +13,8 @@ class ProjectSkillsController < ApplicationController
 	end
 
 	def update
-		@project = Project.find(params[:id])
-		if @project.update_attributes(project_params)
+		@project_skill = ProjectSkill.find(params[:id])
+		if @project_skill.update_attributes(project_skill_params)
 			redirect_to current_user
 		else
 			render 'edit'
@@ -22,7 +22,7 @@ class ProjectSkillsController < ApplicationController
 	end
 
 	private
-	def project_params
-		params.require(:project).permit(:title, :description, :image)
+	def project_skill_params
+		params.require(:project_skill).permit(:skill_id, :project_id)
 	end
 end

@@ -27,7 +27,7 @@ skill3 = Skill.create(name: 'Content Creator')
 UserSkill.create(user_id: user1.id, skill_id: skill1.id, rating: "2")
 
 
-project1 = user1.project.create(title: 'No Image project', description: 'some description')
+project1 = user1.projects.create(title: 'No Image project', description: 'some description')
 
 ProjectSkill.create(project_id: project1.id, skill_id: skill1.id)
 ProjectSkill.create(project_id: project1.id, skill_id: skill2.id)

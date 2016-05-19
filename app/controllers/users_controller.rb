@@ -6,6 +6,13 @@ class UsersController < ApplicationController
 		if @user.has_role? :employee
 			@projects = @user.projects;
 
+			if !@projects.empty?
+				@skills = Hash.new
+				@projects.each do |p|
+					@skills = @skills.merge({p.id => p.skills})
+				end
+			end
+
 			if user_signed_in? && current_user.id == @user.id
 				@project = current_user.projects.build
 			end

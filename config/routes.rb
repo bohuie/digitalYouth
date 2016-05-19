@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   patch 'skills/:id' => 'skills#update'
   post 'skills' => 'skills#create'
 
+
   # User-skill routes
   get '/user_skills/:id' => 'user_skills#show', as: :user_skill
   get '/user_skills/:id/edit' => 'user_skills#edit', as: :edit_user_skill
@@ -31,6 +32,12 @@ Rails.application.routes.draw do
   get 'projects/:id/edit' => 'projects#edit', as: :edit_project
   patch 'projects/:id' => 'projects#update'
   post 'projects' => 'projects#create'
+
+  # Project skill routes
+  get 'project_skills/:id' => 'project_skills#show', as: :project_skill
+  get 'project_skills/:id/edit' => 'project_skills#edit', as: :edit_project_skill
+  patch 'project_skills/:id' => 'project_skills#update'
+  post 'project_skills' => 'project_skills#create'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

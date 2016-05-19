@@ -9,7 +9,12 @@
 							<%= image_tag p.image.url %>
 							<h2><%= p.title %></h2>
 							<p><%= p.description %></p>
-							
+							<% if !@skills.empty? %>
+								<p>Skills associated with this project</p>
+								<% @skills[p.id].each do |s| %>
+									<p><%= s.name%> </p>
+								<% end %>
+							<% end %>
 							<% if user_signed_in? && @current_user==@user %>
 								<%= link_to "Edit Project", edit_project_path(p) %><br />
 							<% end %>

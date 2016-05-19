@@ -9,4 +9,15 @@
 		<%= f.check_box :image_delete %>Delete Image<br/>
 		<%= f.button :submit %>
 	<% end %>
+
+	<% if @skills.empty? %>
+		<p>You have no skills currently.  If you want, add one below! </p>
+	<% else %>
+
+	<% end %>
+	<%= simple_form_for @project_skill, url: project_skills_path, method: "post" do |s| %>
+		<%= s.hidden_field :project_id, value: @project.id %>
+		<%= s.input :name %>
+		<%= s.submit :submit %>
+	<% end %>
 </div>

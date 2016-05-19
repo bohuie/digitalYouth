@@ -13,6 +13,8 @@ class ProjectsController < ApplicationController
 
 	def edit
 		@project = Project.find(params[:id])
+		@skills = @project.skills
+		@project_skill = @project.project_skills.create
 	end
 
 	def create

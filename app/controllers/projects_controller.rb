@@ -1,7 +1,7 @@
 class ProjectsController < ApplicationController
 
 	before_action :authenticate_user!, except: [:show]
-	before_action :project_owner, only: [:edit, :update, :destroy]
+	before_action :project_owner, only: [:edit, :create, :update, :destroy]
 
 #	def new
 #		@jproject
@@ -22,7 +22,7 @@ class ProjectsController < ApplicationController
 		if @project.save
 			redirect_to current_user
 		else
-			render current_user
+			redirect_to current_user
 		end
 	end
 
@@ -40,12 +40,13 @@ class ProjectsController < ApplicationController
 		params.require(:project).permit(:title, :description, :image)
 	end
 
+	# Checks current user is the project owner
 	def project_owner
 		@project = Project.find(params[:id])
 		
 		unless @project.user_id == current_user.id
 			flash[:notice] = 'Access denied as you are not owner of this Project'
-			redirect_to current_user
+			redirect_to @project.user_id
 		end
 	end
 end

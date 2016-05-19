@@ -5,6 +5,7 @@ class UsersController < ApplicationController
 
 		if @user.has_role? :employee
 			@projects = @user.projects;
+			@references = Reference.where(user_id: @user.id, confirmed: true)
 
 			if !@projects.empty?
 				@skills = Hash.new
@@ -12,8 +13,9 @@ class UsersController < ApplicationController
 					@skills = @skills.merge({p.id => p.skills})
 				end
 			end
-
+			
 			if user_signed_in? && current_user.id == @user.id
+				@num_unconfirmed_references = Reference.where(user_id: current_user.id, confirmed: false).count
 				@project = current_user.projects.build
 			end
 

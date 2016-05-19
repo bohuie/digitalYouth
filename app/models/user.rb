@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
 
     has_many :job_postings
     has_many :projects
+    has_many :references
     
     has_many :user_skills
     has_many :skills, through: :user_skills

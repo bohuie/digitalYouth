@@ -229,6 +229,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  actionmailer
   authority
   autoprefixer-rails
   bootstrap-sass

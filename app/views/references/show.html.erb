@@ -1,0 +1,47 @@
+<% if flash[:notice] %>
+    <div class="notice"><%= flash[:notice] %></div>
+<% end %>
+
+<div class="references">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-6">
+			<p> </p>
+
+				<% if !@confirmed_references.empty? %>
+					<h3> Confirmed References </h3>
+					<% @confirmed_references.each do |r| %>
+						<h3><%= r.first_name%> <%= r.last_name %></h3>
+						<h4><%= r.company%>: <%= r.position %></h4>
+						<h6>Contact: Email: <%= r.email %> , Phone: <%= r.phone_number %> </h6>
+						<p><%= r.reference_body %></p>
+						<p> <%= link_to "UnConfirm", update_reference_path(r) %> <%= link_to "Delete", delete_reference_path(r) %> </p>
+					<% end %>
+				<% end %>
+
+				<% if !@unconfirmed_references.empty? %>
+					<h3> Unconfirmed References </h3>
+					<% @unconfirmed_references.each do |r| %>
+						<h3><%= r.first_name%> <%= r.last_name %></h3>
+						<h4><%= r.company%>: <%= r.position %></h4>
+						<h6>Contact: Email: <%= r.email %> , Phone: <%= r.phone_number %> </h6>
+						<p><%= r.reference_body %></p>
+						<p> <%= link_to "Confirm", update_reference_path(r) %> <%= link_to "Delete", delete_reference_path(r) %> </p>
+					<% end %>
+				<% end %>
+
+			</div>
+		</div>
+
+		<div class="row">
+			<% if @unconfirmed_references.empty? && @confirmed_references.empty? %>
+					<h3>You have no references. Click this <%= link_to "link", email_reference_path %>
+					 and get your referers to fill out the forum!</h3>
+			<% else %>
+				<h3>Click this <%= link_to "link", email_reference_path %> and get your referers to fill out the forum to get more references!</h3>
+			<% end %>
+
+		</div>
+
+	</div>
+</div>

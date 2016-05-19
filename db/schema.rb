@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160512205143) do
+ActiveRecord::Schema.define(version: 20160518224052) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,6 +46,41 @@ ActiveRecord::Schema.define(version: 20160512205143) do
     t.integer  "user_id"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
+  end
+
+  create_table "reference_emails", force: :cascade do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "email"
+    t.string   "reference_url"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  create_table "reference_redirections", force: :cascade do |t|
+    t.string   "reference_url"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "email"
+    t.integer  "user_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "reference_redirections", ["reference_url"], name: "index_reference_redirections_on_reference_url", unique: true, using: :btree
+
+  create_table "references", force: :cascade do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "email"
+    t.string   "company"
+    t.string   "position"
+    t.string   "phone_number"
+    t.text     "reference_body"
+    t.boolean  "confirmed",      default: false
+    t.integer  "user_id"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
   end
 
   create_table "roles", force: :cascade do |t|

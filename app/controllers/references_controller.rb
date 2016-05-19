@@ -1,5 +1,7 @@
 class ReferencesController < ApplicationController
 
+##Testing
+
 def show
 	if user_signed_in?
 		@confirmed_references = Reference.where(user_id: current_user.id, confirmed: true)

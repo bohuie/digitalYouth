@@ -40,14 +40,14 @@ Rails.application.routes.draw do
   patch 'project_skills/:id' => 'project_skills#update'
   post 'project_skills' => 'project_skills#create'
 
-  #Reference routes
+  # Reference routes
   get 'references' => 'references#show'
-  get 'references/confirm/:id' => 'references#update', as: :update_reference
   get 'references/refer' => 'references#email', as: :email_reference
-  post 'references/refer' => 'references#sendMail', as: :reference_emails
   get 'references/new/:id' => 'references#new', as: :new_reference
+  post 'references/refer' => 'references#sendMail', as: :reference_emails
   post 'references' => 'references#create'
-  get 'references/delete/:id' => 'references#delete', as: :delete_reference
+  patch 'references/:id' => 'references#update', as: :update_reference
+  delete 'references/:id' => 'references#delete', as: :delete_reference
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

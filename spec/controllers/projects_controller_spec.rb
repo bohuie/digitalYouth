@@ -102,11 +102,11 @@ RSpec.describe ProjectsController, type: :controller do
 
 				let(:user) { FactoryGirl.create(:user) }
 				let(:project1) { FactoryGirl.create(:project) }
-				before(:each) do {
+				before(:each) do 
 					project2 = user.projects.build(title: "title", description: "desc")
 					project_attr = { title: project1.title, description: project1.description, image: nil }
 					sign_in user
-				}
+				end	
 
 				it "so the count is one larger" do
 					count = Project.count

@@ -59,6 +59,9 @@ ActiveRecord::Schema.define(version: 20160518224052) do
 
   create_table "reference_redirections", force: :cascade do |t|
     t.string   "reference_url"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "email"
     t.integer  "user_id"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false

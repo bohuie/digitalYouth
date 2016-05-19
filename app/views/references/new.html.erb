@@ -2,9 +2,9 @@
 		<p>Refer: <%= @user.first_name %> <%= @user.last_name %></p>
 
 		<%= simple_form_for @reference do |r| %>
-			<%= r.input :first_name %>
-			<%= r.input :last_name %>
-			<%= r.input :email %>
+			<%= r.input :first_name, input_html: {value: @reference_link.first_name}%>
+			<%= r.input :last_name, input_html: {value: @reference_link.last_name} %>
+			<%= r.input :email, input_html: {value: @reference_link.email} %>
 			<%= r.input :company %>
 			<%= r.input :position %>
 			<%= r.input :phone_number, :input_html => { :type => "tel", :pattern => "[\+]\d{1}[\(]\d{3}[\)]\d{3}[\-]\d{4}", :placeholder => "+9(999)999-9999" }%>

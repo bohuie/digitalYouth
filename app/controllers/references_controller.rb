@@ -34,8 +34,7 @@ def email
 			url_string = SecureRandom.urlsafe_base64(10)
 			break if ReferenceRedirection.where(reference_url: url_string).empty?
 		end
-		ReferenceRedirection.create(user_id: current_user.id, reference_url: url_string)
-		@url = request.host + new_reference_path(url_string)
+		@url = url_string
 		@reference_email = ReferenceEmail.new
 	else
 		redirect_to root_path
@@ -44,16 +43,18 @@ end
 
 def sendMail
 	@reference_email = ReferenceEmail.new(reference_email_params)
+	ReferenceRedirection.create(user_id: current_user.id, reference_url: @reference_email.reference_url, first_name: @reference_email.first_name, last_name: @reference_email.last_name, email: @reference_email.email)
+	
 	ReferenceMailer.reference_email(@reference_email, current_user).deliver_now
 	redirect_to references_path
 end
 
 
 def new
-	@reflink = ReferenceRedirection.where(reference_url: params[:id])
-	if !@reflink.empty?
-		@reflink = @reflink.first
-		@user = User.find(@reflink.user_id)
+	@reference_link = ReferenceRedirection.where(reference_url: params[:id])
+	if !@reference_link.empty?
+		@reference_link = @reference_link.first
+		@user = User.find(@reference_link.user_id)
 		@reference = Reference.new
 	else
 		redirect_to root_path

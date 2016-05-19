@@ -22,8 +22,9 @@ Rails.application.routes.draw do
   #reference routes
   get 'references' => 'references#show'
   get 'references/confirm/:id' => 'references#update', as: :update_reference
-  get 'reference/refer' => 'references#email', as: :email_reference
-  get 'reference/new/:id' => 'references#new', as: :new_reference
+  get 'references/refer' => 'references#email', as: :email_reference
+  post 'references/refer' => 'references#sendMail', as: :reference_emails
+  get 'references/new/:id' => 'references#new', as: :new_reference
   post 'references' => 'references#create'
   get 'references/delete/:id' => 'references#delete', as: :delete_reference
 

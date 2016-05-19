@@ -1,8 +1,12 @@
 <div class ="container">
 		<p> Fill out this form to ask your contact to give you a reference</p>
-
-		<p> ToDo: put form here for mailer</p>
-
-		<p> <%= @url%></p>
+		
+		<%= simple_form_for @reference_email do |r| %>
+			<%= r.input :first_name %>
+			<%= r.input :last_name %>
+			<%= r.input :email %>
+			<%= r.hidden_field :reference_url, :value => @url%>
+			<%= r.button :submit, 'Send' %>
+		<% end -%>
 		
 </div>

@@ -36,10 +36,18 @@ def email
 		end
 		ReferenceRedirection.create(user_id: current_user.id, reference_url: url_string)
 		@url = request.host + new_reference_path(url_string)
+		@reference_email = ReferenceEmail.new
 	else
 		redirect_to root_path
 	end
 end
+
+def sendMail
+	@reference_email = ReferenceEmail.new(reference_email_params)
+	ReferenceMailer.reference_email(@reference_email, current_user).deliver
+	redirect_to references_path
+end
+
 
 def new
 	@reflink = ReferenceRedirection.where(reference_url: params[:id])
@@ -66,5 +74,9 @@ end
 private
 	def reference_params
 		params.require(:reference).permit(:first_name, :last_name, :email, :company, :position, :phone_number, :reference_body, :user_id)
+	end
+
+	def reference_email_params
+		params.require(:reference_email).permit(:first_name, :last_name, :email, :reference_url)
 	end
 end

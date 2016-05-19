@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   post 'job_postings' => 'job_postings#create'
 
   # Project routes
+  get 'projects/new' => 'projects#new', as: :new_project
   get 'projects/:id' => 'projects#show', as: :project
   get 'projects/:id/edit' => 'projects#edit', as: :edit_project
   patch 'projects/:id' => 'projects#update'

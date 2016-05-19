@@ -1,0 +1,12 @@
+<div class ="container">
+		<p> Fill out this form to ask your contact to give you a reference</p>
+		
+		<%= simple_form_for @reference_email do |r| %>
+			<%= r.input :first_name, required: true %>
+			<%= r.input :last_name, required: true %>
+			<%= r.input :email, required: true %>
+			<%= r.hidden_field :reference_url, :value => @url%>
+			<%= r.button :submit, 'Send' %>
+		<% end -%>
+		
+</div>

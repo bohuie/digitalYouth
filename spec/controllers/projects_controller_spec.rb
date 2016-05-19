@@ -128,7 +128,6 @@ RSpec.describe ProjectsController, type: :controller do
 				sign_in user
 
 				project_attr = { title: project1.title, description: project1.description, image: nil }
-				byebug
 				patch :update, id: project1.id, project: project_attr
 
 				expect(response).to redirect_to(user_path(user))

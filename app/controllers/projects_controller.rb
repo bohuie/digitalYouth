@@ -27,7 +27,6 @@ class ProjectsController < ApplicationController
 	end
 
 	def update
-		byebug
 		@project = Project.find(params[:id])
 		if @project.update_attributes(project_params)
 			redirect_to current_user

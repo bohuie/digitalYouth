@@ -44,7 +44,7 @@ end
 
 def sendMail
 	@reference_email = ReferenceEmail.new(reference_email_params)
-	ReferenceMailer.reference_email(@reference_email, current_user).deliver
+	ReferenceMailer.reference_email(@reference_email, current_user).deliver_now
 	redirect_to references_path
 end
 

@@ -38,7 +38,7 @@ RSpec.describe ProjectsController, type: :controller do
 	describe "GET edit" do
 
 		let(:user) { FactoryGirl.create(:user) }
-		let(:project1) { Project.create! }
+		let(:project1) { FactoryGirl.create(:project) }
 		let(:user2) { FactoryGirl.create(:user2) }
 
 		it "redirects the user when not logged in" do
@@ -58,20 +58,14 @@ RSpec.describe ProjectsController, type: :controller do
 
 		context "user is logged in and it is their project" do
 
+			let(:user) { FactoryGirl.create(:user) }
+			let(:project1) { FactoryGirl.create(:project) }
 			it "loads the page" do
 				user.projects << project1
 				sign_in user
 				get :edit, id: project1.id
 
 				expect(response).to render_template(:edit)
-			end
-
-			it "goes to create on submission" do
-				user.projects << project1
-				sign_in user
-				get :edit, id: project1.id
-
-				
 			end
 		end
 	end
@@ -100,9 +94,30 @@ RSpec.describe ProjectsController, type: :controller do
 				sign_in user
 
 				project_attr = { title: project1.title, description: project1.description, image: nil }
-				post :create, project: project_attr 
+				post :create, id: project1.id, project: project_attr
 
 				expect(response).to redirect_to(user_path(user))
+			end
+			context "actually creates the project" do
+
+				let(:user) { FactoryGirl.create(:user) }
+				let(:project1) { FactoryGirl.create(:project) }
+				before(:each) do {
+					project2 = user.projects.build(title: "title", description: "desc")
+					project_attr = { title: project1.title, description: project1.description, image: nil }
+					sign_in user
+				}
+
+				it "so the count is one larger" do
+					count = Project.count
+					post :create, id: project1.id, project: project_attr
+
+					expect(Project.count).to eq(count+1)
+				end
+
+				it "should have the new project in it" do
+					
+				end
 			end
 		end
 	end
@@ -128,10 +143,16 @@ RSpec.describe ProjectsController, type: :controller do
 				sign_in user
 
 				project_attr = { title: project1.title, description: project1.description, image: nil }
+
 				patch :update, id: project1.id, project: project_attr
 
 				expect(response).to redirect_to(user_path(user))
 			end
 		end
+	end
+
+	describe "DELETE delete" do
+
+
 	end
 end

@@ -1,5 +1,7 @@
 <% if flash[:notice] %>
-    <div class="notice"><%= flash[:notice] %></div>
+    <div class="alert alert-info alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <%= flash[:notice] %></div>
 <% end %>
 
 <% if @user.has_role? :employee %>

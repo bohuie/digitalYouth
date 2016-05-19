@@ -1,3 +1,7 @@
+<% if flash[:notice] %>
+    <div class="notice"><%= flash[:notice] %></div>
+<% end %>
+
 <div class="references">
 	<div class="container">
 		<div class="row">
@@ -31,7 +35,7 @@
 
 		<div class="row">
 			<% if @unconfirmed_references.empty? && @confirmed_references.empty? %>
-					<h3>You have no references. Click this <%= link_to "link", email_reference_path(current_user) %>
+					<h3>You have no references. Click this <%= link_to "link", email_reference_path %>
 					 and get your referers to fill out the forum!</h3>
 			<% else %>
 				<h3>Click this <%= link_to "link", email_reference_path %> and get your referers to fill out the forum to get more references!</h3>

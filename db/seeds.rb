@@ -22,5 +22,12 @@ user3.add_role :admin
 JobPosting.create(title: 'Social Media Manager', description: 'Handling our Facebook and Twitter account, posting messages, and responding to clients.', open_date: '2016-01-01', close_date: '2016-04-01', user_id: user2.id)
 
 skill1 = Skill.create(name: 'Facebook Posting')
-
+skill2 = Skill.create(name: 'Twitter Posting')
+skill3 = Skill.create(name: 'Content Creator')
 UserSkill.create(user_id: user1.id, skill_id: skill1.id, rating: "2")
+
+
+project1 = user1.projects.create(title: 'No Image project', description: 'some description')
+
+ProjectSkill.create(project_id: project1.id, skill_id: skill1.id)
+ProjectSkill.create(project_id: project1.id, skill_id: skill2.id)

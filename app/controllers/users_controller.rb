@@ -6,13 +6,22 @@ class UsersController < ApplicationController
 		if @user.has_role? :employee
 			@projects = @user.projects;
 
+			if !@projects.empty?
+				@skills = Hash.new
+				@projects.each do |p|
+					@skills = @skills.merge({p.id => p.skills})
+				end
+			end
+
 			if user_signed_in? && current_user.id == @user.id
 				@project = current_user.projects.build
 			end
 
-			@user_skills = @user.user_skills
-			
-			logger.debug "skill info: #{@user_skills.inspect}"
+			@user_skills = @user.user_skills #current user skills
+
+			if user_signed_in? && current_user.id == @user.id
+				@user_skill = current_user.user_skills.build
+			end 
 
 		elsif @user.has_role? :employer
 			@job_postings = @user.job_postings;

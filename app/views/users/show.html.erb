@@ -13,6 +13,34 @@
 		<p> <%= @user.email %> </p>
 	</div>
 
+	<div class ="container">
+		<div class ="col-lg-6">
+			<p> Survey Responses </p>
+			<table class="table table-bordered"> 
+			<tr> <td>General</td>
+				 <td>Internet and Networks</td>
+				 <td>Programming</td>
+			</tr>
+
+			<tr> <td>Word Processing</td>
+				 <td>Spreadsheet</td>
+				 <td>Online Communication and Collaberation</td>
+			</tr>
+
+			<tr> <td>Time, Project, People</td>
+				 <td>Money</td>
+				 <td>Presentation</td>
+			</tr>
+
+			<tr> <td>Multimedia</td>
+				 <td>Social Media</td>
+				 <td>21 <sup>st</sup> Century Skills</td>
+			</tr>
+			</table>
+		</div>
+	</div>
+
+
 	<% if !@references.empty? %>
 		<div class="references">
 			<div class="container">

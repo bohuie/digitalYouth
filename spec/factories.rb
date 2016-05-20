@@ -38,6 +38,21 @@ FactoryGirl.define do
     position "Manager"
     phone_number "1(250)555-5555"
     reference_body "John Smith was a wonderful employee"
+    confirmed true
+  end
+
+  factory :reference_redirection1, class: ReferenceRedirection do
+    reference_url "chDXcg5FJFdG_w"
+    first_name  "James"
+    last_name "Andrew"
+    email   "James@example.com"
+  end
+
+  factory :reference_email1, class: ReferenceEmail do
+    first_name  "James"
+    last_name "Andrew"
+    email   "James@example.com"
+    reference_url "chDXcg5FJFdG_w"
   end
 
 end

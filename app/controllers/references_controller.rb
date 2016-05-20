@@ -31,11 +31,11 @@ class ReferencesController < ApplicationController
 			@url = SecureRandom.urlsafe_base64(10)
 			break if ReferenceRedirection.where(reference_url: @url).empty?
 		end
-		@reference_email = ReferenceEmail.new
+		@reference_email = ReferenceEmail.new #should this be modified or is this ok?
 	end
 
 	def sendMail
-		@reference_email = ReferenceEmail.new(reference_email_params)
+		@reference_email = ReferenceEmail.new(reference_email_params) #should this be modified or is this ok?
 		params[:reference_email][:user_id] = current_user.id
 		ReferenceRedirection.create(reference_email_params)
 

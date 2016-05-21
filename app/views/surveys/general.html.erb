@@ -1,0 +1,11 @@
+<p>Refer: <%= @user.first_name %> <%= @user.last_name %></p>
+		<h1> General </h1>
+		<%= simple_form_for @general do |r| %>
+		<h5> <%= @category_0 %> </h5> 
+			<%= r.input :Q1, :label => "Start a Program"%>
+			<%= r.hidden_field :user_id, :value => "1" %>
+
+			<!-- Repeat many many times -->
+
+			<%= r.button :submit %>
+		<% end -%>

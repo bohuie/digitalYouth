@@ -11,6 +11,20 @@ class SurveysController < ApplicationController
 	def create
 		#Creates the survey response data items from the various form responses
 		#aggregates the responses into their categories and creates the SurveyAnalysis entry
+		@userid = current_user.id
+		@cnt = 0
+		@SQ_id = -1
+		@response_value = -1
+
+		# need to test this logic, dont know for sure that parameters are ordered and all
+		loop for params do |p|
+			if cnt%2 == 0
+				@SQ_id = p
+			else
+				SurveyResponse.create(survey_question_id: @SQ_id, response: @response_value)
+			end
+		end
+		#update users answered serveys (also make them in the user table)
 	end
 
 	def update
@@ -19,6 +33,7 @@ class SurveysController < ApplicationController
 	
 	def general
 		#general form survey form
+		@general = GeneralSurveyResponse.new
 	end
 
 	def networking
@@ -29,7 +44,7 @@ class SurveysController < ApplicationController
 		#programming survey form
 	end
 
-	def word
+	def word_processing
 		#word survey form
 	end
 
@@ -64,4 +79,16 @@ class SurveysController < ApplicationController
 	def modern_skills
 		#modern_skills survey form
 	end
+
+	private
+		def aggregate()
+			#category => [0,0,0,0]
+			#if find(userid, surveyid)
+			#sum up the data -- can be passed as an argument
+			#update the entry
+			#else 
+			#sum up the data -- can be passed as an argument
+			#create the entry
+
+		end
 end

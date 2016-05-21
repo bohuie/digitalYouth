@@ -49,6 +49,24 @@ Rails.application.routes.draw do
   patch 'references/:id' => 'references#update', as: :update_reference
   delete 'references/:id' => 'references#delete', as: :delete_reference
 
+  # Survey routes
+  get 'surveys' => 'surveys#show'
+  get 'surveys/general' => 'surveys#general'
+  get 'surveys/internet_&_networking' => 'surveys#networking' 
+  get 'surveys/programming' => 'surveys#programming'
+  get 'surveys/word_processing' => 'surveys#word_processing'
+  get 'surveys/spreadsheet' => 'surveys#spreadsheet'
+  get 'surveys/collaboration' => 'surveys#collaboration'
+  get 'surveys/project' => 'surveys#project'
+  get 'surveys/money' => 'surveys#money'
+  get 'surveys/presentation' => 'surveys#presentation'
+  get 'surveys/multimedia' => 'surveys#multimedia'
+  get 'surveys/social_media' => 'surveys#social_media'
+  get 'surveys/modern_skills' => 'surveys#modern_skills'
+  post 'surveys' => 'surveys#create'
+  patch 'surveys' => 'surveys#update'
+
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

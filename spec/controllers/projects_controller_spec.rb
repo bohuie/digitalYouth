@@ -5,11 +5,9 @@ RSpec.describe ProjectsController, type: :controller do
 	describe "GET show" do
 
 		let(:project1) { FactoryGirl.create(:project) }
-		let(:project2) { FactoryGirl.create(:project) }
 
 		it "loads the specified post" do
 			get :show, id: project1.id
-
 			expect(assigns(:project)).to eq(project1)
 		end
 	end
@@ -17,7 +15,7 @@ RSpec.describe ProjectsController, type: :controller do
 	describe "GET new" do
 
 		let(:user) { FactoryGirl.create(:user) }
-		let(:project1) { Project.create! }
+		let(:project1) { FactoryGirl.create(:project) }
 
 		it "redirects the user when not logged in" do
 			get :new
@@ -56,10 +54,8 @@ RSpec.describe ProjectsController, type: :controller do
 			expect(response).to redirect_to(user_path(user))
 		end
 
-		context "user is logged in and it is their project" do
-
-			let(:user) { FactoryGirl.create(:user) }
-			let(:project1) { FactoryGirl.create(:project) }
+		context "project owner is logged in" do
+			
 			it "loads the page" do
 				user.projects << project1
 				sign_in user
@@ -68,11 +64,28 @@ RSpec.describe ProjectsController, type: :controller do
 				expect(response).to render_template(:edit)
 			end
 		end
+
+		context "other user is logged in" do
+			let(:other_user) { FactoryGirl.create(:user2) }
+
+			before (:each) do
+				user.projects << project1
+				sign_in other_user
+
+				get :edit, id: project1.id
+			end
+
+			it "redirects to user's page" do
+				expect(response).to redirect_to(user_path(user))
+			end
+		end
 	end
 
 	describe "POST create" do
 
-		let(:project1) { Project.create! }
+		let(:project1) { FactoryGirl.build(:project) }
+		let(:user) { FactoryGirl.create(:user) }
+		let(:project_attr) { { title: project1.title, description: project1.description, image: nil } }
 
 
 		it "redirects when not logged in" do
@@ -81,50 +94,60 @@ RSpec.describe ProjectsController, type: :controller do
 			expect(response).to redirect_to(new_user_session_path)
 		end
 
-		context "user is logged in" do
-			let(:user) { FactoryGirl.create(:user) }
-			let(:project1) { Project.create! }
-			let(:old_title) { project1.title }
-			let(:user2) { FactoryGirl.create(:user2) }
+		context "project owner is logged in" do
 
-			before(:each) do { project1.title => "New Title" } end
-
-			it "should load the page" do
+			before(:each) do
 				user.projects << project1
 				sign_in user
-
-				project_attr = { title: project1.title, description: project1.description, image: nil }
 				post :create, id: project1.id, project: project_attr
+			end
 
+			it "should load the page" do
 				expect(response).to redirect_to(user_path(user))
 			end
-			context "actually creates the project" do
+		end
 
-				let(:user) { FactoryGirl.create(:user) }
-				let(:project1) { FactoryGirl.create(:project) }
-				before(:each) do 
-					project2 = user.projects.build(title: "title", description: "desc")
-					project_attr = { title: project1.title, description: project1.description, image: nil }
-					sign_in user
-				end	
+		context "project owner creates the project" do
 
-				it "so the count is one larger" do
-					count = Project.count
-					post :create, id: project1.id, project: project_attr
+			before(:each) do
+				user.projects << project1
+		 		sign_in user
+				@count = Project.count
 
-					expect(Project.count).to eq(count+1)
-				end
+				post :create, id: project1.id, project: project_attr
+			end	
 
-				it "should have the new project in it" do
-					
-				end
+			it "increases the count by one" do
+				expect(Project.count).to eq(@count+1)
+			end
+
+			it "should have the new project in it" do
+				expect(Project.last.title).to eq(project1.title)
+			end
+		end
+
+		context "other user is logged in" do
+			let(:other_user) { FactoryGirl.create(:user2) }
+
+			before (:each) do
+				user.projects << project1
+				sign_in other_user
+
+				post :create, id: project1.id, project: project_attr
+			end
+
+			it "redirects to user's page" do
+				expect(response).to redirect_to(user_path(user))
 			end
 		end
 	end
 
 	describe "PATCH update" do
 
-		let(:project1) { Project.create! }
+		let(:project1) { FactoryGirl.create(:project) }
+		let(:user) { FactoryGirl.create(:user) }
+		let(:new_title) { "Hello!" }
+		let(:project_attr) { {title: new_title, description: project1.description, image: nil} }
 
 		it "redirects when not logged in" do
 			patch :update, id: project1.id
@@ -132,20 +155,35 @@ RSpec.describe ProjectsController, type: :controller do
 			expect(response).to redirect_to(new_user_session_path)
 		end
 
-		context "user is logged in" do
-			let(:user) { FactoryGirl.create(:user) }
-			let(:project1) { FactoryGirl.create(:project) }
-			let(:old_title) { project1.title }
-			let(:user2) { FactoryGirl.create(:user2) }
+		context "project owner is logged in" do
 
-			it "should load the page" do
+			before (:each) do
 				user.projects << project1
 				sign_in user
 
-				project_attr = { title: project1.title, description: project1.description, image: nil }
+				patch :update, id: project1.id, project: project_attr
+			end
+
+			it "should load the page" do
+				expect(response).to redirect_to(user_path(user))
+			end
+
+			it "should have the new information" do
+				expect(Project.last.title).to eq(new_title)
+			end
+		end
+
+		context "other user is logged in" do
+			let(:other_user) { FactoryGirl.create(:user2) }
+
+			before (:each) do
+				user.projects << project1
+				sign_in other_user
 
 				patch :update, id: project1.id, project: project_attr
+			end
 
+			it "redirects to user's page" do
 				expect(response).to redirect_to(user_path(user))
 			end
 		end
@@ -153,6 +191,26 @@ RSpec.describe ProjectsController, type: :controller do
 
 	describe "DELETE delete" do
 
+		let(:project1) { FactoryGirl.create(:project) }
+		let(:user) { FactoryGirl.create(:user) }
+		let(:project_attr) { { title: project1.title, description: project1.description, image: nil } }
 
+		before (:each) do 
+			user.projects << project1
+		end
+
+		it "redirects when not logged in" do
+			post :create
+
+			expect(response).to redirect_to(new_user_session_path)
+		end
+
+		context "project owner is logged in" do
+
+			before (:each) do
+				
+				sign_in user
+			end
+		end
 	end
 end

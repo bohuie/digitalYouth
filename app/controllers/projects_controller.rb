@@ -1,7 +1,7 @@
 class ProjectsController < ApplicationController
 
 	before_action :authenticate_user!, except: [:show]
-	before_action :project_owner, only: [:edit, :update, :delete]
+	before_action :project_owner, only: [:edit, :create, :update, :delete]
 
 	def new
 		@project = Project.new
@@ -28,6 +28,7 @@ class ProjectsController < ApplicationController
 
 	def update
 		@project = Project.find(params[:id])
+		
 		if @project.update_attributes(project_params)
 			redirect_to current_user
 		else
@@ -38,6 +39,7 @@ class ProjectsController < ApplicationController
 	private
 	def project_params
 		params.require(:project).permit(:title, :description, :image)
+
 	end
 
 	# Checks current user is the project owner

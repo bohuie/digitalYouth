@@ -1,3 +1,5 @@
+include ActionDispatch::TestProcess
+
 FactoryGirl.define do
   factory :user do
     first_name	"John"
@@ -18,6 +20,7 @@ FactoryGirl.define do
   factory :project do
   	title		"A project title"
   	description	"Description of the project"
+    image { fixture_file_upload( File.join(Rails.root, 'spec', 'photos', 'apple.png'), 'image/png') }
   end
 
   factory :reference1, class: Reference do

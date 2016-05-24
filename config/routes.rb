@@ -33,6 +33,7 @@ Rails.application.routes.draw do
   get 'projects/:id/edit' => 'projects#edit', as: :edit_project
   patch 'projects/:id' => 'projects#update'
   post 'projects' => 'projects#create'
+  delete 'projects/:id' => 'projects#destroy', as: :delete_project
 
 
   # Project skill routes

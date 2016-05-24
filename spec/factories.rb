@@ -23,6 +23,14 @@ FactoryGirl.define do
     image { fixture_file_upload( File.join(Rails.root, 'spec', 'photos', 'apple.png'), 'image/png') }
   end
 
+  factory :skill do
+    name "Twitter posting"
+  end
+
+  factory :skill_2, class: Skill do
+    name  "Facebook posting"
+  end
+
   factory :reference1, class: Reference do
     first_name  "Suzan"
     last_name "Smith"

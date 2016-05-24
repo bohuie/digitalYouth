@@ -9,8 +9,8 @@ Rails.application.routes.draw do
 
 
   # Skill routes
-  get '/skills/:id' => 'skills#show', as: :skill
-  get '/skills/:id/edit' => 'skills#edit', as: :edit_skill
+  #get '/skills/:id' => 'skills#show', as: :skill
+  #get '/skills/:id/edit' => 'skills#edit', as: :edit_skill
   patch 'skills/:id' => 'skills#update'
   post 'skills' => 'skills#create'
 
@@ -37,8 +37,8 @@ Rails.application.routes.draw do
 
 
   # Project skill routes
-  get 'project_skills/:id' => 'project_skills#show', as: :project_skill
-  get 'project_skills/:id/edit' => 'project_skills#edit', as: :edit_project_skill
+ # get 'project_skills/:id' => 'project_skills#show', as: :project_skill
+  #get 'project_skills/:id/edit' => 'project_skills#edit', as: :edit_project_skill
   patch 'project_skills/:id' => 'project_skills#update'
   post 'project_skills' => 'project_skills#create'
 

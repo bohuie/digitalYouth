@@ -1,29 +1,35 @@
 class SurveysController < ApplicationController
-	@category_0 = "Basic"
-	@category_1 = "Intermediate"
-	@category_2 = "Advanced"
-	@category_3 = "Expert"
+
+	@default_categories = {"Basic", "Intermediate", "Advanced", "Expert"}
+
+	def index
+		#show a list of surveys
+	end
+
 
 	def show
-		#Show list of surveys and a link to each?
+		@title = 
+		@questions = 
+		
+
 	end
 
 	def create
 		#Creates the survey response data items from the various form responses
 		#aggregates the responses into their categories and creates the SurveyAnalysis entry
-		@userid = current_user.id
-		@cnt = 0
-		@SQ_id = -1
-		@response_value = -1
+		#@userid = current_user.id
+		#@cnt = 0
+		#@SQ_id = -1
+		#@response_value = -1
 
 		# need to test this logic, dont know for sure that parameters are ordered and all
-		loop for params do |p|
-			if cnt%2 == 0
-				@SQ_id = p
-			else
-				SurveyResponse.create(survey_question_id: @SQ_id, response: @response_value)
-			end
-		end
+		#loop for params do |p|
+		#	if cnt%2 == 0
+		#		@SQ_id = p
+		#	else
+		#		SurveyResponse.create(survey_question_id: @SQ_id, response: @response_value)
+		#	end
+		#end
 		#update users answered serveys (also make them in the user table)
 	end
 
@@ -33,7 +39,7 @@ class SurveysController < ApplicationController
 	
 	def general
 		#general form survey form
-		@general = GeneralSurveyResponse.new
+		#@general = GeneralSurveyResponse.new
 	end
 
 	def networking

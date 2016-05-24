@@ -50,7 +50,8 @@ Rails.application.routes.draw do
   delete 'references/:id' => 'references#delete', as: :delete_reference
 
   # Survey routes
-  get 'surveys' => 'surveys#show'
+  get 'surveys' => 'surveys#index'
+  get 'surveys/:id' => 'surveys#show'
   get 'surveys/general' => 'surveys#general'
   get 'surveys/internet_&_networking' => 'surveys#networking' 
   get 'surveys/programming' => 'surveys#programming'

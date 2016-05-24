@@ -26,6 +26,7 @@ class ReferencesController < ApplicationController
 	end
 
 	def email
+		byebug
 		@url = ""
 		loop do
 			@url = SecureRandom.urlsafe_base64(10)
@@ -35,6 +36,7 @@ class ReferencesController < ApplicationController
 	end
 
 	def sendMail
+
 		@reference_email = ReferenceEmail.new(reference_email_params) #should this be modified or is this ok?
 		params[:reference_email][:user_id] = current_user.id
 		ReferenceRedirection.create(reference_email_params)

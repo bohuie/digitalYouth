@@ -77,13 +77,19 @@ RSpec.describe ReferencesController, type: :controller do
 		let(:reference_email) { FactoryGirl.create(:reference_email1) }
 		let(:user) { FactoryGirl.create(:user) }
 
+
 		it "sends an email to the reference" do
+			byebug
+
 			sign_in user
+			params[:reference_email] = reference_email
 			post :sendMail
+			
 			
 			params[:reference_email][:user_id] = user.id
 
-			expect{ReferenceMailer.reference_email(reference_email_params, :user).deliver_now}.to change{ActionMailer::Base.deliveries.count}.by(1)
+
+			expect{ReferenceMailer.reference_email(params, :user).deliver_now}.to change{ActionMailer::Base.deliveries.count}.by(1)
 		end
 	end
 
@@ -110,7 +116,6 @@ RSpec.describe ReferencesController, type: :controller do
 
 		it "redirects the user when not logged in" do
 			patch :update#, :id reference1.id
-			byebug
 	
 			expect(response).to redirect_to(new_user_session_path)
 		end

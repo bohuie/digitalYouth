@@ -5,9 +5,9 @@ class ReferenceMailer < ApplicationMailer
 		@user = user
 		@reference_email = reference_email
 
-		@hoststring = "digitalYouth.ca" ##just the domain name to be added into the message
-		@url_string = @hoststring + new_reference_path(reference_email.reference_url)
-		
+		@host_string = "digitalYouth.ca" #just the domain name to be added into the message
+		@url_string = new_reference_url(@reference_email.reference_url, :host => @host_string)
+
 		mail(to: @reference_email.email, subject: "#{@user.first_name} #{@user.last_name} Wants a reference!")
 	end
 

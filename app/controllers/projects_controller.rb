@@ -1,7 +1,7 @@
 class ProjectsController < ApplicationController
 
 	before_action :authenticate_user!, except: [:show]
-	before_action :project_owner, only: [:edit, :update, :delete]
+	before_action :project_owner, only: [:edit, :update, :destroy]
 
 	def new
 		@project = Project.new
@@ -18,8 +18,9 @@ class ProjectsController < ApplicationController
 	end
 
 	def create
-		@project = current_user.projects.build(project_params)
+		@project = Project.new(project_params)
 		if @project.save
+			current_user.projects << @project
 			redirect_to current_user
 		else
 			redirect_to current_user
@@ -27,8 +28,8 @@ class ProjectsController < ApplicationController
 	end
 
 	def update
-		byebug
 		@project = Project.find(params[:id])
+		
 		if @project.update_attributes(project_params)
 			redirect_to current_user
 		else
@@ -36,9 +37,18 @@ class ProjectsController < ApplicationController
 		end
 	end
 
+	def destroy
+		if Project.find(params[:id])
+			Project.find(params[:id]).destroy
+		else
+
+		end
+		redirect_to current_user
+	end
+
 	private
 	def project_params
-		params.require(:project).permit(:title, :description, :image)
+		params.require(:project).permit(:title, :description, :image, :delete_image)
 	end
 
 	# Checks current user is the project owner
@@ -48,7 +58,7 @@ class ProjectsController < ApplicationController
 		unless @project.user_id == current_user.id
 			flash[:notice] = 'Access denied as you are not owner of this Project'
 			@user = User.find(@project.user_id)
-			redirect_to @user
+			redirect_to current_user
 		end
 	end
 end

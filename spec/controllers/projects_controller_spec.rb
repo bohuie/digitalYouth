@@ -51,7 +51,7 @@ RSpec.describe ProjectsController, type: :controller do
 
 			get :edit, id: project1.id
 
-			expect(response).to redirect_to(user_path(user))
+			expect(response).to redirect_to(user_path(user2))
 		end
 
 		context "project owner is logged in" do
@@ -75,8 +75,8 @@ RSpec.describe ProjectsController, type: :controller do
 				get :edit, id: project1.id
 			end
 
-			it "redirects to user's page" do
-				expect(response).to redirect_to(user_path(user))
+			it "redirects to other_user's page" do
+				expect(response).to redirect_to(user_path(other_user))
 			end
 		end
 	end
@@ -85,7 +85,7 @@ RSpec.describe ProjectsController, type: :controller do
 
 		let(:project1) { FactoryGirl.build(:project) }
 		let(:user) { FactoryGirl.create(:user) }
-		let(:project_attr) { { title: project1.title, description: project1.description, image: nil } }
+		let(:project_attr) { { title: project1.title, description: project1.description } }
 
 
 		it "redirects when not logged in" do
@@ -97,7 +97,6 @@ RSpec.describe ProjectsController, type: :controller do
 		context "project owner is logged in" do
 
 			before(:each) do
-				user.projects << project1
 				sign_in user
 				post :create, id: project1.id, project: project_attr
 			end
@@ -125,21 +124,6 @@ RSpec.describe ProjectsController, type: :controller do
 				expect(Project.last.title).to eq(project1.title)
 			end
 		end
-
-		context "other user is logged in" do
-			let(:other_user) { FactoryGirl.create(:user2) }
-
-			before (:each) do
-				user.projects << project1
-				sign_in other_user
-
-				post :create, id: project1.id, project: project_attr
-			end
-
-			it "redirects to user's page" do
-				expect(response).to redirect_to(user_path(user))
-			end
-		end
 	end
 
 	describe "PATCH update" do
@@ -147,7 +131,7 @@ RSpec.describe ProjectsController, type: :controller do
 		let(:project1) { FactoryGirl.create(:project) }
 		let(:user) { FactoryGirl.create(:user) }
 		let(:new_title) { "Hello!" }
-		let(:project_attr) { {title: new_title, description: project1.description, image: nil} }
+		let(:project_attr) { {title: new_title, description: project1.description } }
 
 		it "redirects when not logged in" do
 			patch :update, id: project1.id
@@ -160,6 +144,7 @@ RSpec.describe ProjectsController, type: :controller do
 			before (:each) do
 				user.projects << project1
 				sign_in user
+				project_attr[:delete_image] = "1"
 
 				patch :update, id: project1.id, project: project_attr
 			end
@@ -170,6 +155,10 @@ RSpec.describe ProjectsController, type: :controller do
 
 			it "should have the new information" do
 				expect(Project.last.title).to eq(new_title)
+			end
+
+			it "should delete the image" do
+				expect(Project.last.image_file_name).to be_nil
 			end
 		end
 
@@ -183,8 +172,8 @@ RSpec.describe ProjectsController, type: :controller do
 				patch :update, id: project1.id, project: project_attr
 			end
 
-			it "redirects to user's page" do
-				expect(response).to redirect_to(user_path(user))
+			it "redirects to other_user's page" do
+				expect(response).to redirect_to(user_path(other_user))
 			end
 		end
 	end
@@ -196,11 +185,11 @@ RSpec.describe ProjectsController, type: :controller do
 		let(:project_attr) { { title: project1.title, description: project1.description, image: nil } }
 
 		before (:each) do 
-			user.projects << project1
+			
 		end
 
 		it "redirects when not logged in" do
-			post :create
+			delete :destroy, id: project1.id
 
 			expect(response).to redirect_to(new_user_session_path)
 		end
@@ -208,8 +197,48 @@ RSpec.describe ProjectsController, type: :controller do
 		context "project owner is logged in" do
 
 			before (:each) do
-				
 				sign_in user
+				user.projects << project1
+				@count = Project.count
+
+				delete :destroy, id: project1.id
+			end
+
+			it "redirects to profile page after deleting" do
+				expect(response).to redirect_to(user_path(user))
+			end
+
+			it "should have one less project" do
+				expect(Project.count).to eq(@count-1)
+			end
+
+			it "should not have the project" do
+				expect {Project.find(project1.id)}.to raise_exception(ActiveRecord::RecordNotFound)
+			end
+		end
+
+		context "a different user is logged in" do
+
+			let(:other_user){ FactoryGirl.create(:user2) }
+
+			before (:each) do
+				user.projects << project1
+				sign_in other_user
+				@count = Project.count
+
+				delete :destroy, id: project1.id
+			end
+
+			it "redirects to other_user's profile page" do
+				expect(response).to redirect_to(user_path(other_user))
+			end
+
+			it "should not decrease the count" do
+				expect(Project.count).to eq(@count)
+			end
+
+			it "should still have the record" do
+				expect(Project.find(project1.id).title).to eq(project1.title)
 			end
 		end
 	end

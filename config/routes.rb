@@ -42,10 +42,10 @@ Rails.application.routes.draw do
   post 'project_skills' => 'project_skills#create'
 
   # Reference routes
-  get 'references' => 'references#show'
+  get 'references' => 'references#index'
   get 'references/refer' => 'references#email', as: :email_reference
   get 'references/new/:id' => 'references#new', as: :new_reference
-  post 'references/refer' => 'references#sendMail', as: :reference_emails
+  post 'references/refer' => 'references#send_mail', as: :reference_emails
   post 'references' => 'references#create'
   patch 'references/:id' => 'references#update', as: :update_reference
   delete 'references/:id' => 'references#delete', as: :delete_reference

@@ -14,19 +14,24 @@
 	</div>
 
 	<div class ="container">
-		<div class ="col-lg-6">
-			<p> Survey Responses </p>
-			<div class ="row">
-				<% @cnt = 1 %>
-				<% Survey.find_each do |s|%>
-					<div class ="col-lg-3" onclick="window.location = '<%= survey_path(s.id) %>'"> <%= s.title.html_safe %> </div>
+		<div class = "row" style="text-align:center;">
+			<div class = "col-lg-6">
+				<h4> Surveys </h4>
+			</div>
+		</div>
 
-					<% if @cnt % 3 == 0 && @cnt < 12 %>
-						</div><div class ="row"> 
-					<%end%>
-					<% @cnt = @cnt + 1 %>
-				<% end %>
+		<div class ="row">
+			<% @cnt = 1 %>
+			<% Survey.find_each do |s|%>
+				<div class ="col-lg-2 surveybox" onclick="window.location = '<%= survey_path(s.id) %>'"> 
+					<%= s.title.html_safe %> 
 				</div>
+
+				<% if @cnt % 3 == 0 && @cnt < 12 %>
+					</div><div class ="row"> 
+				<%end%>
+				<% @cnt = @cnt + 1 %>
+			<% end %>
 		</div>
 	</div>
 

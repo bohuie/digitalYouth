@@ -4,11 +4,27 @@ RSpec.describe ProjectsController, type: :controller do
 
 	describe "GET show" do
 
-		let(:project1) { FactoryGirl.create(:project) }
+		context "it finds the project" do
+			let(:project1) { FactoryGirl.create(:project) }
 
-		it "loads the specified post" do
-			get :show, id: project1.id
-			expect(assigns(:project)).to eq(project1)
+			before(:each) do
+				get :show, id: project1.id
+			end
+
+			it "loads the specified post" do
+				expect(assigns(:project)).to eq(project1)
+			end
+		end
+
+		context "the project doesn't exist" do
+
+			before(:each) do
+				get :show, id: 1
+			end
+
+			it "should redirect to home" do
+				expect(response).to redirect_to root_url	#to implement
+			end
 		end
 	end
 
@@ -17,19 +33,29 @@ RSpec.describe ProjectsController, type: :controller do
 		let(:user) { FactoryGirl.create(:user) }
 		let(:project1) { FactoryGirl.create(:project) }
 
-		it "redirects the user when not logged in" do
-			get :new
+		context "user is not logged in" do
+			before (:each) do
+				get :new
+			end
 
-			expect(response).to redirect_to(new_user_session_path)
+			it "redirects to login page" do
+				expect(response).to redirect_to(new_user_session_path)
+			end
+			it "has a flash set to log in message" do
+				expect(flash[:alert]).to eq("You need to sign in or sign up before continuing.")
+			end
 		end
 
-		it "loads the page when logged in" do
-			user.projects << project1
-			sign_in user
+		context "user is logged in" do
+			before(:each) do
+				user.projects << project1
+				sign_in user
 
-			get :new
-
-			expect(response).to render_template(:new)
+				get :new
+			end
+			it "loads the page" do
+				expect(response).to render_template(:new)
+			end
 		end
 	end
 
@@ -37,21 +63,17 @@ RSpec.describe ProjectsController, type: :controller do
 
 		let(:user) { FactoryGirl.create(:user) }
 		let(:project1) { FactoryGirl.create(:project) }
-		let(:user2) { FactoryGirl.create(:user2) }
 
-		it "redirects the user when not logged in" do
-			get :edit, id: project1.id
-
-			expect(response).to redirect_to(new_user_session_path)
-		end
-
-		it "redirects if it is not the owner's project" do
-			user.projects << project1
-			sign_in user2
-
-			get :edit, id: project1.id
-
-			expect(response).to redirect_to(user_path(user2))
+		context "user is not logged in" do
+			before(:each) do
+				get :edit, id: project1.id
+			end
+			it "redirects" do
+				expect(response).to redirect_to(new_user_session_path)
+			end
+			it "has a flash set to log in message" do
+				expect(flash[:alert]).to eq("You need to sign in or sign up before continuing.")
+			end
 		end
 
 		context "project owner is logged in" do
@@ -78,6 +100,10 @@ RSpec.describe ProjectsController, type: :controller do
 			it "redirects to other_user's page" do
 				expect(response).to redirect_to(user_path(other_user))
 			end
+
+			it "displays a flash warning" do
+				expect(flash[:warning]).to eq("You can only make changes to your projects.")
+			end
 		end
 	end
 
@@ -87,11 +113,17 @@ RSpec.describe ProjectsController, type: :controller do
 		let(:user) { FactoryGirl.create(:user) }
 		let(:project_attr) { { title: project1.title, description: project1.description } }
 
+		context "user not logged in" do
+			before (:each) do
+				post :create
+			end
 
-		it "redirects when not logged in" do
-			post :create
-
-			expect(response).to redirect_to(new_user_session_path)
+			it "redirects" do
+				expect(response).to redirect_to(new_user_session_path)
+			end
+			it "has a flash set to log in message" do
+				expect(flash[:alert]).to eq("You need to sign in or sign up before continuing.")
+			end
 		end
 
 		context "project owner is logged in" do
@@ -106,7 +138,7 @@ RSpec.describe ProjectsController, type: :controller do
 			end
 		end
 
-		context "project owner creates the project" do
+		context "project owner creates the project with all fields" do
 
 			before(:each) do
 				user.projects << project1
@@ -123,6 +155,43 @@ RSpec.describe ProjectsController, type: :controller do
 			it "should have the new project in it" do
 				expect(Project.last.title).to eq(project1.title)
 			end
+
+			it "redirects to profile page" do
+				expect(response).to redirect_to(user_path(user))
+			end
+
+			it "sets the flash to success" do
+				expect(flash[:success]).to eq("Project successfully created.")
+			end
+		end
+
+		context "project owner is unsuccessful at creating the project" do
+
+			before (:each) do
+				user.projects << project1
+				sign_in user
+				project_attr[:title] = nil
+				project_attr[:description] = "new description"
+				@count = Project.count
+
+				post :create, id: project1.id, project: project_attr
+			end
+
+			it "should render the edit page" do
+				should render_template 'users/show'
+			end
+
+			it "should set a danger flash message" do
+				expect(flash[:danger]).to eq("Please fix the errors below.")	#not sure what is going on
+			end
+
+			it "should not increase count" do
+				expect(Project.count).to eq(@count)
+			end
+
+			it "should not have the new description" do
+				expect(Project.find(project1.id).description).not_to eq("new description")
+			end
 		end
 	end
 
@@ -133,13 +202,19 @@ RSpec.describe ProjectsController, type: :controller do
 		let(:new_title) { "Hello!" }
 		let(:project_attr) { {title: new_title, description: project1.description } }
 
-		it "redirects when not logged in" do
-			patch :update, id: project1.id
-
-			expect(response).to redirect_to(new_user_session_path)
+		context "user is not logged in" do
+			before(:each) do
+				patch :update, id: project1.id
+			end
+			it "redirects" do
+				expect(response).to redirect_to(new_user_session_path)
+			end
+			it "has a flash set to log in message" do
+				expect(flash[:alert]).to eq("You need to sign in or sign up before continuing.")
+			end
 		end
 
-		context "project owner is logged in" do
+		context "project owner is logged in and successfully updates the project" do
 
 			before (:each) do
 				user.projects << project1
@@ -160,6 +235,29 @@ RSpec.describe ProjectsController, type: :controller do
 			it "should delete the image" do
 				expect(Project.last.image_file_name).to be_nil
 			end
+
+			it "sets the flash to success" do
+				expect(flash[:success]).to eq("Project successfully updated.")
+			end
+		end
+
+		context "logged in user is unsuccessful at updating the project" do
+
+			before (:each) do
+				user.projects << project1
+				sign_in user
+				project_attr[:title] = nil
+
+				patch :update, id: project1.id, project: project_attr
+			end
+
+			it "should render the edit page" do
+				should render_template :edit
+			end
+
+			it "should set a danger flash message" do
+				expect(flash[:danger]).to eq("Please fix the errors below.")
+			end
 		end
 
 		context "other user is logged in" do
@@ -175,6 +273,10 @@ RSpec.describe ProjectsController, type: :controller do
 			it "redirects to other_user's page" do
 				expect(response).to redirect_to(user_path(other_user))
 			end
+
+			it "displays a flash warning" do
+				expect(flash[:warning]).to eq("You can only make changes to your projects.")
+			end
 		end
 	end
 
@@ -184,14 +286,16 @@ RSpec.describe ProjectsController, type: :controller do
 		let(:user) { FactoryGirl.create(:user) }
 		let(:project_attr) { { title: project1.title, description: project1.description, image: nil } }
 
-		before (:each) do 
-			
-		end
-
-		it "redirects when not logged in" do
-			delete :destroy, id: project1.id
-
-			expect(response).to redirect_to(new_user_session_path)
+		context "user is not logged in" do
+			before(:each) do
+				delete :destroy, id: project1.id
+			end
+			it "redirects when not logged in" do
+				expect(response).to redirect_to(new_user_session_path)
+			end
+			it "has a flash set to log in message" do
+				expect(flash[:alert]).to eq("You need to sign in or sign up before continuing.")
+			end
 		end
 
 		context "project owner is logged in" do
@@ -214,6 +318,10 @@ RSpec.describe ProjectsController, type: :controller do
 
 			it "should not have the project" do
 				expect {Project.find(project1.id)}.to raise_exception(ActiveRecord::RecordNotFound)
+			end
+
+			it "should have a flash success" do
+				expect(flash[:success]).to eq("Project successfully deleted.")
 			end
 		end
 
@@ -239,6 +347,10 @@ RSpec.describe ProjectsController, type: :controller do
 
 			it "should still have the record" do
 				expect(Project.find(project1.id).title).to eq(project1.title)
+			end
+
+			it "displays a flash warning" do
+				expect(flash[:warning]).to eq("You can only make changes to your projects.")
 			end
 		end
 	end

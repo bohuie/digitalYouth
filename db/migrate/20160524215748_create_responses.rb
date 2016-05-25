@@ -4,7 +4,7 @@ class CreateResponses < ActiveRecord::Migration
       t.integer :score
 
       t.references :user
-      t.references :questionresponse
+      t.references :question
       t.timestamps null: false
     end
   end

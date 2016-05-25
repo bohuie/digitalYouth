@@ -52,7 +52,7 @@ Rails.application.routes.draw do
   # Survey routes
   get 'surveys' => 'surveys#index'
   get 'surveys/:id' => 'surveys#show', as: :survey
-  post 'surveys' => 'surveys#create'
+  post 'surveys/:id' => 'surveys#create'
   patch 'surveys' => 'surveys#update'
 
 

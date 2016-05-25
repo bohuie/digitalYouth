@@ -1,4 +1,3 @@
-
 <div class="container">
 	<div class="row">
 		<div class="col-lg-6"></div>
@@ -8,26 +7,26 @@
 		<div class="col-lg-1"><h6>For most or all of these, I can do them well</h6></div>
 	</div>
 	
-	<%= simple_form_for @survey do |f| %>
+	<%= simple_form_for @survey, method: "post" do |f| %>
+		<% @cnt = @questions.first.id #CNT keeps track of the question id in the loop%>
 		<%= f.simple_fields_for :questions do |question|%>
 			<div class="row">
 				<div class="col-lg-6">
-				<!-- LOTS MORE TO DO HERE -->
-					<% #question.prompts do %>
-					<%= question.input :classification%>
-					<p> prompts </p>
-					
+					<% @question = @questions.find_by(id: @cnt) %>
+					<h3> <%= @question.classification %> </h3>
+					<ul>
+						<% @question.prompts.each do |p| %>
+							<li> <%= p.prompt %> </li>
+						<% end %>
+					</ul>
 				</div>
-					
-				<div class="col-lg-1"> 
-					<%= question.simple_fields_for :responses do |response|%>
-					<!-- LOTS MORE TO DO HERE -->
-						<%= response.input :score, as: :radio_buttons %>
-					<% end %>
-				</div>		
+				<%= question.simple_fields_for :responses do |r|%> <!-- NEED TO CHANGE THE 3 to max rating-->
+					<%= r.input :score, as: :radio_buttons, collection: 0..3, :item_wrapper_class => 'col-lg-1', label: false %>
+				<% end %>	
 			</div>
+			<% @cnt = @cnt + 1%>
 		<% end %>		
-		<%= f.submit %>
+		<%= f.button :submit, 'Submit' %>
 	<% end %>
 </div>
 

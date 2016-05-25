@@ -55,22 +55,11 @@ ActiveRecord::Schema.define(version: 20160524215931) do
     t.datetime "updated_at",  null: false
   end
 
-  create_table "question_responses", force: :cascade do |t|
-    t.integer  "question_id"
-    t.integer  "response_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  add_index "question_responses", ["question_id"], name: "index_question_responses_on_question_id", using: :btree
-  add_index "question_responses", ["response_id"], name: "index_question_responses_on_response_id", using: :btree
-
   create_table "questions", force: :cascade do |t|
     t.string   "classification"
     t.integer  "survey_id"
-    t.integer  "questionresponse_id"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
   create_table "reference_emails", force: :cascade do |t|
@@ -111,9 +100,9 @@ ActiveRecord::Schema.define(version: 20160524215931) do
   create_table "responses", force: :cascade do |t|
     t.integer  "score"
     t.integer  "user_id"
-    t.integer  "questionresponse_id"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.integer  "question_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "roles", force: :cascade do |t|

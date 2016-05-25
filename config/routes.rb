@@ -51,19 +51,7 @@ Rails.application.routes.draw do
 
   # Survey routes
   get 'surveys' => 'surveys#index'
-  get 'surveys/:id' => 'surveys#show'
-  get 'surveys/general' => 'surveys#general'
-  get 'surveys/internet_&_networking' => 'surveys#networking' 
-  get 'surveys/programming' => 'surveys#programming'
-  get 'surveys/word_processing' => 'surveys#word_processing'
-  get 'surveys/spreadsheet' => 'surveys#spreadsheet'
-  get 'surveys/collaboration' => 'surveys#collaboration'
-  get 'surveys/project' => 'surveys#project'
-  get 'surveys/money' => 'surveys#money'
-  get 'surveys/presentation' => 'surveys#presentation'
-  get 'surveys/multimedia' => 'surveys#multimedia'
-  get 'surveys/social_media' => 'surveys#social_media'
-  get 'surveys/modern_skills' => 'surveys#modern_skills'
+  get 'surveys/:id' => 'surveys#show', as: :survey
   post 'surveys' => 'surveys#create'
   patch 'surveys' => 'surveys#update'
 

@@ -1,5 +1,35 @@
-<%= form_tag("/surveys", method: "POST") do %>
-  <%= label_tag(:q, "Search for:") %>
-  <%= text_field_tag(:q) %>
-  <%= submit_tag("Search") %>
-<% end %>
+
+<div class="container">
+	<div class="row">
+		<div class="col-lg-6"></div>
+		<div class="col-lg-1"><h6>I dont know how to do any of these</h6></div>
+		<div class="col-lg-1"><h6>for a few of these I can do them well</h6></div>
+		<div class="col-lg-1"><h6>For about half of these, I can do them well</h6></div>
+		<div class="col-lg-1"><h6>For most or all of these, I can do them well</h6></div>
+	</div>
+	
+	<%= simple_form_for @survey do |f| %>
+		<%= f.simple_fields_for :questions do |question|%>
+			<div class="row">
+				<div class="col-lg-6">
+				<!-- LOTS MORE TO DO HERE -->
+					<% #question.prompts do %>
+					<%= question.input :classification%>
+					<p> prompts </p>
+					
+				</div>
+					
+				<div class="col-lg-1"> 
+					<%= question.simple_fields_for :responses do |response|%>
+					<!-- LOTS MORE TO DO HERE -->
+						<%= response.input :score, as: :radio_buttons %>
+					<% end %>
+				</div>		
+			</div>
+		<% end %>		
+		<%= f.submit %>
+	<% end %>
+</div>
+
+
+

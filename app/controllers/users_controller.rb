@@ -8,9 +8,10 @@ class UsersController < ApplicationController
 			@references = Reference.where(user_id: @user.id, confirmed: true)
 			
 			#Survey Results
-			@survey_results = Response.joins(:question).select(:score, :classification, :survey_id).where(user_id: @user.id).pluck( :survey_id, :classification, :score)
+			#need to refactor this to use hashes not arrays
+			@survey_rst = Response.joins(:question).select(:id, :survey_id, :classification, :score).where(user_id: @user.id).map(&:attributes)
+			@survey_results = remap_survey(@survey_rst)
 			
-			#byebug
 
 			if !@projects.empty?
 				@skills = Hash.new
@@ -37,5 +38,21 @@ class UsersController < ApplicationController
 				@job_posting = current_user.job_postings.build
 			end
 		end
+	end
+
+private
+	def remap_survey(data)
+		rtn = Array.new(12) {Hash.new}
+
+		i = 0
+		rtn.each do |sr|
+			i = i + 1
+			rtn[i - 1] = {:survey_id => i, "responses" => Hash.new}
+		end
+		
+		data.each do |sr|
+			rtn[sr["survey_id"] - 1]["responses"][sr["classification"]] = sr["score"]
+		end
+		return rtn
 	end
 end

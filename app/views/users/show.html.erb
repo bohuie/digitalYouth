@@ -29,17 +29,21 @@
 					<% if !@user.answered_surveys[@cnt - 1] %>
 						<% @class += " unanswered" %>
 					<% end %>
-					<% if user_signed_in? && @current_user==@user %>
-						<% @onclick = "window.location = '#{survey_path(s.id)}survey_path(s.id)'" %>
+					<% @div_onclick = "" %>
+					<% if user_signed_in? && @current_user==@user && !@user.answered_surveys[@cnt - 1] %>
+						<% @div_onclick = "window.location = '#{survey_path(s.id)}survey_path(s.id)'" %>
 					<% end %>
-					<div class ="<%= @class %>" onclick="<%=raw @onclick %>">
-						<%= s.title.html_safe %>
+						<div class ="<%= @class %>" onclick="<%=raw @div_onclick %>">
+							<h5><%= s.title.html_safe %></h5>
 						<% if @user.answered_surveys[@cnt - 1] %>
-							<%= area_chart @survey_results%> 
-						<% end %>
-					</div>
+							<%= bar_chart @survey_results[@cnt - 1]["responses"]%>
+							<% if user_signed_in? && @current_user==@user %>
+								<%= link_to "Update", survey_path(s.id) %>
+						<% end end %>
+						</div>
 					<% if @cnt % 3 == 0 && @cnt < 12 %>
-						</div><div class ="row"> 
+					</div>
+					<div class ="row"> 
 					<% end %>
 					<% @cnt = @cnt + 1 %>
 				<% end %>

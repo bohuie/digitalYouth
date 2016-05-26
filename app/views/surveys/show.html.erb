@@ -20,8 +20,8 @@
 						<% end %>
 					</ul>
 				</div>
-				<%= question.simple_fields_for :responses do |r|%> <!-- NEED TO CHANGE THE 3 to max rating-->
-					<%= r.input :score, as: :radio_buttons, collection: 0..3, :item_wrapper_class => 'col-lg-1', label: false %>
+				<%= question.simple_fields_for :responses do |r|%> <!-- NEED TO CHANGE THE 3 to max rating AND need to change checked to required-->
+					<%= r.input :score, as: :radio_buttons, collection: 0..3, :item_wrapper_class => 'col-lg-1', label: false, :checked => 0 %>
 				<% end %>	
 			</div>
 			<% @cnt = @cnt + 1%>

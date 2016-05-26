@@ -50,10 +50,9 @@ Rails.application.routes.draw do
   delete 'references/:id' => 'references#delete', as: :delete_reference
 
   # Survey routes
-  get 'surveys' => 'surveys#index'
   get 'surveys/:id' => 'surveys#show', as: :survey
   post 'surveys/:id' => 'surveys#create'
-  patch 'surveys' => 'surveys#update'
+  patch 'surveys/:id' => 'surveys#update'
 
 
   # The priority is based upon order of creation: first created -> highest priority.

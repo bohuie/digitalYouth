@@ -101,6 +101,7 @@ ActiveRecord::Schema.define(version: 20160524215931) do
     t.integer  "score"
     t.integer  "user_id"
     t.integer  "question_id"
+    t.integer  "survey_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end

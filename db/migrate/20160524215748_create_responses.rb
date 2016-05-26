@@ -5,6 +5,7 @@ class CreateResponses < ActiveRecord::Migration
 
       t.references :user
       t.references :question
+      t.references :survey
       t.timestamps null: false
     end
   end

@@ -153,6 +153,7 @@ ActiveRecord::Schema.define(version: 20160524215931) do
     t.string   "company_city"
     t.string   "company_province"
     t.string   "company_postal_code"
+    t.boolean  "answered_surveys",       default: [false, false, false, false, false, false, false, false, false, false, false, false],              array: true
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"

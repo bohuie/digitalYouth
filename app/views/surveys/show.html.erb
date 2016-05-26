@@ -8,7 +8,9 @@
 	</div>
 	
 	<%= simple_form_for @survey, method: "post" do |f| %>
-		<% @cnt = @questions.first.id #CNT keeps track of the question id in the loop%>
+		<%= f.hidden_field :id %>
+		
+		<% @cnt = @questions.first.id #@cnt keeps track of the question id in the loop%>
 		<%= f.simple_fields_for :questions do |question|%>
 			<div class="row">
 				<div class="col-lg-6">

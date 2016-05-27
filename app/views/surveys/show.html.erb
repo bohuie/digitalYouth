@@ -1,35 +1,33 @@
-<div class="container">
-	<div class="row">
-		<div class="col-lg-6"> <h2><%=@survey.category%></h2><h3><%=@survey.title.html_safe%></h3> </div>
-		<div class="col-lg-1"><h6>I dont know how to do any of these</h6></div>
-		<div class="col-lg-1"><h6>for a few of these I can do them well</h6></div>
-		<div class="col-lg-1"><h6>For about half of these, I can do them well</h6></div>
-		<div class="col-lg-1"><h6>For most or all of these, I can do them well</h6></div>
-	</div>
-	
-	<%= simple_form_for @response do |f| %>
-		<%= f.hidden_field :survey_id, value: @survey.id%>
-		
-		<% @initial_id = @questions.first.id %>
-		<% for i in 0..@questions.count-1 %>
-			<div class="row">
-				<div class="col-lg-6">
-					<% @question = @questions.find_by(id: @initial_id + i) %>
-					<h3> <%= @question.classification %> </h3>
-					<ul>
-						<% @question.prompts.each do |p| %>
-							<li> <%= p.prompt %> </li>
-						<% end %>
-					</ul>
-				</div>
-											<!-- NEED TO CHANGE THE 3 to max rating AND need to change checked to required-->
-				<%= f.input "scores[#{i}]", as: :radio_buttons, collection: 0..3, :item_wrapper_class => 'col-lg-1', label: false, :checked => 0 %>
-				<%= f.hidden_field "question_ids[#{i}]", value: @question.id %>
-			</div>
-		<% end %>
-		<%= f.button :submit, 'Submit' %>
-	<% end %>
+<div class="row">
+	<div class="col-lg-6"> <h2><%=@survey.category%></h2><h3><%=@survey.title.html_safe%></h3> </div>
+	<div class="col-lg-1"><h6>I dont know how to do any of these</h6></div>
+	<div class="col-lg-1"><h6>for a few of these I can do them well</h6></div>
+	<div class="col-lg-1"><h6>For about half of these, I can do them well</h6></div>
+	<div class="col-lg-1"><h6>For most or all of these, I can do them well</h6></div>
 </div>
+	
+<%= simple_form_for @response do |f| %>
+	<%= f.hidden_field :survey_id, value: @survey.id%>
+	
+	<% @initial_id = @questions.first.id %>
+	<% for i in 0..@questions.count-1 %>
+		<div class="row">
+			<div class="col-lg-6">
+				<% @question = @questions.find_by(id: @initial_id + i) %>
+				<h3> <%= @question.classification %> </h3>
+				<ul>
+					<% @question.prompts.each do |p| %>
+						<li> <%= p.prompt %> </li>
+					<% end %>
+				</ul>
+			</div>
+											<!-- NEED TO CHANGE THE 3 to max rating AND need to change checked to required-->
+			<%= f.input "scores[#{i}]", as: :radio_buttons, collection: 0..3, :item_wrapper_class => 'col-lg-1', label: false, :checked => 0 %>
+			<%= f.hidden_field "question_ids[#{i}]", value: @question.id %>
+		</div>
+	<% end %>
+	<%= f.button :submit, 'Submit' %>
+<% end %>
 
 
 

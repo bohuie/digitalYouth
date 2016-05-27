@@ -43,20 +43,4 @@ class UsersController < ApplicationController
 			end
 		end
 	end
-
-private
-	def remap_survey(data)
-		rtn = Array.new(12) {Hash.new}
-
-		i = 0
-		rtn.each do |sr|
-			i = i + 1
-			rtn[i - 1] = {:survey_id => i, "responses" => Hash.new}
-		end
-		
-		data.each do |sr|
-			rtn[sr["survey_id"] - 1]["responses"][sr["classification"]] = sr["score"]
-		end
-		return rtn
-	end
 end

@@ -5,11 +5,11 @@
 		</div>
 	</div>
 
-		<div class ="row">
+		<div class ="row survey-box-row">
 		<% i = 1 %>
 		<% @onclick = "" %>
 		<% @surveys.each do |s|%>
-			<% @class = "col-lg-2 surveybox" %>
+			<% @class = "col-lg-2 survey-box" %>
 			<% if !@user.answered_surveys[i - 1] %>
 				<% @class += " unanswered" %>
 			<% end %>

@@ -2,7 +2,12 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.surveybox{
+.survey-box-row{
+	//Trying to get flexbox working
+	display: -webkit-flex;
+}
+
+.survey-box{
 	padding: 10px 30px 30px 80px;
 	text-align:center;
 	border-style: solid;
@@ -12,4 +17,9 @@
 
 .unanswered{
 	background-color: Silver;
+}
+
+.survey-table{
+	margin: 5px 0px 5px 0px;
+
 }

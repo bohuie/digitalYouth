@@ -51,7 +51,9 @@ Rails.application.routes.draw do
 
   # Survey routes
   get 'surveys/:title' => 'surveys#show', as: :survey
-  post 'reponse' => 'response#create', as: :responses
+  post 'responses' => 'responses#create'
+  patch 'responses' => 'responses#update'
+
 
 
   # The priority is based upon order of creation: first created -> highest priority.

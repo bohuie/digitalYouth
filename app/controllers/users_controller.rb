@@ -8,10 +8,14 @@ class UsersController < ApplicationController
 			@references = Reference.where(user_id: @user.id, confirmed: true)
 			
 			#Survey Results
-			#need to refactor this to use hashes not arrays
-			@survey_rst = Response.joins(:question).select(:id, :survey_id, :classification, :score).where(user_id: @user.id).map(&:attributes)
-			@survey_results = remap_survey(@survey_rst)
-			
+			@surveys = Survey.all
+			@responses = Response.where(user_id: @user.id)
+			if !@responses.empty?
+				@survey_results = Hash.new
+				@responses.each do |r|
+					@survey_results[r.survey_id] = r.get_data_map
+				end
+			end
 
 			if !@projects.empty?
 				@skills = Hash.new

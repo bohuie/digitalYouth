@@ -1,20 +1,20 @@
 <div class="container">
 	<div class="row">
-		<div class="col-lg-6"> <h2><%=@survey.category%> - <%=@survey.title%></h2> </div>
+		<div class="col-lg-6"> <h2><%=@survey.category%></h2><h3><%=@survey.title.html_safe%></h3> </div>
 		<div class="col-lg-1"><h6>I dont know how to do any of these</h6></div>
 		<div class="col-lg-1"><h6>for a few of these I can do them well</h6></div>
 		<div class="col-lg-1"><h6>For about half of these, I can do them well</h6></div>
 		<div class="col-lg-1"><h6>For most or all of these, I can do them well</h6></div>
 	</div>
 	
-	<%= simple_form_for @survey, method: "post" do |f| %>
-		<%= f.hidden_field :id %>
+	<%= simple_form_for @response do |f| %>
+		<%= f.hidden_field :survey_id, value: @survey.id%>
 		
-		<% @cnt = @questions.first.id #@cnt keeps track of the question id in the loop%>
-		<%= f.simple_fields_for :questions do |question|%>
+		<% @initial_id = @questions.first.id %>
+		<% for i in 0..@questions.count-1 %>
 			<div class="row">
 				<div class="col-lg-6">
-					<% @question = @questions.find_by(id: @cnt) %>
+					<% @question = @questions.find_by(id: @initial_id + i) %>
 					<h3> <%= @question.classification %> </h3>
 					<ul>
 						<% @question.prompts.each do |p| %>
@@ -22,12 +22,11 @@
 						<% end %>
 					</ul>
 				</div>
-				<%= question.simple_fields_for :responses do |r|%> <!-- NEED TO CHANGE THE 3 to max rating AND need to change checked to required-->
-					<%= r.input :score, as: :radio_buttons, collection: 0..3, :item_wrapper_class => 'col-lg-1', label: false, :checked => 0 %>
-				<% end %>	
+											<!-- NEED TO CHANGE THE 3 to max rating AND need to change checked to required-->
+				<%= f.input "scores[#{i}]", as: :radio_buttons, collection: 0..3, :item_wrapper_class => 'col-lg-1', label: false, :checked => 0 %>
+				<%= f.hidden_field "question_ids[#{i}]", value: @question.id %>
 			</div>
-			<% @cnt = @cnt + 1%>
-		<% end %>		
+		<% end %>
 		<%= f.button :submit, 'Submit' %>
 	<% end %>
 </div>

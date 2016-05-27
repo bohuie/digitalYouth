@@ -1,0 +1,35 @@
+<div class ="container">
+	<div class = "row" style="text-align:center;">
+		<div class = "col-lg-6">
+			<h4> Surveys </h4>
+		</div>
+	</div>
+
+		<div class ="row">
+		<% i = 1 %>
+		<% @onclick = "" %>
+		<% @surveys.each do |s|%>
+			<% @class = "col-lg-2 surveybox" %>
+			<% if !@user.answered_surveys[i - 1] %>
+				<% @class += " unanswered" %>
+			<% end %>
+			<% @div_onclick = "" %>
+			<% if user_signed_in? && @current_user==@user && !@user.answered_surveys[i - 1] %>
+				<% @div_onclick = "window.location = '#{survey_path(s.id)}'" %>
+			<% end %>
+				<div class ="<%= @class %>" onclick="<%=raw @div_onclick %>">
+					<h5><%= s.title.html_safe %></h5>
+				<% if @user.answered_surveys[i - 1] %>
+					<%= column_chart @survey_results[i], height: "100px", min: 0, max: 5, library: {hAxis: {textPosition: 'none'}, vAxis: {textPosition: 'none'}} %>
+					<% if user_signed_in? && @current_user==@user %>
+						<%= link_to "Update", survey_path(s.id) %>
+				<% end end %>
+				</div>
+			<% if i % 3 == 0 && i < 12 %>
+			</div>
+			<div class ="row"> 
+			<% end %>
+			<% i = i + 1 %>
+		<% end %>
+	</div>
+</div>

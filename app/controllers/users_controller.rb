@@ -9,6 +9,7 @@ class UsersController < ApplicationController
 			
 			#Survey Results
 			@surveys = Survey.all
+
 			@responses = Response.where(user_id: @user.id)
 			if !@responses.empty?
 				@survey_results = Hash.new

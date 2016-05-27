@@ -51,7 +51,7 @@ survey8 = Survey.create(title: 'Money'					, category: 'Management')
 survey9 = Survey.create(title: 'Presentation'			, category: 'Management')
 survey10 = Survey.create(title: 'Multimedia'			, category: 'New Media and Personal Qualities')
 survey11 = Survey.create(title: 'Social Media'			, category: 'New Media and Personal Qualities')
-survey12 = Survey.create(title: '21<sup>st</sup> Century Skills', category: 'New Media and Personal Qualities')
+survey12 = Survey.create(title: '21st Century Skills', category: 'New Media and Personal Qualities')
 
 #Questions - These are essentially the labels for each question
 question1 = Question.create(classification: 'Basic'			, survey_id: survey1.id, )

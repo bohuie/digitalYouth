@@ -31,7 +31,7 @@
 					<% end %>
 					<% @div_onclick = "" %>
 					<% if user_signed_in? && @current_user==@user && !@user.answered_surveys[@cnt - 1] %>
-						<% @div_onclick = "window.location = '#{survey_path(s.id)}survey_path(s.id)'" %>
+						<% @div_onclick = "window.location = '#{survey_path(s.id)}'" %>
 					<% end %>
 						<div class ="<%= @class %>" onclick="<%=raw @div_onclick %>">
 							<h5><%= s.title.html_safe %></h5>

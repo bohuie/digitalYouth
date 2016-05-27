@@ -19,9 +19,12 @@ class SurveysController < ApplicationController
 			if @update
 				#need to load the responses data somehow
 			else
+				q.responses.destroy
 				q.responses.build #This is causing horrible issues where multiples of the radio buttons are built
 			end
 		end
+
+		#byebug
 	end
 
 	def create
@@ -31,14 +34,17 @@ class SurveysController < ApplicationController
 		@user = current_user
 
 		#For each response add it to the database
+		#using .first_or_initialize because if the user presses back and then trys to resubmit it needs to update
 		@responses.each do |r| 
 			r = r.last
-			@response = Response.create(score: r[:responses_attributes][:"0"][:score], user_id: @user.id, question_id: r[:id], survey_id: @survey_id)
+			@response = Response.where(user_id: @user.id, question_id: r[:id], survey_id: @survey_id).first_or_initialize
+			@response.score = r[:responses_attributes][:"0"][:score]
+			@response.save
 		end
 		
 		#Record that the user has answered the survey
 		@user.answered_surveys[@survey_id - 1] = true
-		User.find(@user.id).update(answered_surveys: @user.answered_surveys)
+		@user.save
 
 		redirect_to current_user, flash: {notice: "Thanks for answering the survey!"}
 	end

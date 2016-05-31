@@ -9,5 +9,6 @@ class Project < ActiveRecord::Base
 	include DeletableAttachment
 
 	validates :title, presence: true
-	validates_attachment :image, content_type: { content_type: ["image/jpg", "image/jpeg", "image/png", "image/gif"] }
+	validates_attachment :image, content_type: { content_type: ["image/jpg", "image/jpeg", "image/png"] }
+	validates :user_id, presence: true
 end

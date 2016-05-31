@@ -24,6 +24,7 @@ class ProjectsController < ApplicationController
 			flash[:success] = "Project successfully created."
 			redirect_to current_user
 		else
+			flash[:danger] = "Please fix the errors below."
 			render 'users/show'
 		end
 	end

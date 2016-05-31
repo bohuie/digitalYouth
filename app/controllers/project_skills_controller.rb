@@ -35,7 +35,7 @@ class ProjectSkillsController < ApplicationController
 		@project = Project.find(params[:project_skill][:project_id])
 		
 		unless @project.user_id == current_user.id
-			flash[:notice] = 'Access denied as you are not owner of this Project'
+			flash[:warning] = 'Access denied as you are not owner of this Project'
 			@user = User.find(@project.user_id)
 			redirect_to current_user
 		end

@@ -15,8 +15,15 @@ RSpec.describe ResponsesController, type: :controller do
 			expect(response).to redirect_to(new_user_session_path)
 		end
 
+		it "redirects if the user is not an employee" do
+			sign_in user
+			post :update, response: response_attr
+			expect(response).to redirect_to(user_path(user))
+		end
+
 		context "user is logged in" do
 			before(:each) do
+				user.add_role(:employee)
 				sign_in user
 				@count = Response.count
 				post :create, response: response_attr
@@ -54,9 +61,16 @@ RSpec.describe ResponsesController, type: :controller do
 			expect(response).to redirect_to(new_user_session_path)
 		end
 
-		context "user is logged in" do
+		it "redirects if the user is not an employee" do
+			sign_in user
+			patch :update, response: response_attr
+			expect(response).to redirect_to(user_path(user))
+		end
+
+		context "employee user is logged in" do
 			before(:each) do
 				user.responses << response1
+				user.add_role(:employee)
 				sign_in user
 				patch :update, response: response_attr
 			end

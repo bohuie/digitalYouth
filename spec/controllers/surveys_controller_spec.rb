@@ -9,12 +9,18 @@ RSpec.describe SurveysController, type: :controller do
 
 		it "redirects when not logged in" do
 			get :show, title: survey1.title
-
 			expect(response).to redirect_to(new_user_session_path)
 		end
 
-		context "user is logged in" do
+		it "redirects if the user is not an employee" do
+			sign_in user
+			get :show, title: survey1.title
+			expect(response).to redirect_to(user_path(user))
+		end
+
+		context "employee user is logged in" do
 			before(:each) do
+				user.add_role(:employee)
 				sign_in user
 			end
 

@@ -10,7 +10,7 @@ class UsersController < ApplicationController
 			#Survey Results
 			@surveys = Survey.all
 
-			@responses = Response.where(user_id: @user.id)
+			@responses = @user.responses
 			if !@responses.empty?
 				@survey_results = Hash.new
 				@responses.each do |r|

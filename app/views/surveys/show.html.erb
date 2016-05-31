@@ -1,9 +1,8 @@
 <div class="row row-style-top">
 	<div class="col-lg-6 col-style"> <h2><%=@survey.category%></h2><h3><%=@survey.format_title.html_safe%></h3> </div>
-	<div class="col-lg-1 col-style"><h6>I dont know how to do any of these</h6></div>
-	<div class="col-lg-1 col-style"><h6>for a few of these I can do them well</h6></div>
-	<div class="col-lg-1 col-style"><h6>For about half of these, I can do them well</h6></div>
-	<div class="col-lg-1 col-style"><h6>For most or all of these, I can do them well</h6></div>
+	<% @score_meanings.each do |sm|%>
+		<div class="col-lg-1 col-style"><%=sm%></div>
+	<% end %>
 </div>
 	
 <%= simple_form_for @response, method: @method do |f| %>

@@ -1,6 +1,7 @@
 class Response < ActiveRecord::Base
 	belongs_to :user
-	belongs_to :question
+	# The connection between a response and the questions is in the question_ids
+	# scores[i] is a response to question_ids[i] question
 
 	#Creates a Hashmap for chartkick to display {"classification" => score}
 	def get_data_map

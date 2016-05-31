@@ -26,7 +26,6 @@ class ProjectSkillsController < ApplicationController
 
 	private
 	def project_skill_params
-		byebug
 		params.require(:project_skill).permit(:skill_id, :project_id)
 	end
 

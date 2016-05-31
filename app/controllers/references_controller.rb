@@ -3,7 +3,7 @@ class ReferencesController < ApplicationController
 	before_action :authenticate_user!, except: [:new, :create]
 	before_action :reference_owner, only: [:update, :delete]
 
-	def show
+	def index
 		@confirmed_references = Reference.where(user_id: current_user.id, confirmed: true)
 		@unconfirmed_references = Reference.where(user_id: current_user.id, confirmed: false)
 	end
@@ -31,10 +31,10 @@ class ReferencesController < ApplicationController
 			@url = SecureRandom.urlsafe_base64(10)
 			break if ReferenceRedirection.where(reference_url: @url).empty?
 		end
-		@reference_email = ReferenceEmail.new
+		@reference_email = ReferenceEmail.new 
 	end
 
-	def sendMail
+	def send_mail
 		@reference_email = ReferenceEmail.new(reference_email_params)
 		params[:reference_email][:user_id] = current_user.id
 		ReferenceRedirection.create(reference_email_params)
@@ -56,10 +56,10 @@ class ReferencesController < ApplicationController
 	end
 
 	def create
-		@reference = Reference.create(reference_params)
+		@reference = Reference.new(reference_params)
 		if @reference.save
-			url_string = request.referrer.rpartition('/')[-1] ##this is a really nasty way retrieving the random url, probably should fix this.
-			ReferenceRedirection.find_by(reference_url: url_string).destroy
+			@url_string = request.referer.rpartition('/')[-1] ##this is a really nasty way retrieving the random url, probably should fix this.
+			ReferenceRedirection.find_by(reference_url: @url_string).destroy
 			redirect_to root_path , flash: {notice: "Thank you for making a reference!"}
 		else
 			redirect_to root_path , flash: {notice: "Oops! there was a problem in saving the reference!"}

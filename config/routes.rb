@@ -9,8 +9,8 @@ Rails.application.routes.draw do
 
 
   # Skill routes
-  get '/skills/:id' => 'skills#show', as: :skill
-  get '/skills/:id/edit' => 'skills#edit', as: :edit_skill
+  #get '/skills/:id' => 'skills#show', as: :skill
+  #get '/skills/:id/edit' => 'skills#edit', as: :edit_skill
   patch 'skills/:id' => 'skills#update'
   post 'skills' => 'skills#create'
 
@@ -28,23 +28,25 @@ Rails.application.routes.draw do
   post 'job_postings' => 'job_postings#create'
 
   # Project routes
+  get 'projects/new' => 'projects#new', as: :new_project
   get 'projects/:id' => 'projects#show', as: :project
   get 'projects/:id/edit' => 'projects#edit', as: :edit_project
   patch 'projects/:id' => 'projects#update'
   post 'projects' => 'projects#create'
+  delete 'projects/:id' => 'projects#destroy', as: :delete_project
 
 
   # Project skill routes
-  get 'project_skills/:id' => 'project_skills#show', as: :project_skill
-  get 'project_skills/:id/edit' => 'project_skills#edit', as: :edit_project_skill
+ # get 'project_skills/:id' => 'project_skills#show', as: :project_skill
+  #get 'project_skills/:id/edit' => 'project_skills#edit', as: :edit_project_skill
   patch 'project_skills/:id' => 'project_skills#update'
   post 'project_skills' => 'project_skills#create'
 
   # Reference routes
-  get 'references' => 'references#show'
+  get 'references' => 'references#index'
   get 'references/refer' => 'references#email', as: :email_reference
   get 'references/new/:id' => 'references#new', as: :new_reference
-  post 'references/refer' => 'references#sendMail', as: :reference_emails
+  post 'references/refer' => 'references#send_mail', as: :reference_emails
   post 'references' => 'references#create'
   patch 'references/:id' => 'references#update', as: :update_reference
   delete 'references/:id' => 'references#delete', as: :delete_reference

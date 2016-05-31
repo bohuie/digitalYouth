@@ -16,8 +16,9 @@ class JobPostingsController < ApplicationController
 	end
 
 	def create
-		@job_posting = current_user.job_postings.build(job_posting_params)
+		@job_posting = JobPosting.new(job_posting_params)
 		if @job_posting.save
+			current_user << @job_posting
 			redirect_to current_user
 		else
 			render current_user

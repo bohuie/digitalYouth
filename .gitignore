@@ -15,9 +15,16 @@
 /log/*
 !/log/.keep
 /tmp
+/public/system
 
 # Ignore application configuration
 /config/application.yml
 
-# Ignore byebug history
+# Ignore Byebug command history file.
 .byebug_history
+
+# TODO Comment out these rules if you are OK with secrets being uploaded to the repo
+config/initializers/secret_token.rb
+config/secrets.yml
+
+.rspec

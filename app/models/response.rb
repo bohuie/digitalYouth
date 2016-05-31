@@ -7,11 +7,18 @@ class Response < ActiveRecord::Base
 	def get_data_map
 		length = self.scores.size
 		rtn = Hash.new
-
-		for i in 0..length-1 
-			title = Question.find(self.question_ids[i]).classification
+		questions = Question.where(survey_id: self.survey_id)
+		
+		i = 0
+		questions.each do |q|
+			if question_ids[i] == q.id
+				title = q.classification
+			else
+				title = Question.find(question_ids[i]).classification
+			end
 			score = self.scores[i]
 			rtn[title] = score + 1 #this is +1 so the chart displays something
+			i = i + 1
 		end
 		return rtn
 	end

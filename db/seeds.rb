@@ -51,7 +51,7 @@ survey8 = Survey.create(title: 'Money'					, category: 'Management')
 survey9 = Survey.create(title: 'Presentation'			, category: 'Management')
 survey10 = Survey.create(title: 'Multimedia'			, category: 'New Media and Personal Qualities')
 survey11 = Survey.create(title: 'Social Media'			, category: 'New Media and Personal Qualities')
-survey12 = Survey.create(title: '21st Century Skills', category: 'New Media and Personal Qualities')
+survey12 = Survey.create(title: '21st Century Skills'	, category: 'New Media and Personal Qualities')
 
 #Questions - These are essentially the labels for each question
 question1 = Question.create(classification: 'Basic'			, survey_id: survey1.id, )
@@ -110,8 +110,8 @@ question43 = Question.create(classification: 'Expert'		, survey_id: survey11.id,
 
 question44 = Question.create(classification: 'Communication'		, survey_id: survey12.id, )
 question45 = Question.create(classification: 'Problem Solving'		, survey_id: survey12.id, )
-question46 = Question.create(classification: 'Advanced'				, survey_id: survey12.id, )
-question47 = Question.create(classification: 'Self-Directed Skill'	, survey_id: survey12.id, )
+question46 = Question.create(classification: 'Self-Directed Skill'				, survey_id: survey12.id, )
+question47 = Question.create(classification: 'Accountability'	, survey_id: survey12.id, )
 
 #Prompts
 #Survey 1: General

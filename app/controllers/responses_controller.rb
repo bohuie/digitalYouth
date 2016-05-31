@@ -5,10 +5,9 @@ class ResponsesController < ApplicationController
 		@scores = params[:response][:scores]
 		@question_ids = params[:response][:question_ids]
 
-		# Can eliminate this if the params can be sorted out properly
+		# Remap scores and question_id Hashmaps in the params to arrays
 		@scores_array = Array.new
 		@question_ids_array = Array.new
-
 		for i in 0..@scores.size-1 do
 			@scores_array[i] = Integer(@scores["#{i}"])
 			@question_ids_array[i] = Integer(@question_ids["#{i}"])
@@ -34,10 +33,9 @@ class ResponsesController < ApplicationController
 		@scores = params[:response][:scores]
 		@question_ids = params[:response][:question_ids]
 		
-		# Can eliminate this if the params can be sorted out properly
+		# Remap scores and question_id Hashmaps in the params to arrays
 		@scores_array = Array.new
 		@question_ids_array = Array.new
-
 		for i in 0..@scores.size-1 do
 			@scores_array[i] = Integer(@scores["#{i}"])
 			@question_ids_array[i] = Integer(@question_ids["#{i}"])

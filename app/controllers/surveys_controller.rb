@@ -19,7 +19,7 @@ class SurveysController < ApplicationController
 		@response = Response.new
 		@values_array = Array.new(@question_count, 0)
 
-		# Generates a collection to remove labels
+		# Generates a collection array to remove labels
 		@collection_array = Array.new()
 		for i in 0..3 #need to change this to MAX RATING 
 			@collection_array.push([i,''])
@@ -29,9 +29,7 @@ class SurveysController < ApplicationController
 		@data = Response.find_by(user_id: current_user.id, survey_id: @survey.id)
 		if @data != nil
 			@method = "patch"
-			for i in 0..@question_count
-				@values_array[i] = @data.scores[i]
-			end
+			@values_array = @data.scores
 		end
 	end
 end

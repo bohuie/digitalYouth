@@ -48,6 +48,56 @@ RSpec.describe UsersController, type: :controller do
 		end
 	end
 
+	describe "GET edit" do
+
+		context "user not logged in" do
+			before(:each) do
+				get :edit, id: user.id
+			end
+			it "redirects" do
+				expect(response).to redirect_to(new_user_session_path)
+			end
+			it "has a flash set to log in message" do
+				expect(flash[:alert]).to eq("You need to sign in or sign up before continuing.")
+			end
+		end
+
+		context "employee account" do
+			before do
+				user.add_role(:employee) 
+				get :edit, id: user.id
+			end
+
+			context "user is the employee" do
+
+				it "loads the page" do
+					sign_in user
+					get :edit, id: user.id
+
+					expect(response).to render_template(:edit)
+				end
+			end
+
+			context "other user tries to view the page" do
+				let(:other_user) { FactoryGirl.create(:user2) }
+
+				before (:each) do
+					sign_in other_user
+
+					get :edit, id: user.id
+				end
+
+				it "redirects to other_user's page" do
+					expect(response).to redirect_to(user_path(other_user))
+				end
+
+				it "displays a flash warning" do
+					expect(flash[:warning]).to eq("You can only make changes to your own profile.")
+				end
+			end
+		end
+	end
+
 	describe "associations" do
 		let(:skill) { FactoryGirl.create(:skill) }
 
@@ -58,7 +108,7 @@ RSpec.describe UsersController, type: :controller do
 
 		it "should destroy associated userskills when user deleted" do
 			
-			user_skills = user.skills
+			user_skills = user.user_skills
 			user.destroy
 			expect(user_skills).to be_empty
 		end

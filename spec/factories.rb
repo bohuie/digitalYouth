@@ -9,6 +9,18 @@ FactoryGirl.define do
     password_confirmation	"password"
   end
 
+  factory :employer, class: User do
+    first_name  "John"
+    last_name "Smith"
+    email   "john@example.com"
+    password  "password"
+    password_confirmation "password"
+    company_address "123 Fake Street"
+    company_city "Kelowna"
+    company_province "BC"
+    company_postal_code "V1V 1V1"
+  end
+
   factory :user2, class: User do
     first_name	"Foo"
     last_name	"Bar"

@@ -2,6 +2,7 @@ class SurveysController < ApplicationController
 	include ConstantHelper
 
 	before_action :authenticate_user!
+	before_action :check_role
 
 	def show
 		# Fetch Survey data
@@ -45,5 +46,11 @@ private
 						"For about half of these, I can do them well","For most or all of these, I can do them well"]
 		end
 		return meanings
+	end
+
+	def check_role
+		if !current_user.has_role? :employee
+			redirect_to current_user, flash: {warning: "You need to be an employee or a potential employee to perform a survey"}
+		end
 	end
 end

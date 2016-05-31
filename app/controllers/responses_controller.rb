@@ -1,6 +1,7 @@
 class ResponsesController < ApplicationController
 
 	before_action :authenticate_user!
+	before_action :check_role
 
 	def create
 		@user = current_user
@@ -54,5 +55,11 @@ private
 			question_ids_array[i] = Integer(questions["#{i}"])
 		end
 		return scores_array, question_ids_array 
+	end
+
+	def check_role
+		if !current_user.has_role? :employee
+			redirect_to current_user, flash: {warning: "You need to be an employee or a potential employee to perform a survey"}
+		end
 	end
 end

@@ -21,6 +21,7 @@ FactoryGirl.define do
   	title		"A project title"
   	description	"Description of the project"
     image { fixture_file_upload( File.join(Rails.root, 'spec', 'photos', 'apple.png'), 'image/png') }
+    user
   end
 
   factory :skill do

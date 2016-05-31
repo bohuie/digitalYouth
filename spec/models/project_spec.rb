@@ -22,10 +22,4 @@ describe Project do
 
 		it { should_not be_valid }
 	end
-
-	describe "when user id is nil" do
-		before { @project.user_id = nil }
-
-		it { should_not be_valid }
-	end
 end

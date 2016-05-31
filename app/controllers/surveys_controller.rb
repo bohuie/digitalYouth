@@ -1,4 +1,5 @@
 class SurveysController < ApplicationController
+	include ConstantHelper
 
 	before_action :authenticate_user!
 
@@ -22,7 +23,7 @@ class SurveysController < ApplicationController
 
 		# Generates a collection array to remove labels
 		@collection_array = Array.new()
-		for i in 0..3 #need to change this to MAX RATING 
+		for i in 0..Integer(max_rating)
 			@collection_array.push([i,''])
 		end	
 	

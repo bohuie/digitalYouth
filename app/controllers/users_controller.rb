@@ -13,7 +13,7 @@ class UsersController < ApplicationController
 			@responses = @user.responses
 			if !@responses.empty?
 				@survey_results = Hash.new
-				@responses.each do |r|
+				@responses.each do |r| #performs 12 queries
 					@survey_results[r.survey_id] = r.get_data_map
 				end
 			end

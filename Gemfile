@@ -1,5 +1,8 @@
 source 'https://rubygems.org'
 
+#streamrails for notification feeds and other feeds if needed
+gem 'stream_rails'
+
 # charkick for plotting data
 gem 'chartkick'
 

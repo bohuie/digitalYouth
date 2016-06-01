@@ -16,13 +16,13 @@ class ReferencesController < ApplicationController
 		if @reference.confirmed
 			msg = "Reference Unconfirmed!"
 		end
-		redirect_to references_path, flash: {notice: msg}
+		redirect_to references_path, flash: {info: msg}
 	end
 
 	def delete
 		@reference = Reference.find(params[:id])
 		Reference.find(params[:id]).destroy
-		redirect_to references_path, flash: {notice: "Reference deleted!"}
+		redirect_to references_path, flash: {info: "Reference deleted!"}
 	end
 
 	def email
@@ -40,7 +40,7 @@ class ReferencesController < ApplicationController
 		ReferenceRedirection.create(reference_email_params)
 
 		ReferenceMailer.reference_email(@reference_email, current_user).deliver_now
-		redirect_to references_path , flash: {notice: "Reference request sent!"}
+		redirect_to references_path , flash: {success: "Reference request sent!"}
 	end
 
 
@@ -51,7 +51,7 @@ class ReferencesController < ApplicationController
 			@user = User.find(@reference_link.user_id)
 			@reference = Reference.new
 		else
-			redirect_to root_path , flash: {notice: "Invalid reference link."}
+			redirect_to root_path , flash: {danger: "Invalid reference link."}
 		end
 	end
 
@@ -60,9 +60,9 @@ class ReferencesController < ApplicationController
 		if @reference.save
 			@url_string = request.referer.rpartition('/')[-1] ##this is a really nasty way retrieving the random url, probably should fix this.
 			ReferenceRedirection.find_by(reference_url: @url_string).destroy
-			redirect_to root_path , flash: {notice: "Thank you for making a reference!"}
+			redirect_to root_path , flash: {success: "Thank you for making a reference!"}
 		else
-			redirect_to root_path , flash: {notice: "Oops! there was a problem in saving the reference!"}
+			redirect_to root_path , flash: {danger: "There was a problem in saving the reference!"}
 		end
 	end
 
@@ -77,7 +77,7 @@ class ReferencesController < ApplicationController
 
 	def reference_owner
 		unless Reference.find(params[:id]).user_id == current_user.id
-			redirect_to current_user, flash: {notice: "Access denied as you are not owner of this Reference."}
+			redirect_to current_user, flash: {Danger: "Access denied as you are not owner of this Reference."}
 		end
 	end
 end

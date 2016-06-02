@@ -80,4 +80,16 @@ FactoryGirl.define do
     reference_url "chDXcg5FJFdG_w"
   end
 
+  factory :response1, class: Response do
+    scores [0,1,2,3]
+    question_ids [1,2,3,4]
+    survey_id 1
+  end
+
+  factory :response2, class: Response do
+    scores [3,2,1,0]
+    question_ids [1,2,3,4]
+    survey_id 1
+  end
+
 end

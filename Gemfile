@@ -1,5 +1,8 @@
 source 'https://rubygems.org'
 
+# charkick for plotting data
+gem 'chartkick'
+
 # ActionMailer gem for sending emails
 gem 'actionmailer'
 

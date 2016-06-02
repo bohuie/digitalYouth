@@ -120,14 +120,8 @@ RSpec.describe ReferencesController, type: :controller do
 
 			it "redirects to the root page if sucessful with a confirmation msg" do
 				expect(response).to redirect_to(root_path)
-				expect(flash[:notice]).to eq("Thank you for making a reference!")
+				expect(flash[:success]).to eq("Thank you for making a reference!")
 			end
-		end
-
-		it "redirects to the root page if unsucessful with a error msg" do
-				#Need to write a test for this
-				#expect(response).to redirect_to(root_path)
-				#expect(flash[:notice]).to eq("")
 		end
 	end
 
@@ -170,31 +164,37 @@ RSpec.describe ReferencesController, type: :controller do
 		let(:user) { FactoryGirl.create(:user) }
 		let(:user2) { FactoryGirl.create(:user2) }
 
-		context "user is not logged in" do
+		context "incorrect user" do
 			it "redirects the user when not logged in" do
 				delete :delete, id: reference1.id
-
 				expect(response).to redirect_to(new_user_session_path)
+			end
+
+			it "redirects if user is not the reference's owner" do
+				sign_in user2
+				delete :delete, id: reference1.id
+				expect(response).to redirect_to(user_path(user2))
 			end
 		end
 
 		context "user is logged in" do
 			before(:each) do
+				sign_in user
 				user.references << reference1
+				@count = Reference.count
+				delete :delete, id: reference1.id
 			end	
 
-			it "redirects if user is not the reference's owner" do
-				sign_in user2
-				delete :delete, id: reference1.id
-
-				expect(response).to redirect_to(user_path(user2))
+			it "redirects to references page after deleting" do
+				expect(response).to redirect_to(references_path)
 			end
 
-			it "deletes the reference" do
-				sign_in user
+			it "should have one less reference" do
+				expect(Reference.count).to eq(@count-1)
+			end
 
-				delete :delete, id: reference1.id
-				#need expect
+			it "should not have the reference" do
+				expect {Reference.find(reference1.id)}.to raise_exception(ActiveRecord::RecordNotFound)
 			end
 		end
 	end

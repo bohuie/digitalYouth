@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160518224052) do
+ActiveRecord::Schema.define(version: 20160524215931) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,6 +46,20 @@ ActiveRecord::Schema.define(version: 20160518224052) do
     t.integer  "user_id"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
+  end
+
+  create_table "prompts", force: :cascade do |t|
+    t.string   "prompt"
+    t.integer  "question_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "questions", force: :cascade do |t|
+    t.string   "classification"
+    t.integer  "survey_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
   create_table "reference_emails", force: :cascade do |t|
@@ -83,6 +97,15 @@ ActiveRecord::Schema.define(version: 20160518224052) do
     t.datetime "updated_at",                     null: false
   end
 
+  create_table "responses", force: :cascade do |t|
+    t.integer  "scores",                    array: true
+    t.integer  "question_ids",              array: true
+    t.integer  "user_id"
+    t.integer  "survey_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
   create_table "roles", force: :cascade do |t|
     t.string   "name"
     t.integer  "resource_id"
@@ -100,6 +123,13 @@ ActiveRecord::Schema.define(version: 20160518224052) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "surveys", force: :cascade do |t|
+    t.string   "title"
+    t.string   "category"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "user_skills", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "skill_id"
@@ -112,8 +142,8 @@ ActiveRecord::Schema.define(version: 20160518224052) do
   add_index "user_skills", ["user_id"], name: "index_user_skills_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
+    t.string   "email",                  default: "",                                                                                   null: false
+    t.string   "encrypted_password",     default: "",                                                                                   null: false
     t.string   "first_name"
     t.string   "last_name"
     t.string   "github"
@@ -124,16 +154,17 @@ ActiveRecord::Schema.define(version: 20160518224052) do
     t.string   "company_city"
     t.string   "company_province"
     t.string   "company_postal_code"
+    t.boolean  "answered_surveys",       default: [false, false, false, false, false, false, false, false, false, false, false, false],              array: true
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.integer  "sign_in_count",          default: 0,                                                                                    null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at",                                                                                                            null: false
+    t.datetime "updated_at",                                                                                                            null: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

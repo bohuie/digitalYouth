@@ -55,6 +55,13 @@ Rails.application.routes.draw do
   patch 'references/:id' => 'references#update', as: :update_reference
   delete 'references/:id' => 'references#delete', as: :delete_reference
 
+  # Survey routes
+  get 'surveys/:title' => 'surveys#show', as: :survey
+  post 'responses' => 'responses#create'
+  patch 'responses' => 'responses#update'
+
+
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

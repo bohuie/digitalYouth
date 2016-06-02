@@ -15,8 +15,4 @@ class Reference < ActiveRecord::Base
 	def activity_object
 		self
 	end
-
-	def activity_verb
-		"Referenced"
-	end
 end

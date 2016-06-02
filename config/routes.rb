@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   #notifications
   get 'notifications' => 'notifications#index'
   patch 'notifications' => 'notifications#update'
+  delete 'notifications' => 'notifications#delete'
 
   # Devise_for :users
   devise_for :users, controllers: { sessions: "users/sessions", registrations: "users/registrations" }

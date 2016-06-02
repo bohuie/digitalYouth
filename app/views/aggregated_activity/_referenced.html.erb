@@ -1,6 +1,0 @@
-<% a = activity["activities"][0] %>
-<% onclick = "window.location = '#{reference_path(a['object'].id)}'" %>
-
-<div onclick = "<%= onclick %>">
-	<h6><%= a['object'].first_name%> <%=a['object'].last_name%> <%= a['verb'].downcase%> you!</h6>
-</div>

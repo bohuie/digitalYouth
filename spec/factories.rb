@@ -11,10 +11,11 @@ FactoryGirl.define do
 
   factory :employer, class: User do
     first_name  "John"
-    last_name "Smith"
-    email   "john@example.com"
+    last_name "Doe"
+    email   "johnd@example.com"
     password  "password"
     password_confirmation "password"
+    company_name "Yahoo"
     company_address "123 Fake Street"
     company_city "Kelowna"
     company_province "BC"

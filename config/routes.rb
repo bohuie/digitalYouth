@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { sessions: "users/sessions", registrations: "users/registrations" }
  #devise_for :users
   #resources :users, only: :show, as: :user
+  get 'users' => 'users#index'
   get '/users/:id' => 'users#show', as: :user
   get '/users/:id/edit' => 'users#edit', as: :edit_user
   patch '/users/:id' => 'users#update'

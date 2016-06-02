@@ -12,8 +12,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
 
     build_resource(sign_up_params)
-    byebug
-    logger.debug "New params: #{params.inspect}"
     if params[:role] == 'employee'
       @user.add_role :employee
     elsif params[:role] =='employer'
@@ -84,14 +82,31 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, role: [:employee, :employer])
+    byebug
+    if params[:role] == 'employee'
+      devise_parameter_sanitizer.permit(:sign_up) do |user_params|
+        user_params.permit( { roles: [:employee]}, :email, :first_name, :last_name, :github, :linkedin, :twitter, :facebook, :password, :password_confirmation, :current_password)
+    elsif params[:role] == 'employer'
+      devise_parameter_sanitizer.permit(:sign_up, role: [:employee, :employer])
+    else
+    end
   end
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_account_update_params
     devise_parameter_sanitizer.permit(:account_update, role: [:employee, :employer])
   end
+  private
+  def user_params
 
+    @user = User.find(params[:id])
+    if @user.has_role? :employee
+      params.require(:user).permit(:email, :first_name, :last_name, :github, :linkedin, :twitter, :facebook, :password, :password_confirmation, :current_password)
+    elsif @user.has_role? :employer
+      params.require(:user).permit(:email, :first_name, :last_name, :linkedin, :twitter, :facebook, :company_name, :company_address, :company_city, :company_province, :company_postal_code, :password, :password_confirmation, :current_password)
+    else
+    end
+  end
   # The path used after sign up.
   # def after_sign_up_path_for(resource)
   #   super(resource)

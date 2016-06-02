@@ -48,6 +48,7 @@ RSpec.describe ProjectsController, type: :controller do
 		context "user is logged in" do
 			before(:each) do
 				user.projects << project
+				user.confirm
 				sign_in user
 
 				get :new
@@ -75,6 +76,7 @@ RSpec.describe ProjectsController, type: :controller do
 		context "project owner is logged in" do
 			
 			it "loads the page" do
+				user.confirm
 				sign_in user
 				get :edit, id: project.id
 
@@ -86,6 +88,7 @@ RSpec.describe ProjectsController, type: :controller do
 			let(:other_user) { FactoryGirl.create(:user2) }
 
 			before (:each) do
+				other_user.confirm
 				sign_in other_user
 
 				get :edit, id: project.id
@@ -123,6 +126,7 @@ RSpec.describe ProjectsController, type: :controller do
 		context "project owner is logged in" do
 
 			before(:each) do
+				user.confirm
 				sign_in user
 				post :create, id: project.id, project: project_attr
 			end
@@ -136,6 +140,7 @@ RSpec.describe ProjectsController, type: :controller do
 
 			before(:each) do
 				@user_count = user.projects.count
+				user.confirm
 		 		sign_in user
 				@count = Project.count
 
@@ -166,6 +171,7 @@ RSpec.describe ProjectsController, type: :controller do
 		context "project owner is unsuccessful at creating the project" do
 
 			before (:each) do
+				user.confirm
 				sign_in user
 				project_attr[:title] = nil
 				project_attr[:description] = "new description"
@@ -208,6 +214,7 @@ RSpec.describe ProjectsController, type: :controller do
 		context "project owner is logged in and successfully updates the project" do
 
 			before (:each) do
+				user.confirm
 				sign_in user
 				project_attr[:delete_image] = "1"
 
@@ -234,6 +241,7 @@ RSpec.describe ProjectsController, type: :controller do
 		context "logged in user is unsuccessful at updating the project" do
 
 			before (:each) do
+				user.confirm
 				sign_in user
 				project_attr[:title] = nil
 
@@ -253,6 +261,7 @@ RSpec.describe ProjectsController, type: :controller do
 			let(:other_user) { FactoryGirl.create(:user2) }
 
 			before (:each) do
+				other_user.confirm
 				sign_in other_user
 
 				patch :update, id: project.id, project: project_attr
@@ -286,6 +295,7 @@ RSpec.describe ProjectsController, type: :controller do
 
 			before (:each) do
 				@project = FactoryGirl.create(:project, user: user) 
+				user.confirm
 				sign_in user
 				@count = Project.count
 
@@ -315,6 +325,7 @@ RSpec.describe ProjectsController, type: :controller do
 
 			before (:each) do
 				@project = FactoryGirl.create(:project, user: user) 
+				other_user.confirm
 				sign_in other_user
 				@count = Project.count
 
@@ -343,6 +354,7 @@ RSpec.describe ProjectsController, type: :controller do
 		let(:skill) { FactoryGirl.create(:skill) }
 
 		before do
+			user.confirm
 			sign_in user
 			ProjectSkill.create( project_id: project.id, skill_id: skill.id )
 		end

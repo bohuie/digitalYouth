@@ -21,6 +21,7 @@ RSpec.describe ProjectSkillsController, type: :controller do
 		context "project owner is logged in and successfully creates the relation" do
 			before(:each) do
 				user.projects << project
+				user.confirm
 				sign_in user
 				@count = ProjectSkill.count
 
@@ -46,6 +47,7 @@ RSpec.describe ProjectSkillsController, type: :controller do
 
 			before(:each) do
 				user.projects << project
+				other_user.confirm
 				sign_in other_user
 				@count = ProjectSkill.count
 
@@ -72,6 +74,7 @@ RSpec.describe ProjectSkillsController, type: :controller do
 		context "project skill is not created properly" do
 			before(:each) do
 				user.projects << project
+				user.confirm
 				sign_in user
 				@count = ProjectSkill.count
 

@@ -119,6 +119,7 @@ RSpec.describe UsersController, type: :controller do
 		context "user is logged in" do
 
 			it "loads the page" do
+				user.confirm
 				sign_in user
 				get :edit, id: user.id
 
@@ -130,6 +131,7 @@ RSpec.describe UsersController, type: :controller do
 			let(:other_user) { FactoryGirl.create(:user2) }
 
 			before (:each) do
+				other_user.confirm
 				sign_in other_user
 
 				get :edit, id: user.id
@@ -197,6 +199,7 @@ RSpec.describe UsersController, type: :controller do
 				company_city: new_company_city} }
 
 			before do
+				user.confirm
 				sign_in user
 				User.find(user.id).add_role :employee
 				patch :update, id: user.id, user: user_attr
@@ -234,6 +237,7 @@ RSpec.describe UsersController, type: :controller do
 			let(:employer) { FactoryGirl.create(:employer) }
 
 			before do
+				employer.confirm
 				sign_in employer
 				User.find(employer.id).add_role :employer
 				patch :update, id: employer.id, user: user_attr
@@ -253,6 +257,7 @@ RSpec.describe UsersController, type: :controller do
 			let(:user_attr) { {email: user.last_name+"@example.com" }}
 
 			before (:each) do
+				user.confirm
 				sign_in user
 				user_attr[:email] = nil
 				User.find(user.id).add_role :employee
@@ -273,6 +278,7 @@ RSpec.describe UsersController, type: :controller do
 			let(:user_attr) { {email: user.last_name+"@example.com" }}
 
 			before (:each) do
+				other_user.confirm
 				sign_in other_user
 				User.find(user.id).add_role :employee
 				User.find(other_user.id).add_role :employee
@@ -293,6 +299,7 @@ RSpec.describe UsersController, type: :controller do
 		let(:skill) { FactoryGirl.create(:skill) }
 
 		before do
+			user.confirm
 			sign_in user
 			UserSkill.create( user_id: user.id, skill_id: skill.id )
 		end
@@ -302,6 +309,7 @@ RSpec.describe UsersController, type: :controller do
 			user_skills = user.user_skills
 			user.destroy
 			expect(user_skills).to be_empty
+			expect(Skill.find(skill.id).name).to eq(skill.name)
 		end
 	end
 end

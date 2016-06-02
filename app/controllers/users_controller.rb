@@ -1,5 +1,12 @@
 class UsersController < ApplicationController
 #before_action :authenticate_user!
+	def notification
+		enricher = StreamRails::Enrich.new 
+		feed = StreamRails.feed_manager.get_notification_feed(current_user.id)
+		results = feed.get()['results']
+		@activities = enricher.enrich_activities(results)
+	end
+
 	def show
 		@user = User.find(params[:id])
 

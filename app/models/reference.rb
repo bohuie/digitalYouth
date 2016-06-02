@@ -8,6 +8,10 @@ class Reference < ActiveRecord::Base
 		[StreamRails.feed_manager.get_notification_feed(self.user_id)]
 	end
 
+	def activity_actor
+    	self.user
+  	end
+
 	def activity_object
 		self
 	end

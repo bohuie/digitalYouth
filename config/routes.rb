@@ -2,6 +2,9 @@ Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   get 'welcome/index'
 
+  #notifications
+  get 'notification' => 'users#notification'
+
   # Devise_for :users
   devise_for :users, controllers: { sessions: "users/sessions", registrations: "users/registrations" }
  #devise_for :users

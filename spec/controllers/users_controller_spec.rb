@@ -147,34 +147,6 @@ RSpec.describe UsersController, type: :controller do
 		end
 	end
 
-	describe "POST create" do
-		let(:user) { FactoryGirl.build(:user) }
-		let(:new_company_name) { "Google" }
-		let(:new_company_address) { "111 Other Street" }
-		let(:new_company_city) { "Vancouver" }
-		let(:user_attr) { {email: user.email, company_name: new_company_name, company_address: new_company_address, 
-				company_city: new_company_city} }
-
-		#not sure how to test this
-		context "create user" do
-
-			before do
-				patch 'user_registration', user: user_attr
-			end
-
-			it "has the user" do
-				expect(User.last.email).to eq(user.email)
-			end
-
-			it "does not have company info" do
-				expect(User.last.company_name).to be_nil
-				expect(User.last.company_address).to be_nil
-				expect(User.last.company_city).to be_nil	
-			end
-		end
-
-	end
-
 	describe "PATCH update" do
 
 		let(:new_company_name) { "Google" }

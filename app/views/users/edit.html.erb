@@ -5,9 +5,25 @@
 	<%= u.input :email %>
 	<%= u.input :password %>
 	<%= u.input :confirm_password %>
-	<%= u.input :github %>
-	<%= u.input :linkedin %>
-	<%= u.input :twitter %>
+	<div class="form-group">
+    <%= f.input :github, autofocus: true, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.input :linkedin, autofocus: true, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.input :twitter, autofocus: true, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.input :facebook, autofocus: true, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.input :company_name, autofocus: true, class: "form-control" %>
+  </div>
 
 	<%= u.submit %>
 <% end %>

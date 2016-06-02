@@ -92,4 +92,11 @@ FactoryGirl.define do
     survey_id 1
   end
 
+  factory :job_posting do
+    title "Social Media Expert"
+    description "Handling SM sites"
+    open_date Date.new(2016,1,1)
+    close_date Date.new(2016, 3, 1)
+    user
+  end
 end

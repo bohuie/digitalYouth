@@ -33,7 +33,8 @@ RSpec.describe UsersController, type: :controller do
 				let(:skill) { FactoryGirl.create(:skill) }
 
 				before do
-					user.add_role(:employee) 
+					user.add_role(:employee)
+					UserSkill.create( user_id: user.id, skill_id: skill.id, rating: 2 )
 					ProjectSkill.create( project_id: project.id, skill_id: skill.id )
 				end
 
@@ -43,6 +44,47 @@ RSpec.describe UsersController, type: :controller do
 
 				it "doesn't have employer role" do
 					expect(user.has_role?(:employer)).to be_falsy
+				end
+
+				it "has projects" do
+					expect(user.projects).to exist
+					expect(user.projects.first.title).to eq(project.title)
+				end
+
+				it "has skills" do
+					expect(user.skills).to exist
+					expect(user.skills.first.name).to eq(skill.name)
+				end
+
+				it "survey and references" do
+					pending "this needs to be implemented"
+				end
+
+				it "has employment history" do
+					pending "this needs to be implemented"
+				end
+			end
+
+			context "the user is an employer" do
+
+				let(:job_posting) { FactoryGirl.create(:job_posting, user: user) }
+
+				before do
+					user.add_role(:employer)
+					job_posting
+				end
+
+				it "check for employee role" do
+					expect(user.has_role?(:employee)).to be_falsy
+				end
+
+				it "doesn't have employer role" do
+					expect(user.has_role?(:employer)).to be_truthy
+				end
+
+				it "has jobs" do
+					expect(user.job_postings).to exist
+					expect(user.job_postings.first.title).to eq(job_posting.title)
 				end
 			end
 		end
@@ -111,10 +153,11 @@ RSpec.describe UsersController, type: :controller do
 		let(:user_attr) { {email: user.email, company_name: new_company_name, company_address: new_company_address, 
 				company_city: new_company_city} }
 
+		#not sure how to test this
 		context "create user" do
 
 			before do
-				post 'create',controller: 'users/registration', user: user_attr
+				patch 'user_registration', user: user_attr
 			end
 
 			it "has the user" do

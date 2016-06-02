@@ -149,6 +149,7 @@ ActiveRecord::Schema.define(version: 20160524215931) do
     t.string   "github"
     t.string   "linkedin"
     t.string   "twitter"
+    t.string   "facebook"
     t.string   "company_name"
     t.string   "company_address"
     t.string   "company_city"

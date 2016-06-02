@@ -1,0 +1,14 @@
+.notification{
+	border: 1px black;
+	padding: 2px 5px 2px 5px;
+}
+
+
+.read {
+	@extend .notification;
+}
+
+.unread{
+	@extend .notification;
+	background-color: lightskyblue;
+}

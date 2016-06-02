@@ -8,6 +8,10 @@ class ReferencesController < ApplicationController
 		@unconfirmed_references = Reference.where(user_id: current_user.id, confirmed: false)
 	end
 
+	def show
+		@reference = Reference.find(params[:id])
+	end
+
 	def update
 		@reference = Reference.find(params[:id])
 		Reference.find(params[:id]).update(confirmed: !@reference.confirmed)

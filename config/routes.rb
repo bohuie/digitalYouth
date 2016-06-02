@@ -3,7 +3,8 @@ Rails.application.routes.draw do
   get 'welcome/index'
 
   #notifications
-  get 'notification' => 'users#notification'
+  get 'notifications' => 'notifications#index'
+  patch 'notifications' => 'notifications#update'
 
   # Devise_for :users
   devise_for :users, controllers: { sessions: "users/sessions", registrations: "users/registrations" }
@@ -47,6 +48,7 @@ Rails.application.routes.draw do
 
   # Reference routes
   get 'references' => 'references#index'
+  get 'reference/:id' => 'references#show', as: :reference
   get 'references/refer' => 'references#email', as: :email_reference
   get 'references/new/:id' => 'references#new', as: :new_reference
   post 'references/refer' => 'references#send_mail', as: :reference_emails

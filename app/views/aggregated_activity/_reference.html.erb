@@ -4,7 +4,9 @@
 <div class="notification" onclick = "<%= onclick %>">
 	<%= a['object'].first_name%> <%=a['object'].last_name%> gave you a reference!
 	<span style="float:right;">
-		<%= link_to raw("<span class=\"glyphicon glyphicon-unchecked\"></span>"), notifications_path(a["id"]), method: "patch" %>
-		 <%= link_to raw("<span class=\"glyphicon glyphicon-remove\"></span>"), notifications_path(a["id"]), method: "delete" %></h6>
+		<%= link_to raw("<span class=\"glyphicon glyphicon-unchecked\"></span>"), notifications_path(id: a["id"]), method: "patch" %>
+		<%= link_to raw("<span class=\"glyphicon glyphicon-remove\"></span>"), notifications_path(id: a["id"]), method: "delete" %></h6>
 	</span>
+	<% byebug %>
+	<p> <%=from_current_time(a['time'])%> ago.</p>
 </div>

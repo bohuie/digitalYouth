@@ -1,5 +1,8 @@
 source 'https://rubygems.org'
 
+# time difference for any instance where the duration of time between two times is needed
+gem 'time_difference'
+
 #streamrails for notification feeds and other feeds if needed
 gem 'stream_rails'
 

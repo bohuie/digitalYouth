@@ -22,16 +22,19 @@
         <% if user_signed_in? %>
           <li><a class="navbar-brand"><%= current_user.first_name %></a></li>
 
-          <li class="dropdown">                                   <%# , "data-toggle"=>"dropdown" %>
-            <%= link_to show_notifications_path, html_options = {class: "dropdown-toggle"}, remote: true do %>
+          <li class="dropdown">                                   
+            <%= link_to show_notifications_path, html_options = 
+            {class: "dropdown-toggle", "data-toggle"=>"dropdown","data-remote"=>"true"}, remote: true do %>
               <span class="glyphicon glyphicon-comment"></span>
+              <span id="notif-num">
               <% if @num_notifications_unseen > 0 %>
                 <%= @num_notifications_unseen %>
               <% end %>
+              </span>
             <% end %>
 
             <ul id="notif-list" class="dropdown-menu" role="menu">
-              <% if @dropdown_activities == nil %>
+              <% if @bar_activities == nil %>
                 <li><a>You have no notifications!</a></li>
               <% else %>
                 <%= render 'shared/notifications', :local_activities => @bar_activities %>

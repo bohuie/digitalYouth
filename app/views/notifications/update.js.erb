@@ -1,4 +1,3 @@
-// This updates the notification bar dropdown and clears the number of unseen notifications when its clicked on
+// This updates the notification bar dropdown
 $('#notif-list').html("<%= j (render 'shared/notifications', :local_activities => @dropdown_activities) %>");
 $('#notif-list').html($('#notif-list').html() + "<li><%= j(link_to 'Show all notifications', notifications_path) %></li>");
-$('#notif-num').html("")

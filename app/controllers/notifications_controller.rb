@@ -1,40 +1,50 @@
 class NotificationsController < ApplicationController
 
-	before_action :authenticate_user!
-	before_action :notification_owner
-	#respond_to :html, :js
+	before_action :authenticate_user!, :notification_owner
 
 	def index
-		#Mark seen on open
-		enricher = StreamRails::Enrich.new 
+		#Get notifications, mark seen
 		feed = StreamRails.feed_manager.get_notification_feed(current_user.id)
-		results = feed.get()['results']
-		@activities = enricher.enrich_aggregated_activities(results)
+		results = feed.get(mark_seen: true)['results'] #This doesn't actually mark_seen right now
+		@activities = @enricher.enrich_aggregated_activities(results)
 	end
 
-	def show
-		enricher = StreamRails::Enrich.new 
+	def show 
+		#Get notifications, mark seen (should limit this to 5 or 10 or so)
 		feed = StreamRails.feed_manager.get_notification_feed(current_user.id)
-		results = feed.get(limit: 5, offset: 0, mark_seen: true)['results']
-		@dropdown_activities = enricher.enrich_aggregated_activities(results)
+		results = feed.get(mark_seen: true)['results'] #This doesn't actually mark_seen right now
+		@dropdown_activities = @enricher.enrich_aggregated_activities(results)
 
+		# Formating for the AJAX request
 		respond_to do |format|
-    		format.json
-  		end
+        	format.js
+   		end
 	end
 
 	def update
-		#Mark Read
-		byebug
-		StreamRails.feed_manager.get_notification_feed(current_user.id).get(params[:id])
+		#Get notifications, mark the notification as read
+		feed = StreamRails.feed_manager.get_notification_feed(current_user.id)
+		results = feed.get(mark_read: true)['results'] #This doesn't actually mark_read right now
+		@dropdown_activities = @enricher.enrich_aggregated_activities(results)
+
+		# Formating for the AJAX request
+		respond_to do |format|
+        	format.js
+   		end
 	end
 
 	def delete
-		#remove
+		#Get notifications, Remove the notification
+		#Dont know what to do yet
+
+		# Formating for the AJAX request
+		respond_to do |format|
+        	format.js
+   		end
 	end
 
 private
 	def notification_owner
-
+		# Check to see if the user owns the notification
 	end
 end

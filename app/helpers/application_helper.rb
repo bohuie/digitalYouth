@@ -4,7 +4,7 @@ module ApplicationHelper
 		str = ""
 		measurement = ""
 		num = 0
-		diff = TimeDifference.between(from_time, Time.now).in_general
+		diff = TimeDifference.between(from_time, Time.now.utc).in_general
 		if diff[:years] >= 1
 			num = diff[:years]
 			measurement = "year"
@@ -31,9 +31,9 @@ module ApplicationHelper
 		end
 
 		if num == 1
-			str = num + " " + measurement
+			str = num.to_s + " " + measurement
 		else
-			str = num + " " + measurement + "s"
+			str = num.to_s + " " + measurement + "s"
 		end
 		return str
 	end

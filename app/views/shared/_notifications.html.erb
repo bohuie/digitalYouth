@@ -1,0 +1,16 @@
+<% for act in local_activities %>
+	<% a = act["activities"][0] %>
+	<% onclick = "window.location = '#{polymorphic_path(a['object'])}'" %>
+	<% li_class = "unread" %>
+	<% if act["is_read"] %>
+		<% li_class = "read" %>
+	<% end %>
+	<li class="<%= li_class %>" onclick="<%= onclick %>"><%= render_activity act %>
+		<span style="float:right;">
+			<%= link_to raw("<span class=\"glyphicon glyphicon-unchecked\"></span>"), notifications_path(id: a["id"]), method: "patch" %>
+			<%= link_to raw("<span class=\"glyphicon glyphicon-remove\"></span>"), notifications_path(id: a["id"]), method: "delete" %>
+		</span>
+		<p> <%=from_current_time(a["object"].created_at)%> ago</p>
+	</li>
+<% end %>
+

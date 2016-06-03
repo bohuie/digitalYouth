@@ -1,13 +1,7 @@
 <div class="container">
     <div class="col-lg-6">
 	    <ul style="list-style-type: none;">
-	    <% for activity in @activities %>
-	    <% if !activity["is_seen"] %>
-	       	<li class="unread"><%= render_activity activity %></li>
-	    <% else %>
-	    	<li class="read"><%= render_activity activity %></li>
-	    <% end %>
-	    <% end %>
+	    	<%= render 'shared/notifications', :local_activities => @activities %>
 	     </ul>
     </div>
 </div>

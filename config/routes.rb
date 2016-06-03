@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   #notifications
   get 'notifications' => 'notifications#index'
+  get 'notifications/show' => 'notifications#show', as: :show_notifications
   patch 'notifications' => 'notifications#update'
   delete 'notifications' => 'notifications#delete'
 

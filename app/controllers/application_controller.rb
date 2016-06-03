@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
       @num_notifications_unseen = 0
       if @bar_activities != nil
         for act in @bar_activities
-          if !act["activities"][0]["is_seen"]
+          if !act["is_seen"]
             @num_notifications_unseen = @num_notifications_unseen + 1
           end
         end

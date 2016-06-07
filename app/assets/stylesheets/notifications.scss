@@ -2,8 +2,16 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.notif-bar{
+	width:350px;
+}
+
 .notification{
-	border: 1px black;
+	border: 1px solid lightgrey;
+	padding: 2px 5px 2px 5px;
+}
+
+.notif-inside{
 	padding: 2px 5px 2px 5px;
 }
 
@@ -14,4 +22,13 @@
 .unread{
 	@extend .notification;
 	background-color: lightskyblue;
+}
+
+.options{
+	float:right;
+}
+
+.content{
+	float:left;
+	width:95%
 }

@@ -20,7 +20,7 @@
 
       <ul class="nav navbar-nav navbar-right">
         <% if user_signed_in? %>
-          <li><a class="navbar-brand" style="cursor:default;"><%= current_user.first_name %></a></li>
+          <li><%= link_to(current_user.first_name, current_user, class: "navbar-brand", style: "cursor:default;") %></li>
 
           <li class="dropdown">                                   
             <%= link_to show_notifications_path, html_options = 
@@ -33,13 +33,9 @@
               </span>
             <% end %>
 
-            <ul id="notif-list" class="dropdown-menu" role="menu">
-              <% if @bar_activities == nil %>
-                <li><a>You have no notifications!</a></li>
-              <% else %>
-                <%= render 'shared/notifications', :local_activities => @bar_activities %>
-                <li><%= link_to "Show all notifications", notifications_path %></li>
-              <% end %>
+            <ul id="notif-list" class="dropdown-menu notif-bar" role="menu">
+              <%= render 'shared/notifications', :local_activities => @bar_activities %>
+              <li><%= link_to "Show all notifications", notifications_path %></li>
             </ul>
           </li>
 

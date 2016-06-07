@@ -1,15 +1,31 @@
-<% for act in local_activities %>
-	<% a = act["activities"][0] %>
-	<% if act["is_read"] %>
-		<li class= "read"> 
-	<% else %>
-		<li class= "unread"> 
-	<% end %><%= render_activity act %>
-		<span style="float:right;">
-			<%= link_to raw("<span class=\"glyphicon glyphicon-unchecked\"></span>"), notifications_path(id: a["id"]), remote: true, method: "patch" %>
-			<%= link_to raw("<span class=\"glyphicon glyphicon-remove\"></span>"), notifications_path(id: a["id"]), remote: true, method: "delete" %>
-		</span><br>
-		<span>&nbsp;<%=from_current_time(a["object"].created_at)%> ago</span>
-	</li>
+<% if !local_activities.empty? %>
+	<% for act in local_activities %>
+		<% a = act["activities"][0] %>
+		<% if act["is_read"] %>
+			<li class= "read" style="clear:both;">
+			<% hidden = "visibility:hidden;" %>
+		<% else %>
+			<li class= "unread" style="clear:both;">  
+		<% end %>
+			<div class="notif-inside">
+				<div class="content" onclick="window.location='<%=polymorphic_path(a['object'])%>'">
+					<div><%= render_activity act %></div>
+					<div>&nbsp;<%=from_current_time(a["object"].created_at)%> ago</div>
+				</div>
+				<div class = "options">
+					<div><%= link_to raw("<span class=\"glyphicon glyphicon-remove\"></span>"), 
+						notifications_path(id: a["id"]), remote: true, method: "delete"%>
+					</div>
+					<div>
+						<%= link_to raw("<span class=\"glyphicon glyphicon-unchecked\"></span>"), 
+							notifications_path(id: a["id"]), remote: true, method: "patch", style: "#{hidden}" %>
+					</div>
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+		</li>
+	<% end %>
+<% else %>
+	<li class= "read"> You have no notifications! </li>
 <% end %>
 

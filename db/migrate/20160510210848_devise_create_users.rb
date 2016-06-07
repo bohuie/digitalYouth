@@ -11,6 +11,7 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string  :github
       t.string  :linkedin
       t.string  :twitter
+      t.string  :facebook
 
       #company info
       t.string  :company_name

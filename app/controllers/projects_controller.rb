@@ -18,22 +18,28 @@ class ProjectsController < ApplicationController
 	end
 
 	def create
-		@project = Project.new(project_params)
+		#@project = Project.new(project_params)
+		@project = current_user.projects.build(project_params)
 		if @project.save
-			current_user.projects << @project
+			#current_user.projects << @project
 			flash[:success] = "Project successfully created."
 			redirect_to current_user
 		else
-			redirect_to current_user
+			flash[:danger] = "Please fix the errors below."
+			render 'users/show'
 		end
 	end
 
 	def update
 		@project = Project.find(params[:id])
+		@skills = @project.skills
+		@project_skill = @project.project_skills.create
 		
 		if @project.update_attributes(project_params)
+			flash[:success] = "Project successfully updated."
 			redirect_to current_user
 		else
+			flash.now[:danger] = "Please fix the errors below."
 			render 'edit'
 		end
 	end
@@ -41,6 +47,7 @@ class ProjectsController < ApplicationController
 	def destroy
 		if Project.find(params[:id])
 			Project.find(params[:id]).destroy
+			flash[:success] = "Project successfully deleted."
 		else
 
 		end
@@ -57,7 +64,7 @@ class ProjectsController < ApplicationController
 		@project = Project.find(params[:id])
 		
 		unless @project.user_id == current_user.id
-			flash[:notice] = 'Access denied as you are not owner of this Project'
+			flash[:warning] = "You can only make changes to your projects."
 			@user = User.find(@project.user_id)
 			redirect_to current_user
 		end

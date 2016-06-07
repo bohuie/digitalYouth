@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
     has_many :job_postings
     has_many :projects
@@ -11,6 +11,6 @@ class User < ActiveRecord::Base
     has_many :reference_redirections
     has_many :responses
     
-    has_many :user_skills
+    has_many :user_skills, dependent: :destroy
     has_many :skills, through: :user_skills
 end

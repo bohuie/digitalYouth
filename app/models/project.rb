@@ -2,26 +2,14 @@ class Project < ActiveRecord::Base
 
 	belongs_to :user
 
-	has_many :project_skills
+	has_many :project_skills, dependent: :destroy
 	has_many :skills, through: :project_skills
 
 	has_attached_file :image
 	include DeletableAttachment
 
-	validates_attachment :image, content_type: { content_type: ["image/jpg", "image/jpeg", "image/png", "image/gif"] }
+	validates :title, presence: true
+	validates_attachment :image, content_type: { content_type: ["image/jpg", "image/jpeg", "image/png"] }
 
-	#before_save :destroy_image?
-
-	#def image_delete
-	#	@image_delete ||= "0"
-	#end
-
-	#def image_delete=(value)
-	#	@image_delete = value
-	#end
-
-	#private
-	#	def destroy_image?
-	#		self.image.clear if @image_delete == "1"
-	#	end
+	validates :user, presence: true
 end

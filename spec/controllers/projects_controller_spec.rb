@@ -363,6 +363,7 @@ RSpec.describe ProjectsController, type: :controller do
 			project_skills = project.project_skills.dup
 			project.destroy
 			expect(project_skills).to be_empty
+			expect(Skill.find(skill.id).name).to eq(skill.name)
 		end
 	end
 end

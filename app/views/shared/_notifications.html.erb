@@ -1,6 +1,8 @@
+
 <% if !local_activities.empty? %>
-	<% for act in local_activities %>
-		<% a = act["activities"][0] %>
+	<% act = local_activities[0] %>
+	<% local_activities = local_activities[0]["activities"] %>
+	<% for a in local_activities %>
 		<% if act["is_read"] %>
 			<li class= "read" style="clear:both;">
 			<% hidden = "visibility:hidden;" %>

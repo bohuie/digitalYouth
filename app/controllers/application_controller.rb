@@ -2,24 +2,18 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
-  before_filter :create_enricher, :notification_bar
+  before_filter :notification_bar
 
   def notification_bar
     if user_signed_in?
-      #Get feed for navbar notifications
-      feed = StreamRails.feed_manager.get_notification_feed(current_user.id)
-      results = feed.get(limit: 10)['results']
-      @bar_activities = @enricher.enrich_aggregated_activities(results)
-
       #Count the number of unseen notifications
-      @num_notifications_unseen = 0
-      if @bar_activities != nil
-        for act in @bar_activities
-          if !act["is_seen"]
-            @num_notifications_unseen = @num_notifications_unseen + 1
-          end
-        end
+      results = StreamRails.feed_manager.get_notification_feed(current_user.id).get()['results']
+      num = 0
+      if results != nil
+        results.each {|r| num = num + 1 if !r["is_seen"]}
       end
+      @num_notifications_unseen = num
+      @notif_link_string = make_notif_link_string(results.size)
     end
   end
 
@@ -27,8 +21,13 @@ class ApplicationController < ActionController::Base
   	current_user
   end
 
-  def create_enricher
-    #Create activity enricher for all controllers
-    @enricher = StreamRails::Enrich.new 
+  def make_notif_link_string(count)
+    link_string = "Show all notifications"
+    link_string += " - (You have #{count} notification" if count > 0
+    link_string += "s" if count > 1
+    link_string += ")" if count > 0
+    return link_string
   end
 end
+
+

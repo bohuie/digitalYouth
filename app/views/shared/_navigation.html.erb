@@ -33,9 +33,14 @@
               </span>
             <% end %>
 
-            <ul id="notif-list" class="dropdown-menu notif-bar" role="menu">
-              <%= render 'shared/notifications', :local_activities => @bar_activities %>
-              <li><%= link_to "Show all notifications", notifications_path %></li>
+            <ul class="dropdown-menu notif-bar" role="menu">
+                <li id="notif-list">
+                  <div class="progress"> 
+                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemax="100" style="width: 100%"></div>
+                  </div>
+                </li>
+              </li>
+              <li><%= link_to(@notif_link_string, notifications_path) %></li> 
             </ul>
           </li>
 

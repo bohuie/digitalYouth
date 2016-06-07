@@ -12,11 +12,36 @@ end
 user1 = User.create(first_name: 'John', last_name: 'Doe', email: 'john@doe.com', password: 'password', password_confirmation: 'password')
 user1.add_role :employee
 
-reference1 = Reference.create(first_name: 'Andrew', last_name: 'Smith', email: 'Andrew@Smith.com', company: 'Apple Picking Co.',
-			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)
-
 user4 = User.create(first_name: 'Jane', last_name: 'Doe', email: 'jane@doe.com', password: 'password', password_confirmation: 'password')
 user4.add_role :employee
+
+reference1 = Reference.create(first_name: 'Andrew', last_name: 'Smith', email: 'Andrew@Smith.com', company: 'Apple Picking Co.',
+			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)
+reference2 = Reference.create(first_name: 'Andrew', last_name: 'Smith', email: 'Andrew@Smith.com', company: 'Apple Picking Co.',
+			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)
+reference3 = Reference.create(first_name: 'Andrew', last_name: 'Smith', email: 'Andrew@Smith.com', company: 'Apple Picking Co.',
+			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)
+reference4 = Reference.create(first_name: 'Andrew', last_name: 'Smith', email: 'Andrew@Smith.com', company: 'Apple Picking Co.',
+			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)
+reference5 = Reference.create(first_name: 'Andrew', last_name: 'Smith', email: 'Andrew@Smith.com', company: 'Apple Picking Co.',
+			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)
+reference6 = Reference.create(first_name: 'Andrew', last_name: 'Smith', email: 'Andrew@Smith.com', company: 'Apple Picking Co.',
+			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)
+reference7 = Reference.create(first_name: 'Andrew', last_name: 'Smith', email: 'Andrew@Smith.com', company: 'Apple Picking Co.',
+			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)
+reference8 = Reference.create(first_name: 'Andrew', last_name: 'Smith', email: 'Andrew@Smith.com', company: 'Apple Picking Co.',
+			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)
+reference9 = Reference.create(first_name: 'Andrew', last_name: 'Smith', email: 'Andrew@Smith.com', company: 'Apple Picking Co.',
+			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)
+reference10 = Reference.create(first_name: 'Andrew', last_name: 'Smith', email: 'Andrew@Smith.com', company: 'Apple Picking Co.',
+			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)
+reference11 = Reference.create(first_name: 'Andrew', last_name: 'Smith', email: 'Andrew@Smith.com', company: 'Apple Picking Co.',
+			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)
+
+reference12 = Reference.create(first_name: 'Andrew', last_name: 'Smith', email: 'Andrew@Smith.com', company: 'Apple Picking Co.',
+			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user4.id)
+
+
 
 user2 = User.create(first_name: 'Foo', last_name: 'Bar', email: 'foo@bar.com', password: 'password', password_confirmation: 'password', 
 	company_name: 'Google', company_address: '123 Fake Street', company_city: 'Kelowna', company_province: 'BC', company_postal_code: 'V1V 1V1')

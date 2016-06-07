@@ -9,7 +9,7 @@ class Reference < ActiveRecord::Base
 	end
 
 	def activity_author
-		self.user
+		#self.user
 	end
 
 	def activity_object

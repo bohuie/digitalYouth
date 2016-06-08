@@ -118,6 +118,10 @@ RSpec.describe ReferencesController, type: :controller do
 				expect(Reference.last.first_name).to eq(reference1.first_name) #should make this more comprehensive
 			end
 
+			it "should create a new notification" do
+				expect(PublicActivity::Activity.last.trackable).to eq(reference1)
+			end
+
 			it "redirects to the root page if sucessful with a confirmation msg" do
 				expect(response).to redirect_to(root_path)
 				expect(flash[:success]).to eq("Thank you for making a reference!")

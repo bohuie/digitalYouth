@@ -5,9 +5,7 @@ class ApplicationController < ActionController::Base
   before_filter :notification_bar
 
   def notification_bar
-    if user_signed_in?
-      @notif_unseen = display_notif_unseen
-    end
+      @notif_unseen = display_notif_unseen if user_signed_in?
   end
 
   def after_sign_in_path_for(resource)

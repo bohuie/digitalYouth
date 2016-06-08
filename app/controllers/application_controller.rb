@@ -10,7 +10,9 @@ class ApplicationController < ActionController::Base
       results = StreamRails.feed_manager.get_notification_feed(current_user.id).get()['results']
       num = 0
       if results != nil
-        results.each {|r| num = num + 1 if !r["is_seen"]}
+        results.each do |r|
+          r["activities"].each {|a| num = num + 1 if !a["seen"]}
+        end
       end
       @num_notifications_unseen = num
       @notif_link_string = make_notif_link_string(results.size)

@@ -1,31 +1,34 @@
 
 <% if !local_activities.empty? %>
-	<% act = local_activities[0] %>
-	<% local_activities = local_activities[0]["activities"] %>
-	<% for a in local_activities %>
-		<% if act["is_read"] %>
-			<li class= "read" style="clear:both;">
-			<% hidden = "visibility:hidden;" %>
-		<% else %>
-			<li class= "unread" style="clear:both;">  
+	<% for act in local_activities %>
+		<% activity = act["activities"] %>
+		<% i = 0 %>
+		<% for a in activity %>
+			<% if a["read"] %>
+				<li class= "read" style="clear:both;">
+				<% hidden = "visibility:hidden;" %>
+			<% else %>
+				<li class= "unread" style="clear:both;">  
+			<% end %>
+				<div class="notif-inside">
+					<div class="content" onclick="window.location='<%=polymorphic_path(a['object'])%>'">
+						<div><%= render_activity act, indx: i  %></div>
+						<div>&nbsp;<%=from_current_time(a["object"].created_at)%> ago</div>
+					</div>
+					<div class = "options">
+						<div><%= link_to raw("<span class=\"glyphicon glyphicon-remove\"></span>"), 
+							notifications_path(id: a["id"]), remote: true, method: "delete"%>
+						</div>
+						<div>
+							<%= link_to raw("<span class=\"glyphicon glyphicon-unchecked\"></span>"), 
+								notifications_path(id: a["id"]), remote: true, method: "patch", style: "#{hidden}" %>
+						</div>
+					</div>
+					<div style="clear:both;"></div>
+				</div>
+			</li>
+			<% i = i + 1 %>
 		<% end %>
-			<div class="notif-inside">
-				<div class="content" onclick="window.location='<%=polymorphic_path(a['object'])%>'">
-					<div><%= render_activity act %></div>
-					<div>&nbsp;<%=from_current_time(a["object"].created_at)%> ago</div>
-				</div>
-				<div class = "options">
-					<div><%= link_to raw("<span class=\"glyphicon glyphicon-remove\"></span>"), 
-						notifications_path(id: a["id"]), remote: true, method: "delete"%>
-					</div>
-					<div>
-						<%= link_to raw("<span class=\"glyphicon glyphicon-unchecked\"></span>"), 
-							notifications_path(id: a["id"]), remote: true, method: "patch", style: "#{hidden}" %>
-					</div>
-				</div>
-				<div style="clear:both;"></div>
-			</div>
-		</li>
 	<% end %>
 <% else %>
 	<li class= "read"> You have no notifications! </li>

@@ -5,15 +5,13 @@ module ApplicationHelper
 		measurement = ""
 		num = 0
 		diff = TimeDifference.between(from_time, Time.now.utc).in_general
-		if diff[:years] >= 1
-			num = diff[:years]
-			measurement = "year"
-		elsif diff[:months] >= 1
-			num = diff[:months]
-			measurement = "month"
-		elsif diff[:weeks] >= 1
-			num = diff[:weeks]
-			measurement = "week"
+		if diff[:years] >= 1 || diff[:months] >= 1 || diff[:weeks] >= 1
+			month = from_time.strftime("%B")
+			day = from_time.str("%d")
+			year = from_time.strftime("%Y") if diff[:years] >= 1
+			time = from_time.strftime("%I:%M%p")
+			return month + " " + day + " " + year + " " + time
+
 		elsif diff[:days] >= 1
 			num = diff[:days]
 			measurement = "day"
@@ -35,6 +33,6 @@ module ApplicationHelper
 		else
 			str = num.to_s + " " + measurement + "s"
 		end
-		return str
+		return str + " ago"
 	end
 end

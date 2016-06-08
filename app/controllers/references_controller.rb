@@ -63,8 +63,8 @@ class ReferencesController < ApplicationController
 	def create
 		@reference = Reference.new(reference_params)
 		if @reference.save
-			@url_string = request.referer.rpartition('/')[-1] ##this is a really nasty way retrieving the random url, probably should fix this.
-			ReferenceRedirection.find_by(reference_url: @url_string).destroy
+			@url_string = request.referer.rpartition('/')[-1] # Retrieves the random part of the url on the new page
+			ReferenceRedirection.find_by(reference_url: @url_string).destroy # Removes the redirection url
 			redirect_to root_path , flash: {success: "Thank you for making a reference!"}
 		else
 			redirect_to root_path , flash: {danger: "There was a problem in saving the reference!"}

@@ -4,6 +4,7 @@
 
 .notif-bar{
 	width:350px;
+	padding-top: 1px;
 }
 
 #notif-list{
@@ -27,7 +28,7 @@
 
 .unread{
 	@extend .notification;
-	background-color: lightskyblue;
+	background-color: #edeef3;
 }
 
 .options{
@@ -37,4 +38,15 @@
 .content{
 	float:left;
 	width:95%
+}
+
+.center-text{
+	text-align:center;
+}
+
+.notifications-icon{
+	color: black;
+   -webkit-text-fill-color: transparent;
+   -webkit-text-stroke-width: 1px;
+   -webkit-text-stroke-color: black;
 }

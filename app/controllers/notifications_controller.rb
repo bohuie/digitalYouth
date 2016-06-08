@@ -1,20 +1,20 @@
 class NotificationsController < ApplicationController
 
-	before_action :authenticate_user!, :create_enricher
-	before_action :notification_owner, only: [:update, :delete]
+	before_action :authenticate_user!
+	before_action :notification_owner, only: [:update, :delete, :trackable]
 
 	def index
 		#Get notifications, mark seen
-		feed = StreamRails.feed_manager.get_notification_feed(current_user.id)
-		results = feed.get(mark_seen: true)['results']
-		@activities = @enricher.enrich_aggregated_activities(results)
+		@activities = PublicActivity::Activity.order("created_at desc").where(owner_id: current_user.id, owner_type: "User")
+		@activities.update_all(is_seen: true)
 	end
 
 	def show 
-		#Get notifications, mark seen (should limit this to 5 or 10 or so)
-		feed = StreamRails.feed_manager.get_notification_feed(current_user.id)
-		results = feed.get(limit: 5, mark_seen: true)['results']
-		@dropdown_activities = @enricher.enrich_aggregated_activities(results)
+		#Get notifications, mark seen 
+		
+		@dropdown_activities = get_notifications(nil,nil)
+		@dropdown_activities.update_all(is_seen: true)
+		@notif_unseen = display_notif_unseen
 
 		# Formating for the AJAX request
 		respond_to do |format|
@@ -22,17 +22,11 @@ class NotificationsController < ApplicationController
    		end
 	end
 
-	def update # For some reason it doesn't update on the first click
-		# Mark the notification as read
-		StreamRails.feed_manager.get_notification_feed(current_user.id).get(mark_read:[params[:id]])
+	def update
+		# Mark the notification as read and refetch the notifications
+		@notification.update(is_read: true)
+		@dropdown_activities = get_notifications(nil,nil)
 
-		#Fetch the notifications
-		feed = StreamRails.feed_manager.get_notification_feed(current_user.id)
-		results = feed.get(limit: 5)['results']
-		@dropdown_activities = @enricher.enrich_aggregated_activities(results)
-
-		byebug
-		#feed.get(read=[params[:id]])
 		# Formating for the AJAX request
 		respond_to do |format|
         	format.js
@@ -40,11 +34,9 @@ class NotificationsController < ApplicationController
 	end
 
 	def delete
-		#Get notifications, Remove the notification
-		feed = StreamRails.feed_manager.get_notification_feed(current_user.id)
-		feed.remove_activity(params[:id])
-		results = feed.get()['results']
-		@dropdown_activities = @enricher.enrich_aggregated_activities(results)
+		# Delete the notification and refetch the notifications
+		@notification.destroy
+		@dropdown_activities = get_notifications(nil,nil)
 
 		# Formating for the AJAX request
 		respond_to do |format|
@@ -52,12 +44,26 @@ class NotificationsController < ApplicationController
    		end
 	end
 
-private
-	def notification_owner
-		# Check to see if the user owns the notification
+	def trackable
+		@notification.update(is_read: true)
+		redirect_to polymorphic_path(@notification.trackable)
 	end
 
-	def create_enricher
-    	@enricher = StreamRails::Enrich.new 
-  	end
+private
+	def notification_owner
+		@notification = PublicActivity::Activity.find(params[:id])
+		if @notification.owner_type != "User" || @notification.owner_id != current_user.id
+			redirect_to root_path , flash: {danger: "You do not own that notification."}
+		else
+			return @notification
+		end
+	end
+
+	# TODO:
+	# Display scrollbar at all times
+	def get_notifications(limit, offset)
+		lim = 5 if limit == nil
+		off = 0 if offset == nil
+		return PublicActivity::Activity.order("created_at desc").where(owner_id: current_user.id, owner_type: "User").limit(lim).offset(off)
+	end
 end

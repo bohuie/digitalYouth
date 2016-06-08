@@ -1,22 +1,12 @@
 class Reference < ActiveRecord::Base
+	include PublicActivity::Model
+	tracked only: :create, owner: ->(controller,model) {model && model.user}
+	
 	belongs_to :user
 
-	include StreamRails::Activity
-	as_activity
-
-	def activity_notify
-		[StreamRails.feed_manager.get_notification_feed(self.user_id)]
-	end
-
-	def activity_author
-		self.user
-	end
-
-	def activity_extra_data
-    	{'read': false, 'seen': false}
-  	end
-
-	def activity_object
-		self
+	before_destroy :destroy_notification
+private
+	def destroy_notification
+		PublicActivity::Activity.find_by(trackable_id: self.id, trackable_type: "Reference").destroy
 	end
 end

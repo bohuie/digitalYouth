@@ -6,16 +6,7 @@ class ApplicationController < ActionController::Base
 
   def notification_bar
     if user_signed_in?
-      #Count the number of unseen notifications
-      results = StreamRails.feed_manager.get_notification_feed(current_user.id).get()['results']
-      num = 0
-      if results != nil
-        results.each do |r|
-          r["activities"].each {|a| num = num + 1 if !a["seen"]}
-        end
-      end
-      @num_notifications_unseen = num
-      @notif_link_string = make_notif_link_string(results.size)
+      @notif_unseen = display_notif_unseen
     end
   end
 
@@ -23,12 +14,13 @@ class ApplicationController < ActionController::Base
   	current_user
   end
 
-  def make_notif_link_string(count)
-    link_string = "Show all notifications"
-    link_string += " - (You have #{count} notification" if count > 0
-    link_string += "s" if count > 1
-    link_string += ")" if count > 0
-    return link_string
+  def display_notif_unseen
+      num = PublicActivity::Activity.where(is_seen: false, owner_id: current_user.id, owner_type: "User").count
+      if num > 0
+        return num
+      else
+        return ""
+      end 
   end
 end
 

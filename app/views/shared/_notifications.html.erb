@@ -15,7 +15,7 @@
 			<div class="notif-inside">
 				<div class="content" onclick="window.location='<%=show_trackable_path(activity)%>'">
 					<div><%= render_activity activity %></div>
-					<div>&nbsp;<%=from_current_time(activity.created_at)%></div>
+					<div>&nbsp;<%= local_time_ago(activity.created_at) %></div>
 				</div>
 				<div class = "options">
 					<div><%= link_to raw("<span class=\"glyphicon glyphicon-remove\"></span>"), 

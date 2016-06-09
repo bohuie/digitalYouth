@@ -1,5 +1,6 @@
 <% if !local_activities.empty? %>
 	<% for activity in local_activities %>
+		<%# The next two methods from the notifications_helper%>
 		<% next if check_and_remove(activity) %>
 		<% options = get_read_options(activity)%>
 

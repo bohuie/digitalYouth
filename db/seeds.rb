@@ -16,32 +16,19 @@ user4 = User.create(first_name: 'Jane', last_name: 'Doe', email: 'jane@doe.com',
 user4.add_role :employee
 
 reference1 = Reference.create(first_name: 'Andrew', last_name: 'Smith', email: 'Andrew@gmail.com', company: 'Apple Picking Co.',
-			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)
-reference2 = Reference.create(first_name: 'John', last_name: 'Johnson', email: 'John@gmail.com', company: 'Apple Picking Co.',
-			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)
-reference3 = Reference.create(first_name: 'Kate', last_name: 'Doe', email: 'Kate@gmail.com', company: 'Apple Picking Co.',
-			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)
-reference4 = Reference.create(first_name: 'Greg', last_name: 'Andrews', email: 'Greg@gmail.com', company: 'Apple Picking Co.',
-			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)
-reference5 = Reference.create(first_name: 'Aaron', last_name: 'McDonald', email: 'Aaron@gmail.com', company: 'Apple Picking Co.',
-			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)
-reference6 = Reference.create(first_name: 'Suzy', last_name: 'Andrews', email: 'Suzy@gmail.com', company: 'Apple Picking Co.',
-			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)
-reference7 = Reference.create(first_name: 'Jane', last_name: 'Smith', email: 'Jane@gmail.com', company: 'Apple Picking Co.',
-			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)
-reference8 = Reference.create(first_name: 'Janet', last_name: 'Anderson', email: 'Janet@gmail.com', company: 'Apple Picking Co.',
-			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)
-reference9 = Reference.create(first_name: 'James', last_name: 'Gold', email: 'James@gmail.com', company: 'Apple Picking Co.',
-			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)
-reference10 = Reference.create(first_name: 'John', last_name: 'Smith', email: 'John@gmail.com', company: 'Apple Picking Co.',
-			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)
-reference11 = Reference.create(first_name: 'Sam', last_name: 'Smith', email: 'Sam@gmail.com', company: 'Apple Picking Co.',
-			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)
-
-reference12 = Reference.create(first_name: 'Bernie', last_name: 'Smith', email: 'Andrew@gmail.com', company: 'Apple Picking Co.',
-			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user4.id)
-
-
+			 position: "Lead Apple Picker", phone_number:"(250)838-1101", reference_body: "They were the best Apple Picker.", user_id: user1.id)
+reference2 = Reference.create(first_name: 'John', last_name: 'Johnson', email: 'John@gmail.com', company: 'Zellers',
+			 position: "Lead Apple Picker", phone_number:"(250)864-101", reference_body: "They were the best worker around.", user_id: user1.id)
+reference3 = Reference.create(first_name: 'Kate', last_name: 'Doe', email: 'Kate@gmail.com', company: 'Target',
+			 position: "Lead Apple Picker", reference_body: "They were the best Apple Picker.", user_id: user1.id)
+reference4 = Reference.create(first_name: 'Greg', last_name: 'Andrews', email: 'Greg@gmail.com', company: 'Bestbuy',
+			 position: "Lead Apple Picker", phone_number:"(250)308-3242", reference_body: "Best worker.", user_id: user1.id)
+reference5 = Reference.create(first_name: 'Bernie', last_name: 'Smith', email: 'Andrew@gmail.com', company: 'UBC', 
+			 position: "Lead Apple Picker", phone_number:"(250)423-5500",
+			 reference_body: "Ei inermis qualisque vix, pri iuvaret dissentias interpretaris ad. Id mel virtute officiis euripidis, tota menandri 
+			  evertitur an vix, an illud malorum eam. Eu ludus incorrupte reformidans eos, cu inani percipitur vim, habemus appetere sed ut. Adhuc 
+			  solum ei vel, cetero albucius pri ei, vidit graece id nam. In eos vivendo splendide mediocritatem.", 
+			 user_id: user4.id)
 
 user2 = User.create(first_name: 'Foo', last_name: 'Bar', email: 'foo@bar.com', password: 'password', password_confirmation: 'password', 
 	company_name: 'Google', company_address: '123 Fake Street', company_city: 'Kelowna', company_province: 'BC', company_postal_code: 'V1V 1V1')

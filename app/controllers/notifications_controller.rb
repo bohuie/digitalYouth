@@ -3,7 +3,7 @@ class NotificationsController < ApplicationController
 	before_action :authenticate_user!
 	before_action :notification_owner, only: [:update, :delete, :trackable]
 	respond_to :js, only: [:show, :update, :delete] # Formating for the AJAX request
-	$limit = 5
+	$limit = 5 # Changes the amount of notifications shown on the top bar
 
 	def index # Get All notifications, mark seen
 		@activities = get_notifications

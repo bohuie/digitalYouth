@@ -5,11 +5,14 @@ RSpec.describe NotificationsController, type: :controller do
 	describe "GET index" do
 		let(:user) { FactoryGirl.create(:user) }
 		let(:reference1) { FactoryGirl.create(:reference1) }
+		let(:notification) {PublicActivity::Activity.find_by(trackable: reference1)}
 		
 		context "user is logged in" do
 			before(:each) do
 				sign_in user
 				user.references << reference1
+				notification.owner = user
+				notification.save
 				get :index
 			end	
 
@@ -198,6 +201,37 @@ RSpec.describe NotificationsController, type: :controller do
 			it "redirects the user, effectively blocking the request" do
 				xhr :get, :show
 				expect(response.status).to eq(401) 
+			end
+		end
+	end
+
+	describe "notifications bar methods" do
+		let(:user) { FactoryGirl.create(:user) }
+		let(:reference1) { FactoryGirl.create(:reference1) }
+		let(:notification) {PublicActivity::Activity.find_by(trackable: reference1)}
+		
+		context "user is logged in" do
+			before(:each) do
+				sign_in user
+				user.references << reference1
+				notification.owner = user
+				notification.save
+				get :index # need to test this on a different page because it marks seen on this page
+			end	
+
+			it "records the count of unseen notifications" do
+				expect(assigns(:notif_unseen)).to eq(PublicActivity::Activity.where(is_seen: false, owner_id: user.id, owner_type: "User").count)
+			end
+
+			it "formats the string for the 'show all notifications' link" do
+				expect(assigns(:show_all_string)).to eq("Show all notifications")
+			end
+		end
+
+		context "user is not logged in" do
+			it "doesn't display anything" do
+				expect(assigns(:notif_unseen)).to be_nil
+				expect(assigns(:show_all_string)).to be_nil
 			end
 		end
 	end

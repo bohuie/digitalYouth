@@ -10,7 +10,7 @@
     <div class="collapse navbar-collapse" id="navbar">
       <ul class="nav navbar-nav">
         <% if user_signed_in? %>
-          <li class="<%= 'active' if current_page?(user_path(current_user)) %>"><%= link_to('My Profile', current_user) %></li>
+          <li class="<%= 'active' if current_page?(user_path(current_user)) %>"><%= link_to 'My Profile', current_user %></li>
         <% end %>
       </ul>
 
@@ -23,7 +23,7 @@
 
       <ul class="nav navbar-nav navbar-right">
         <% if user_signed_in? %>
-          <li><%= link_to(current_user.first_name, current_user, class: "navbar-brand", style: "cursor:default;") %></li>
+          <li><%= link_to current_user.first_name, current_user, class: "navbar-brand", style: "cursor:default;" %></li>
 
           <li class="dropdown">                                   
             <%= link_to show_notifications_path, html_options = 
@@ -36,13 +36,13 @@
               <li id="notif-list">
                 <div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" style="width: 100%"></div></div>
               </li>
-              <li><%= link_to(@show_all_string, notifications_path, class: "center-text") %></li> 
+              <li><%= link_to @show_all_string, notifications_path, class: "center-text" %></li> 
             </ul>
           </li>
-          
-          <li><%= link_to('Logout', destroy_user_session_path, :method => :delete) %></li>
+
+          <li><%= link_to 'Logout', destroy_user_session_path, :method => :delete %></li>
         <% else %>
-          <li><%= link_to('Login', new_user_session_path)  %></li>
+          <li><%= link_to 'Login', new_user_session_path %></li>
         <% end %>
       </ul>
     </div>

@@ -1,29 +1,23 @@
 <% if !local_activities.empty? %>
 	<% for activity in local_activities %>
-		<% if !activity.trackable # Backup to ensure all are showable%>
-			<% activity.destroy %>
-			<% next %>
-		<% end %>
-		<% li_class = "unread" %>
-		<% mark_read_opt = "" %>
-		<% if activity["is_read"] %>
-			<% li_class = "read" %>
-			<% mark_read_opt = "visibility:hidden;" %>
-		<% end %>
+		<% next if check_and_remove(activity) %>
+		<% options = get_read_options(activity)%>
 
-		<li class="<%=li_class%>">
+		<li class="<%=options[0]%>">
 			<div class="notif-inside">
 				<div class="content" onclick="window.location='<%=show_trackable_path(activity)%>'">
 					<div><%= render_activity activity %></div>
 					<div>&nbsp;<%= local_time_ago(activity.created_at) %></div>
 				</div>
-				<div class = "options">
-					<div><%= link_to raw("<span class=\"glyphicon glyphicon-remove\"></span>"), 
-							 notifications_path(id: activity.id), remote: true, method: "delete"%>
+				<div class="controls">
+					<div><%= link_to notifications_path(id: activity.id), remote: true, method: "delete" do %>
+							<span class="glyphicon glyphicon-remove"></span>
+					 	<% end %>
 					</div>
 					<div>
-						<%= link_to raw("<span class=\"glyphicon glyphicon-ok-circle\"></span>"), 
-							notifications_path(id: activity.id), remote: true, method: "patch", style: "#{mark_read_opt}" %>
+						<%= link_to notifications_path(id: activity.id), remote: true, method: "patch", style: "#{options[1]}" do %>
+							<span class="glyphicon glyphicon-ok-circle"></span>
+						<% end %>
 					</div>
 				</div>
 				<div style="clear:both;"></div>

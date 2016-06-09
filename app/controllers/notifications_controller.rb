@@ -23,7 +23,7 @@ class NotificationsController < ApplicationController
 		@dropdown_activities = get_notifications_limited
 	end
 
-	def trackable
+	def trackable # Mark read, redirect to trackable page
 		@notification.update(is_read: true)
 		redirect_to polymorphic_path(@notification.trackable)
 	end

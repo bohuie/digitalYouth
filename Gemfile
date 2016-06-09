@@ -3,9 +3,6 @@ source 'https://rubygems.org'
 # local time to display any time formats in the users local time
 gem 'local_time'
 
-# time difference for any instance where the duration of time between two times is needed
-gem 'time_difference'
-
 # public activity for notification feed
 gem 'public_activity'
 

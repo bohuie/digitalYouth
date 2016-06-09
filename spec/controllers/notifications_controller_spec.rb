@@ -3,9 +3,9 @@ require 'rails_helper'
 RSpec.describe NotificationsController, type: :controller do
 
 	describe "GET index" do
-		let(:reference1) { FactoryGirl.create(:reference1) }
 		let(:user) { FactoryGirl.create(:user) }
-
+		let(:reference1) { FactoryGirl.create(:reference1) }
+		
 		context "user is logged in" do
 			before(:each) do
 				sign_in user
@@ -31,9 +31,9 @@ RSpec.describe NotificationsController, type: :controller do
 	end
 
 	describe "GET show" do
-		let(:reference1) { FactoryGirl.create(:reference1) }
 		let(:user) { FactoryGirl.create(:user) }
-
+		let(:reference1) { FactoryGirl.create(:reference1) }
+		
 		context "user is logged in" do
 			before(:each) do
 				sign_in user
@@ -59,9 +59,9 @@ RSpec.describe NotificationsController, type: :controller do
 	end
 
 	describe "PATCH update" do
-		let(:reference1) { FactoryGirl.create(:reference1) }
 		let(:user) { FactoryGirl.create(:user) }
 		let(:user2) { FactoryGirl.create(:user2) }
+		let(:reference1) { FactoryGirl.create(:reference1) }
 		let(:notification) {PublicActivity::Activity.find_by(trackable: reference1)}
 
 		context "correct user is logged in" do # THESE FAIL FOR SOME REASON
@@ -69,6 +69,8 @@ RSpec.describe NotificationsController, type: :controller do
 				sign_in user
 				user.references << reference1
 				notification.owner = user
+				notification.save
+				
 				xhr :patch, :update, id: notification.id
 			end	
 
@@ -86,6 +88,7 @@ RSpec.describe NotificationsController, type: :controller do
 				sign_in user2
 				user.references << reference1
 				notification.owner = user
+				notification.save
 				xhr :patch, :update, id: notification.id
 			end
 
@@ -103,9 +106,9 @@ RSpec.describe NotificationsController, type: :controller do
 	end
 
 	describe "DELETE delete" do
-		let(:reference1) { FactoryGirl.create(:reference1) }
 		let(:user) { FactoryGirl.create(:user) }
 		let(:user2) { FactoryGirl.create(:user2) }
+		let(:reference1) { FactoryGirl.create(:reference1) }
 		let(:notification) {PublicActivity::Activity.find_by(trackable: reference1)}
 
 		context "correct user is logged in" do # THESE FAIL FOR SOME REASON
@@ -113,6 +116,7 @@ RSpec.describe NotificationsController, type: :controller do
 				sign_in user
 				user.references << reference1
 				notification.owner = user
+				notification.save
 				@count = PublicActivity::Activity.count
 				xhr :delete, :delete, id: notification.id
 			end	
@@ -135,6 +139,7 @@ RSpec.describe NotificationsController, type: :controller do
 				sign_in user2
 				user.references << reference1
 				notification.owner = user
+				notification.save
 				xhr :patch, :update, id: notification.id
 			end
 
@@ -152,9 +157,9 @@ RSpec.describe NotificationsController, type: :controller do
 	end
 
 	describe "GET trackable" do
-		let(:reference1) { FactoryGirl.create(:reference1) }
 		let(:user) { FactoryGirl.create(:user) }
 		let(:user2) { FactoryGirl.create(:user2) }
+		let(:reference1) { FactoryGirl.create(:reference1) }
 		let(:notification) {PublicActivity::Activity.find_by(trackable: reference1)}
 
 		context "user is logged in" do
@@ -162,7 +167,8 @@ RSpec.describe NotificationsController, type: :controller do
 				sign_in user
 				user.references << reference1
 				notification.owner = user
-				xhr :get, :show
+				notification.save
+				xhr :get, :trackable, id: notification.id
 			end	
 
 			it "marks the notification as read" do
@@ -179,6 +185,7 @@ RSpec.describe NotificationsController, type: :controller do
 				sign_in user2
 				user.references << reference1
 				notification.owner = user
+				notification.save
 				xhr :patch, :update, id: notification.id
 			end
 

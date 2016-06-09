@@ -14,7 +14,6 @@ class NotificationsController < ApplicationController
 	end
 
 	def update # Mark the notification as read and refetch the notifications
-		byebug
 		@notification.update(is_read: true)
 		@dropdown_activities = get_notifications_limited
 	end

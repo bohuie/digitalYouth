@@ -119,6 +119,7 @@ RSpec.describe ReferencesController, type: :controller do
 			end
 
 			it "should create a new notification" do
+				reference1 = Reference.last
 				expect(PublicActivity::Activity.last.trackable).to eq(reference1)
 			end
 

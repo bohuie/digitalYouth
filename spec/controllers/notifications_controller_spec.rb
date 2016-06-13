@@ -210,21 +210,35 @@ RSpec.describe NotificationsController, type: :controller do
 		let(:reference1) { FactoryGirl.create(:reference1) }
 		let(:notification) {PublicActivity::Activity.find_by(trackable: reference1)}
 		
-		context "user is logged in" do
+		context "user is logged in with few notifications" do
 			before(:each) do
 				sign_in user
 				user.references << reference1
 				notification.owner = user
 				notification.save
-				get :index # need to test this on a different page because it marks seen on this page
+				@count = PublicActivity::Activity.where(is_seen: false, owner_id: user.id, owner_type: "User").count
+
+				# The notification bar is setup before the get :index so the tests pass
+				get :index 
 			end	
 
 			it "records the count of unseen notifications" do
-				expect(assigns(:notif_unseen)).to eq(PublicActivity::Activity.where(is_seen: false, owner_id: user.id, owner_type: "User").count)
+				expect(assigns(:notif_unseen)).to eq(@count)
 			end
 
 			it "formats the string for the 'show all notifications' link" do
 				expect(assigns(:show_all_string)).to eq("Show all notifications")
+			end
+		end
+
+		#TODO
+		context "user is logged in with many notifications" do
+			before(:each) do
+			end	
+
+			it "formats the string for the 'show all notifications' link" do
+				#expect(assigns(:show_all_string)).to eq("Show all notifications - # more unseen")
+				#Should test with many notifications too
 			end
 		end
 
@@ -235,5 +249,4 @@ RSpec.describe NotificationsController, type: :controller do
 			end
 		end
 	end
-
 end

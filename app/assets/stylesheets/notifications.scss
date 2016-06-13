@@ -3,7 +3,8 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .notif-bar{
-	width:350px;
+	min-width:310px;
+	max-width:350px;
 	padding-top: 1px;
 }
 
@@ -16,6 +17,7 @@
 	border: 1px solid lightgrey;
 	padding: 2px 5px 2px 5px;
 	height: 50px;
+	min-width: 310px;
 }
 
 .notif-inside{
@@ -44,9 +46,19 @@
 	text-align:center;
 }
 
-.notifications-icon{
+.notifications-bell{
 	color: black;
    -webkit-text-fill-color: transparent;
    -webkit-text-stroke-width: 1px;
    -webkit-text-stroke-color: black;
+}
+
+.notifications-counter {
+  position: absolute;
+  top: 5px;
+  right: 9px;
+  background-color: #e13737;
+  color: white;
+  border-radius: 3px;
+  padding: 0px 2px 0px 2px;
 }

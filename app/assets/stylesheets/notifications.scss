@@ -3,14 +3,15 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .notif-bar{
-	min-width:310px;
+	min-width:320px;
 	max-width:350px;
 	padding-top: 1px;
 }
 
 #notif-list{
 	overflow-y:auto;
-	max-height:350px;
+	overflow-x:hidden;
+	max-height:250px;
 }
 
 .notification{

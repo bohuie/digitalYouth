@@ -1,5 +1,8 @@
 source 'https://rubygems.org'
 
+# pagination for any results that need pagination
+gem 'will_paginate'
+
 # local time to display any time formats in the users local time
 gem 'local_time'
 

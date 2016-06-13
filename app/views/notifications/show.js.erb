@@ -1,3 +1,28 @@
-// This updates the notification bar dropdown and clears the number of unseen notifications when its clicked on
-$('#notif-list').html("<%= j (render 'shared/notifications', :local_activities => @dropdown_activities) %>");
-$('#notif-num').html("")
+<% if @dropdown_activities.current_page == 1%>
+	// Update notifications list
+	$('#notif-list').html("<%= j (render 'shared/notifications', :local_activities => @dropdown_activities) %>");
+
+	// Re-add the loading bar and hide it (for infinite scrolling)
+	$('#notif-list').append("<div class=\"progress\" id=\"notif-loading\" style=\"margin:0px;\">" +
+		"<div class=\"progress-bar progress-bar-striped active\" style=\"width: 100%\"></div></div>");
+
+	<% if @dropdown_activities.count > 5%>
+		$('#notif-loading').css("visibility","hidden");
+	<% else %>
+		$('#notif-loading').hide();
+	<% end %>
+
+	//Clear number of notifications
+	$('#notif-num').html("");
+<% else %>
+	//Append more notifitations
+	$('#notif-loading').before("<%= j (render 'shared/notifications', :local_activities => @dropdown_activities) %>");
+	$('#notif-loading').css("visibility","hidden");
+	<% if @dropdown_activities.current_page >= @dropdown_activities.total_pages %>
+		can_request_notif = false;
+		$('#notif-loading').css("display","none");
+	<% end %>
+<% end %>
+
+
+

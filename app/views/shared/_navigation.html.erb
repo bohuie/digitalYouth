@@ -29,14 +29,14 @@
             <%= link_to show_notifications_path, html_options = 
             {class: "dropdown-toggle", "data-toggle"=>"dropdown","data-remote"=>"true"}, remote: true do %>
               <span class="glyphicon glyphicon-bell notifications-bell" aria-label="Notifications"></span>
-              <span class = "notifications-counter" id="notif-num"><%= @notif_unseen %></span>
+              <span class = "notifications-counter" id="notif-num" style="padding-bottom:0px;"><%= @notif_unseen %></span>
             <% end %>
 
             <ul class="dropdown-menu notif-bar" role="menu">
-              <li id="notif-list">
-                <div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" style="width: 100%"></div></div>
+              <li id="notif-list" onscroll="checkNotificationScroll()">
+                <div class="progress" id="notif-loading" style="margin:0px;"><div class="progress-bar progress-bar-striped active" style="width: 100%"></div></div>
               </li>
-              <li><%= link_to @show_all_string, notifications_path, class: "center-text" %></li> 
+              <li><%= link_to @show_all_string, notifications_path, class: "center-text" %></li>
             </ul>
           </li>
 

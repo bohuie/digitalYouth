@@ -1,2 +1,2 @@
 // This updates the notification bar dropdown
-$('#notif-list').html("<%= j (render 'shared/notifications', :local_activities => @dropdown_activities) %>");
+$('#notification-<%=@notification.id%>').replaceWith("<%= j (render 'shared/notification', :activity => @notification) %>");

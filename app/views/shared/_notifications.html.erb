@@ -1,29 +1,7 @@
 <% if !local_activities.empty? %>
 	<% for activity in local_activities %>
-		<%# The next two methods from the notifications_helper%>
 		<% next if check_and_remove(activity) %>
-		<% options = get_read_options(activity)%>
-
-		<li class="<%=options[0]%>">
-			<div class="notif-inside">
-				<div class="content" onclick="window.location='<%=show_trackable_path(activity)%>'">
-					<div><%= render_activity activity %></div>
-					<div>&nbsp;<%= local_time_ago(activity.created_at) %></div>
-				</div>
-				<div class="controls">
-					<div><%= link_to notifications_path(id: activity.id), remote: true, method: "delete" do %>
-							<span class="glyphicon glyphicon-remove"></span>
-					 	<% end %>
-					</div>
-					<div>
-						<%= link_to notifications_path(id: activity.id), remote: true, method: "patch", style: "#{options[1]}" do %>
-							<span class="glyphicon glyphicon-ok-circle"></span>
-						<% end %>
-					</div>
-				</div>
-				<div style="clear:both;"></div>
-			</div>
-		</li>	
+		<%= render '/shared/notification', activity: activity %>
 	<% end %>
 <% else %>
 	<li class="center-text"> You have no notifications! </li>

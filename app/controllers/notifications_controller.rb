@@ -3,14 +3,20 @@ class NotificationsController < ApplicationController
 	before_action :authenticate_user!
 	before_action :notification_owner, only: [:update, :delete, :trackable]
 	respond_to :js, only: [:show, :update, :delete] # Formating for the AJAX request
-	$limit = 5 # Changes the amount of notifications shown on the top bar
 
 	def index # Get All notifications, mark seen
 		@activities = get_notifications
 	end
 
-	def show # Get 6 notifications, mark seen
-		@dropdown_activities = get_notifications.paginate(page: params[:page], per_page: 6)
+	def show # Get 6 notifications first, then get one and offset the page
+		params[:page] = 1 if params[:page].nil?
+
+		if Integer(params[:page]) > 1
+			params[:page] = String((Integer(params[:page]) + 6))
+			@dropdown_activities = get_notifications.paginate(page: params[:page], per_page: 1)
+		else
+			@dropdown_activities = get_notifications.paginate(page: params[:page], per_page: 6)
+		end
 	end
 
 	def update # Mark the notification as read
@@ -30,7 +36,7 @@ private
 	def notification_owner
 		@notification = PublicActivity::Activity.find(params[:id])
 		if @notification.owner_type != "User" || @notification.owner_id != current_user.id
-			redirect_to root_path , flash: {danger: "You do not own that notification."}
+			redirect_to user_path(current_user) , flash: {danger: "You do not own that notification."}
 		else
 			return @notification
 		end

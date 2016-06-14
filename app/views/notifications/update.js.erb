@@ -1,2 +1,4 @@
-// This updates the notification bar dropdown
-$('#notification-<%=@notification.id%>').replaceWith("<%= j (render 'shared/notification', :activity => @notification) %>");
+// Updates the notification bar dropdown
+$('#notification-<%=@notification.id%>.unread').replaceWith("<%= j (render 'shared/notification', :activity => @notification) %>");
+// Updates the notification page
+$('#notification-<%=@notification.id%>.unread').replaceWith("<%= j (render 'shared/notification', :activity => @notification) %>");

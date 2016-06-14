@@ -12,6 +12,8 @@
 	overflow-y:auto;
 	overflow-x:hidden;
 	max-height:250px;
+
+	//Should style the scroll bar too
 }
 
 .notification{
@@ -45,6 +47,11 @@
 
 .center-text{
 	text-align:center;
+}
+
+.center-image{
+	display: block;
+    margin: 0 auto;
 }
 
 .notifications-bell{

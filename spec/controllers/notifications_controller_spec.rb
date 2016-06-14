@@ -26,8 +26,9 @@ RSpec.describe NotificationsController, type: :controller do
 		end
 
 		context "user is not logged in" do
-			it "redirects the user to  the login page" do
+			it "redirects the user to the login page" do
 				get :index
+
 				expect(response).to redirect_to(new_user_session_path)
 			end
 		end
@@ -37,15 +38,15 @@ RSpec.describe NotificationsController, type: :controller do
 		let(:user) { FactoryGirl.create(:user) }
 		let(:reference1) { FactoryGirl.create(:reference1) }
 		
-		context "user is logged in" do
+		context "user is logged in and clicks on the notifications icon" do
 			before(:each) do
 				sign_in user
 				user.references << reference1
 				xhr :get, :show
 			end	
 
-			it "loads the users first 5 notifications" do
-				expect(assigns(:dropdown_activities)).to match_array(PublicActivity::Activity.order("created_at desc").where(owner_id: user.id, owner_type: "User").limit(5))
+			it "loads the users first 6 notifications" do
+				expect(assigns(:dropdown_activities)).to match_array(PublicActivity::Activity.order("created_at desc").where(owner_id: user.id, owner_type: "User").limit(6))
 			end
 
 			it "marks all the notifications as seen" do
@@ -53,10 +54,23 @@ RSpec.describe NotificationsController, type: :controller do
 			end
 		end
 
+		context "user is logged in and loads more notifications" do
+			it "loads the users next notification" do
+				sign_in user
+				user.references << reference1
+				xhr :get, :show, page: 2
+			
+				expect(assigns(:dropdown_activities)).to match_array(
+					PublicActivity::Activity.order("created_at desc").where(owner_id: user.id, owner_type: "User").offset(6).limit(1))
+			end
+		end
+
 		context "user is not logged in" do
-			it "redirects the user, effectively blocking the request" do
+			it "redirects the user to the login page" do
 				xhr :get, :show
-				expect(response.status).to eq(401) 
+
+				pending "TODO: Redirect/route to new_user_session_path"
+				expect(response).to redirect_to(new_user_session_path)
 			end
 		end
 	end
@@ -80,30 +94,26 @@ RSpec.describe NotificationsController, type: :controller do
 			it "marks the notification as read" do
 				expect(PublicActivity::Activity.find(notification.id).is_read).to eq(true)
 			end
-
-			it "reloads the users first 5 notifications" do
-				expect(assigns(:dropdown_activities)).to match_array(PublicActivity::Activity.order("created_at desc").where(owner_id: user.id, owner_type: "User").limit(5))
-			end
 		end
 
 		context "incorrect user is logged in" do
-			before(:each) do
+			it "redirects to user page" do
 				sign_in user2
 				user.references << reference1
 				notification.owner = user
 				notification.save
 				xhr :patch, :update, id: notification.id
-			end
-
-			it "redirects the user" do
-				expect(response.status).to eq(302) 
+	
+				expect(response).to redirect_to(user_path(user2))
 			end
 		end
 
 		context "user is not logged in" do
-			it "redirects to the signin page" do
+			it "redirects the user to the login page" do
 				xhr :patch, :update, id: notification.id
-				expect(response.status).to eq(401) 
+
+				pending "TODO: Redirect/route to new_user_session_path"
+				expect(response).to redirect_to(new_user_session_path)
 			end
 		end
 	end
@@ -131,30 +141,26 @@ RSpec.describe NotificationsController, type: :controller do
 			it "should not have the reference" do
 				expect {PublicActivity::Activity.find(notification.id)}.to raise_exception(ActiveRecord::RecordNotFound)
 			end
-
-			it "reloads the users first 5 notifications" do
-				expect(assigns(:dropdown_activities)).to match_array(PublicActivity::Activity.order("created_at desc").where(owner_id: user.id, owner_type: "User").limit(5))
-			end
 		end
 
 		context "incorrect user is logged in" do
-			before(:each) do
+			it "redirects to user page" do
 				sign_in user2
 				user.references << reference1
 				notification.owner = user
 				notification.save
-				xhr :patch, :update, id: notification.id
-			end
-
-			it "redirects the user" do
-				expect(response.status).to eq(302) 
+				xhr :delete, :delete, id: notification.id
+			
+				expect(response).to redirect_to(user_path(user2))
 			end
 		end
 
 		context "user is not logged in" do
-			it "redirects to the signin page" do
-				xhr :patch, :update, id: notification.id
-				expect(response.status).to eq(401) 
+			it "redirects the user to the login page" do
+				xhr :delete, :delete, id: notification.id
+
+				pending "TODO: Redirect/route to new_user_session_path"
+				expect(response).to redirect_to(new_user_session_path)
 			end
 		end
 	end
@@ -184,23 +190,23 @@ RSpec.describe NotificationsController, type: :controller do
 		end
 
 		context "incorrect user is logged in" do
-			before(:each) do
+			it "redirects to user page" do
 				sign_in user2
 				user.references << reference1
 				notification.owner = user
 				notification.save
-				xhr :patch, :update, id: notification.id
-			end
+				xhr :get, :trackable, id: notification.id
 
-			it "redirects the user" do
-				expect(response.status).to eq(302) 
+				expect(response).to redirect_to(user_path(user2))
 			end
 		end
 
 		context "user is not logged in" do
 			it "redirects the user, effectively blocking the request" do
-				xhr :get, :show
-				expect(response.status).to eq(401) 
+				xhr :get, :trackable, id: notification.id
+
+				pending "TODO: Redirect/route to new_user_session_path"
+				expect(response).to redirect_to(new_user_session_path)
 			end
 		end
 	end
@@ -210,7 +216,7 @@ RSpec.describe NotificationsController, type: :controller do
 		let(:reference1) { FactoryGirl.create(:reference1) }
 		let(:notification) {PublicActivity::Activity.find_by(trackable: reference1)}
 		
-		context "user is logged in with few notifications" do
+		context "user is logged in with a few notifications" do
 			before(:each) do
 				sign_in user
 				user.references << reference1
@@ -218,34 +224,49 @@ RSpec.describe NotificationsController, type: :controller do
 				notification.save
 				@count = PublicActivity::Activity.where(is_seen: false, owner_id: user.id, owner_type: "User").count
 
-				# The notification bar is setup before the get :index so the tests pass
-				get :index 
+				get :index # The notification bar is setup before the get :index so the tests pass
 			end	
 
 			it "records the count of unseen notifications" do
 				expect(assigns(:notif_unseen)).to eq(@count)
 			end
 
-			it "formats the string for the 'show all notifications' link" do
-				expect(assigns(:show_all_string)).to eq("Show all notifications")
+			it "it doesn't change the font size" do
+				expect(assigns(:notif_count_style)).to eq("")
 			end
 		end
 
-		#TODO
-		context "user is logged in with many notifications" do
-			before(:each) do
-			end	
+		context "user is logged in with 10+ notifications" do
+			it "makes the font size smaller" do
+				sign_in user
+				user.references << reference1
+				notification.owner = user
+				notification.save
+				#Get tons of notifications
+				get :index 
+				
+				pending "Need to add a lot more notifications"
+				expect(assigns(:notif_count_style)).to eq("font-size:10px;")
+			end
+		end
 
-			it "formats the string for the 'show all notifications' link" do
-				#expect(assigns(:show_all_string)).to eq("Show all notifications - # more unseen")
-				#Should test with many notifications too
+		context "user is logged in with 100+ notifications" do
+			it "makes the font size a lot smaller" do
+				sign_in user
+				user.references << reference1
+				notification.owner = user
+				notification.save
+				#Get tons of notifications
+				get :index 
+				
+				pending "Need to add a lot more notifications"
+				expect(assigns(:notif_count_style)).to eq("font-size:5px;")
 			end
 		end
 
 		context "user is not logged in" do
 			it "doesn't display anything" do
 				expect(assigns(:notif_unseen)).to be_nil
-				expect(assigns(:show_all_string)).to be_nil
 			end
 		end
 	end

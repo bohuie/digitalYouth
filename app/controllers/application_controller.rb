@@ -7,26 +7,13 @@ class ApplicationController < ActionController::Base
 
   def notification_bar
     if user_signed_in?
-      @notif_unseen = display_notif_unseen 
-      @show_all_string = "Show all notifications"
-      if @notif_unseen.is_a? Integer
-        @show_all_string += " - #{@notif_unseen-5} more unseen" if @notif_unseen > 5
-      end
+      @notif_unseen = display_notif_unseen(current_user.id)
+      @notif_count_style = style_notif_count(@notif_unseen)
     end
   end
 
   def after_sign_in_path_for(resource)
   	current_user
   end
-
-  def display_notif_unseen
-      num = PublicActivity::Activity.where(is_seen: false, owner_id: current_user.id, owner_type: "User").count
-      if num > 0
-        return num
-      else
-        return ""
-      end 
-  end
 end
-
 

@@ -3,8 +3,8 @@
 	$('#notif-list').html("<%= j (render 'shared/notifications', :local_activities => @dropdown_activities) %>");
 
 	// Re-add the loading bar and hide it (for infinite scrolling)
-	$('#notif-list').append("<img id=\"notif-loading\" class=\"center-image\" "+
-		"src=\"<%=asset_path('loading.gif')%>\" alt=\"Loading..\" height=\"20\" width=\"20\">");
+	$('#notif-list').append("<img id=\"notif-loading\" class=\"loading-image\" "+
+		"src=\"<%=asset_path('loading.gif')%>\" alt=\"Loading..\">");
 
 	<% if @dropdown_activities.count > 5%>
 		$('#notif-loading').css("visibility","hidden");

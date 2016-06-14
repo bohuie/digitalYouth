@@ -1,11 +1,19 @@
 $('#ajax-loading').css("visibility","hidden");
-$('#ajax-loading').before("<%= j (render 'shared/notifications', :local_activities => @dropdown_activities) %>");
-//$('#<%=notif_id%>').hide();
-//$('#<%=notif_id%>').fadeIn(500);
+$('#ajax-loading').before("<%= j (render 'shared/notifications', :local_activities => @activities) %>");
 
-<% if @dropdown_activities.current_page >= @dropdown_activities.total_pages %>
-	can_request_notif = false;
+//Hide all the notifications added
+<% first_id = 'notification-' + @activities.first.id.to_s %>
+$('#ajax-loading').before().prevUntil($('#<%=first_id%>')).hide();
+$('#<%=first_id%>').hide();
+
+//Fade in all the notifications added
+$('#ajax-loading').before().prevUntil($('#<%=first_id%>')).fadeIn(500);
+$('#<%=first_id%>').fadeIn(500);
+
+//Restrict the ability to make more requests when scrolling
+<% if @activities.current_page >= @activities.total_pages %>
+	can_request = false;
 	$('#notif-loading').css("display","none");
 <% else %>
-	can_request_notif = true;
+	can_request = true;
 <% end %>

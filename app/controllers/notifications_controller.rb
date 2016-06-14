@@ -2,10 +2,13 @@ class NotificationsController < ApplicationController
 
 	before_action :authenticate_user!
 	before_action :notification_owner, only: [:update, :delete, :trackable]
-	respond_to :js, only: [:show, :update, :delete] # Formating for the AJAX request
 
-	def index # Get All notifications, mark seen
-		@activities = get_notifications
+	# Formating for the AJAX requests
+	respond_to :js
+	respond_to :html, only: [:index]
+
+	def index # Get all notifications, paginates to 20
+		@activities = get_notifications.paginate(page: params[:page], per_page: 20)
 	end
 
 	def show # Get 6 notifications first, then get one and offset the page
@@ -27,6 +30,14 @@ class NotificationsController < ApplicationController
 		@notification.destroy
 	end
 
+	def update_all
+		@activities = update_notifications
+	end
+
+	def delete_all
+		PublicActivity::Activity.where(owner_id: current_user.id, owner_type: "User").delete_all
+	end
+
 	def trackable # Mark read, redirect to trackable page
 		@notification.update(is_read: true)
 		redirect_to polymorphic_path(@notification.trackable)
@@ -45,6 +56,12 @@ private
 	def get_notifications
 		rst = PublicActivity::Activity.order("created_at desc").where(owner_id: current_user.id, owner_type: "User")
 		rst.update_all(is_seen: true)
+		return rst
+	end
+
+	def update_notifications
+		rst = PublicActivity::Activity.order("created_at desc").where(owner_id: current_user.id, owner_type: "User")
+		rst.update_all(is_read: true)
 		return rst
 	end
 end

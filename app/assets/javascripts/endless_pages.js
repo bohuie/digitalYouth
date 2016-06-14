@@ -25,7 +25,8 @@ function checkNotificationScroll(){
 
 //Generic endless scrolling for the page
 function checkScroll(dist,loading_id,url){
-	if(distToBottomOfPage() < dist && can_request)
+	if(distToBottomOfPage() < dist && can_request){
+		console.log("Hi");
 		curr_page++;
 		$('#'+loading_id).css("visibility","visible");
 		$('#'+loading_id).show();
@@ -38,6 +39,7 @@ function checkScroll(dist,loading_id,url){
 		    dataType : 'script',
 		    async : true
 		  });
+	}
 }
 
 //Computes distance to bottom of a scrollable div
@@ -49,5 +51,5 @@ function distToBottomOfDiv(div_id){
 //Compute distance to bottom of page
 function distToBottomOfPage(){
 	var pageHeight = Math.max(document.body.scrollHeight, document.body.offsetHeight);
-	return (pageHeight - (div.scrollTop() + div.height()));
+	return (pageHeight - (window.pageYOffset + self.innerHeight));
 }

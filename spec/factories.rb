@@ -77,5 +77,4 @@ FactoryGirl.define do
     question_ids [1,2,3,4]
     survey_id 1
   end
-
 end

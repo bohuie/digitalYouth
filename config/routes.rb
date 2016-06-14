@@ -7,7 +7,9 @@ Rails.application.routes.draw do
   get 'notifications/show' => 'notifications#show', as: :show_notifications
   get 'notifications/:id' => 'notifications#trackable', as: :show_trackable
   patch 'notifications' => 'notifications#update'
+  patch 'notifications/all' => 'notifications#update_all', as: :update_all_notifications
   delete 'notifications' => 'notifications#delete'
+  delete 'notifications/all' => 'notifications#delete_all', as: :delete_all_notifications
 
   # Devise_for :users
   devise_for :users, controllers: { sessions: "users/sessions", registrations: "users/registrations" }

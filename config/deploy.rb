@@ -30,7 +30,7 @@ set :rails_env, "production"
 set :deploy_via, :copy
 set :keep_releases, 5
 
-server "jobcannon.ok.ubc.ca", :roles => [:app, :web, :db], :primary => true, user: 'rodnearl'
+server "jobcannon.ok.ubc.ca", :roles => [:app, :web, :db], :primary => true
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp

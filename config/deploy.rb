@@ -33,7 +33,7 @@ set :keep_releases, 5
 set :user, ask('Enter username:')
 #set :password, ask('Server password', nil)
 
-server "jobcannon.ok.ubc.ca", :roles => [:app, :web, :db], :primary => true, user: fetch(user)
+server "jobcannon.ok.ubc.ca", :roles => [:app, :web, :db], :primary => true, user: fetch(:user)
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
@@ -79,12 +79,6 @@ namespace :deploy do
       # Here we can do anything such as:
       # within release_path do
       #   execute :rake, 'cache:clear'
-      # end
-   # end
-  #end
-
-end
-e :rake, 'cache:clear'
       # end
    # end
   #end

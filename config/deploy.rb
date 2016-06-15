@@ -14,10 +14,10 @@ set :linked_files, %w(config/application.yml)
 set :rvm_type, :system
 
 #set :default_environment, {
-#	'PATH' => "/usr/local/rvm/gems/ruby-2.3.0/bin:/usr/local/rvm/gems/ruby-2.3.0@global/bin:/usr/local/rvm/rubies/ruby-2.3.0/bin:/usr/local/rvm/bin:/usr/lib64/qt-3.3/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/UBC-O/rodnearl/bin",
-#	'RUBY_VERSION' => 'ruby 2.3.0',
-#	'GEM_HOME' => "/usr/local/rvm/gems/ruby-2.3.0",
-#	'GEM_PATH' => "/usr/local/rvm/gems/ruby-2.3.0:/usr/local/rvm/gems/ruby-2.3.0@global"
+# 'PATH' => "/usr/local/rvm/gems/ruby-2.3.0/bin:/usr/local/rvm/gems/ruby-2.3.0@global/bin:/usr/local/rvm/rubies/ruby-2.3.0/bin:/usr/local/rvm/bin:/usr/lib64/qt-3.3/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/UBC-O/rodnearl/bin",
+# 'RUBY_VERSION' => 'ruby 2.3.0',
+# 'GEM_HOME' => "/usr/local/rvm/gems/ruby-2.3.0",
+# 'GEM_PATH' => "/usr/local/rvm/gems/ruby-2.3.0:/usr/local/rvm/gems/ruby-2.3.0@global"
 #}
 #set :rvm_type, :user
 #set :rvm_ruby_version, '2.3.0-p0'
@@ -30,10 +30,10 @@ set :rails_env, "production"
 set :deploy_via, :copy
 set :keep_releases, 5
 
-set(:user, Capistrano::CLI.ui.ask("Username ") {|q| q.default = Etc.getlogin })
-set(:password, Capistrano::CLI.password_prompt("Password "))
+set :user, ask('Enter username:')
+#set :password, ask('Server password', nil)
 
-server "jobcannon.ok.ubc.ca", :roles => [:app, :web, :db], :primary => true, user: user
+server "jobcannon.ok.ubc.ca", :roles => [:app, :web, :db], :primary => true, user: fetch(user)
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
@@ -68,17 +68,23 @@ server "jobcannon.ok.ubc.ca", :roles => [:app, :web, :db], :primary => true, use
 
 namespace :deploy do
 
-	desc "Symlink the application.yml file"
-	task :symlink_config do
-		on roles(:app) do
-			execute "ln -s /srv/www/vhosts/ubc.ca/ok/jobcannon/application.yml #{current_path}/application.yml"
-		end
-	end
+  desc "Symlink the application.yml file"
+  task :symlink_config do
+    on roles(:app) do
+      execute "ln -s /srv/www/vhosts/ubc.ca/ok/jobcannon/application.yml #{current_path}/application.yml"
+    end
+  end
  # after :restart, :clear_cache do
   #  on roles(:web), in: :groups, limit: 3, wait: 10 do
       # Here we can do anything such as:
       # within release_path do
       #   execute :rake, 'cache:clear'
+      # end
+   # end
+  #end
+
+end
+e :rake, 'cache:clear'
       # end
    # end
   #end

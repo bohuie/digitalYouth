@@ -11,6 +11,7 @@ set :branch, "master"
 
 set :linked_files, %w(config/application.yml)
 
+set :rvm_type, :system
 
 #set :default_environment, {
 #	'PATH' => "/usr/local/rvm/gems/ruby-2.3.0/bin:/usr/local/rvm/gems/ruby-2.3.0@global/bin:/usr/local/rvm/rubies/ruby-2.3.0/bin:/usr/local/rvm/bin:/usr/lib64/qt-3.3/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/UBC-O/rodnearl/bin",

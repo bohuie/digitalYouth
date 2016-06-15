@@ -5,7 +5,11 @@ Rails.application.routes.draw do
   # Devise_for :users
   devise_for :users, controllers: { sessions: "users/sessions", registrations: "users/registrations" }
  #devise_for :users
-  resources :users, only: :show, as: :user
+  #resources :users, only: :show, as: :user
+  get 'users' => 'users#index'
+  get '/users/:id' => 'users#show', as: :user
+  get '/users/:id/edit' => 'users#edit', as: :edit_user
+  patch '/users/:id' => 'users#update'
 
 
   # Skill routes
@@ -50,6 +54,13 @@ Rails.application.routes.draw do
   post 'references' => 'references#create'
   patch 'references/:id' => 'references#update', as: :update_reference
   delete 'references/:id' => 'references#delete', as: :delete_reference
+
+  # Survey routes
+  get 'surveys/:title' => 'surveys#show', as: :survey
+  post 'responses' => 'responses#create'
+  patch 'responses' => 'responses#update'
+
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -9,6 +9,19 @@ FactoryGirl.define do
     password_confirmation	"password"
   end
 
+  factory :employer, class: User do
+    first_name  "John"
+    last_name "Doe"
+    email   "johnd@example.com"
+    password  "password"
+    password_confirmation "password"
+    company_name "Yahoo"
+    company_address "123 Fake Street"
+    company_city "Kelowna"
+    company_province "BC"
+    company_postal_code "V1V 1V1"
+  end
+
   factory :user2, class: User do
     first_name	"Foo"
     last_name	"Bar"
@@ -21,6 +34,7 @@ FactoryGirl.define do
   	title		"A project title"
   	description	"Description of the project"
     image { fixture_file_upload( File.join(Rails.root, 'spec', 'photos', 'apple.png'), 'image/png') }
+    user
   end
 
   factory :skill do
@@ -66,4 +80,23 @@ FactoryGirl.define do
     reference_url "chDXcg5FJFdG_w"
   end
 
+  factory :response1, class: Response do
+    scores [0,1,2,3]
+    question_ids [1,2,3,4]
+    survey_id 1
+  end
+
+  factory :response2, class: Response do
+    scores [3,2,1,0]
+    question_ids [1,2,3,4]
+    survey_id 1
+  end
+
+  factory :job_posting do
+    title "Social Media Expert"
+    description "Handling SM sites"
+    open_date Date.new(2016,1,1)
+    close_date Date.new(2016, 3, 1)
+    user
+  end
 end

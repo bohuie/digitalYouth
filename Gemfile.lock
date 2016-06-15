@@ -52,6 +52,7 @@ GEM
       sass (>= 3.3.4)
     builder (3.2.2)
     byebug (9.0.4)
+<<<<<<< HEAD
     capistrano (3.5.0)
       airbrussh (>= 1.0.0)
       capistrano-harrow
@@ -68,6 +69,9 @@ GEM
     capistrano-rvm (0.1.2)
       capistrano (~> 3.0)
       sshkit (~> 1.2)
+=======
+    chartkick (1.5.2)
+>>>>>>> master
     climate_control (0.0.3)
       activesupport (>= 3.0)
     cocaine (0.5.8)
@@ -261,10 +265,14 @@ DEPENDENCIES
   autoprefixer-rails
   bootstrap-sass
   byebug
+<<<<<<< HEAD
   capistrano
   capistrano-bundler
   capistrano-rails
   capistrano-rvm
+=======
+  chartkick
+>>>>>>> master
   coffee-rails (~> 4.1.0)
   devise
   factory_girl_rails

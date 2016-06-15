@@ -11,6 +11,7 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string  :github
       t.string  :linkedin
       t.string  :twitter
+      t.string  :facebook
 
       #company info
       t.string  :company_name
@@ -18,6 +19,9 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string  :company_city
       t.string  :company_province
       t.string  :company_postal_code
+
+      #Survey tracking - survey_id-1 maps to each spot in the array
+      t.boolean :answered_surveys, array: true, default: [false, false, false, false, false, false, false, false, false, false, false, false]
 
       ## Recoverable
       t.string   :reset_password_token

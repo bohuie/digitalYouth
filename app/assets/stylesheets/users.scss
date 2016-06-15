@@ -1,3 +1,33 @@
 // Place all the styles related to the Users controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.survey-box-row{
+	display: -webkit-flex;
+}
+
+.survey-box{
+	padding: 10px 30px 30px 80px;
+	text-align:center;
+	border-style: solid;
+    border-width: 2px;
+    margin:-1px 0 0 -1px;
+}
+
+.unanswered{
+	position: fixed;
+	 left: 0;
+	 right: 0;
+	 top: 0;
+	 bottom: 0;
+	 background-color: Silver;
+	 -moz-opacity:.60;
+	 filter:alpha(opacity=60);
+	 opacity:.60;
+	 z-index: 10000000;
+}
+
+.survey-table{
+	margin: 5px 0px 5px 0px;
+
+}

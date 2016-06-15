@@ -12,8 +12,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
 
     build_resource(sign_up_params)
-    byebug
-    logger.debug "New params: #{params.inspect}"
     if params[:role] == 'employee'
       @user.add_role :employee
     elsif params[:role] =='employer'
@@ -91,7 +89,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def configure_account_update_params
     devise_parameter_sanitizer.permit(:account_update, role: [:employee, :employer])
   end
-
   # The path used after sign up.
   # def after_sign_up_path_for(resource)
   #   super(resource)

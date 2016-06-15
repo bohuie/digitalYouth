@@ -7,7 +7,7 @@ set :deploy_to, '/srv/www/vhosts/ubc.ca/ok/jobcannon/html/public'
 #set :tmp_dir, '/srv/www/vhosts/ubc.ca/ok/jobcannon/html/public/tmp'
 
 set :scm, :git
-set :branch, "master"
+set :branch, "Capistranorb"
 
 set :linked_files, %w(config/application.yml)
 
@@ -79,12 +79,6 @@ namespace :deploy do
       # Here we can do anything such as:
       # within release_path do
       #   execute :rake, 'cache:clear'
-      # end
-   # end
-  #end
-
-end
-e :rake, 'cache:clear'
       # end
    # end
   #end

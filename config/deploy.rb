@@ -30,7 +30,10 @@ set :rails_env, "production"
 set :deploy_via, :copy
 set :keep_releases, 5
 
-server "jobcannon.ok.ubc.ca", :roles => [:app, :web, :db], :primary => true
+set(:user, Capistrano::CLI.ui.ask("Username ") {|q| q.default = Etc.getlogin })
+set(:password, Capistrano::CLI.password_prompt("Password "))
+
+server "jobcannon.ok.ubc.ca", :roles => [:app, :web, :db], :primary => true, user: user
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp

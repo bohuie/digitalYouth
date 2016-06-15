@@ -8,11 +8,11 @@
 </div>
 <% if @activities.count > 1 %>
 	<div class="col-lg-1">
-		<%= link_to delete_all_notifications_path, remote: true, method: "delete" do %>
+		<%= link_to delete_all_notifications_path, remote: true, method: "delete", id:"del-all" do %>
 			<span class="glyphicon glyphicon-trash"></span>
 		<% end %>
 
-		<%= link_to update_all_notifications_path, remote: true, method: "patch" do %>
+		<%= link_to update_all_notifications_path, remote: true, method: "patch", id:"upd-all" do %>
 			<span class="glyphicon glyphicon-ok"></span>
 		<% end %>
 	</div>

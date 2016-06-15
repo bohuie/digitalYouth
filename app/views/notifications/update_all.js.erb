@@ -13,5 +13,7 @@ $('#notif-list').append("<img id=\"notif-loading\" class=\"loading-image\" "+
 
 // Updates the notification page
 $('#index-notifs').html("<%= j (render 'shared/notifications', :local_activities => @activities) %>");
-$('#index-notifs').append("<img id=\"notif-loading\" class=\"loading-image\" "+
+$('#index-notifs').append("<img id=\"ajax-loading\" class=\"loading-image\" "+
 		"src=\"<%=asset_path('loading.gif')%>\" alt=\"Loading..\">");
+$('#ajax-loading').hide();
+$('#upd-all').hide();

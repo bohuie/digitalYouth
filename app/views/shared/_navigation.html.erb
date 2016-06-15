@@ -23,7 +23,7 @@
 
       <ul class="nav navbar-nav navbar-right">
         <% if user_signed_in? %>
-          <li><%= link_to current_user.first_name, current_user, class: "navbar-brand", style: "cursor:default;" %></li>
+          <li><a style="cursor:default;"><%=current_user.first_name%></a></li>
 
           <li class="dropdown">                                   
             <%= link_to show_notifications_path, html_options = 

@@ -1,3 +1,4 @@
+//Hide loading image and render notifications above it
 $('#ajax-loading').css("visibility","hidden");
 $('#ajax-loading').before("<%= j (render 'shared/notifications', :local_activities => @activities) %>");
 

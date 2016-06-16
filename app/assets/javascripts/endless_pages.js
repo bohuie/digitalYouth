@@ -19,21 +19,23 @@ var can_request = true; //Boolean to limit the ability to make more requests
 
 */
 function checkScroll(dist,loading_id,url){
-	if(distToBottomOfPage() < dist && can_request){
-		console.log("Hi");
-		curr_page++;
-		$('#'+loading_id).css("visibility","visible");
-		$('#'+loading_id).show();
-		can_request = false;
+	if(distToBottomOfPage() < dist && can_request)
+		makeAjaxRequest(loading_id,url);
+}
+
+function makeAjaxRequest(loading_id,url){
+	curr_page++;
+	$('#'+loading_id).css("visibility","visible");
+	$('#'+loading_id).show();
+	can_request = false;
 		
-		$.ajax({
-		    type : 'get',
-		    url : url,
-		    data : "page=" + curr_page,
-		    dataType : 'script',
-		    async : true
-		  });
-	}
+	$.ajax({
+	    type : 'get',
+	    url : url,
+	    data : "page=" + curr_page,
+	    dataType : 'script',
+	    async : true
+	});
 }
 
 //For notifications
@@ -42,19 +44,23 @@ var can_request_notif = true;
 
 //Custom endless scrolling for notifications
 function checkNotificationScroll(){
-	if(distToBottomOfDiv('notif-list') < 5 && can_request_notif){
-		curr_notif_page++;
-		$('#notif-loading').css("visibility","visible");
-		can_request_notif = false;
+	if(distToBottomOfDiv('notif-list') < 5 && can_request_notif)
+		makeNotificationRequest();
 		
-		$.ajax({
-		    type : 'get',
-		    url : '/notifications/show',
-		    data : "page=" + curr_notif_page,    
-		    dataType : 'script',
-		    async : true
-		  });
-	}
+}
+
+function makeNotificationRequest(){
+	curr_notif_page++;
+	$('#notif-loading').css("visibility","visible");
+	can_request_notif = false;
+	
+	$.ajax({
+	    type : 'get',
+	    url : '/notifications/show',
+	    data : "page=" + curr_notif_page,    
+	    dataType : 'script',
+	    async : true
+	});
 }
 
 

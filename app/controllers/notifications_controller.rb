@@ -7,17 +7,19 @@ class NotificationsController < ApplicationController
 	respond_to :html, only: :index
 
 	def index # Get all notifications, paginates to 20
-		@activities = get_notifications.paginate(page: params[:page], per_page: 20)
+		@notifications = get_notifications.paginate(page: params[:page], per_page: 20)
+		@notifications_count = @notifications.count
 	end
 
 	def show # Get 6 notifications first, then get one and offset the page
 		params[:page] = 1 if params[:page].nil?
+		per_pg = 6
 		if Integer(params[:page]) > 1
-			params[:page] = Integer(params[:page]) + 6
-			@dropdown_activities = get_notifications.paginate(page: params[:page], per_page: 1)
-		else
-			@dropdown_activities = get_notifications.paginate(page: params[:page], per_page: 6)
+			params[:page] = Integer(params[:page]) + 5
+			per_pg = 1
 		end
+		@dropdown_notifications = get_notifications.paginate(page: params[:page], per_page: per_pg)
+		@dropdown_notifications_count = @dropdown_notifications.count
 	end
 
 	def update # Mark the notification as read
@@ -25,11 +27,13 @@ class NotificationsController < ApplicationController
 	end
 
 	def delete # Delete the notification
+		@notification_id = @notification.id
 		@notification.delete
+		@notifications_count = PublicActivity::Activity.where(owner_id: current_user.id, owner_type: "User").count
 	end
 
 	def update_all # Mark all notifications as read
-		@activities = update_notifications
+		@notifications = update_notifications
 	end
 
 	def delete_all # Delete all notifications

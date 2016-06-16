@@ -1,12 +1,10 @@
 <div class="col-lg-6">
-	<ul style="list-style-type: none;">
-		<div id="index-notifs">
-	  		<%= render 'shared/notifications', :local_activities => @activities %>
-	  		<li><img id="ajax-loading" class="loading-image" src="<%=asset_path('loading.gif')%>" alt="Loading.." style="visibility:hidden;"></li>
-	  	</div>
+	<ul id="index-notifs" style="list-style-type: none;">
+	  	<%= render 'shared/notifications', :local_activities => @notifications %>
+	  	<img id="ajax-loading" class="loading-image" src="<%=asset_path('loading.gif')%>" alt="Loading.." style="visibility:hidden;">
 	</ul>
 </div>
-<% if @activities.count > 1 %>
+<% if @notifications_count > 1 %>
 	<div class="col-lg-1">
 		<%= link_to delete_all_notifications_path, remote: true, method: "delete", id:"del-all" do %>
 			<span class="glyphicon glyphicon-trash"></span>
@@ -15,5 +13,8 @@
 		<%= link_to update_all_notifications_path, remote: true, method: "patch", id:"upd-all" do %>
 			<span class="glyphicon glyphicon-ok"></span>
 		<% end %>
+
+		<p id="index-notif-counter"><%= @notifications_count%></p>
 	</div>
 <% end %>
+<input type="hidden" id="refreshed" value="0">

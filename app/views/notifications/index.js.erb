@@ -1,9 +1,9 @@
 //Hide loading image and render notifications above it
 $('#ajax-loading').css("visibility","hidden");
-$('#ajax-loading').before("<%= j (render 'shared/notifications', :local_activities => @activities) %>");
+$('#ajax-loading').before("<%= j (render 'shared/notifications', :local_activities => @notifications) %>");
 
 //Hide all the notifications added
-<% first_id = 'notification-' + @activities.first.id.to_s %>
+<% first_id = 'notification-' + @notifications.first.id.to_s %>
 $('#ajax-loading').before().prevUntil($('#<%=first_id%>')).hide();
 $('#<%=first_id%>').hide();
 
@@ -12,7 +12,7 @@ $('#ajax-loading').before().prevUntil($('#<%=first_id%>')).fadeIn(500);
 $('#<%=first_id%>').fadeIn(500);
 
 //Restrict the ability to make more requests when scrolling
-<% if @activities.current_page >= @activities.total_pages %>
+<% if @notifications.current_page >= @notifications.total_pages %>
 	can_request = false;
 	$('#notif-loading').css("display","none");
 <% else %>

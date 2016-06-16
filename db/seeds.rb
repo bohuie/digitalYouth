@@ -15,8 +15,8 @@ user1.add_role :employee
 user4 = User.create(first_name: 'Jane', last_name: 'Doe', email: 'jane@doe.com', password: 'password', password_confirmation: 'password')
 user4.add_role :employee
 
-for i in 0..80
-	Reference.create(first_name: 'Andrew', last_name: 'Smith', email: 'Andrew@gmail.com', company: 'Apple Picking Co.',
+for i in 0..20
+	Reference.create(first_name: 'Andrew'+i.to_s, last_name: 'Smith', email: 'Andrew@gmail.com', company: 'Apple Picking Co.',
 		position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)
 end
 

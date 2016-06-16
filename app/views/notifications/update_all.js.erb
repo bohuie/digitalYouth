@@ -1,5 +1,5 @@
 // Update notifications list
-$('#notif-list').html("<%= j (render 'shared/notifications', :local_activities => @activities) %>");
+$('#notif-list').html("<%= j (render 'shared/notifications', :local_activities => @notifications) %>");
 
 // Re-add the loading bar and hide it (for infinite scrolling)
 $('#notif-list').append("<img id=\"notif-loading\" class=\"loading-image\" "+
@@ -12,7 +12,7 @@ $('#notif-list').append("<img id=\"notif-loading\" class=\"loading-image\" "+
 <% end %>
 
 // Updates the notification page
-$('#index-notifs').html("<%= j (render 'shared/notifications', :local_activities => @activities) %>");
+$('#index-notifs').html("<%= j (render 'shared/notifications', :local_activities => @notifications) %>");
 $('#index-notifs').append("<img id=\"ajax-loading\" class=\"loading-image\" "+
 		"src=\"<%=asset_path('loading.gif')%>\" alt=\"Loading..\">");
 $('#ajax-loading').hide();

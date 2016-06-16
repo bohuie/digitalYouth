@@ -6,15 +6,22 @@ $('#notification-<%=@notification_id%>').remove();
 $('#index-notif-counter').html("<%=@notifications_count%>");
 
 //Refetch the next one if it is possible
-<% if @notifications_count > 5 %>
+<% if @notifications_count >= 6 %>
 	if($('#notif-list').children().length <= 6){
-			curr_notif_page--;
-			makeNotificationRequest();
-		}
+		curr_notif_page--;
+		makeNotificationRequest();
+	}
+	<% if @notifications_count >= 7 %>
+		can_request_notif = true;
+	<% end %>
 <% end %>
 
-
 if(window.location.pathname == "<%=notifications_path%>"){
+	<% if @notifications_count <= 20 %>
+		curr_page=0;
+		can_request = false;
+	<% end %>
+
 	//Refetch the next one if it is possible
 	<% if @notifications_count > 0 %>		
 			if($('#index-notifs').children().length <= 1){
@@ -24,9 +31,7 @@ if(window.location.pathname == "<%=notifications_path%>"){
 			}
 	<% end %>
 
-	<% if @notifications_count <= 20 %>
-		curr_page=0;
-	<% end %>
 	if($('#index-notifs').children().length < 20 ){
+		$('#load-more').show();
 	}
 }

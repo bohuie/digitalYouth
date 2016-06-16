@@ -19,6 +19,7 @@
 		//Because page > 1 there will only be one notifitcation in the @dropdown_activities variable
 		<% notif_id = 'notification-' + @dropdown_notifications.first.id.to_s%>
 		$('#notif-loading').css("visibility","hidden");
+		$('#notif-loading').before("<%= j (render 'shared/notifications', :local_activities => @dropdown_notifications) %>");
 		$('#<%=notif_id%>').hide();
 		$('#<%=notif_id%>').fadeIn(500);
 	<% end %>

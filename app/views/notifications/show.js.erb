@@ -1,3 +1,4 @@
+//If there are no notifications to display, this will render blank.
 <% if @dropdown_notifications.current_page <= @dropdown_notifications.total_pages %>
 	<% if @dropdown_notifications.current_page == 1%>
 		// Update notifications list
@@ -7,6 +8,7 @@
 		$('#notif-list').append("<img id=\"notif-loading\" class=\"loading-image\" "+
 			"src=\"<%=asset_path('loading.gif')%>\" alt=\"Loading..\">");
 
+		// Hide the loading icon in one of two ways
 		<% if @dropdown_notifications_count > 5%>
 			$('#notif-loading').css("visibility","hidden");
 		<% else %>
@@ -18,8 +20,10 @@
 	<% else %>
 		//Because page > 1 there will only be one notifitcation in the @dropdown_activities variable
 		<% notif_id = 'notification-' + @dropdown_notifications.first.id.to_s%>
+		//Render the notification
 		$('#notif-loading').css("visibility","hidden");
 		$('#notif-loading').before("<%= j (render 'shared/notifications', :local_activities => @dropdown_notifications) %>");
+		//Hide then fade in the notification
 		$('#<%=notif_id%>').hide();
 		$('#<%=notif_id%>').fadeIn(500);
 	<% end %>

@@ -16,7 +16,9 @@ $('#index-notif-counter').html("<%=@notifications_count%>");
 	<% end %>
 <% end %>
 
+//If on the notifications page
 if(window.location.pathname == "<%=notifications_path%>"){
+	//Page count is reset when there is only one page to show
 	<% if @notifications_count <= 20 %>
 		curr_page=0;
 		can_request = false;

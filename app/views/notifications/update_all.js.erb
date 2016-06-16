@@ -5,7 +5,7 @@ $('#notif-list').html("<%= j (render 'shared/notifications', :local_activities =
 $('#notif-list').append("<img id=\"notif-loading\" class=\"loading-image\" "+
 	"src=\"<%=asset_path('loading.gif')%>\" alt=\"Loading..\">");
 
-<% if @activities.count > 5%>
+<% if @notifications.count > 5%>
 	$('#notif-loading').css("visibility","hidden");
 <% else %>
 	$('#notif-loading').hide();

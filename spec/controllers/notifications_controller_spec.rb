@@ -17,7 +17,7 @@ RSpec.describe NotificationsController, type: :controller do
 			end	
 
 			it "loads the users paginated notifications" do
-				expect(assigns(:activities)).to match_array(PublicActivity::Activity.order("created_at desc").where(owner_id: user.id, owner_type: "User").limit(20))
+				expect(assigns(:notifications)).to match_array(PublicActivity::Activity.order("created_at desc").where(owner_id: user.id, owner_type: "User").limit(20))
 			end
 
 			it "marks all the notifications as seen" do
@@ -46,7 +46,7 @@ RSpec.describe NotificationsController, type: :controller do
 			end	
 
 			it "loads the users first 6 notifications" do
-				expect(assigns(:dropdown_activities)).to match_array(PublicActivity::Activity.order("created_at desc").where(owner_id: user.id, owner_type: "User").limit(6))
+				expect(assigns(:dropdown_notifications)).to match_array(PublicActivity::Activity.order("created_at desc").where(owner_id: user.id, owner_type: "User").limit(6))
 			end
 
 			it "marks all the notifications as seen" do
@@ -60,7 +60,7 @@ RSpec.describe NotificationsController, type: :controller do
 				user.references << reference1
 				xhr :get, :show, page: 2
 			
-				expect(assigns(:dropdown_activities)).to match_array(
+				expect(assigns(:dropdown_notifications)).to match_array(
 					PublicActivity::Activity.order("created_at desc").where(owner_id: user.id, owner_type: "User").offset(6).limit(1))
 			end
 		end
@@ -285,10 +285,6 @@ RSpec.describe NotificationsController, type: :controller do
 
 			it "records the count of unseen notifications" do
 				expect(assigns(:notif_unseen)).to eq(@count)
-			end
-
-			it "it doesn't change the font size" do
-				expect(assigns(:notif_count_style)).to eq("")
 			end
 		end
 		

@@ -2,6 +2,11 @@
 	<ul id="index-notifs" style="list-style-type: none;">
 	  	<%= render 'shared/notifications', :local_activities => @notifications %>
 	  	<img id="ajax-loading" class="loading-image" src="<%=asset_path('loading.gif')%>" alt="Loading.." style="visibility:hidden;">
+	  	<div class="center-text">
+	  	<%= link_to notifications_path, remote: true, method: "get" id:"load-more"do %>
+			<span class="glyphicon glyphicon-refresh"></span>
+		<% end %>
+		</div>
 	</ul>
 </div>
 <% if @notifications_count > 1 %>

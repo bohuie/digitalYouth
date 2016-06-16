@@ -1,6 +1,10 @@
 //Hide loading image and render notifications above it
 $('#ajax-loading').css("visibility","hidden");
-$('#ajax-loading').before("<%= j (render 'shared/notifications', :local_activities => @notifications) %>");
+<% if @notifications_count <= 20%>
+	$('#index-notifs').html("<%= j (render 'shared/notifications', :local_activities => @notifications) %>");
+<% else %>
+	$('#ajax-loading').before("<%= j (render 'shared/notifications', :local_activities => @notifications) %>");
+<% end %>
 
 //Hide all the notifications added
 <% first_id = 'notification-' + @notifications.first.id.to_s %>

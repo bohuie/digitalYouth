@@ -6,18 +6,27 @@ $('#notification-<%=@notification_id%>').remove();
 $('#index-notif-counter').html("<%=@notifications_count%>");
 
 //Refetch the next one if it is possible
-<% if @notifications_count > 0 %>
+<% if @notifications_count > 5 %>
 	if($('#notif-list').children().length <= 6){
 			curr_notif_page--;
 			makeNotificationRequest();
 		}
 <% end %>
 
-//Refetch the next one if it is possible
-<% if @notifications_count > 0 %>
-	if(window.location.pathname == "<%=notifications_path%>")
-		if($('#index-notifs').children().length <= 1){
-			curr_page--;
-			makeAjaxRequest('ajax-loading','/notifications');
-		}
-<% end %>
+
+if(window.location.pathname == "<%=notifications_path%>"){
+	//Refetch the next one if it is possible
+	<% if @notifications_count > 0 %>		
+			if($('#index-notifs').children().length <= 1){
+				if (curr_page > 0)
+					curr_page--;
+				makeAjaxRequest('ajax-loading','/notifications');
+			}
+	<% end %>
+
+	<% if @notifications_count <= 20 %>
+		curr_page=0;
+	<% end %>
+	if($('#index-notifs').children().length < 20 ){
+	}
+}

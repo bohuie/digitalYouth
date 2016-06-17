@@ -5,19 +5,19 @@ set :application, 'digitalYouth'
 set :repo_url, 'https://github.com/bohuie/digitalYouth'
 set :deploy_to, '/srv/www/vhosts/ubc.ca/ok/jobcannon/html/public'
 #set :tmp_dir, '/srv/www/vhosts/ubc.ca/ok/jobcannon/html/public/tmp'
-
+#set :tmp_dir, '~/tmp'
 set :scm, :git
 set :branch, "master"
 
 set :linked_files, %w(config/application.yml)
 
-set :rvm_type, :system
+#set :rvm_type, :system
 
 #set :default_environment, {
-# 'PATH' => "/usr/local/rvm/gems/ruby-2.3.0/bin:/usr/local/rvm/gems/ruby-2.3.0@global/bin:/usr/local/rvm/rubies/ruby-2.3.0/bin:/usr/local/rvm/bin:/usr/lib64/qt-3.3/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/UBC-O/rodnearl/bin",
-# 'RUBY_VERSION' => 'ruby 2.3.0',
-# 'GEM_HOME' => "/usr/local/rvm/gems/ruby-2.3.0",
-# 'GEM_PATH' => "/usr/local/rvm/gems/ruby-2.3.0:/usr/local/rvm/gems/ruby-2.3.0@global"
+# 'PATH' =>  "/home/edgemap/.rvm/gems/ruby-2.3.0/bin:/home/edgemap/.rvm/gems/ruby-2.3.0@global/bin:/home/edgemap/.rvm/rubies/ruby-2.3.0/bin:/usr/lib64/qt-3.3/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/home/edgemap/.rvm/bin:/home/edgemap/bin:/home/edgemap/.rvm/bin",
+# 'RUBY_VERSION' => 'ruby 2.3.0@default',
+# 'GEM_HOME' => "/home/edgemap/.rvm/gems/ruby-2.3.0",
+# 'GEM_PATH' => "/home/edgemap/.rvm/gems/ruby-2.3.0:/home/edgemap/.rvm/gems/ruby-2.3.0@global"
 #}
 #set :rvm_type, :user
 #set :rvm_ruby_version, '2.3.0-p0'
@@ -30,10 +30,12 @@ set :rails_env, "production"
 set :deploy_via, :copy
 set :keep_releases, 5
 
-set :user, ask('Enter username:')
+#set :user, ask('Enter username:')
 #set :password, ask('Server password', nil)
 
-server "jobcannon.ok.ubc.ca", :roles => [:app, :web, :db], :primary => true, user: fetch(:user)
+set :assets_roles, [:web, :app] 
+
+server "jobcannon.ok.ubc.ca", :roles => [:app, :web, :db], :primary => true, user: 'edgemap'
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp

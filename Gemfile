@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem 'rake'
+
 # charkick for plotting data
 gem 'chartkick'
 

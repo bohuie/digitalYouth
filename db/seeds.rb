@@ -11,6 +11,7 @@ end
 
 user1 = User.create(first_name: 'John', last_name: 'Doe', email: 'john@doe.com', password: 'password', password_confirmation: 'password')
 user1.add_role :employee
+user1.confirm
 
 reference1 = Reference.create(first_name: 'Andrew', last_name: 'Smith', email: 'Andrew@Smith.com', company: 'Apple Picking Co.',
 			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)

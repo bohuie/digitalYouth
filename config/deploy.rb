@@ -75,6 +75,11 @@ namespace :deploy do
     on roles(:app) do
       execute "ln -s /srv/www/vhosts/ubc.ca/ok/jobcannon/application.yml #{current_path}/application.yml"
     end
+
+    desc "reload the database with seed data"
+    task :seed do
+      run "cd #{current_path}; bundle exec rake db:seed RAILS_ENV=#{rails_env}"
+    end
   end
  # after :restart, :clear_cache do
   #  on roles(:web), in: :groups, limit: 3, wait: 10 do

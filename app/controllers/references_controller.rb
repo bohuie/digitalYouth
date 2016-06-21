@@ -90,8 +90,7 @@ class ReferencesController < ApplicationController
 		args = params[:reference_email]
 		if args[:first_name].blank? || args[:last_name].blank? || args[:email].blank?
 			redirect_to email_reference_path, flash: {warning: "Missing required fields"}
-		end
-		if args[:email] !~ Devise::email_regexp
+		elsif args[:email] !~ Devise::email_regexp
 			redirect_to email_reference_path, flash: {warning: "Enter a valid email address"}
 		end
 	end

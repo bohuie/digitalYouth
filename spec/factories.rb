@@ -91,6 +91,7 @@ FactoryGirl.define do
     question_ids [1,2,3,4]
     survey_id 1
   end
+<<<<<<< HEAD
 
   factory :job_posting do
     title "Social Media Expert"
@@ -99,4 +100,6 @@ FactoryGirl.define do
     close_date Date.new(2016, 3, 1)
     user
   end
+=======
+>>>>>>> notifications
 end

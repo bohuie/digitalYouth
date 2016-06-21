@@ -1,0 +1,9 @@
+<% if !local_activities.empty? %>
+	<% for activity in local_activities %>
+		<% next if check_and_remove(activity) %>
+		<%= render '/shared/notification', activity: activity %>
+	<% end %>
+<% else %>
+	<li class="center-text"> You have no notifications! </li>
+<% end %>
+

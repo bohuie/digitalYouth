@@ -15,5 +15,5 @@
 //= require turbolinks
 //= require bootstrap-sprockets
 //= require chartkick
+//= require local_time
 //= require_tree .
-

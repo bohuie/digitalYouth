@@ -5,45 +5,43 @@
 <% end %>
 
 <div class="references">
-	<div class="container">
-		<div class="row">
-			<div class="col-xs-6">
-			<p> </p>
+	<div class="row">
+		<% if @unconfirmed_references.empty? && @confirmed_references.empty? %>
+			<h3>You have no references. <%= link_to "Click here to send a reference request!", email_reference_path %></h3>
+		<% else %>
+			<h3>Need more references? <%= link_to "Click here to send a reference request!", email_reference_path %></h3>
+		<% end %>
+		<br>
+	</div>
 
-				<% if !@confirmed_references.empty? %>
-					<h3> Confirmed References </h3>
-					<% @confirmed_references.each do |r| %>
-						<h3><%= r.first_name%> <%= r.last_name %></h3>
-						<h4><%= r.company%>: <%= r.position %></h4>
-						<h6>Contact: Email: <%= r.email %> , Phone: <%= r.phone_number %> </h6>
-						<p><%= r.reference_body %></p>
-						<p> <%= link_to "UnConfirm", update_reference_path(r), method: "patch" %> <%= link_to "Delete", delete_reference_path(r), method: "delete" %> </p>
-					<% end %>
+	<div class="row">
+		<div class="col-xs-6">
+			<h3> Confirmed References </h3>
+			<% if !@confirmed_references.empty? %>
+				<% @confirmed_references.each do |r| %>
+					<h3><%= r.first_name%> <%= r.last_name %></h3>
+					<h4><%= r.company%>: <%= r.position %></h4>
+					<h6>Contact: Email: <%= r.email %> , Phone: <%= r.phone_number %> </h6>
+					<p><%= r.reference_body %></p>
+					<%= link_to "UnConfirm", update_reference_path(r), method: "patch" %> <%= link_to "Delete", delete_reference_path(r), method: "delete" %>
 				<% end %>
-
-				<% if !@unconfirmed_references.empty? %>
-					<h3> Unconfirmed References </h3>
-					<% @unconfirmed_references.each do |r| %>
-						<h3><%= r.first_name%> <%= r.last_name %></h3>
-						<h4><%= r.company%>: <%= r.position %></h4>
-						<h6>Contact: Email: <%= r.email %> , Phone: <%= r.phone_number %> </h6>
-						<p><%= r.reference_body %></p>
-						<p> <%= link_to "Confirm", update_reference_path(r), method: "patch" %> <%= link_to "Delete", delete_reference_path(r), method: "delete" %> </p>
-					<% end %>
-				<% end %>
-
-			</div>
-		</div>
-
-		<div class="row">
-			<% if @unconfirmed_references.empty? && @confirmed_references.empty? %>
-					<h3>You have no references. Click this <%= link_to "link", email_reference_path %>
-					 and get your referers to fill out the forum!</h3>
 			<% else %>
-				<h3>Click this <%= link_to "link", email_reference_path %> and get your referers to fill out the forum to get more references!</h3>
+				<h6> You have no confirmed references.
 			<% end %>
-
 		</div>
-
+		<div class="col-xs-6">
+			<h3> Unconfirmed References </h3>
+			<% if !@unconfirmed_references.empty? %>
+				<% @unconfirmed_references.each do |r| %>
+					<h3><%= r.first_name%> <%= r.last_name %></h3>
+					<h4><%= r.company%>: <%= r.position %></h4>
+					<h6>Contact: Email: <%= r.email %> , Phone: <%= r.phone_number %> </h6>
+					<p><%= r.reference_body %></p>
+					<%= link_to "Confirm", update_reference_path(r), method: "patch" %> <%= link_to "Delete", delete_reference_path(r), method: "delete" %>
+				<% end %>
+			<% else %>
+				<h6> You have no unconfirmed references. </h6>
+			<% end %>
+		</div>
 	</div>
 </div>

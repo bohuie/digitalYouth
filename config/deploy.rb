@@ -3,7 +3,7 @@ lock '3.5.0'
 
 set :application, 'digitalYouth'
 set :repo_url, 'https://github.com/bohuie/digitalYouth'
-set :deploy_to, '/srv/www/vhosts/ubc.ca/ok/jobcannon/html/public'
+set :deploy_to, '/srv/www/vhosts/ubc.ca/ok/edgemap/html/public'
 #set :tmp_dir, '/srv/www/vhosts/ubc.ca/ok/jobcannon/html/public/tmp'
 #set :tmp_dir, '~/tmp'
 set :scm, :git

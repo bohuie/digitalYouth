@@ -1,8 +1,7 @@
 source 'https://rubygems.org'
 
-<<<<<<< HEAD
 gem 'rake'
-=======
+
 # pagination for any results that need pagination
 gem 'will_paginate'
 
@@ -11,7 +10,6 @@ gem 'local_time'
 
 # public activity for notification feed
 gem 'public_activity'
->>>>>>> notifications
 
 # charkick for plotting data
 gem 'chartkick'

@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   include PublicActivity::Model
   tracked only: :create, owner: ->(controller,model) {model && model.itself}
+  searchkick
 
   rolify
   # Include default devise modules. Others available are:

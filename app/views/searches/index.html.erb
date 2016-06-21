@@ -1,1 +1,12 @@
-<p>SEARCH RESULTS!!</p>
+<p>Search results for <%=@query%><br>
+<% if !@results.nil? %>
+	Returned <%=@results.size%> results.<br>
+	Took <%=@results.took%>ms.</p>
+	<% @results.each do |r|%>
+		<p><%="#{r.first_name} #{r.last_name}"%></p>
+	<% end %>
+<% else %>
+	No results found for <%=@query%></p>
+<% end %>
+
+

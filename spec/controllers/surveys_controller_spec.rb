@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe SurveysController, type: :controller do
 
-	# rake db:seed RAILS_ENV=test for these tests to pass
 	describe "GET show" do
 		let(:survey1) { Survey.find_by(title: "General") }
 		let(:response1) {FactoryGirl.create(:response1)}

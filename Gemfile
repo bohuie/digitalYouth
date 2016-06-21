@@ -2,6 +2,15 @@ source 'https://rubygems.org'
 
 gem 'rake'
 
+# pagination for any results that need pagination
+gem 'will_paginate'
+
+# local time to display any time formats in the users local time
+gem 'local_time'
+
+# public activity for notification feed
+gem 'public_activity'
+
 # charkick for plotting data
 gem 'chartkick'
 

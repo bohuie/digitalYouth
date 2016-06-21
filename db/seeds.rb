@@ -13,11 +13,17 @@ user1 = User.create(first_name: 'John', last_name: 'Doe', email: 'john@doe.com',
 user1.add_role :employee
 user1.confirm
 
-reference1 = Reference.create(first_name: 'Andrew', last_name: 'Smith', email: 'Andrew@Smith.com', company: 'Apple Picking Co.',
-			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)
-
 user4 = User.create(first_name: 'Jane', last_name: 'Doe', email: 'jane@doe.com', password: 'password', password_confirmation: 'password')
 user4.add_role :employee
+
+for i in 0..20
+	Reference.create(first_name: 'Andrew'+i.to_s, last_name: 'Smith', email: 'Andrew@gmail.com', company: 'Apple Picking Co.',
+		position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)
+end
+
+reference1 = Reference.create(first_name: 'Bernie', last_name: 'Smith', email: 'Andrew@gmail.com', company: 'Apple Picking Co.',
+			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user4.id)
+
 
 user2 = User.create(first_name: 'Foo', last_name: 'Bar', email: 'foo@bar.com', password: 'password', password_confirmation: 'password', 
 	company_name: 'Google', company_address: '123 Fake Street', company_city: 'Kelowna', company_province: 'BC', company_postal_code: 'V1V 1V1')

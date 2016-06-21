@@ -2,6 +2,15 @@ Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   get 'welcome/index'
 
+  #notifications
+  get 'notifications' => 'notifications#index'
+  get 'notifications/show' => 'notifications#show', as: :show_notifications
+  get 'notifications/:id' => 'notifications#trackable', as: :show_trackable
+  patch 'notifications' => 'notifications#update'
+  patch 'notifications/all' => 'notifications#update_all', as: :update_all_notifications
+  delete 'notifications' => 'notifications#delete'
+  delete 'notifications/all' => 'notifications#delete_all', as: :delete_all_notifications
+
   # Devise_for :users
   devise_for :users, controllers: { sessions: "users/sessions", registrations: "users/registrations" }
  #devise_for :users
@@ -48,6 +57,7 @@ Rails.application.routes.draw do
 
   # Reference routes
   get 'references' => 'references#index'
+  get 'reference/:id' => 'references#show', as: :reference
   get 'references/refer' => 'references#email', as: :email_reference
   get 'references/new/:id' => 'references#new', as: :new_reference
   post 'references/refer' => 'references#send_mail', as: :reference_emails

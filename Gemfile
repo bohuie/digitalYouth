@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
-gem 'rake'
+# Searchkick gem for searching
+gem 'searchkick'
 
 # pagination for any results that need pagination
 gem 'will_paginate'

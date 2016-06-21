@@ -2,7 +2,10 @@ Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   get 'welcome/index'
 
-  #notifications
+  # Searches
+  get 'search' => 'searches#index'
+
+  # Notifications
   get 'notifications' => 'notifications#index'
   get 'notifications/show' => 'notifications#show', as: :show_notifications
   get 'notifications/:id' => 'notifications#trackable', as: :show_trackable

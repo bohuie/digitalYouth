@@ -44,7 +44,7 @@ var can_request_notif = true;
 
 //Custom endless scrolling for notifications
 function checkNotificationScroll(){
-	if(distToBottomOfDiv('notif-list') < 5 && can_request_notif)
+	if(distToBottomOfDiv('notif-list') < 10 && can_request_notif)
 		makeNotificationRequest();
 		
 }

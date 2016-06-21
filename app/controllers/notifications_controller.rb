@@ -11,7 +11,7 @@ class NotificationsController < ApplicationController
 		@notifications_count = @notifications.count
 	end
 
-	def show # Get 6 notifications first, then get one and offset the page
+	def show # Get 5 notifications first, then get one and offset the page
 		params[:page] = 1 if params[:page].nil?
 		per_pg = 6
 		if Integer(params[:page]) > 1

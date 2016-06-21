@@ -3,15 +3,14 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .notif-bar{
-	min-width:320px;
-	max-width:350px;
+	width:350px;
 	padding-top: 1px;
 }
 
 #notif-list{
 	overflow-y:auto;
 	overflow-x:hidden;
-	max-height:250px;
+	max-height:300px;
 
 	//Should style the scroll bar too
 }
@@ -19,7 +18,7 @@
 .notification{
 	border: 1px solid lightgrey;
 	padding: 2px 5px 2px 5px;
-	height: 50px;
+	height: 60px;
 	min-width: 310px;
 }
 

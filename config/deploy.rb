@@ -35,7 +35,7 @@ set :keep_releases, 5
 
 set :assets_roles, [:web, :app] 
 
-server "jobcannon.ok.ubc.ca", :roles => [:app, :web, :db], :primary => true, user: 'edgemap'
+server "edgemap.ok.ubc.ca", :roles => [:app, :web, :db], :primary => true, user: 'edgemap'
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp

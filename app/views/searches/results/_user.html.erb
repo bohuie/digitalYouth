@@ -1,0 +1,5 @@
+<% if result.has_role? :employee %>
+	<%= link_to "#{result.first_name} #{result.last_name}", user_path(result) %><br>
+<% elsif result.has_role? :employer %>
+	<%= link_to "#{result.company_name}", user_path(result) %><br>
+<% end %>

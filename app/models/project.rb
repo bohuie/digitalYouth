@@ -1,4 +1,5 @@
 class Project < ActiveRecord::Base
+	searchkick
 
 	belongs_to :user
 

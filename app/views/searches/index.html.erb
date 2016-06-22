@@ -3,7 +3,7 @@
 	Returned <%=@results.size%> results.<br>
 	Took <%=@results.took%>ms.</p>
 	<% @results.each do |r|%>
-		<p><%="#{r.first_name} #{r.last_name}"%></p>
+		<%= render "searches/results/#{r.class.name.downcase}", result: r %>
 	<% end %>
 <% else %>
 	No results found for <%=@query%></p>

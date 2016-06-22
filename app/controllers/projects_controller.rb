@@ -62,11 +62,10 @@ class ProjectsController < ApplicationController
 	# Checks current user is the project owner
 	def project_owner
 		@project = Project.find(params[:id])
-		
 		unless @project.user_id == current_user.id
 			flash[:warning] = "You can only make changes to your projects."
 			@user = User.find(@project.user_id)
-			redirect_to current_user
+			redirect_back_or current_user
 		end
 	end
 end

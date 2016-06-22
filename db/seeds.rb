@@ -15,6 +15,7 @@ user1.confirm
 
 user4 = User.create(first_name: 'Jane', last_name: 'Doe', email: 'jane@doe.com', password: 'password', password_confirmation: 'password')
 user4.add_role :employee
+user4.confirm!
 
 for i in 0..20
 	Reference.create(first_name: 'Andrew'+i.to_s, last_name: 'Smith', email: 'Andrew@gmail.com', company: 'Apple Picking Co.',

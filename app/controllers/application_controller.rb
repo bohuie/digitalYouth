@@ -19,7 +19,10 @@ class ApplicationController < ActionController::Base
 
   # Redirect to stored location (or default)
   def redirect_back_or (default =nil)
-    if default.nil?
+byebug
+    if default.nil? && session[:forwarding_url].nil?
+      redirect_to root_path
+    elsif default.nil?
        redirect_to(session[:forwarding_url])
     else
       redirect_to (default)

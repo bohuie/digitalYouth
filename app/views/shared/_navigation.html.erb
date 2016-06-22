@@ -15,8 +15,8 @@
       </ul>
       <%= form_tag "/search", method: "get", class: "navbar-form navbar-left", role:"search" do %>
         <div class="form-group">
-            <%= text_field_tag 'query', nil, class: 'form-control', placeholder: "Search", autocomplete:"off" %>
-            <%= button_tag type: "submit", class: "btn btn-default" do %>
+            <%= text_field_tag 'q', params[:q], class: 'form-control', placeholder: "Search", autocomplete:"off" %>
+            <%= button_tag type: "submit", class: "btn btn-default", name: nil do %>
               <span class="glyphicon glyphicon-search"></span>
             <% end %>
         </div>

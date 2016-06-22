@@ -1,5 +1,8 @@
 source 'https://rubygems.org'
 
+# SearchJoy gem for search analytics
+gem "searchjoy"
+
 # Searchkick gem for searching
 gem 'searchkick'
 

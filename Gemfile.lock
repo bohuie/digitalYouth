@@ -112,6 +112,8 @@ GEM
       railties (>= 3.2, < 5.1)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
+    groupdate (3.0.0)
+      activesupport (>= 3)
     haml (4.0.7)
       tilt
     hashie (3.4.4)
@@ -243,6 +245,10 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
+    searchjoy (0.0.10)
+      activerecord
+      chartkick
+      groupdate
     searchkick (1.3.0)
       activemodel
       elasticsearch (>= 1)
@@ -309,6 +315,7 @@ DEPENDENCIES
   rspec-rails
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
+  searchjoy
   searchkick
   simple_form
   spring

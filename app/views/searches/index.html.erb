@@ -1,12 +1,26 @@
-<p>Search results for <%=@query%><br>
-<% if !@results.nil? %>
-	Returned <%=@results.size%> results.<br>
-	Took <%=@results.took%>ms.</p>
-	<% @results.each do |r|%>
-		<%= render "searches/results/#{r.class.name.downcase}", result: r %>
-	<% end %>
-<% else %>
-	No results found for <%=@query%></p>
-<% end %>
+<div class="row">
+	<div class="col-md-2 search-sidebar">
+		<%= link_to "Projects", search_path(q:@query, f:"projects") %><br>
+		<%= link_to "Users", search_path(q:@query, f:"users") %><br>
+		<%= link_to "Job Postings", search_path(q:@query, f:"postings") %><br>
+	</div>
 
-
+	<div class="col-md-5 search">
+		<% if !@results.nil? %>
+			<% if !@results.empty? %>
+				<p><%=raw("Search results for #{@query}<br>") if !@query.empty?%>
+				Returned <%=@results.size%> results.<br>
+			<% else %>
+				<p>No results found for <%=@query%><br>
+			<% end %>
+			Took <%=@results.took%>ms.</p>
+			<% @results.each do |r|%>
+				<div onclick="window.location='<%=search_nav_path(obj:r.class.name,obj_id:r.id,id:@results.search.id,path:polymorphic_path(r))%>'"> 
+					<%= render "searches/results/#{r.class.name.downcase}", result: r %>
+				</div>
+			<% end %>
+		<% else %>
+			<p>No results found for <%=@query%></p>
+		<% end %>
+	</div>
+</div>

@@ -1,9 +1,11 @@
 Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+  mount Searchjoy::Engine, at: "/admin/searchjoy"
   get 'welcome/index'
 
   # Searches
   get 'search' => 'searches#index'
+  get 'search/:id' => 'searches#navigate', as: :search_nav
 
   # Notifications
   get 'notifications' => 'notifications#index'

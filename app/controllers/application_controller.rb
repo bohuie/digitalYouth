@@ -17,20 +17,23 @@ class ApplicationController < ActionController::Base
   	current_user
   end
 
-  # Redirect to stored location (or default)
-  def redirect_back_or (default =nil)
-byebug
-    if default.nil? && session[:forwarding_url].nil?
+  # Redirect to stored location (or specified)
+  # Usage:
+  # redirect_back_or // This redirects to the last visited page.
+  #                   // If there is no page and no specified path, it will go to root_path
+  # redirect_back_or current_user_path // This redirects to the current_user page
+  def redirect_back_or (specified =nil)
+    if specified.nil? && session[:forwarding_url].nil?
       redirect_to root_path
-    elsif default.nil?
+    elsif specified.nil?
        redirect_to(session[:forwarding_url])
     else
-      redirect_to (default)
+      redirect_to (specified)
     end
     session.delete(:forwarding_url)
   end
 
-  # Stores the URL trying to be accessed.
+  # Stores the last URL visited.
   def store_location
     session[:forwarding_url] = request.url if request.get?
   end

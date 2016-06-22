@@ -1,22 +1,20 @@
 class SearchesController < ApplicationController
 	def index
 		@query 	= params[:q].blank? ? "*" : params[:q]
-		@filter = params[:f].nil? ? "combined" : params[:f]
+		@filter = params[:f].nil? ? "Combined" : params[:f]
 		@usr = current_user.id if user_signed_in?
 
-		if @filter == "combined"
-			@results = User.search(@query, index_name: [User.searchkick_index.name,Project.searchkick_index.name,JobPosting.searchkick_index.name], operator: "or", track:true)
-		else
-			case @filter
-			when "users"
-				@results = User.search(@query, track:true)
-			when "projects"
-				@results = Project.search(@query, track:true)
-			when "postings"
-				@results = JobPosting.search(@query, track:true)
-			end
+		case @filter
+			when "Combined"
+				idxs=[User.searchkick_index.name,Project.searchkick_index.name,JobPosting.searchkick_index.name]
+			when "Users"
+				idxs=[User.searchkick_index.name]
+			when "Projects"
+				idxs=[Project.searchkick_index.name]
+			when "JobPostings"
+				idxs=[JobPosting.searchkick_index.name]
 		end
-		Searchjoy::Search.create(search_type:@filter,query:@query,results_count:@results.size,user_id:@usr) if !@results.nil?
+		@results = User.search(@query, index_name: idxs, operator: "or", track: {user_id:@usr,search_type:@filter})
 		@query = "" if @query == "*"
 	end
 

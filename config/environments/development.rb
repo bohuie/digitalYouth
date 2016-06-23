@@ -50,16 +50,11 @@ Rails.application.configure do
     location: '/usr/sbin/sendmail',
     arguments: '-i -t'
   } 
-  
-  config.action_mailer.smtp_settings = {
-  address: ENV['EMAIL_ADDRESS'],
-  #domain: ENV['EMAIL_DOMAIN'],
-  port: 465,
-  authentication: "login",
-  enable_starttls_auto: true,
-  user_name: ENV['EMAIL_USERNAME'],
-  password: ENV['EMAIL_PASSWORD']
-}
+  config.action_mailer.default_options = {
+    from: 'edge.map@ubc.ca',
+    reply_to: 'edge.map@ubc.ca',
+    user_name: 'edge.map@ubc.ca'
+  }
 
   # Paperclip
   Paperclip.options[:command_path] = "/usr/local/bin/"

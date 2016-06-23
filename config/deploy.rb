@@ -7,7 +7,7 @@ set :deploy_to, '/srv/www/vhosts/ubc.ca/ok/jobcannon/html/public'
 #set :tmp_dir, '/srv/www/vhosts/ubc.ca/ok/jobcannon/html/public/tmp'
 #set :tmp_dir, '~/tmp'
 set :scm, :git
-set :branch, "master"
+set :branch, "Action-Mailer-Live"
 
 set :linked_files, %w(config/application.yml)
 

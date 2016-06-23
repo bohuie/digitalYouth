@@ -3,6 +3,18 @@ class User < ActiveRecord::Base
   tracked only: :create, owner: ->(controller,model) {model && model.itself}
   searchkick
 
+  def search_data
+    data = Hash.new
+    data[:first_name] = first_name
+    data[:last_name] = last_name
+    data[:company_name] = company_name
+    data[:company_city] = company_city
+    data[:company_address] = company_address
+    data[:company_province] = company_province
+    data[:role] = self.roles.first.name if !self.roles.first.nil?
+    return data
+  end
+
   rolify
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable

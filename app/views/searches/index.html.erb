@@ -1,8 +1,18 @@
 <div class="row">
 	<div class="col-md-2 search-sidebar">
-		<%= link_to "Projects", search_path(q:@query, f:"Projects") %><br>
-		<%= link_to "Users", search_path(q:@query, f:"Users") %><br>
-		<%= link_to "Job Postings", search_path(q:@query, f:"JobPostings") %><br>
+		<%= link_to "Users", search_path(q:@query, t:"Users",f:"User") %><br>
+		<%= link_to "Companies", search_path(q:@query, t:"Users", f:"Company") %><br>
+		<%= link_to "Projects", search_path(q:@query, t:"Projects") %><br>
+		<%= link_to "Job Postings", search_path(q:@query, t:"JobPostings") %><br>
+		
+		<%if @filter == "Company" %>
+			<hr>
+			<h6>Province</h6>
+			<%@provinces.each do |p|%>
+				<% val = add_condition(@value,p.company_province)%>
+				<%= link_to p.company_province, search_path(q:@query, t:"Users", f:"Company", v:val) %><br>
+			<%end%>
+		<% end %>
 	</div>
 
 	<div class="col-md-5 search">

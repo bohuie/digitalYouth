@@ -82,10 +82,9 @@ class UsersController < ApplicationController
 	# Checks current user is the profile owner
 	def profile_owner
 		@user = User.find(params[:id])
-		
 		unless @user.id == current_user.id
 			flash[:warning] = "You can only make changes to your own profile."
-			redirect_to current_user
+			redirect_back_or current_user
 		end
 	end
 end

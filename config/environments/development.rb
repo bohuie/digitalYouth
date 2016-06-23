@@ -41,14 +41,14 @@ Rails.application.configure do
   config.action_view.raise_on_missing_translations = true
   config.action_mailer.raise_delivery_errors = true
 
-  config.action_mailer.default_url_options = {:host => 'localhost:3000'}
+  config.action_mailer.default_url_options = {:host => 'https://www.mail.ok.ubc.ca'}
 
   config.action_mailer.perform_deliveries = true
   config.action_mailer.delivery_method = :smtp 
   config.action_mailer.smtp_settings = {
   address: ENV['EMAIL_ADDRESS'],
   #domain: ENV['EMAIL_DOMAIN'],
-  port: 587,
+  port: 465,
   authentication: "plain",
   enable_starttls_auto: true,
   user_name: ENV['EMAIL_USERNAME'],

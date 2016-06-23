@@ -1,3 +1,5 @@
+# This file generates random user information.
+num_random_users = 50
 
 first_names = ['Allison','Arthur','Ana','Alex','Arlene','Alberto','Barry','Bertha','Bill','Bonnie','Bret','Beryl','Chantal','Cristobal','Claudette','Charley','Cindy','Chris','Dean',
 	'Dolly','Danny','Danielle','Dennis','Debby','Erin','Edouard','Erika','Earl','Emily','Ernesto','Felix','Fay','Fabian','Frances','Franklin','Florence','Gabielle','Gustav','Grace',
@@ -252,22 +254,20 @@ cities = ["Toronto","Montreal","Vancouver","Lachine","Mississauga","Leamington",
 provinces = ["AB","BC","MB","MB","NB","NL","NT","NS","NU","ON","PE","QC","SK","YT"]
 chars = ("A".."Z").to_a
 
-for i in 0...50
-	first = first_names[rand(first_names.length)]
-	last = last_names[rand(last_names.length)]
+for i in 0...num_random_users
 	if rand(1) == 1
-		usr = User.create(first_name: first, last_name: last, email: first+"_"+last+"@example.com",password:"password", password_confirmation: 'password')
+		usr = User.create(first_name: first_names[rand(first_names.length)], last_name: last_names[rand(last_names.length)],
+						  email: first_names[rand(first_names.length)] << "_" << last_names[rand(last_names.length)] << "@example.com",
+						  password:"password", password_confirmation: 'password')
 		usr.add_role :employee
 		usr.confirm
 	else
-		cname = company_names[rand(company_names.length)]
-		caddr = (111 + rand(999)).to_s + streets[rand(streets.length)]
-		ccity = cities[rand(cities.length)]
-		cprov = provinces[rand(provinces.length)]
-		cpost = chars[rand(chars.length)] + rand(9).to_s + chars[rand(chars.length)] + " " + rand(9).to_s + chars[rand(chars.length)] + rand(9).to_s
-		usr = User.create(first_name: first, last_name: last, email: first+"_"+last+"@example.com",password:"password", password_confirmation: 'password',
-		company_name: cname, company_address: caddr, company_city: ccity, company_province: cprov, company_postal_code: cpost)
-		
+		usr = User.create(first_name: first_names[rand(first_names.length)], last_name: last_names[rand(last_names.length)],
+				email: first_names[rand(first_names.length)] << "_" << last_names[rand(last_names.length)] << "@example.com",
+				password:"password", password_confirmation: 'password',
+				company_name: company_names[rand(company_names.length)], company_address: (111 + rand(999)).to_s <<  " " << streets[rand(streets.length)],
+				company_city: cities[rand(cities.length)], company_province: provinces[rand(provinces.length)],
+				company_postal_code: chars[rand(chars.length)] << rand(9).to_s << chars[rand(chars.length)] << " " + rand(9).to_s << chars[rand(chars.length)] << rand(9).to_s)
 		usr.add_role :employer
 		usr.confirm
 	end

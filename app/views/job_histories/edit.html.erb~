@@ -1,0 +1,16 @@
+<h1>Edit a Job in Your History</h1><br>
+
+<!--form to be filled out with changed information for job-->
+<%= simple_form_for @job_history, method: "patch" do |f| %>
+	<!--Hidden value with user id, required in table-->
+	<%= f.hidden_field :user_id, :value => @user.id%>
+	<!--<%= f.hidden_field :id, :value => @job_history.id%>-->
+	<%= f.input :start_date, input_html: {value: @job_history.start_date}, required: true %>
+	<%= f.input :end_date, input_html: {value: @job_history.end_date}, required: true%>
+	<%= f.input :employer, input_html: {value: @job_history.employer}, required: true %>
+	<%= f.input :position,input_html: {value: @job_history.position}, required: true %>
+	<%= f.input :description,input_html: {value: @job_history.description}, required: true, as: :text %>
+	<!--skills learned can be altered to do scale or radio to link with skills in future-->
+	<%= f.input :skills, input_html: {value: @job_history.skills}, required: true, as: :text %>
+	<%= f.submit "Submit", {:action => 'update', :id => @job_history.id}%>
+<% end %>

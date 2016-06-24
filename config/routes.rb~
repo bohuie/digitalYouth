@@ -42,7 +42,6 @@ Rails.application.routes.draw do
 
   # Job histories routes
   get 'job_histories' => 'job_histories#index'
-  get '/job_histories/:id' => 'job_histories#show', as: :job_history
   get 'job_histories/new' => 'job_histories#new', as: :new_job_history
   post 'job_histories' => 'job_histories#create'
   get 'job_histories/edit/:id' => 'job_histories#edit', as: :edit_job_history

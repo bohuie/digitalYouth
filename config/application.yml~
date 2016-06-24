@@ -1,0 +1,6 @@
+DATABASE_USERNAME: 'asegert'
+DATABASE_PASSWORD: '36180123'
+EMAIL_USERNAME: "digitalyouthtest@gmail.com" 
+EMAIL_PASSWORD: "ubcokanagan"
+EMAIL_ADDRESS: "smtp.gmail.com"
+MAX_RATING: "2"

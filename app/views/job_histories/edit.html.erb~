@@ -12,5 +12,5 @@
 	<%= f.input :description,input_html: {value: @job_history.description}, required: true, as: :text %>
 	<!--skills learned can be altered to do scale or radio to link with skills in future-->
 	<%= f.input :skills, input_html: {value: @job_history.skills}, required: true, as: :text %>
-	<%= f.submit "Submit", {:action => 'update', :id => @job_history.id}%>
+	<%= f.submit "Submit"%>
 <% end %>

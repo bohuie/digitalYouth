@@ -1,57 +1,60 @@
 <!--Job History Display-->
 <h1>Job History</h1>
 <br><br><br>
-	<h3 style="text-align:center;">Your Job History</h3>
+
+<h3 style="text-align:center;">Your Job History</h3>
 <br>
-	<!--Table displaying the job history contents-->
-	<div class="container" style="border: 1px black solid;">
-		<div class="row">
-			<div class="col-xs-2" style="border: 1px black solid;">
-				<b>Employer</b>
-			</div>
-			<div class="col-xs-2" style="border: 1px black solid;">
-				<b>Job Description</b>
-			</div>
-			<div class="col-xs-2" style="border: 1px black solid;">
-				<b>Position</b>
-			</div>
-			<div class="col-xs-1" style="border: 1px black solid;">
-				<b>Skills</b>
-			</div>
-			<div class="col-xs-2" style="border: 1px black solid;">
-				<b>Start Date</b>
-			</div>
-			<div class="col-xs-2" style="border: 1px black solid;">
-				<b>End Date</b>
-			</div>
+
+<!--Table displaying the job history contents-->
+<div class="container" style="border: 1px black solid;">
+	<div class="row">
+		<div class="col-xs-2" style="border: 1px black solid;">
+			<b>Employer</b>
 		</div>
-		<div class="row">
-			<% @job_history.each do |j| %>
-				<div class="col-xs-2" style="border: 1px black solid;">
-					<%=j.employer%>
-				</div>
-				<div class="col-xs-2" style="border: 1px black solid;">
-					<%=j.description%>
-				</div>
-				<div class="col-xs-2" style="border: 1px black solid;">
-					<%=j.position%>
-				</div>
-				<div class="col-xs-1" style="border: 1px black solid;">
-					<%=j.skills%>
-				</div>
-				<div class="col-xs-2" style="border: 1px black solid;">
-					<%=j.start_date%>
-				</div>
-				<div class="col-xs-2" style="border: 1px black solid;">
-					<%=j.end_date%>
-				</div>
-				<div class="col-xs-1">
-					<%= link_to  'edit', {:action => 'edit', :id => j.id} %>
-					<%=link_to 'delete',delete_job_history_path(j.id), 'data-method' => :delete%>
-				</div>
-			<%end%>
+		<div class="col-xs-2" style="border: 1px black solid;">
+			<b>Job Description</b>
+		</div>
+		<div class="col-xs-2" style="border: 1px black solid;">
+			<b>Position</b>
+		</div>
+		<div class="col-xs-1" style="border: 1px black solid;">
+			<b>Skills</b>
+		</div>
+		<div class="col-xs-2" style="border: 1px black solid;">
+			<b>Start Date</b>
+		</div>
+		<div class="col-xs-2" style="border: 1px black solid;">
+			<b>End Date</b>
 		</div>
 	</div>
+	<div class="row">
+		<% @job_history.each do |j| %>
+			<div class="col-xs-2" style="border: 1px black solid;">
+				<%=j.employer%>
+			</div>
+			<div class="col-xs-2" style="border: 1px black solid;">
+				<%=j.description%>
+			</div>
+			<div class="col-xs-2" style="border: 1px black solid;">
+				<%=j.position%>
+			</div>
+			<div class="col-xs-1" style="border: 1px black solid;">
+				<%=j.skills%>
+			</div>
+			<div class="col-xs-2" style="border: 1px black solid;">
+				<%=j.start_date%>
+			</div>
+			<div class="col-xs-2" style="border: 1px black solid;">
+				<%=j.end_date%>
+			</div>
+			<div class="col-xs-1">
+				<%= link_to  'edit', {:action => 'edit', :id => j.id} %>
+				<%=link_to 'delete',delete_job_history_path(j.id), 'data-method' => :delete%>
+			</div>
+		<%end%>
+	</div>
+</div>
 <br><br>
+
 <!--Links to add.html.erb to allow a new entry to job history-->
 <input type="button" value="Add Job" onclick="location.href='job_histories/new'"/>

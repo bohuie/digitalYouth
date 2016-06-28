@@ -1,4 +1,8 @@
 class SearchesController < ApplicationController
+
+	respond_to :js, only: :index # Formating for the AJAX requests
+	respond_to :html
+
 	def index
 		@query 	= params[:q].blank? ? "*" : params[:q]
 		@type 	= params[:t].blank? ? "Combined" : params[:t]
@@ -25,22 +29,25 @@ class SearchesController < ApplicationController
 			where_clause[:role]="employer"
 			@provinces = User.select(:company_province).uniq.order(:company_province).where.not(company_province: nil)
 			where_clause[:company_province]=@value.split(',') if !@value.empty?
-		when "User"
+		when "People"
 			where_clause[:role]="employee"
 		end
 
+		# Need to fix N+1 query problem here with rolify
 		@results = User.search @query, 
-				 index_name: idxs, 
+				 index_name: idxs,
 				 operator: "or", 
 				 track: {user_id:@usr,search_type:@type},
-				 where: where_clause
-		
+				 where: where_clause,
+				 page: params[:page], per_page: 30
+
 		@query = "" if @query == "*"
 	end
 
-	def navigate #Need to look into the security of this
+	def navigate
 		obj = params[:obj].constantize.find(params[:obj_id])
 		Searchjoy::Search.find(params[:id]).convert(obj)
 		redirect_to params[:path]
 	end
+
 end

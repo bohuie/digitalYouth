@@ -257,19 +257,16 @@ provinces = ["AB","BC","MB","MB","NB","NL","NT","NS","NU","ON","PE","QC","SK","Y
 chars = ("A".."Z").to_a
 
 for i in 0...num_random_users
+	first = first_names[rand(first_names.length)]
+	last = last_names[rand(last_names.length)]
 	if rand(2) == 1
-		usr = User.create(first_name: first_names[rand(first_names.length)], last_name: last_names[rand(last_names.length)],
-						  email: first_names[rand(first_names.length)] << "_" << last_names[rand(last_names.length)] << "@example.com",
-						  password:"password", password_confirmation: 'password')
+		usr = User.create(first_name: first, last_name: last, email: "#{first}_#{last}@example.com", password:"password", password_confirmation: 'password')
 		usr.add_role :employee
 		usr.confirm
 	else
-		usr = User.create(first_name: first_names[rand(first_names.length)], last_name: last_names[rand(last_names.length)],
-				email: first_names[rand(first_names.length)] << "_" << last_names[rand(last_names.length)] << "@example.com",
-				password:"password", password_confirmation: 'password',
-				company_name: company_names[rand(company_names.length)], company_address: (111 + rand(999)).to_s <<  " " << streets[rand(streets.length)],
-				company_city: cities[rand(cities.length)], company_province: provinces[rand(provinces.length)],
-				company_postal_code: chars[rand(chars.length)] << rand(9).to_s << chars[rand(chars.length)] << " " + rand(9).to_s << chars[rand(chars.length)] << rand(9).to_s)
+		usr = User.create(first_name: first, last_name: last, email: "#{first}_#{last}@example.com", password:"password", password_confirmation: 'password', 
+				company_name: company_names[rand(company_names.length)], company_address: (111 + rand(999)).to_s <<  " " << streets[rand(streets.length)], company_city: cities[rand(cities.length)], 
+				company_province: provinces[rand(provinces.length)], company_postal_code: chars[rand(chars.length)] << rand(9).to_s << chars[rand(chars.length)] << " " + rand(9).to_s << chars[rand(chars.length)] << rand(9).to_s)
 		usr.add_role :employer
 		usr.confirm
 	end

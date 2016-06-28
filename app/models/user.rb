@@ -14,6 +14,7 @@ class User < ActiveRecord::Base
     data[:role] = self.roles.first.name if !self.roles.first.nil?
     return data
   end
+  scope :search_import, -> { includes(:roles,:users_roles) }
 
   rolify
   # Include default devise modules. Others available are:

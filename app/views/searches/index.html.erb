@@ -1,28 +1,19 @@
 <div class="row">
 	<div class="col-md-2 search-sidebar">
-		<%= link_to "All", search_path(q:@query, t:"Combined") %><br>
-		<%= link_to "People", search_path(q:@query, t:"Users",f:"People") %><br>
-		<%= link_to "Companies", search_path(q:@query, t:"Users", f:"Company") %><br>
-		<%= link_to "Projects", search_path(q:@query, t:"Projects") %><br>
-		<%= link_to "Job Postings", search_path(q:@query, t:"JobPostings") %><br>
-		<hr>
-		<h6> Location </h6>
-		<%if @filter == "Company" %>
-			<h6>Province</h6>
-			<%= link_to	"All", search_path(q:@query, t:"Users", f:"Company") %><br>
-			<%@provinces.each do |p|%>
-				<% val = add_condition(@value,p.company_province)%>
-				<%= link_to p.company_province, search_path(q:@query, t:"Users", f:"Company", v:val) %><br>
-			<%end%>
-		<% end %>
-
+		<div id="filters">
+			<%= link_to "All", search_path(q:@query) %><br>
+			<%= link_to "People", search_path(q:@query, t:"People") %><br>
+			<%= link_to "Companies", search_path(q:@query, t:"Companies") %><br>
+			<%= link_to "Projects", search_path(q:@query, t:"Projects") %><br>
+			<%= link_to "Job Postings", search_path(q:@query, t:"JobPostings") %><br>
+		</div>
+		<%= render "searches/partials/filters" %>
 	</div>
 
 	<div class="col-md-5 search">
 		<% if !@results.blank? %>
 			<p><%=raw("Search results for #{@query}<br>") if !@query.empty?%>
-			Returned <%=@results.total_entries%> results.<br>
-			Took <%=@results.took%>ms.</p>
+			<%=@results.total_entries%> results, took <%=@results.took%>ms.</p>
 			<%= render "searches/partials/results", results: @results, query: @query %>
 			<img id="ajax-loading" class="loading-image" src="<%=asset_path('loading.gif')%>" alt="Loading.." style="visibility:hidden;">
 		<% else %>

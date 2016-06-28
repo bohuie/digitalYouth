@@ -9,3 +9,4 @@ $(document).on "page:change", ->
   	checkScroll(15,'ajax-loading',window.location.href);)
   $(window).unload(() ->
   	$(window).unbind();)
+  ""

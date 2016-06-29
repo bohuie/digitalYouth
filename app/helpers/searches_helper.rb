@@ -14,6 +14,7 @@ module SearchesHelper
 	end
 
 	def add_filter(filter,filter_to_add,vals)
+
 			rtn_val = filter.nil? ? nil : filter.dup
 			if rtn_val.blank? 
 				rtn_val = filter_to_add

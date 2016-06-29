@@ -332,7 +332,7 @@ cities = ["Toronto","Montreal","Vancouver","Lachine","Mississauga","Leamington",
 	"Grand Falls","Pouch Cove","Sicamous","Tappen","Pritchard","Pitt Meadows","Fort St. John","Onoway","St. Albert","Oyama","Aldergrove","Squamish","Garibaldi","Brackendale","Trail","Castlegar","Hope",
 	"Vanderhoof","Fort St. James","Lumby","Sexsmith","McLennan","Peace River","Grimshaw","Beaverlodge","Rycroft","Irricana","Turner Valley","Bassano","Innisfail","Blackfalds","Sylvan Lake","Ponoka"]
 
-provinces = ["AB","BC","MB","MB","NB","NL","NT","NS","NU","ON","PE","QC","SK","YT"]
+provinces = ["AB","BC","MB","NB","NL","NT","NS","NU","ON","PE","QC","SK","YT"]
 chars = ("A".."Z").to_a
 
 for i in 0...num_random_users

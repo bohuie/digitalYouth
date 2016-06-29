@@ -11,19 +11,19 @@ class SearchesController < ApplicationController
 		@usr 	= current_user.id if user_signed_in?
 
 		#Values for where clause
-		@l 	= params[:l].nil?  ? "" : params[:l]
-		@i 	= params[:i].nil?  ? "" : params[:i]
-		@c 	= params[:c].nil?  ? "" : params[:c]
-		@cc = params[:cc].nil? ? "" : params[:cc]
-		@pc = params[:pc].nil? ? "" : params[:pc]
-		@cz = params[:cz].nil? ? "" : params[:cz]
-		@e 	= params[:e].nil?  ? "" : params[:e]
-		@r 	= params[:r].nil?  ? "" : params[:r]
-		@s 	= params[:s].nil?  ? "" : params[:s]
-		@jf = params[:jf].nil? ? "" : params[:jf]
-		@el = params[:el].nil? ? "" : params[:el]
-		@dp = params[:dp].nil? ? "" : params[:dp]
-		@h 	= params[:h].nil?  ? "" : params[:h]
+		@l 	= params[:l].nil?  ? "" : params[:l]  #location
+		@i 	= params[:i].nil?  ? "" : params[:i]  #industry
+		@c 	= params[:c].nil?  ? "" : params[:c]  #company
+		@cc = params[:cc].nil? ? "" : params[:cc] #current_company
+		@pc = params[:pc].nil? ? "" : params[:pc] #past_company
+		@cz = params[:cz].nil? ? "" : params[:cz] #company_size
+		@e 	= params[:e].nil?  ? "" : params[:e]  #education
+		@r 	= params[:r].nil?  ? "" : params[:r]  #relationship
+		@s 	= params[:s].nil?  ? "" : params[:s]  #skills
+		@jf = params[:jf].nil? ? "" : params[:jf] #job_function
+		@el = params[:el].nil? ? "" : params[:el] #experience_level
+		@dp = params[:dp].nil? ? "" : params[:dp] #date_posted
+		@h 	= params[:h].nil?  ? "" : params[:h]  #hiring
 
 		#Hashes for filtering
 		@toggles = Hash.new()
@@ -32,40 +32,44 @@ class SearchesController < ApplicationController
 		case @type # Modifies the indexes to search with, i.e. selects the model(s) to search from, also sets up extra data
 		when "All"
 			idxs=[User.searchkick_index.name,Project.searchkick_index.name,JobPosting.searchkick_index.name]
-			@toggles = {location: true, industry: true}
+			@toggles = {l: @l, i: @i}
 			@locations = []
-			@industries = nil
+			@industries = []
 		when "People"
 			idxs=[User.searchkick_index.name]
 			where_clause[:role]="employee"
-			@toggles = {relationship: true, location: true, current_company: true, industry: true, past_company: true, education: true, skills:true}
+			@toggles = {r: @r, l: @l, cc: @cc, i: @i, pc: @pc, e: @e, s: @s}
 			@locations = []
-			@current_companies = nil
-			@past_companies = nil
-			@education = nil
-			@skills = nil
+			@relationships = ["1st","2nd", "Group Members", "3rd + Everyone"]
+			@industries = []
+			@current_companies = []
+			@past_companies = []
+			@educations = []
+			@skills = []
 		when "Companies"
 			idxs=[User.searchkick_index.name]
 			where_clause[:role]="employer"
-			@toggles = {relationship: true, location:true, hiring: true, industry: true, company_size: true}
+			@toggles = {r: @r, l: @l, h: @h, i: @i, cz: @cz}
 			@locations = User.where.not(company_province: nil).uniq.order(:company_province).pluck(:company_province)
 			@company_sizes = ["1-10","11-50","51-200","201-500","501-1000","1001-5000","5001-10000","10000+"]
-			@industries = nil
+			@relationships = ["1st","2nd", "Group Members", "3rd + Everyone"]
+			@industries = []
 		when "Projects"
 			idxs=[Project.searchkick_index.name]
-			@toggles = {skills: true, industry: true}
-			@skills = nil
-			@industry = nil
+			@toggles = {s: @s, i: @i}
+			@industries = []
+			@skills = []
+			@industry = []
 		when "JobPostings"
 			idxs=[JobPosting.searchkick_index.name]
-			@toggles = {location: true, company: true, date_posted: true, job_function: true, industry: true, experience_level: true, skills: true}
+			@toggles = {l: @l, c: @c, dp: @dp, jf: @jf, i: @i, el: @el, s: @s}
 			@locations = []
-			@companies = nil
+			@companies = []
 			@dates_posted = ["1", "2-7", "8-14","15-30","30+"]
-			@job_functions = nil
-			@industries = nil
+			@job_functions = []
+			@industries = []
 			@experience_levels = ["Entry Level", "Associate", "Not Applicable", "Internship", "Mid-Senior Level", "Director", "Executive"]
-			@skills = nil
+			@skills = []
 		else
 			idxs=[]
 		end

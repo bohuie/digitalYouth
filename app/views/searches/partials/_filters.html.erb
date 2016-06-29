@@ -1,130 +1,72 @@
-<% if @toggles[:location] %>
-	<hr>
-	<h6 class="filter-title" onclick="$('#location').slideToggle(100);"> Location <span class="caret"></span></h6>
-	<div id="location" style="display: none;"> 
-		<%= link_to	"All", search_path(q:@query, t:@type, f:@filters)%><br>
-		<%@locations.each do |l|%>
-			<% val = add_value(@l,l)%>
-			<% filt = add_filter(@filters,"location",@l)%>
-			<%= link_to l, search_path(q:@query, t:@type, f:filt, l:val) %><br>
-		<%end%>
-	</div>
+<% if !@toggles[:l].nil? %>
+	<%= render "searches/partials/filter", name: "Location", key: :l, filter_values: @locations, current_values: @l%>
 <% end%>
 
-<% if @toggles[:relationship] %>
-	<% if user_signed_in? %>
-		<hr>
-		<h6 class="filter-title" onclick="$('#relationship').slideToggle(100);">Relationship <span class="caret"></span></h6>
-		<div id="relationship" style="display: none;">
-			<%= link_to	"All", search_path(q:@query, t:@type, f:"relationship") %><br>
-		</div>
-	<% end %>
+<% if !@toggles[:r].nil? && user_signed_in? %>
+	<%= render "searches/partials/filter", name: "Relationship", key: :r, filter_values: @relationships, current_values: @r%>
 <% end%>
 
-<% if @toggles[:current_company] %>
-	<hr>
-	<h6 class="filter-title" onclick="$('#current-company').slideToggle(100);">Current Company <span class="caret"></span></h6>
-	<div id="current-company" style="display: none;">
-		<%= link_to	"All", search_path(q:@query, t:@type, f:"current_company") %><br>
-	</div>
+<% if !@toggles[:cc].nil? %>
+	<%= render "searches/partials/filter", name: "Current Company", key: :cc, filter_values: @current_companies, current_values: @cc %>
 <% end%>
 
-<% if @toggles[:industry] %>
-	<hr>
-	<h6 class="filter-title" onclick="$('#industry').slideToggle(100);">Industry <span class="caret"></span></h6>
-	<div id="industry" style="display: none;">
-		<%= link_to	"All", search_path(q:@query, t:@type, f:"industry") %><br>
-	</div>
+<% if !@toggles[:i].nil? %>
+	<%= render "searches/partials/filter", name: "Industry", key: :i, filter_values: @industries, current_values: @i %>
 <% end%>
 
-<% if @toggles[:past_company] %>
-	<hr>
-	<h6 class="filter-title" onclick="$('#past-company').slideToggle(100);">Past Company <span class="caret"></span></h6>
-	<div id="past-company" style="display: none;">
-		<%= link_to	"All", search_path(q:@query, t:@type, f:"past_company") %><br>
-	</div>
+<% if !@toggles[:pc].nil? %>
+	<%= render "searches/partials/filter", name: "Past_Company", key: :pc, filter_values: @past_companies, current_values: @pc %>
 <% end%>
 
-<% if @toggles[:education] %>
-	<hr>
-	<h6 class="filter-title" onclick="$('#education').slideToggle(100);">Education <span class="caret"></span></h6>
-	<div id="education" style="display: none;">
-		<%= link_to	"All", search_path(q:@query, t:@type, f:"education") %><br>
-	</div>
+<% if !@toggles[:e].nil? %>
+	<%= render "searches/partials/filter", name: "Education", key: :e, filter_values: @educations, current_values: @e %>
 <% end%>
 
-<% if @toggles[:skills] %>
-	<hr>
-	<h6 class="filter-title" onclick="$('#skills').slideToggle(100);">Skills <span class="caret"></span></h6>
-	<div id="skills" style="display: none;">
-		<%= link_to	"All", search_path(q:@query, t:@type, f:"skills") %><br>
-	</div>
+<% if !@toggles[:s].nil? %>
+	<%= render "searches/partials/filter", name: "Skills", key: :s, filter_values: @skills, current_values: @s %>
 <% end%>
 
-<% if @toggles[:hiring] %>
+<% if !@toggles[:h].nil? %>
 	<hr>
 	<h6 class="filter-title" onclick="$('#hiring').slideToggle(100);">Hiring <span class="caret"></span></h6>
 	<div id="hiring" style="display: none;">
-		<%= link_to	"Hiring", search_path(q:@query, t:@type, f:"hiring") %><br>
+		<% path_hash = get_path_hash(@toggles,@query,@type) %>
+		<% path_hash[:h] = add_value(@l,"true") %>
+		<% path_hash[:f] = add_filter(@filters,"hiring",@h) %>
+		<%= link_to "Hiring", search_path(path_hash) %><br>
 	</div>
 <% end%>
 
-<% if @toggles[:company_size] %>
-	<hr>
-	<h6 class="filter-title" onclick="$('#company-size').slideToggle(100);">Company Size <span class="caret"></span></h6>
-	<div id="company-size" style="display: none;">
-		<%= link_to	"All", search_path(q:@query, t:@type, f:@filter) %><br>
-		<%@company_sizes.each do |c|%>
-			<% val = add_value(@value,c)%>
-			<% filt = add_filter(@filters,"company_size",@cz)%>
-			<%= link_to c, search_path(q:@query, t:@type, f:"company_size", v:val) %><br>
-		<%end%>
-	</div>
+<% if !@toggles[:cz].nil? %>
+	<%= render "searches/partials/filter", name: "Company Size", key: :cz, filter_values: @company_sizes, current_values: @cz %>
 <% end%>
 
-<% if @toggles[:company] %>
-	<hr>
-	<h6 class="filter-title" onclick="$('#company').slideToggle(100);">Company <span class="caret"></span></h6>
-	<div id="company" style="display: none;">
-		<%= link_to	"All", search_path(q:@query, t:@type, f:"company") %><br>
-	</div>
+<% if !@toggles[:c].nil? %>
+	<%= render "searches/partials/filter", name: "Company", key: :c, filter_values: @companies, current_values: @c %>
 <% end%>
 			
-<% if @toggles[:date_posted] %>
+<% if !@toggles[:dp].nil? %>
 	<hr>
 	<h6 class="filter-title" onclick="$('#date-posted').slideToggle(100);">Date Posted <span class="caret"></span></h6>
 	<div id="date-posted" style="display: none;">
 		<%= link_to	"All", search_path(q:@query, t:@type, f:"date_posted") %><br>
 		<% str = "day" %> 
 		<% cnt = 0 %>
-		<% @dates_posted.each do |d| %>
+		<% @dates_posted.each do |dp| %>
 			<% str = "days" if cnt > 0 %>
-			<% val = add_value(@value,d)%>
-			<% filt = add_filter(@filters,"date_posted",@dp)%>
-			<%= link_to "#{d} #{str} ago", search_path(q:@query, t:@type, f:"date_posted", v:val) %><br>
+			<% path_hash = get_path_hash(@toggles,@query,@type) %>
+			<% path_hash[:dp] = add_value(@dp,dp) %>
+			<% path_hash[:f] = add_filter(@filters,"date_posted",@dp) %>
+			<%= link_to "#{dp} #{str} ago", search_path(path_hash) %><br>
 			<% cnt = cnt + 1 %>
-		<% end %>
-
-	</div>
-<% end %>
-
-<% if @toggles[:job_function] %>
-	<hr>
-	<h6 class="filter-title" onclick="$('#job-function').slideToggle(100);">Job Function <span class="caret"></span></h6>
-	<div id="job-function" style="display: none;">
-		<%= link_to	"All", search_path(q:@query, t:@type, f:"job_function") %><br>
-	</div>
-<% end %>
-
-<% if @toggles[:experience_level] %>
-	<hr>
-	<h6 class="filter-title" onclick="$('#experience-level').slideToggle(100);">Experience Level <span class="caret"></span></h6>
-	<div id="experience-level" style="display: none;">
-		<%= link_to	"All", search_path(q:@query, t:@type, f:"experience_level") %><br>
-		<%@experience_levels.each do |e|%>
-			<% val = add_value(@value,e)%>
-			<% filt = add_filter(@filters,"experience_level",@el)%>
-			<%= link_to e, search_path(q:@query, t:@type, f:"experience_level", v:val) %><br>
 		<%end%>
 	</div>
+<% end %>
+
+<% if !@toggles[:jf].nil? %>
+	<%= render "searches/partials/filter", name: "Job Function", key: :jf, filter_values: @job_functions, current_values: @jf%>
+<% end %>
+
+<% if !@toggles[:el].nil? %>
+	<%= render "searches/partials/filter", name: "Experience Level", key: :el, filter_values: @experience_levels, current_values: @el%>
 <% end %>

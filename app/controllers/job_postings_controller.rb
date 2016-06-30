@@ -25,7 +25,6 @@ class JobPostingsController < ApplicationController
 		else
 			redirect_to current_user, flash: {warning: "You are not an employer!"}
 		end
-
 	end
 
 	def create

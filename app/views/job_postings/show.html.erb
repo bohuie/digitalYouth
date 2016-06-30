@@ -1,0 +1,28 @@
+<!-- IMAGE -->
+<h3><%= @job_posting.title %></h3>
+<h6><%= @job_posting.location %></h6>
+<p> Pay Range: <%= @job_posting.pay_range %><br>
+	<a href="<%= @job_posting.link %>"><%= @job_posting.link %></a><br>
+	Posted By: <%= @job_posting.posted_by %><br>
+</p>
+
+<p><%= @job_posting.description %></p>
+
+<% if !@req_skills.empty? %>
+	<h4> Required Skills </h4>
+	<ul><%@req_skills.each do |r| %>
+		<li><%=r.name%></li><% end %>
+	</ul>
+<% end %>
+
+<% if !@pref_skills.empty? %>
+	<h4> Preferred Skills </h4>
+	<ul><%@pref_skills.each do |p| %>
+		<li><%=p.name%></li><% end %>
+	</ul>
+<% end %>
+
+</ul>
+<p>	Open date: <%= @job_posting.open_date %><br>
+	Close date: <%= @job_posting.close_date %><br>
+</p>

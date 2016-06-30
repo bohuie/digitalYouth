@@ -33,13 +33,15 @@ user2.add_role :employer
 user3 = User.create(first_name: 'admin', last_name: 'admin', email: 'admin@admin.com', password: 'password', password_confirmation: 'password')
 user3.add_role :admin
 
-JobPosting.create(title: 'Social Media Manager', description: 'Handling our Facebook and Twitter account, posting messages, and responding to clients.', open_date: '2016-01-01', close_date: '2016-04-01', user_id: user2.id)
-
-skill1 = Skill.create(name: 'Facebook Posting')
-skill2 = Skill.create(name: 'Twitter Posting')
-skill3 = Skill.create(name: 'Content Creator')
+skill1 = Skill.create(name: 'Facebook Posting', question_id:22)
+skill2 = Skill.create(name: 'Twitter Posting', question_id:23)
+skill3 = Skill.create(name: 'Content Creator', question_id:41)
 UserSkill.create(user_id: user1.id, skill_id: skill1.id, rating: "2")
 
+job = JobPosting.create(title: 'Social Media Manager', location: "Kelowna, British Columbia", pay_range: "30¢/hr-40¢/hr", link:"google.ca", posted_by:"Seed File", description: 'Handling our Facebook and Twitter account, posting messages, and responding to clients.', open_date: '2016-01-01', close_date: '2016-04-01', user_id: user2.id)
+JobPostingSkill.create(job_posting_id: job.id, skill_id:skill1.id, importance:2)
+JobPostingSkill.create(job_posting_id: job.id, skill_id:skill2.id, importance:2)
+JobPostingSkill.create(job_posting_id: job.id, skill_id:skill3.id, importance:1)
 
 project1 = user1.projects.create(title: 'No Image project', description: 'some description')
 

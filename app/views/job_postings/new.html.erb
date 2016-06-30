@@ -1,0 +1,9 @@
+<div class="container">
+	<%= simple_form_for @job_posting do |f| %>
+		<%= f.input :title, required: true %>
+		<%= f.input :description, required: true, as: :text %>
+		<%= f.input :open_date, required: true %>
+		<%= f.input :close_date, required: true %>
+		<%= f.button :submit %>
+	<% end %>
+</div>

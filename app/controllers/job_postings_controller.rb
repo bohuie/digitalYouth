@@ -3,12 +3,14 @@ class JobPostingsController < ApplicationController
 	before_action :authenticate_user!, except: [:show]
 	before_action :job_owner, only: [:edit, :update, :destroy]
 	
-#	def new
-#		@job_posting
-#	end
+	def new
+		@job_posting = JobPosting.new
+	end
 
 	def show
 		@job_posting = JobPosting.find(params[:id])
+		@req_skills = Skill.where(id: JobPostingSkill.select("skill_id").where(job_posting_id:params[:id], importance: 2))
+		@pref_skills = Skill.where(id: JobPostingSkill.select("skill_id").where(job_posting_id:params[:id], importance: 1))
 	end
 
 	def edit

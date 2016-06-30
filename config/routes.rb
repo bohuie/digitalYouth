@@ -35,10 +35,12 @@ Rails.application.routes.draw do
   post '/user_skills' => 'user_skills#create'
 
   # Job posting routes
+  get 'job_postings' => 'job_postings#index'
   get 'job_postings/new' => 'job_postings#new', as: :new_job_posting
   get 'job_postings/:id' => 'job_postings#show', as: :job_posting
   get 'job_postings/:id/edit' => 'job_postings#edit', as: :edit_job_posting
   patch 'job_postings/:id' => 'job_postings#update'
+  delete 'job_postings/:id' => 'job_postings#destroy'
   post 'job_postings' => 'job_postings#create'
 
   # Project routes

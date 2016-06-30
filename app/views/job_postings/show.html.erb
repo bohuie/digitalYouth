@@ -1,8 +1,10 @@
-<!-- IMAGE -->
+<% if !@job_posting.company_logo_file_name.nil? %>
+	<%= image_tag @job_posting.company_logo.url %>
+<% end %>
 <h3><%= @job_posting.title %></h3>
 <h6><%= @job_posting.location %></h6>
 <p> Pay Range: <%= @job_posting.pay_range %><br>
-	<a href="<%= @job_posting.link %>"><%= @job_posting.link %></a><br>
+	<a href="http://<%= @job_posting.link %>"><%= @job_posting.link %></a><br>
 	Posted By: <%= @job_posting.posted_by %><br>
 </p>
 
@@ -26,3 +28,7 @@
 <p>	Open date: <%= @job_posting.open_date %><br>
 	Close date: <%= @job_posting.close_date %><br>
 </p>
+
+<% if user_signed_in? && @current_user.id == @job_posting.user_id %>
+	<%= link_to "Edit Posting", edit_job_posting_path(@job_posting) %> <%= link_to "Delete Posting", job_posting_path(@job_posting), method: "delete" %>
+<% end %>

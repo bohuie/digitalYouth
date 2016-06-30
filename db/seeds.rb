@@ -29,9 +29,11 @@ reference1 = Reference.create(first_name: 'Bernie', last_name: 'Smith', email: '
 user2 = User.create(first_name: 'Foo', last_name: 'Bar', email: 'foo@bar.com', password: 'password', password_confirmation: 'password', 
 	company_name: 'Google', company_address: '123 Fake Street', company_city: 'Kelowna', company_province: 'BC', company_postal_code: 'V1V 1V1')
 user2.add_role :employer
+user2.confirm
 
 user3 = User.create(first_name: 'admin', last_name: 'admin', email: 'admin@admin.com', password: 'password', password_confirmation: 'password')
 user3.add_role :admin
+user3.confirm
 
 skill1 = Skill.create(name: 'Facebook Posting', question_id:22)
 skill2 = Skill.create(name: 'Twitter Posting', question_id:23)

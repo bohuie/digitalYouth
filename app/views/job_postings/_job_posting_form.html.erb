@@ -1,0 +1,60 @@
+<%= simple_form_for @job_posting do |f| %>
+	<%= f.input :title, required: true, input_html: {value: @job_posting.title} %>
+	<%= f.input :location, label: "Location (City, Province Code)", required: true, input_html: {value: @job_posting.location} %>
+	<%= f.input :pay_range, input_html: {value: @job_posting.pay_range} %>
+	<%= f.input :link, input_html: {value: @job_posting.link} %>
+	<%= f.input :posted_by, input_html: {value: @job_posting.posted_by} %>
+	<%= f.input :description, required: true, as: :text, input_html: {value: @job_posting.description} %>
+	<%= f.input :open_date, as: :string, required: true, input_html: {value: @job_posting.open_date, type: :date} %>
+	<%= f.input :close_date, as: :string, required: true, input_html: {value: @job_posting.close_date, type: :date}%>
+	<%= f.input :company_logo, as: :file %>
+	<div class="row">
+		<div id="Required Skills" class="col-md-6">
+			<h5><b>Required Skills</b></h5>
+			<% if !@req_skills.nil? %>
+				<ul><%@req_skills.each do |r| %>
+					<li id="skill-<%=r.id%>"><%=r.name%> <span class="glyphicon glyphicon-remove"></span></li><% end %>
+				</ul>
+			<% end %>
+			<div class="input-group">
+		      <input type="text" class="form-control" name="req-skill">
+		      <div class="input-group-btn">
+  			  		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category <span class="caret"></span>
+        			<span class="input-group-btn"><button class="btn btn-default" type="button">Add</button></span>
+        			<ul class="dropdown-menu skill-dropdown">
+	          			<%@questions.each do |q| %>
+							<li id="question<%=q.id%>"><a><%=q.survey.category%>: <%=q.survey.title%>: <%=q.classification%></a></li>
+						<% end %>
+        			</ul>
+  			  </div>
+		    </div><!-- /input-group -->
+		</div>
+	</div>
+
+	<div class="row">
+		<div id="Preferred Skills" class="col-md-6">
+			<h5><b>Preferred Skills</b></h5>
+			<% if !@pref_skills.nil? %>
+				<ul><%@pref_skills.each do |p| %>
+					<li id="skill-<%=p.id%>"><%=p.name%> <span class="glyphicon glyphicon-remove"></span></li><% end %>
+				</ul>
+			<% end %>
+			<div class="input-group">
+		      <input type="text" class="form-control" name="req-skill">
+		      <div class="input-group-btn">
+  			  		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category <span class="caret"></span>
+        			<span class="input-group-btn"><button class="btn btn-default" type="button">Add</button></span>
+        			<ul class="dropdown-menu skill-dropdown">
+	          			<%@questions.each do |q| %>
+							<li id="question<%=q.id%>"><a><%=q.survey.category%>: <%=q.survey.title%>: <%=q.classification%></a></li>
+						<% end %>
+        			</ul>
+  			  </div>
+		    </div><!-- /input-group -->
+		    <!-- Hidden field-->
+		</div>
+	</div>
+	<br><br><br>
+
+	<%= f.button :submit %>
+<% end %>

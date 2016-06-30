@@ -43,6 +43,7 @@ class JobPostingsController < ApplicationController
 		@req_skills = Skill.where(id: JobPostingSkill.select("skill_id").where(job_posting_id:params[:id], importance: 2))
 		@pref_skills = Skill.where(id: JobPostingSkill.select("skill_id").where(job_posting_id:params[:id], importance: 1))
 		@questions = Question.all.includes(:survey)
+		@skills = Skill.all
 	end
 
 	def update

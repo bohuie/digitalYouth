@@ -7,7 +7,7 @@
 	<%= f.input :description, required: true, as: :text, input_html: {value: @job_posting.description} %>
 	<%= f.input :open_date, as: :string, required: true, input_html: {value: @job_posting.open_date, type: :date} %>
 	<%= f.input :close_date, as: :string, required: true, input_html: {value: @job_posting.close_date, type: :date}%>
-	<%= f.input :company_logo, as: :file %>
+	
 	<div class="row">
 		<div id="Required Skills" class="col-md-6">
 			<h5><b>Required Skills</b></h5>
@@ -54,7 +54,9 @@
 		    <!-- Hidden field-->
 		</div>
 	</div>
-	<br><br><br>
+	<br>
+	<%= f.input :company_logo, as: :file %>
+	<br>
 
 	<%= f.button :submit %>
 <% end %>

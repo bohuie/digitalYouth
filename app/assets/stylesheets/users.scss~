@@ -36,7 +36,7 @@
 	height: 400px;
 	width: 1200px;
 	margin: 0 auto;
-	border: 2px solid black;
+	//border: 2px solid black;
 }
 .profileContainerImage
 {
@@ -51,7 +51,7 @@
 }
 .profileFrame
 {
-	border: 2px solid red;
+	//border: 2px solid red;
 	height: 156px;
 	width: 306px;
 	position: relative;
@@ -68,11 +68,11 @@
 	width: 400px;
 	height: 300px;
 	margin-left: 380px;
-	border: 2px solid blue;
+	//border: 2px solid blue;
 }
 .profileButtons
 {
-	border: 2px solid green;
+	//border: 2px solid green;
 	height: 60px;
 	width: 650px;
 	position: absolute;
@@ -99,7 +99,7 @@
 }
 .profileButtonResume
 {
-	border: 2px solid yellow;
+	//border: 2px solid yellow;
 	height: 60px;
 	width: 200px;
 	position: absolute;
@@ -125,7 +125,7 @@
 }
 .profileButtonResumeGrad
 {
-	border: 2px solid orange;
+	//border: 2px solid orange;
 	height: 40px;
 	width: 120px;
 	position: absolute;

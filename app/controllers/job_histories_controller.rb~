@@ -1,6 +1,7 @@
 class JobHistoriesController < ApplicationController
 
   before_action :authenticate_user!
+  before_action :job_histories_owner, only: [:edit, :update, :destroy]
 
   def index
 	@job_history = JobHistory.where(user_id: current_user.id)
@@ -35,7 +36,8 @@ class JobHistoriesController < ApplicationController
 		flash[:success]="Thank you for updating to your Job History!"
 		redirect_back_or job_histories_path
 	else
-		redirect_to main_job_histories_path , flash: {danger: "There was a problem in updating your Job History!"}
+		flash[:danger]="There was a problem in updating your Job History!"
+		redirect_back_or job_histories_path
 	end
 	
   end
@@ -51,9 +53,17 @@ class JobHistoriesController < ApplicationController
   
 private
 def job_history_params
-byebug
 	params.require(:job_history).permit(:user_id, :employer, :position, :start_date, :end_date, :description, :skills)
 
   end 
+
+def job_histories_owner
+		@job_histories = JobHistory.find(params[:id])
+		
+		unless @job_histories.user_id == current_user.id
+			flash[:notice] = 'Access denied as you are not owner of this Job History'
+			redirect_to current_user
+		end
+	end
 end
 

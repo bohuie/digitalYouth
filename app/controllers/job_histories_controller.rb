@@ -1,6 +1,7 @@
 class JobHistoriesController < ApplicationController
 
   before_action :authenticate_user!
+  before_action :job_histories_owner, only: [:edit, :update, :destroy]
 
   def index
 	@job_history = JobHistory.where(user_id: current_user.id)
@@ -18,7 +19,7 @@ class JobHistoriesController < ApplicationController
 	if @job_histories.save
 		redirect_to job_histories_path , flash: {success: "Thank you for adding to your Job History!"}
 	else
-		redirect_to main_job_histories_path , flash: {danger: "There was a problem in saving your Job History!"}
+		redirect_to job_histories_path , flash: {danger: "There was a problem in saving your Job History!"}
 	end
   end
 
@@ -44,17 +45,25 @@ class JobHistoriesController < ApplicationController
   def destroy
 	if JobHistory.find(params[:id])
 		JobHistory.find(params[:id]).destroy
-		redirect_to main_job_histories_path , flash: {success: "Successfully Deleted."}
+		redirect_to job_histories_path , flash: {success: "Successfully Deleted."}
 	else
-		redirect_to main_job_histories_path , flash: {danger: "Your Job Did Not Delete Successfully."}
+		redirect_to job_histories_path , flash: {danger: "Your Job Did Not Delete Successfully."}
 	end
   end
   
 private
 def job_history_params
-byebug
 	params.require(:job_history).permit(:user_id, :employer, :position, :start_date, :end_date, :description, :skills)
 
   end 
+
+def job_histories_owner
+		@job_histories = JobHistory.find(params[:id])
+		
+		unless @job_histories.user_id == current_user.id
+			flash[:notice] = 'Access denied as you are not owner of this Job History'
+			redirect_to current_user
+		end
+	end
 end
 

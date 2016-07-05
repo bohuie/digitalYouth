@@ -24,6 +24,31 @@ def make_dir(p, new_dir):
 		os.makedirs(new_dir)
 	os.chdir(p + "/" + new_dir)
 
+def make_files(job_links,i,j,k,l):
+	for j_link in job_links:
+		page = make_connection("http://www.workopolis.com/" + j_link)
+		tree = html.fromstring(page.content)
+		section = tree.xpath('//section[@class="main-content job-view-main-content js-analyticsJobView"]')
+		#page_cat = tree.xpath('//a[@class="job-view-header-link link"]')
+		#if len(page_cat) > 0: Results are too restrictive if we cut all other categories (Too many miscategorized)
+		#	page_cat = etree.tostring(page_cat[0]).decode("utf-8")
+		if len(section) > 0: #and c_link.text in page_cat:
+			page_str = etree.tostring(section[0]).decode("utf-8")
+			if len(page_str) > 0:
+				file3.write("http://www.workopolis.com/" + j_link + "\n")
+				file4 = open(str(i) +".html", 'w')
+				file4.write("<a class=\"page-link\" href=\"http://www.workopolis.com/"+j_link+"\"></a>\n")
+				file4.write(page_str)
+				file4.close()
+				i = i + 1 # Increment sub category count
+				j = j + 1 # Increment city count
+				l = l + 1 # Increment category count
+			else:
+				k = k + 1 # Increment empty count
+		else:
+			k = k + 1 # Increment empty count
+	return [i,j,k,l]
+
 # ---------------------------------------
 path = os.path.realpath(__file__).strip(__file__)
 make_dir(path, "data")
@@ -91,24 +116,29 @@ for sc_link in sub_cat_links:
 
 				j = 0 #count per city
 				k = 0 #count empty per city
-				for j_link in job_links:
-					file3.write("http://www.workopolis.com/" + j_link + "\n")
-					file4 = open(str(i) +".html", 'w')
-					page = make_connection("http://www.workopolis.com/" + j_link)
-					tree = html.fromstring(page.content)
-					section = tree.xpath('//section[@class="main-content job-view-main-content js-analyticsJobView"]')
-					if len(section) > 0:
-						page_str = etree.tostring(section[0]).decode("utf-8")
-						if len(page_str) > 0:
-							file4.write(page_str)
-							file4.close()
-							i = i + 1 # Increment sub category count
-							j = j + 1 # Increment city count
-							l = l + 1 # Increment category count
-						else:
-							k = k + 1 # Increment empty count
-					else:
-						k = k + 1 # Increment empty count
+				rtns = make_files(job_links,i,j,k,l)
+				i = rtns[0]
+				j = rtns[1]
+				k = rtns[2]
+				l = rtns[3]
+
+				next_pg = tree.xpath('//a[@class="bjPageNumLink sr-paginator-next"]/@href')
+				if len(next_pg) > 0:
+					print("Scraping Paginated results")
+					page_cnt = 1
+					while len(next_pg) > 0 and page_cnt <= 10:
+						page = make_connection(next_pg[0])
+						tree = html.fromstring(page.content)
+						job_links = tree.xpath('//div[@id="divJobSearchResult"]/article/a/@href')
+						rtns = make_files(job_links,i,j,k,l)
+						i = rtns[0]
+						j = rtns[1]
+						k = rtns[2]
+						l = rtns[3]
+						next_pg = tree.xpath('//a[@class="bjPageNumLink sr-paginator-next"]/@href')
+						page_cnt += 1
+						print("PG"+str(page_cnt))
+
 				print("    Scraped: " + str(j) + " | Empty: " + str(k) + " | Total: " + str(j + k))
 				empty = empty + k
 

@@ -15,13 +15,18 @@ class JobPostingsController < ApplicationController
 	def show
 		@job_posting = JobPosting.find(params[:id])
 		@company = User.find(@job_posting.user_id)
-		@req_skills = Skill.where(id: JobPostingSkill.select("skill_id").where(job_posting_id:params[:id], importance: 2))
-		@pref_skills = Skill.where(id: JobPostingSkill.select("skill_id").where(job_posting_id:params[:id], importance: 1))
+		@req_skills  = JobPostingSkill.where(job_posting_id:params[:id], importance: 2).includes(:skill)
+		@pref_skills = JobPostingSkill.where(job_posting_id:params[:id], importance: 1).includes(:skill)
 	end
 
 	def new
 		if current_user.has_role? :employer
 			@job_posting = JobPosting.new
+			job_posting_skills = @job_posting.job_posting_skills.build
+			job_posting_skills.skill = Skill.new
+			
+			@questions = get_questions_label_map
+			@skills = Skill.all
 		else
 			redirect_to current_user, flash: {warning: "You are not an employer!"}
 		end
@@ -37,30 +42,37 @@ class JobPostingsController < ApplicationController
 		end
 	end
 
-	def edit
-		#@job_posting is found in the job_owner method
-		@req_skills = Skill.where(id: JobPostingSkill.select("skill_id").where(job_posting_id:params[:id], importance: 2))
-		@pref_skills = Skill.where(id: JobPostingSkill.select("skill_id").where(job_posting_id:params[:id], importance: 1))
-		@questions = Question.all.includes(:survey)
+	def edit #@job_posting is found in the job_owner method
+		@job_posting_skills = JobPostingSkill.where(job_posting_id:params[:id]) 
+		@questions = get_questions_label_map
 		@skills = Skill.all
 	end
 
-	def update
-		#@job_posting is found in the job_owner method
-		if @job_posting.update_attributes(job_posting_params)
+	def update #@job_posting is found in the job_owner method
+		if @job_posting.update_attributes(job_posting_params) 
 			redirect_to @job_posting, flash: {success: "Job Posting Updated!"}
 		else
 			render 'edit', flash: {warning: "Oops, there was an issue in editing your Job Posting."}
 		end
 	end
 
-	def destroy
-		#@job_posting is found in the job_owner method
-		@job_posting.destroy
+	def destroy #@job_posting is found in the job_owner method
+		@job_posting.destroy 
 		redirect_to job_postings_path, flash: {success: "Job Posting deleted!"}
 	end
 
-	private
+	def skill_autocomplete
+		@skills = Skill.order(:name).where("name LIKE ?", "%#{params[:term]}%")
+		@skills.each {|s| s.name.capitalize!}
+	    respond_to do |format|
+	      format.html
+	      format.json { 
+	        render json: @skills.map(&:name).to_json
+	      }
+   		end
+	end
+
+private
 	def job_posting_params
 		params.require(:job_posting).permit(:title, :location, :pay_range, :link, :posted_by, :description, :open_date, :close_date, :user_id)
 	end
@@ -77,7 +89,7 @@ class JobPostingsController < ApplicationController
 
 	def check_fields
 		args = params[:job_posting]
-		if args[:title].blank? || args[:location].blank? || args[:description].blank? || args[:open_date].blank? || args[:close_date].blank?
+		if args[:title].blank? || args[:location].blank? || args[:description].blank? || args[:open_date].blank? || args[:close_date].blank? || args[:category].blank?
 			flash[:warning] = 'Missing required fields'
 			redirect_back_or job_postings_path
 		elsif args[:location].split(',').length != 2 || args[:location].split(',')[1].strip.length > 2
@@ -87,5 +99,16 @@ class JobPostingsController < ApplicationController
 			flash[:warning] = 'Open date must be before close date'
 			redirect_back_or job_postings_path
 		end
+	end
+
+	def get_questions_label_map
+		rtn = Hash.new
+		questions = Question.all.includes(:survey)
+	
+		questions.each do |q|
+			title = q.survey.category + ": " + q.survey.title + ": " + q.classification  
+			rtn[title] = q.id
+		end
+		return rtn
 	end
 end

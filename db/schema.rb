@@ -39,11 +39,13 @@ ActiveRecord::Schema.define(version: 20160629233137) do
     t.integer  "importance"
     t.integer  "job_posting_id"
     t.integer  "skill_id"
+    t.integer  "question_id"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
   end
 
   add_index "job_posting_skills", ["job_posting_id"], name: "index_job_posting_skills_on_job_posting_id", using: :btree
+  add_index "job_posting_skills", ["question_id"], name: "index_job_posting_skills_on_question_id", using: :btree
   add_index "job_posting_skills", ["skill_id"], name: "index_job_posting_skills_on_skill_id", using: :btree
 
   create_table "job_postings", force: :cascade do |t|
@@ -52,6 +54,7 @@ ActiveRecord::Schema.define(version: 20160629233137) do
     t.string   "pay_range"
     t.string   "link"
     t.string   "posted_by"
+    t.string   "category"
     t.text     "description"
     t.date     "open_date"
     t.date     "close_date"
@@ -157,9 +160,8 @@ ActiveRecord::Schema.define(version: 20160629233137) do
 
   create_table "skills", force: :cascade do |t|
     t.string   "name"
-    t.integer  "question_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "surveys", force: :cascade do |t|

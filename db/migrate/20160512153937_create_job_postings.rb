@@ -7,6 +7,7 @@
       t.string :pay_range
       t.string :link
       t.string :posted_by
+      t.string :category
     	t.text :description
     	t.date :open_date
     	t.date :close_date

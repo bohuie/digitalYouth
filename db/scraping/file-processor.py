@@ -15,22 +15,26 @@ def process(file,cnt,skill_cnt,companies,user_cnt):
 		title = tree.xpath('//*[@data-automation="job-title"]')[0].text.title()
 		location = tree.xpath('//*[@data-automation="job-Location"]')[0].text.title()
 		closing = ""
+		link = tree.xpath('//*[@class="page-link"]/@href')
+		category = tree.xpath('//a[@class="job-view-header-link link"]')[0].text.title()
 		req_skills = []
 		pref_skills = []
 		desc = []
 		skip = False
+		skills_strings = ['qualif','skill','abil,','able','capab','experi','criter','knowl','educ','']
+		prefer_strings = ['prefer','good','nice','bonus','addit']
 
 		ptags = tree.xpath('//section[@class="job-view-content-wrapper js-job-view-header-apply"]/p')
 		for p in ptags:
 			ptext = "".join(p.itertext())
-			if "qualifi" in ptext.lower() or "skill" in ptext.lower() or "abilities" in ptext.lower() or "able" in ptext.lower() or "capab" in ptext.lower() or "experience" in ptext.lower() :
+			if any(substr in ptext.lower() for substr in skills_strings):
 				sibling = p.getnext()
 				if sibling is not None:
 					if sibling.tag == "ul":
 						children = sibling.getchildren()
 						for c in children:
 							if not c == "\n":
-								if "preferred" in ptext.lower() or "good" in ptext.lower() or "nice" in ptext.lower() or "bonus" in ptext.lower():
+								if any(substr in ptext.lower() for substr in prefer_strings):
 									if c.text is not None:
 										txt = c.text.strip().replace("\"", "")
 										if not txt == "":
@@ -61,7 +65,7 @@ def process(file,cnt,skill_cnt,companies,user_cnt):
 		create_user = "User" + str(user_cnt) + " = create_random_user("
 		line = ""
 
-		if req_skills == []:
+		if req_skills == [] or desc == "":
 			return ""
 
 		if company_name not in companies:
@@ -73,6 +77,8 @@ def process(file,cnt,skill_cnt,companies,user_cnt):
 		line += create_job + "title: \""+title+"\","
 		line += "" if desc == "" or "<" in desc else "description: \""+desc+"\","
 		line += "location: \""+location +"\","
+		line += "link: \""+link+"\","
+		line += "category: \""+category+"\","
 		line += "" if closing == "" else "close_date: \"" + closing + "\","
 		line += "user_id: User"+str(companies[company_name])+".id)"
 		line += "\n\n"
@@ -94,7 +100,6 @@ def process(file,cnt,skill_cnt,companies,user_cnt):
 
 # ---------------------------------------
 path = os.path.realpath(__file__).strip(__file__)
-path += "/data"
 os.chdir(path)
 file = open("job_posting_seeds.rb", 'w')
 

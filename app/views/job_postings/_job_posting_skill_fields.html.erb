@@ -1,4 +1,5 @@
 <div class="col-md-12 job-posting-skill" id="job-posting-skill-<%=id%>">
+	<%= f.input :id, as: :hidden %>
 	<%= f.simple_fields_for :skill do |builder| %>
 		<div class="col-md-3"><%= builder.input :name, label: "Skill", input_html: {onclick:"skill_autocomplete('#{id}')", id: "skill-name-#{id}"} %></div>
 	<% end %>

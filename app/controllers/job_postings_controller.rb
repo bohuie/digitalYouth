@@ -36,6 +36,12 @@ class JobPostingsController < ApplicationController
 		params[:job_posting][:user_id] = current_user.id
 		@job_posting = JobPosting.new(job_posting_params)
 		if @job_posting.save
+			redir_flag = process_skills(params[:job_posting]["job_posting_skills_attributes"],@job_posting.id)
+		else
+			redir_flag = true
+		end
+
+		if !redir_flag
 			redirect_to current_user, flash: {success: "Job Posting Created!"}
 		else
 			render current_user, flash: {warning: "Oops, there was an issue in creating your Job Posting."}
@@ -49,7 +55,8 @@ class JobPostingsController < ApplicationController
 	end
 
 	def update #@job_posting is found in the job_owner method
-		if @job_posting.update_attributes(job_posting_params) 
+		redir_flag = process_skills(params[:job_posting]["job_posting_skills_attributes"],@job_posting.id)
+		if @job_posting.update_attributes(job_posting_params) && !redir_flag
 			redirect_to @job_posting, flash: {success: "Job Posting Updated!"}
 		else
 			render 'edit', flash: {warning: "Oops, there was an issue in editing your Job Posting."}
@@ -74,7 +81,7 @@ class JobPostingsController < ApplicationController
 
 private
 	def job_posting_params
-		params.require(:job_posting).permit(:title, :location, :pay_range, :link, :posted_by, :description, :open_date, :close_date, :user_id)
+		params.require(:job_posting).permit(:title, :location, :pay_range, :link, :category, :posted_by, :description, :open_date, :close_date, :user_id)
 	end
 
 	def job_owner # Checks current user is the Job Posting owner
@@ -104,11 +111,39 @@ private
 	def get_questions_label_map
 		rtn = Hash.new
 		questions = Question.all.includes(:survey)
-	
 		questions.each do |q|
 			title = q.survey.category + ": " + q.survey.title + ": " + q.classification  
 			rtn[title] = q.id
 		end
 		return rtn
+	end
+
+	def process_skills(hash,job_posting_id)
+		hash.each do |h|
+			id = h[1]["id"]
+			if h[1]["_destroy"] == "true" && !id.blank?
+				JobPostingSkill.find(id).destroy
+			elsif h[1]["_destroy"] == "false"
+				skill_name = h[1]["skill_attributes"]["name"].downcase
+				skill = Skill.find_by(name: skill_name)
+				if skill.nil?
+					skill = Skill.new(name: skill_name)
+					return true if !skill.save
+				end
+				skill_id = skill.id
+				question_id = h[1]["question_id"]
+				importance = h[1]["importance"]
+			end
+
+			if id.blank?
+				job_posting_skill = JobPostingSkill.new(skill_id: skill_id, question_id: question_id, importance: importance, job_posting_id: job_posting_id)
+				return true if !job_posting_skill.save
+			else
+				job_posting_skill = JobPostingSkill.find(id)
+				return true if !job_posting_skill.update(skill_id: skill_id, question_id: question_id, importance: importance, job_posting_id: job_posting_id)
+			end
+		end
+
+		return false
 	end
 end

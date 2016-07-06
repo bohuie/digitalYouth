@@ -1,6 +1,7 @@
 class JobPostingsController < ApplicationController
 
 	before_action :authenticate_user!, except: [:show, :index]
+	before_action :check_employer, except: [:show, :index]
 	before_action :job_owner, only: [:edit, :update, :destroy]
 	before_action :check_fields, only: [:create, :update]
 
@@ -13,23 +14,17 @@ class JobPostingsController < ApplicationController
 	end
 	
 	def show
-		@job_posting = JobPosting.find(params[:id])
-		@company = User.find(@job_posting.user_id)
+		@job_posting = JobPosting.includes(:user).find(params[:id])
 		@req_skills  = JobPostingSkill.where(job_posting_id:params[:id], importance: 2).includes(:skill)
 		@pref_skills = JobPostingSkill.where(job_posting_id:params[:id], importance: 1).includes(:skill)
 	end
 
 	def new
-		if current_user.has_role? :employer
-			@job_posting = JobPosting.new
-			job_posting_skills = @job_posting.job_posting_skills.build
-			job_posting_skills.skill = Skill.new
-			
-			@questions = get_questions_label_map
-			@skills = Skill.all
-		else
-			redirect_to current_user, flash: {warning: "You are not an employer!"}
-		end
+		@job_posting = JobPosting.new
+		job_posting_skills = @job_posting.job_posting_skills.build
+		job_posting_skills.skill = Skill.new
+		@questions = Question.get_label_map
+		@skills = Skill.all
 	end
 
 	def create
@@ -48,23 +43,24 @@ class JobPostingsController < ApplicationController
 		end
 	end
 
-	def edit #@job_posting is found in the job_owner method
+	def edit 
 		@job_posting_skills = JobPostingSkill.where(job_posting_id:params[:id]) 
-		@questions = get_questions_label_map
+		@questions = Question.get_label_map
 		@skills = Skill.all
 	end
 
-	def update #@job_posting is found in the job_owner method
+	def update 
 		redir_flag = process_skills(params[:job_posting]["job_posting_skills_attributes"],@job_posting.id)
 		if @job_posting.update_attributes(job_posting_params) && !redir_flag
 			redirect_to @job_posting, flash: {success: "Job Posting Updated!"}
 		else
-			render 'edit', flash: {warning: "Oops, there was an issue in editing your Job Posting."}
+			flash[:warning] = 'Oops, there was an issue in editing your Job Posting.'
+			redirect_back_or current_user
 		end
 	end
 
-	def destroy #@job_posting is found in the job_owner method
-		@job_posting.destroy 
+	def destroy
+		@job_posting.destroy
 		redirect_to job_postings_path, flash: {success: "Job Posting deleted!"}
 	end
 
@@ -72,10 +68,7 @@ class JobPostingsController < ApplicationController
 		@skills = Skill.order(:name).where("name LIKE ?", "%#{params[:term]}%")
 		@skills.each {|s| s.name.capitalize!}
 	    respond_to do |format|
-	      format.html
-	      format.json { 
-	        render json: @skills.map(&:name).to_json
-	      }
+	      format.json {render json: @skills.map(&:name).to_json}
    		end
 	end
 
@@ -94,6 +87,13 @@ private
 		end
 	end
 
+	def check_employer
+		if !current_user.has_role? :employer
+			flash[:warning] = 'You are not an employer!'
+			redirect_back_or current_user
+		end
+	end
+
 	def check_fields
 		args = params[:job_posting]
 		if args[:title].blank? || args[:location].blank? || args[:description].blank? || args[:open_date].blank? || args[:close_date].blank? || args[:category].blank?
@@ -106,16 +106,6 @@ private
 			flash[:warning] = 'Open date must be before close date'
 			redirect_back_or job_postings_path
 		end
-	end
-
-	def get_questions_label_map
-		rtn = Hash.new
-		questions = Question.all.includes(:survey)
-		questions.each do |q|
-			title = q.survey.category + ": " + q.survey.title + ": " + q.classification  
-			rtn[title] = q.id
-		end
-		return rtn
 	end
 
 	def process_skills(hash,job_posting_id)
@@ -143,7 +133,6 @@ private
 				return true if !job_posting_skill.update(skill_id: skill_id, question_id: question_id, importance: importance, job_posting_id: job_posting_id)
 			end
 		end
-
 		return false
 	end
 end

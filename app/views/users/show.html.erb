@@ -18,25 +18,83 @@
 			<h5> <%= @user.email %> </h5>
 		</div>
 		<div class ="profileButtons">
+			<input type="button" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=rendering('surveys') value="SURVEYS"/>
 			<input type="button" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); value="EMPLOYMENT"/>
-			<input type="button" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); value="PROJECTS"/>
-			<input type="button" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); value="SKILLS"/>
-			<input type="button" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); value="REFERENCES"/>
+			<input type="button" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=rendering('projects') value="PROJECTS"/>
+			<input type="button" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=rendering('skills') value="SKILLS"/>
+			<input type="button" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=rendering('references') value="REFERENCES"/>
 		</div>
 		<div class ="profileButtonResume">
 			<input type="button" value="RESUME"/>		
 		</div>
 	</div>
+	<script>
+		function buttonOpac(button)
+		{
+			button.style.opacity=1.0;
+		}
+		function buttonRevOpac(button)
+		{
+			button.style.opacity=0.6;
+		}
+		function rendering(toRender)
+		{					
+			if(toRender=='references')
+			{
+				document.getElementById("references").style.display="inline";
+
+				document.getElementById("survey-table").style.display="none";
+				document.getElementById("projects").style.display="none";
+				document.getElementById("job-postings").style.display="none";
+				document.getElementById("skills").style.display="none";
+			}
+			else if(toRender=='projects')
+			{
+				document.getElementById("projects").style.display="inline";
+
+				document.getElementById("survey-table").style.display="none";
+				document.getElementById("references").style.display="none";
+				document.getElementById("job-postings").style.display="none";
+				document.getElementById("skills").style.display="none";
+			}
+			else if(toRender=='skills')
+			{
+				document.getElementById("skills").style.display="inline";
+
+				document.getElementById("survey-table").style.display="none";
+				document.getElementById("references").style.display="none";
+				document.getElementById("projects").style.display="none";
+				document.getElementById("job-postings").style.display="none";
+			}
+			else if(toRender=='surveys')
+			{
+				document.getElementById("survey-table").style.display="inline";
+
+				document.getElementById("references").style.display="none";
+				document.getElementById("projects").style.display="none";
+				document.getElementById("job-postings").style.display="none";
+				document.getElementById("skills").style.display="none";
+			}
+			else
+			{
+				document.getElementById("survey-table").style.display="none";
+				document.getElementById("references").style.display="none";
+				document.getElementById("projects").style.display="none";
+				document.getElementById("job-postings").style.display="none";
+				document.getElementById("skills").style.display="none";
+			}
+		}
+	</script>
 <!-------------->
 
- 	<div class = "survey-table">
+ 	<div class = "survey-table" id= "survey-table">
 		<%= render '/users/partials/show_survey_table' %>
 	</div>
 
-	<div class = "references">
+	<div class = "references" id = "references">
 		<%= render '/users/partials/show_references' %>
 	</div>
-
+	<div id="projects">
 	<% if !@projects.empty? %>
 		<div class="projects">
 			<div class="container">
@@ -80,6 +138,8 @@
 			</div>
 		</div>
 	<% end %>
+	</div>
+	<div id="skills">
 	<% if !@user_skills.empty? %>
 		<div class="container">
 			<h2>Here is a summary of your skill base</h2>
@@ -101,7 +161,7 @@
 	<% end %>
 	</div>
 <% elsif @user.has_role? :employer %>
-
+	<div id="job-postings">
 	<% if !@job_postings.empty? %>
 		<div class="job-postings">
 			<div class="container">
@@ -141,6 +201,7 @@
 		</div>
 	</div>
 	<% end %>
+	</div>
 <% elsif @user.has_role? :admin%>
 
 <% else %>

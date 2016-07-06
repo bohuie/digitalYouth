@@ -31,6 +31,7 @@
 	margin: 5px 0px 5px 0px;
 
 }
+//Profile
 .profileContainer
 {
 	height: 400px;
@@ -167,4 +168,13 @@ background: -o-linear-gradient(45deg, rgba(0, 0, 0, 1)35%, rgba(0, 0, 0, 0)60%);
 #shadow-arch-edges:after{
   right: 30px;
   transform: skewY(10deg);
+}
+//Partials
+#survey-table,
+#references,
+#projects,
+#job-postings,
+#skills
+{
+	display: none;
 }

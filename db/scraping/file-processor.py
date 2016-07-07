@@ -1,6 +1,7 @@
 # --------------- Imports ---------------
 from lxml import html
 from lxml.html.clean import clean_html
+import nltk.data
 import requests
 import os
 import sys
@@ -8,11 +9,12 @@ import time
 from lxml import etree
 # --------------- Functions ---------------
 def add_skills(skill_str,arr):
+	tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
 	if skill_str is not None:
 		skill_str = skill_str.strip().replace("\"", "")
 		if not skill_str == "":
 			if len(skill_str) > 300:
-				arr.extend(skill_str.split('.'))
+				arr.extend(tokenizer.tokenize(skill_str))
 			else:
 				arr.append(skill_str)
 	return arr
@@ -36,8 +38,8 @@ def process(file,cnt,skill_cnt,companies,user_cnt):
 		skills_strings = ['qualif','skill','abil,','able','capab','experi','criter','knowl','educ','']
 		prefer_strings = ['prefer','good','nice','bonus','addit']
 
-		ptags = tree.xpath('//section[@class="job-view-content-wrapper js-job-view-header-apply"]/p')
-		for p in ptags:
+		tags = tree.xpath('//section[@class="job-view-content-wrapper js-job-view-header-apply"]/*')
+		for p in tags:
 			ptext = "".join(p.itertext())
 			if any(substr in ptext.lower() for substr in skills_strings):
 				sibling = p.getnext()
@@ -48,7 +50,6 @@ def process(file,cnt,skill_cnt,companies,user_cnt):
 							if not c == "\n":
 								if any(substr in ptext.lower() for substr in prefer_strings):
 									pref_skills = add_skills(c.text,pref_skills)
-										
 								else:
 									req_skills = add_skills(c.text,req_skills)
 

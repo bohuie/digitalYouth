@@ -39,12 +39,14 @@ user4.confirm
 reference1 = Reference.create(first_name: 'Bernie', last_name: 'Smith', email: 'Andrew@gmail.com', company: 'Apple Picking Co.',
 			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)
 
-reference2 = Reference.create(first_name: 'Bernie', last_name: 'Smith', email: 'Andrew@gmail.com', company: 'Apple Picking Co.',
-			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user2.id)
+reference2 = Reference.create(first_name: 'Bernie', last_name: 'Smith', email: 'Greg@gmail.com', company: 'Apple Pickers United LTD',
+			 position: "Apple QC Specialist", phone_number:"(250)555-5050", reference_body: "They were the best.", user_id: user2.id)
 
 
 #--- JobPostings for testing ---
-jobposting1 = JobPosting.create(title: 'Social Media Manager', location: "Kelowna, BC", pay_range: "30¢/hr-40¢/hr", link:"wwww.google.ca", posted_by:"Seed File", description: 'Handling our Facebook and Twitter account, posting messages, and responding to clients.', open_date: '2016-01-01', close_date: '2016-04-01', user_id: user3.id)
+jobposting1 = JobPosting.create(title: 'Social Media Manager', location: "Kelowna, BC", pay_range: "30¢/hr-40¢/hr", link:"wwww.google.ca", posted_by:"Seed File",
+			  description: 'Handling our Facebook and Twitter account, posting messages, and responding to clients.', open_date: '2016-01-01', close_date: '2016-04-01',
+			  category: "Communications", user_id: user3.id)
 
 
 #--- Projects for testing ---
@@ -58,13 +60,13 @@ skill3 = Skill.create(name: 'content creator')
 
 UserSkill.create(user_id: user1.id, skill_id: skill1.id, rating: "2")
 
-JobPostingSkill.create(job_posting_id: jobposting1.id, skill_id:skill1.id, importance:2, question_id:22)
-JobPostingSkill.create(job_posting_id: jobposting1.id, skill_id:skill2.id, importance:2, question_id:23)
-JobPostingSkill.create(job_posting_id: jobposting1.id, skill_id:skill3.id, importance:1, question_id:41)
+JobPostingSkill.create(job_posting_id: jobposting1.id, skill_id:skill1.id, importance:2, question_id:41)
+JobPostingSkill.create(job_posting_id: jobposting1.id, skill_id:skill2.id, importance:2, question_id:42)
+JobPostingSkill.create(job_posting_id: jobposting1.id, skill_id:skill3.id, importance:1, question_id:37)
 
 ProjectSkill.create(project_id: project1.id, skill_id: skill1.id)
 ProjectSkill.create(project_id: project1.id, skill_id: skill2.id)
 
 
 #----------- Load Job Posting data from scraping and processing ---------------------
-#Dir[File.join(Rails.root, 'db', 'scraping', 'job_posting_seeds.rb')].sort.each { |seed| load seed }
+#Dir[File.join(Rails.root, 'db', 'scraping', '*.rb')].sort.each { |seed| load seed }

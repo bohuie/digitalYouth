@@ -35,9 +35,9 @@ def make_files(job_links,i,j,k,l):
 		if len(section) > 0: #and c_link.text in page_cat:
 			page_str = etree.tostring(section[0]).decode("utf-8")
 			if len(page_str) > 0:
-				file3.write("http://www.workopolis.com/" + j_link + "\n")
+				file3.write("http://www.workopolis.com" + j_link + "\n")
 				file4 = open(str(i) +".html", 'w')
-				file4.write("<a class=\"page-link\" href=\"http://www.workopolis.com/"+j_link+"\"></a>\n")
+				file4.write("<a class=\"page-link\" href=\"www.workopolis.com"+j_link+"\"></a>\n")
 				file4.write(page_str)
 				file4.close()
 				i = i + 1 # Increment sub category count
@@ -71,6 +71,7 @@ for c_link in cat_links:
 	num = num+1
 print("----------------------------------")
 x = input('\nChoose a Category to Scrape: ')
+pg_lvl = int(input('\nPagination Level: '))
 print("----------------------------------")
 print("Scraping: " + cat_links[int(x)].text)
 
@@ -126,7 +127,7 @@ for sc_link in sub_cat_links:
 				if len(next_pg) > 0:
 					print("Scraping Paginated results")
 					page_cnt = 1
-					while len(next_pg) > 0 and page_cnt <= 10:
+					while len(next_pg) > 0 and page_cnt < pg_lvl:
 						page = make_connection(next_pg[0])
 						tree = html.fromstring(page.content)
 						job_links = tree.xpath('//div[@id="divJobSearchResult"]/article/a/@href')

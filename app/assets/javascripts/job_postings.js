@@ -4,8 +4,8 @@
 //Converted to Javascript for now
 
 function remove_posting_skill(id){
-	$('#'+id+'-destroy').val(true);
-	$('#'+id).fadeOut(100);
+	$('#job-skill-destroy-'+id).val(true);
+	$('#job-posting-skill-'+id).fadeOut(100);
 }
 
 var cache = {};
@@ -20,7 +20,7 @@ function skill_autocomplete(id){
           return;
         }
  
-        $.getJSON('/job_postings/skill_autocomplete.json', request, function(data, status, xhr){
+        $.getJSON('/skills/autocomplete.json', request, function(data, status, xhr){
           cache[term] = data;
           response(data);
         }); 

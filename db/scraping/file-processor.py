@@ -7,15 +7,27 @@ import sys
 import time
 from lxml import etree
 # --------------- Functions ---------------
+def add_skills(skill_str,arr):
+	if skill_str is not None:
+		skill_str = skill_str.strip().replace("\"", "")
+		if not skill_str == "":
+			if len(skill_str) > 300:
+				arr.extend(skill_str.split('.'))
+			else:
+				arr.append(skill_str)
+	return arr
+
+
 def process(file,cnt,skill_cnt,companies,user_cnt):
 	try:
 		tree = html.fromstring(open(file, "r").read())
 		logo = tree.xpath('//a[@class="job-view-company-logo-link"]/img/@src')
 		company_name = tree.xpath('//span[@data-automation="job-company"]')[0].text.title()
 		title = tree.xpath('//*[@data-automation="job-title"]')[0].text.title()
-		location = tree.xpath('//*[@data-automation="job-Location"]')[0].text.title()
+		loc_arr = tree.xpath('//*[@data-automation="job-Location"]')[0].text.title().split(',')
+		location = loc_arr[0] + "," + loc_arr[1].upper()
 		closing = ""
-		link = tree.xpath('//*[@class="page-link"]/@href')
+		link = tree.xpath('//*[@class="page-link"]/@href')[0]
 		category = tree.xpath('//a[@class="job-view-header-link link"]')[0].text.title()
 		req_skills = []
 		pref_skills = []
@@ -35,15 +47,10 @@ def process(file,cnt,skill_cnt,companies,user_cnt):
 						for c in children:
 							if not c == "\n":
 								if any(substr in ptext.lower() for substr in prefer_strings):
-									if c.text is not None:
-										txt = c.text.strip().replace("\"", "")
-										if not txt == "":
-											pref_skills.append(txt) 
+									pref_skills = add_skills(c.text,pref_skills)
+										
 								else:
-									if c.text is not None:
-										txt = c.text.strip().replace("\"", "")
-										if not txt == "":
-											req_skills.append(txt) 
+									req_skills = add_skills(c.text,req_skills)
 
 			elif "closing" in ptext.lower() and "date" in ptext.lower() and len(ptext) < 50:
 				closing = ptext
@@ -95,19 +102,29 @@ def process(file,cnt,skill_cnt,companies,user_cnt):
 		if "Skill" not in line:
 			return ""
 		return [line,skill_cnt,companies,user_cnt]
-	except:
+	except (IndexError, etree.XMLSyntaxError):
 		return ""
 
 # ---------------------------------------
+
 path = os.path.realpath(__file__).strip(__file__)
 os.chdir(path)
-file = open("job_posting_seeds.rb", 'w')
-
-cat = input('\nChoose a Category to process: ')
-path += "/categories/" + cat
-os.chdir(path)
+cat_path = "/data/categories/"
+while True:
+	cat = input('\nChoose a Category to process: ')
+	cat_path += cat
+	try:
+		os.chdir(path+cat_path)
+		break
+	except FileNotFoundError:
+		print("Directory Not Found")
 print("----------------------------------")
 print("Processing: ")
+
+os.chdir(path)
+file = open("job_posting_seeds_"+cat+".rb", 'w')
+path+=cat_path
+os.chdir(path)
 
 companies = {}
 user_cnt = 0
@@ -132,3 +149,4 @@ for subdir in subdirs:
 			do_nothing = True
 
 #Arts, Media and Entertainment
+#Technology and Digital Media

@@ -1,8 +1,8 @@
 <%= simple_form_for @job_posting do |f| %>
 	<%= f.input :title, required: true %>
 	<%= f.input :location, required: true, label: "Location (City, Province Code)"%>
-	<%= f.input :category %>
-	<%= f.input :pay_range, required: true %>
+	<%= f.input :category, required: true %>
+	<%= f.input :pay_range %>
 	<%= f.input :link %>
 	<%= f.input :posted_by %>
 	<%= f.input :description, required: true, as: :text %>

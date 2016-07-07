@@ -26,6 +26,7 @@ Rails.application.routes.draw do
   #get '/skills/:id/edit' => 'skills#edit', as: :edit_skill
   patch 'skills/:id' => 'skills#update'
   post 'skills' => 'skills#create'
+  get 'skills/autocomplete' => 'skills#autocomplete'
 
 
   # User-skill routes
@@ -36,7 +37,6 @@ Rails.application.routes.draw do
 
   # Job posting routes
   get 'job_postings' => 'job_postings#index'
-  get 'job_postings/skill_autocomplete' => 'job_postings#skill_autocomplete'
   get 'job_postings/new' => 'job_postings#new', as: :new_job_posting
   get 'job_postings/:id' => 'job_postings#show', as: :job_posting
   get 'job_postings/:id/edit' => 'job_postings#edit', as: :edit_job_posting

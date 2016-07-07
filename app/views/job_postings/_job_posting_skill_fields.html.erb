@@ -6,7 +6,7 @@
 	<div class="col-md-6"><%= f.input :question_id, required:true, collection: @questions, prompt: "Select Category", label: "Associated Survey Skill and Level"%></div>
 	<div class="col-md-2"><%= f.input :importance, required: true, collection: {'Preferred' => 1, 'Required' => 2}, prompt: "Select Importance"%></div>
 	<div class="col-md-1">
-		<%= f.input :_destroy, as: :hidden, input_html: {id: "job-skill-destroy-#{id}"}%> 
-		<span class="glyphicon glyphicon-remove" onclick="remove_posting_skill('job-posting-skill-<%=id%>')"></span>
+		<%= f.input :_destroy, as: :hidden, input_html: {id: "job-skill-destroy-#{id}"}%>
+		<span class="glyphicon glyphicon-remove" onclick="remove_posting_skill('<%=id%>')"></span>
 	</div>
 </div>

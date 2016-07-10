@@ -16,15 +16,20 @@
 		<div class ="profileContainerContent">
 			<h2> <%= @user.first_name %> <%= @user.last_name %> </h2>
 			<h5> <%= @user.email %> </h5>
+			<input type="button" id="github" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick="profileLinks('github')" value="GitHub"/>
+			<input type="button" id="linkedin" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick="profileLinks('linkedin')" value="LinkedIn"/>
+			<input type="button" id="twitter" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick="profileLinks('twitter')" value="Twitter"/>
+			<input type="button" id="facebook" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick="profileLinks('facebook')" value="Facebook"/>
 		</div>
 		<div class ="profileButtons">
-			<input type="button" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); value="SURVEYS"/>
+			<input type="button" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=rendering('surveys') value="SURVEYS"/>
 			<input type="button" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); value="EMPLOYMENT"/>
 			<input type="button" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=rendering('projects') value="PROJECTS"/>
 			<input type="button" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=rendering('skills') value="SKILLS"/>
 			<input type="button" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=rendering('references') value="REFERENCES"/>
 		</div>
 		<div class ="profileButtonResume">
+			<div class="resumeShadowBox bottom"> </div>
 			<input type="button" value="RESUME"/>		
 		</div>
 	</div>
@@ -66,6 +71,15 @@
 				document.getElementById("projects").style.display="none";
 				document.getElementById("job-postings").style.display="none";
 			}
+			else if(toRender=='surveys')
+			{
+				document.getElementById("survey-table").style.display="inline";
+
+				document.getElementById("references").style.display="none";
+				document.getElementById("projects").style.display="none";
+				document.getElementById("job-postings").style.display="none";
+				document.getElementById("skills").style.display="none";
+			}
 			else
 			{
 				document.getElementById("survey-table").style.display="none";
@@ -73,6 +87,26 @@
 				document.getElementById("projects").style.display="none";
 				document.getElementById("job-postings").style.display="none";
 				document.getElementById("skills").style.display="none";
+			}
+		}
+
+		function profileLinks(linkType)
+		{
+			if(linkType=='github')
+			{
+				window.location='https://github.com/';
+			}
+			else if(linkType=='linkedin')
+			{
+				window.location='https://www.linkedin.com/uas/login';
+			}
+			else if(linkType=='twitter')
+			{
+				window.location='https://twitter.com/?lang=en';
+			}
+			else if(linkType=='facebook')
+			{
+				window.location='https://www.facebook.com/';
 			}
 		}
 	</script>

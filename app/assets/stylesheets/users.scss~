@@ -71,11 +71,79 @@
 	margin-left: 380px;
 	//border: 2px solid blue;
 }
+.profileContainerContent input
+{
+	border-radius: 5px;
+}
+#github
+{
+	background-color: Transparent;
+    	background-repeat:no-repeat;
+    	border: none;
+    	overflow: hidden;
+    	outline:none;
+
+	margin: 3px;
+	color: #000000;
+
+	border-top: 2px solid #000000;
+	border-bottom: 2px solid #000000;
+
+	opacity: 0.6;
+}
+#linkedin
+{
+	background-color: Transparent;
+    	background-repeat:no-repeat;
+    	border: none;
+    	overflow: hidden;
+    	outline:none;
+
+	margin: 3px;
+	color: #0077B5;
+
+	border-top: 2px solid #0077B5;
+	border-bottom: 2px solid #0077B5;
+
+	opacity: 0.6;
+}
+#twitter
+{
+	background-color: Transparent;
+    	background-repeat:no-repeat;
+    	border: none;
+    	overflow: hidden;
+    	outline:none;
+
+	margin: 3px;
+	color: #52B4D9;
+
+	border-top: 2px solid #52B4D9;
+	border-bottom: 2px solid #52B4D9;
+
+	opacity: 0.6;
+}
+#facebook
+{
+	background-color: Transparent;
+    	background-repeat:no-repeat;
+    	border: none;
+    	overflow: hidden;
+    	outline:none;
+
+	margin: 3px;
+	color: #3B5998;
+
+	border-top: 2px solid #3B5998;
+	border-bottom: 2px solid #3B5998;
+
+	opacity: 0.6;
+}
 .profileButtons
 {
 	//border: 2px solid green;
 	height: 60px;
-	width: 650px;
+	width: 800px;
 	position: absolute;
 	bottom: 75px;
 	right: 10px;
@@ -100,7 +168,7 @@
 }
 .profileButtonResume
 {
-	//border: 2px solid yellow;
+	border: 2px solid yellow;
 	height: 60px;
 	width: 200px;
 	position: absolute;
@@ -119,32 +187,29 @@
 	width: 150px;
 	margin: 3px;
 	color: white;
-
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 1), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-			//10px 10px 5px black, 10px 10px 5px grey;
+	position: relative;
 
 }
-.profileButtonResumeGrad
+.resumeShadowBox
 {
-	//border: 2px solid orange;
-	height: 40px;
-	width: 120px;
 	position: absolute;
-	top: 10px;
-	right: 0px;
-	z-index: -1;
-	-ms-transform: rotate(3deg); /* IE 9 */
-    	-webkit-transform: rotate(3deg); /* Safari */
-    	transform: rotate(5deg); /* Standard syntax */
-
-background: linear-gradient(45deg, rgba(0, 0, 0, 1)35%, rgba(0, 0, 0, 0)60%); 
-background: -moz-linear-gradient(45deg, rgba(0, 0, 0, 1)35%, rgba(0, 0, 0, 0)60%); 
-background: -webkit-linear-gradient(45deg, rgba(0, 0, 0, 1)35%, rgba(0, 0, 0, 0)60%); 
-background: -o-linear-gradient(45deg, rgba(0, 0, 0, 1)35%, rgba(0, 0, 0, 0)60%); 
 }
-
-
-
+.bottom
+{
+	box-shadow: 4px 4px 8px 0 black;
+	width: 72px;
+	height: 40px;
+	margin-left: 74px;
+	margin-top: 2px;
+}
+.left
+{
+	box-shadow: 4px 4px 20px 0 grey;
+	width: 20px;
+	height: 38px;
+	margin-left: 132px;
+	margin-top: 6px;
+}
 #shadow-arch-edges {
   position: relative;
   box-shadow: 0 12px 10px -12px hsla(0, 0%, 0%, 1);

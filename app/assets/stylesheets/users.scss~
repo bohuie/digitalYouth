@@ -168,7 +168,7 @@
 }
 .profileButtonResume
 {
-	border: 2px solid yellow;
+	//border: 2px solid yellow;
 	height: 60px;
 	width: 200px;
 	position: absolute;
@@ -238,8 +238,9 @@
 #survey-table,
 #references,
 #projects,
-#job-postings,
+#job-posting,
 #skills
 {
 	display: none;
+	color: red;
 }

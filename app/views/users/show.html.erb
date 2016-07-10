@@ -1,12 +1,5 @@
 <% if @user.has_role? :employee %>
-	
-	<!---<div class ="container">
-		<p> User Information </p>
-		<p> <%= @user.first_name %> </p>
-		<p> <%= @user.last_name %> </p>
-		<p> <%= @user.email %> </p>
-	</div>--->
-<!--------------->
+<!------Employee Profile--------->
 	<div class ="profileContainer">
 		<div class ="profileContainerImage" id="shadow-arch-edges">
 			<div class ="profileFrame">
@@ -46,13 +39,12 @@
 		function rendering(toRender)
 		{					
 			if(toRender=='references')
-			{
+			{			
 				document.getElementById("references").style.display="inline";
 
 				document.getElementById("survey-table").style.display="none";
 				document.getElementById("projects").style.display="none";
-				document.getElementById("job-postings").style.display="none";
-				document.getElementById("skills").style.display="none";
+				document.getElementById("skills").style.display="none";	
 			}
 			else if(toRender=='projects')
 			{
@@ -60,7 +52,6 @@
 
 				document.getElementById("survey-table").style.display="none";
 				document.getElementById("references").style.display="none";
-				document.getElementById("job-postings").style.display="none";
 				document.getElementById("skills").style.display="none";
 			}
 			else if(toRender=='skills')
@@ -70,7 +61,6 @@
 				document.getElementById("survey-table").style.display="none";
 				document.getElementById("references").style.display="none";
 				document.getElementById("projects").style.display="none";
-				document.getElementById("job-postings").style.display="none";
 			}
 			else if(toRender=='surveys')
 			{
@@ -78,7 +68,6 @@
 
 				document.getElementById("references").style.display="none";
 				document.getElementById("projects").style.display="none";
-				document.getElementById("job-postings").style.display="none";
 				document.getElementById("skills").style.display="none";
 			}
 			else
@@ -86,7 +75,6 @@
 				document.getElementById("survey-table").style.display="none";
 				document.getElementById("references").style.display="none";
 				document.getElementById("projects").style.display="none";
-				document.getElementById("job-postings").style.display="none";
 				document.getElementById("skills").style.display="none";
 			}
 		}
@@ -187,7 +175,7 @@
 	<% end %>
 	</div>
 <% elsif @user.has_role? :employer %>
-	<div id="job-postings">
+	<div id="job-posting">
 	<% if !@job_postings.empty? %>
 		<div class="job-postings">
 			<div class="container">

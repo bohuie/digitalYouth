@@ -76,6 +76,11 @@
 				document.getElementById("references").style.display="none";
 				document.getElementById("projects").style.display="none";
 				document.getElementById("skills").style.display="none";
+				//needs edited if more to be added
+				if(toRender=='job-postings')
+				{
+					document.getElementById("job-postings").style.display="inline";
+				}
 			}
 		}
 
@@ -175,6 +180,27 @@
 	<% end %>
 	</div>
 <% elsif @user.has_role? :employer %>
+<!------Employer Profile--------->
+	<div class ="profileContainer">
+		<div class ="profileContainerImage" id="shadow-arch-edges">
+			<div class ="profileFrame">
+				<img src="https://image.freepik.com/free-icon/user-male-silhouette_318-55563.png"/>
+			</div>
+		</div>
+		<div class ="profileContainerContent">
+			<h2> <%= @user.company_name %></h2>
+			<h5> <%= @user.company_address %><br><%= @user.company_city %> <%= @user.company_province %> <%= @user.company_postal_code %> </h5>
+			<h5> <%= @user.email %> </h5>
+			<input type="button" id="github" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick="profileLinks('github')" value="GitHub"/>
+			<input type="button" id="linkedin" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick="profileLinks('linkedin')" value="LinkedIn"/>
+			<input type="button" id="twitter" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick="profileLinks('twitter')" value="Twitter"/>
+			<input type="button" id="facebook" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick="profileLinks('facebook')" value="Facebook"/>
+		</div>
+		<div class ="profileButtons">
+			<input type="button" style="float:right;" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=rendering('job-postings') value="JOB POSTINGS"/>
+		</div>
+	</div>
+<!--------------->
 	<div id="job-posting">
 	<% if !@job_postings.empty? %>
 		<div class="job-postings">

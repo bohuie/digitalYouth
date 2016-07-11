@@ -32,6 +32,11 @@
 
 }
 //Profile
+.flashContainer
+{
+	border: 2px solid red;
+	height: 60px;
+}
 .profileContainer
 {
 	height: 400px;
@@ -66,10 +71,10 @@
 }
 .profileContainerContent
 {
-	width: 400px;
+	width: 600px;
 	height: 300px;
 	margin-left: 380px;
-	//border: 2px solid blue;
+	border: 2px solid blue;
 }
 .profileContainerContent input
 {
@@ -168,12 +173,13 @@
 }
 .profileButtonResume
 {
-	//border: 2px solid yellow;
+	border: 2px solid yellow;
 	height: 60px;
 	width: 200px;
-	position: absolute;
-	top: 80px;
-	right: 10px;
+	margin: 0 auto;
+	margin-right: 10px;
+	margin-top: -300px;
+	//margin-right: 1000px;
 }
 .profileButtonResume input
 {
@@ -242,5 +248,4 @@
 #skills
 {
 	display: none;
-	color: red;
 }

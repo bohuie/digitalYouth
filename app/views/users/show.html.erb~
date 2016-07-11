@@ -1,13 +1,11 @@
 <% if @user.has_role? :employee %>
-	
-	<!---<div class ="container">
-		<p> User Information </p>
-		<p> <%= @user.first_name %> </p>
-		<p> <%= @user.last_name %> </p>
-		<p> <%= @user.email %> </p>
-	</div>--->
-<!--------------->
+<!------Employee Profile--------->
 	<div class ="profileContainer">
+		<div class ="profileButtonResume">
+			<div class="resumeShadowBox bottom"> </div>
+			<div class="resumeShadowBox left"> </div>
+			<input type="button" value="RESUME"/>		
+		</div>
 		<div class ="profileContainerImage" id="shadow-arch-edges">
 			<div class ="profileFrame">
 				<img src="https://image.freepik.com/free-icon/user-male-silhouette_318-55563.png"/>
@@ -27,11 +25,6 @@
 			<input type="button" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=rendering('projects') value="PROJECTS"/>
 			<input type="button" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=rendering('skills') value="SKILLS"/>
 			<input type="button" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=rendering('references') value="REFERENCES"/>
-		</div>
-		<div class ="profileButtonResume">
-			<div class="resumeShadowBox bottom"> </div>
-			<div class="resumeShadowBox left"> </div>
-			<input type="button" value="RESUME"/>		
 		</div>
 	</div>
 	<script>

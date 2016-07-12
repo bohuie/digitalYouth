@@ -27,6 +27,7 @@ class JobPostingsController < ApplicationController
 
 	def create # Creates a new job posting and skills
 		params[:job_posting][:user_id] = current_user.id
+		params[:job_posting][:job_category_id] = JobCategory.find_or_create_by(name: params[:job_posting][:category]).id
 		@job_posting = JobPosting.new(job_posting_params)
 		if @job_posting.save && process_skills(params[:job_posting]["job_posting_skills_attributes"],@job_posting.id)
 			redirect_to job_postings_path, flash: {success: "Job Posting Created!"}
@@ -61,7 +62,7 @@ class JobPostingsController < ApplicationController
 
 private
 	def job_posting_params # Restricts parameters
-		params.require(:job_posting).permit(:title, :location, :pay_range, :link, :category, :posted_by, :description, :open_date, :close_date, :user_id)
+		params.require(:job_posting).permit(:title, :location, :pay_range, :link, :job_category_id, :posted_by, :description, :open_date, :close_date, :user_id)
 	end
 
 	def check_employer # Checks current user is an employer

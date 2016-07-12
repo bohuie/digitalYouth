@@ -1,6 +1,9 @@
 include ActionDispatch::TestProcess
 
 FactoryGirl.define do
+  factory :job_category do
+    
+  end
   factory :job_posting_skill do
     
   end

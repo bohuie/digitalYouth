@@ -7,13 +7,13 @@
       t.string :pay_range
       t.string :link
       t.string :posted_by
-      t.string :category
     	t.text :description
     	t.date :open_date
     	t.date :close_date
       t.attachment :company_logo
 
     	t.references :user
+      t.references :job_category
       t.timestamps null: false
     end
   end

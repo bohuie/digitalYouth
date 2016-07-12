@@ -11,3 +11,13 @@ def create_skill(name)
 	end
 	return skl
 end
+
+def create_category(name)
+	cat = JobCategory.find_or_create_by(name: name)
+	if !cat.save
+		puts "failed, name: " + name
+		puts cat.valid?
+		puts cat.errors.full_messages
+	end
+	return cat
+end

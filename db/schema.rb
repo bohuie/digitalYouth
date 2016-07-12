@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160629233137) do
+ActiveRecord::Schema.define(version: 20160712181356) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,12 @@ ActiveRecord::Schema.define(version: 20160629233137) do
   add_index "activities", ["recipient_id", "recipient_type"], name: "index_activities_on_recipient_id_and_recipient_type", using: :btree
   add_index "activities", ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type", using: :btree
 
+  create_table "job_categories", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "job_posting_skills", force: :cascade do |t|
     t.integer  "importance"
     t.integer  "job_posting_id"
@@ -54,7 +60,6 @@ ActiveRecord::Schema.define(version: 20160629233137) do
     t.string   "pay_range"
     t.string   "link"
     t.string   "posted_by"
-    t.string   "category"
     t.text     "description"
     t.date     "open_date"
     t.date     "close_date"
@@ -63,6 +68,7 @@ ActiveRecord::Schema.define(version: 20160629233137) do
     t.integer  "company_logo_file_size"
     t.datetime "company_logo_updated_at"
     t.integer  "user_id"
+    t.integer  "job_category_id"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
   end

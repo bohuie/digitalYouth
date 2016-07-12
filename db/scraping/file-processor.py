@@ -84,14 +84,16 @@ def process(file,cnt,skill_cnt,companies,user_cnt):
 			user_cnt += 1
 		line += "\n"
 
+		line += "JobCategory"+str(cnt)+"= create_category(name:\""+category+"\")\n"
+
 		line += create_job + "title: \""+title+"\","
 		line += "" if desc == "" or "<" in desc else "description: \""+desc+"\","
 		line += "location: \""+location +"\","
 		line += "link: \""+link+"\","
-		line += "category: \""+category+"\","
+		line += "job_category_id: "+"JobCategory"+str(cnt)+".id,"
 		line += "" if closing == "" else "close_date: \"" + closing + "\","
 		line += "user_id: User"+str(companies[company_name])+".id)"
-		line += "\n\n"
+		line += "\n"
 
 		for s in req_skills:
 			line += "Skill"+str(skill_cnt)+" = create_skill(\""+s+"\")\n"
@@ -101,7 +103,7 @@ def process(file,cnt,skill_cnt,companies,user_cnt):
 			line += "Skill"+str(skill_cnt)+" = create_skill(\""+s+"\")\n"
 			line += "JobPostingSkill"+str(skill_cnt)+" = JobPostingSkill.create(skill_id: Skill"+str(skill_cnt)+".id,job_posting_id: JobPosting"+str(cnt)+".id,importance:1)\n"
 			skill_cnt += 1
-		line += "\n"
+		line += "\n\n"
 		if "Skill" not in line:
 			return ""
 		return [line,skill_cnt,companies,user_cnt]
@@ -109,12 +111,30 @@ def process(file,cnt,skill_cnt,companies,user_cnt):
 		return ""
 
 # ---------------------------------------
-
 path = os.path.realpath(__file__).strip(__file__)
 os.chdir(path)
+print("----------- File Processor -----------")
+
+print("Ensure that this path matches the path to the folder containing the file scraper and processor")
+print(path)
+print("If it doesn't then you must cd to the correct path then run the python file.\n")
+
+categories = ["Arts, Media and Entertainment","Technology and Digital Media"]
+print("----------- Categories -----------")
+num = 0 # input number
+for c in categories:
+	print("[" + str(num) + "] " + c)
+	num = num+1
+print("----------------------------------")
+
 cat_path = ""
 while True:
-	cat = input('\nChoose a Category to process: ')
+	cat = input('\nChoose an above Category to process or enter one: ')
+	try:
+		cat = categories[int(cat)]
+	except ValueError:
+		cat = cat
+
 	cat_path = "/data/categories/" + cat
 	try:
 		os.chdir(path+cat_path)

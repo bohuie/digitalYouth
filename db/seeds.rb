@@ -46,11 +46,13 @@ reference1 = Reference.create(first_name: 'Bernie', last_name: 'Smith', email: '
 reference2 = Reference.create(first_name: 'Bernie', last_name: 'Smith', email: 'Greg@gmail.com', company: 'Apple Pickers United LTD',
 			 position: "Apple QC Specialist", phone_number:"(250)555-5050", reference_body: "They were the best.", user_id: user2.id)
 
+#--- JobCategories for testing ---
+jobcategory1 = JobCategory.create(name:"Communications")
 
 #--- JobPostings for testing ---
 jobposting1 = JobPosting.create(title: 'Social Media Manager', location: "Kelowna, BC", pay_range: "30¢/hr-40¢/hr", link:"wwww.google.ca", posted_by:"Seed File",
 			  description: 'Handling our Facebook and Twitter account, posting messages, and responding to clients.', open_date: '2016-01-01', close_date: '2016-04-01',
-			  category: "Communications", user_id: user3.id)
+			  job_category_id: jobcategory1.id, user_id: user3.id)
 
 
 #--- Projects for testing ---

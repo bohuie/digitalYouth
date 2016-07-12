@@ -9,4 +9,5 @@ class JobPosting < ActiveRecord::Base
 
 	accepts_nested_attributes_for :job_posting_skills, reject_if: lambda {|a| a[:question_id].blank?}, allow_destroy: true
 	belongs_to :user
+	belongs_to :category
 end

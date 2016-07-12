@@ -42,12 +42,10 @@ ActiveRecord::Schema.define(version: 20160712181356) do
   end
 
   create_table "job_posting_skills", force: :cascade do |t|
-    t.integer  "importance"
-    t.integer  "job_posting_id"
-    t.integer  "skill_id"
-    t.integer  "question_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.integer "importance"
+    t.integer "job_posting_id"
+    t.integer "skill_id"
+    t.integer "question_id"
   end
 
   add_index "job_posting_skills", ["job_posting_id"], name: "index_job_posting_skills_on_job_posting_id", using: :btree

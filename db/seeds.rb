@@ -75,4 +75,4 @@ ProjectSkill.create(project_id: project1.id, skill_id: skill2.id)
 
 
 #----------- Load Job Posting data from scraping and processing ---------------------
-#Dir[File.join(Rails.root, 'db', 'scraping', '*.rb')].sort.each { |seed| load seed }
+Dir[File.join(Rails.root, 'db', 'scraping', '*.rb')].sort.each { |seed| load seed }

@@ -2,7 +2,6 @@
 # Modify num_random_users to generate a different number of random users
 # NOTE: Generating random users generally takes a long time.
 def create_random_user(company_name = "")
-
 	first_names = ["Aadit","Aahron","Aaran","Aaren","Aarez","Aarman","Aaron","Aaron-James","Aarron","Aaryan","Aaryn","Aayan","Aazaan","Abaan","Abbas","Abdallah","Abdalroof","Abdihakim",
 		"Abdirahman","Abdisalam","Abdul","Abdul-Aziz","Abdulbasir","Abdulkadir","Abdulkarem","Abdulkhader","Abdullah","Abdul-Majeed","Abdulmalik","Abdul-Rehman","Abdur","Abdurraheem",
 		"Babur","Bader","Badr","Badsha","Bailee","Bailey","Bailie","Bailley","Baillie","Baley","Balian","Banan","Barath","Barkley","Barney","Baron","Barrie","Barry","Bartlomiej","Bartosz",
@@ -338,16 +337,17 @@ def create_random_user(company_name = "")
 	first = first_names[rand(first_names.length)]
 	last = last_names[rand(last_names.length)]
 	if rand(2) == 1 && company_name == ""
-		usr = User.create(first_name: first, last_name: last, email: "#{first}_#{last}@example.com", password:"password", password_confirmation: 'password')
+		usr = User.new(first_name: first, last_name: last, email: "#{first}_#{last}@example.com", password:"password", password_confirmation: 'password')
 		usr.add_role :employee
-		usr.confirm
 	else
 		company_name = company_names[rand(company_names.length)] if company_name == ""
-		usr = User.create(first_name: first, last_name: last, email: "#{first}_#{last}@example.com", password:"password", password_confirmation: 'password', 
+		usr = User.new(first_name: first, last_name: last, email: "#{first}_#{last}@example.com", password:"password", password_confirmation: 'password', 
 				company_name: company_name, company_address: (111 + rand(999)).to_s <<  " " << streets[rand(streets.length)], company_city: cities[rand(cities.length)], 
 				company_province: provinces[rand(provinces.length)], company_postal_code: chars[rand(chars.length)] << rand(9).to_s << chars[rand(chars.length)] << " " + rand(9).to_s << chars[rand(chars.length)] << rand(9).to_s)
 		usr.add_role :employer
-		usr.confirm
 	end
+	usr.skip_confirmation!
+	usr.save
 	return usr
 end
+

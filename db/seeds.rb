@@ -13,22 +13,26 @@ Dir[File.join(Rails.root, 'db', 'seeds', '*.rb')].sort.each { |seed| load seed }
 # Every large set of seeds should be put in a file in the /db/seeds folder
 
 #--- Users for testing ---
-user1 = User.create(first_name: 'John', last_name: 'Doe', email: 'john@doe.com', password: 'password', password_confirmation: 'password')
+user1 = User.new(first_name: 'John', last_name: 'Doe', email: 'john@doe.com', password: 'password', password_confirmation: 'password')
 user1.add_role :employee
-user1.confirm
+user1.skip_confirmation!
+user1.save
 
-user2 = User.create(first_name: 'Jane', last_name: 'Doe', email: 'jane@doe.com', password: 'password', password_confirmation: 'password')
+user2 = User.new(first_name: 'Jane', last_name: 'Doe', email: 'jane@doe.com', password: 'password', password_confirmation: 'password')
 user2.add_role :employee
-user2.confirm
+user2.skip_confirmation!
+user2.save
 
-user3 = User.create(first_name: 'Foo', last_name: 'Bar', email: 'foo@bar.com', password: 'password', password_confirmation: 'password', 
+user3 = User.new(first_name: 'Foo', last_name: 'Bar', email: 'foo@bar.com', password: 'password', password_confirmation: 'password', 
 	company_name: 'Google', company_address: '123 Fake Street', company_city: 'Kelowna', company_province: 'BC', company_postal_code: 'V1V 1V1')
 user3.add_role :employer
-user3.confirm
+user3.skip_confirmation!
+user3.save
 
-user4 = User.create(first_name: 'admin', last_name: 'admin', email: 'admin@admin.com', password: 'password', password_confirmation: 'password')
+user4 = User.new(first_name: 'admin', last_name: 'admin', email: 'admin@admin.com', password: 'password', password_confirmation: 'password')
 user4.add_role :admin
-user4.confirm
+user4.skip_confirmation!
+user4.save
 
 #Create many random users
 #for 0..10 do

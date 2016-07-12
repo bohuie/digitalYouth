@@ -11,7 +11,8 @@ from lxml import etree
 def add_skills(skill_str,arr):
 	tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
 	if skill_str is not None:
-		skill_str = skill_str.strip().replace("\"", "")
+		skill_str = skill_str.lower()
+		skill_str = skill_str.strip().replace("\"", "").replace(";", "")
 		if not skill_str == "":
 			if len(skill_str) > 300:
 				arr.extend(tokenizer.tokenize(skill_str))
@@ -59,7 +60,8 @@ def process(file,cnt,skill_cnt,companies,user_cnt):
 
 			if len(ptext) > 100:
 				ptext = ptext.replace("\r\n"," ").replace("\xa0"," ")
-				desc.append(ptext)
+				if not any(substr in ptext.lower() for substr in req_skills) and not any(substr in ptext.lower() for substr in pref_skills):
+					desc.append(ptext)
 
 		desc = ''.join(desc)
 
@@ -92,12 +94,12 @@ def process(file,cnt,skill_cnt,companies,user_cnt):
 		line += "\n\n"
 
 		for s in req_skills:
-			line += "Skill"+str(skill_cnt)+" = Skill.create(name:\""+s+"\")\n"
+			line += "Skill"+str(skill_cnt)+" = create_skill(\""+s+"\")\n"
 			line += "JobPostingSkill"+str(skill_cnt)+" = JobPostingSkill.create(skill_id: Skill"+str(skill_cnt)+".id,job_posting_id: JobPosting"+str(cnt)+".id,importance:2)\n"
 			skill_cnt += 1
 		for s in pref_skills:
-			line += "Skill"+str(skill_cnt)+" = Skill.create(name:\""+s+"\")\n"
-			line += "JobPostingSkill"+str(skill_cnt)+" = JobPostingSkill.create(skill_id: Skill"+str(skill_cnt)+".id,job_posting_id: JobPosting"+str(cnt)+".id,importance:2)\n"
+			line += "Skill"+str(skill_cnt)+" = create_skill(\""+s+"\")\n"
+			line += "JobPostingSkill"+str(skill_cnt)+" = JobPostingSkill.create(skill_id: Skill"+str(skill_cnt)+".id,job_posting_id: JobPosting"+str(cnt)+".id,importance:1)\n"
 			skill_cnt += 1
 		line += "\n"
 		if "Skill" not in line:
@@ -110,10 +112,10 @@ def process(file,cnt,skill_cnt,companies,user_cnt):
 
 path = os.path.realpath(__file__).strip(__file__)
 os.chdir(path)
-cat_path = "/data/categories/"
+cat_path = ""
 while True:
 	cat = input('\nChoose a Category to process: ')
-	cat_path += cat
+	cat_path = "/data/categories/" + cat
 	try:
 		os.chdir(path+cat_path)
 		break

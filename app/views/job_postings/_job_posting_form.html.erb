@@ -1,7 +1,11 @@
 <%= simple_form_for @job_posting do |f| %>
 	<%= f.input :title, required: true %>
 	<%= f.input :location, required: true, label: "Location (City, Province Code)"%>
-	<%= f.input :category, required: true %>
+	<% if !@job_posting.job_category.nil? %>
+		<%= f.input :job_category, required: true, label: "Category", input_html:{value:@job_posting.job_category.name}%>
+	<% else %>
+		<%= f.input :job_category, required: true, label: "Category" %>
+	<% end %>
 	<%= f.input :pay_range %>
 	<%= f.input :link %>
 	<%= f.input :posted_by %>

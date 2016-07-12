@@ -15,7 +15,10 @@ def add_skills(skill_str,arr):
 		skill_str = skill_str.strip().replace("\"", "").replace(";", "")
 		if not skill_str == "":
 			if len(skill_str) > 300:
-				arr.extend(tokenizer.tokenize(skill_str))
+				tokens = tokenizer.tokenize(skill_str)
+				for token in tokens:
+					if len(token) < 400:
+						arr.append(token)
 			else:
 				arr.append(skill_str)
 	return arr
@@ -84,7 +87,7 @@ def process(file,cnt,skill_cnt,companies,user_cnt):
 			user_cnt += 1
 		line += "\n"
 
-		line += "JobCategory"+str(cnt)+"= create_category(name:\""+category+"\")\n"
+		line += "JobCategory"+str(cnt)+"= create_category(\""+category+"\")\n"
 
 		line += create_job + "title: \""+title+"\","
 		line += "" if desc == "" or "<" in desc else "description: \""+desc+"\","
@@ -110,14 +113,32 @@ def process(file,cnt,skill_cnt,companies,user_cnt):
 	except (IndexError, etree.XMLSyntaxError):
 		return ""
 
+def startProgress(title):
+    global progress_x
+    sys.stdout.write(title + ": [" + " "*40 + "]" + chr(8)*41)
+    sys.stdout.flush()
+    progress_x = 0
+
+def progress(x):
+    global progress_x
+    x = int(x * 40 // 100)
+    sys.stdout.write("-" * (x - progress_x))
+    sys.stdout.flush()
+    progress_x = x
+
+def endProgress():
+    sys.stdout.write("-" * (40 - progress_x) + "]\n")
+    sys.stdout.flush()
+
+
 # ---------------------------------------
 path = os.path.realpath(__file__).strip(__file__)
 os.chdir(path)
-print("----------- File Processor -----------")
+print("----------- File Processor -----------\n")
 
-print("Ensure that this path matches the path to the folder containing the file scraper and processor")
+print("Ensure the path below contains the file processor:")
 print(path)
-print("If it doesn't then you must cd to the correct path then run the python file.\n")
+print("If it doesn't then cd to the correct path and run again.\n")
 
 categories = ["Arts, Media and Entertainment","Technology and Digital Media"]
 print("----------- Categories -----------")
@@ -142,34 +163,45 @@ while True:
 	except FileNotFoundError:
 		print("Directory Not Found")
 print("----------------------------------")
-print("Processing: ")
 
 os.chdir(path)
 file = open("job_posting_seeds_"+cat+".rb", 'w')
+file.write("puts \"Seeding Job Postings for: "+cat+"\"\n")
 path+=cat_path
 os.chdir(path)
 
 companies = {}
 user_cnt = 0
 cnt = 0
+pointer = 0
 skill_cnt = 0
 subdirs = [x[0] for x in os.walk(path)]
 del subdirs[0]
 
+num_files = 0
+for subdir in subdirs:
+	num_files += len([f for f in os.listdir(subdir) if os.path.isfile(os.path.join(subdir, f))])
+num_files -= len(subdirs) + 1
+
+startProgress("Processing")
 for subdir in subdirs:
 	os.chdir(subdir)
 	for file_name in os.listdir(subdir):
 		rtns = process(file_name,cnt,skill_cnt,companies,user_cnt)
 		try:
-			if not rtns[0] == "": 
-				print(cnt)
+			if not rtns[0] == "":
+				percent = (pointer/num_files)*100
+				progress(percent)
 				file.write(rtns[0] + "\n")
 				skill_cnt = rtns[1]
 				companies = rtns[2]
 				user_cnt = rtns[3]
 				cnt += 1
+				
 		except IndexError:
 			do_nothing = True
+		pointer += 1
+endProgress()
+print(str(cnt)+" Files Successfully Processed.")
 
-#Arts, Media and Entertainment
-#Technology and Digital Media
+

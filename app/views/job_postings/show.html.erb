@@ -4,7 +4,7 @@
 <h3><%= @job_posting.title %></h3>
 <h4><%= @job_posting.user.company_name %></h4>
 <p> <%= @job_posting.location %><br>
-	<%= @job_posting.category %><br>
+	<%= @job_posting.job_category.name %><br>
 	<%= raw("Pay Range: #{@job_posting.pay_range}<br>") if !@job_posting.pay_range.blank? %>
 	<%= raw("<a href=\"http://#{@job_posting.link}\">#{@job_posting.link}</a><br>") if !@job_posting.link.blank? %>
 	<%= raw("Posted By: #{@job_posting.posted_by}<br>") if !@job_posting.posted_by.blank? %>
@@ -32,4 +32,5 @@
 
 <% if user_signed_in? && @current_user.id == @job_posting.user_id %>
 	<%= link_to "Edit Posting", edit_job_posting_path(@job_posting) %> <%= link_to "Delete Posting", job_posting_path(@job_posting), method: "delete" %>
+	<p>This job posting has been viewed <%= @job_posting.views %> <%= @job_posting.views == 1 ? "time." : "times."%></p>
 <% end %>

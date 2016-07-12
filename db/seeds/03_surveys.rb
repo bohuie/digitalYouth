@@ -1,4 +1,5 @@
 # ---- Surveys ----
+puts "Seeding Surveys"
 
 #Surveys - title and category
 survey1 = Survey.create(title: 'General'				, category: 'Computer')

@@ -12,9 +12,10 @@ class JobPostingsController < ApplicationController
 	end
 	
 	def show # Shows a specific job posting and its skills
-		@job_posting = JobPosting.includes(:user).find(params[:id])
+		@job_posting = JobPosting.includes(:user,:job_category).find(params[:id])
 		@req_skills  = JobPostingSkill.where(job_posting_id:params[:id], importance: 2).includes(:skill)
 		@pref_skills = JobPostingSkill.where(job_posting_id:params[:id], importance: 1).includes(:skill)
+		add_view(@job_posting)
 	end
 
 	def new # Creates the form to make a new job posting
@@ -27,7 +28,7 @@ class JobPostingsController < ApplicationController
 
 	def create # Creates a new job posting and skills
 		params[:job_posting][:user_id] = current_user.id
-		params[:job_posting][:job_category_id] = JobCategory.find_or_create_by(name: params[:job_posting][:category]).id
+		params[:job_posting][:job_category_id] = JobCategory.find_or_create_by(name: params[:job_posting][:job_category]).id
 		@job_posting = JobPosting.new(job_posting_params)
 		if @job_posting.save && process_skills(params[:job_posting]["job_posting_skills_attributes"],@job_posting.id)
 			redirect_to job_postings_path, flash: {success: "Job Posting Created!"}
@@ -44,6 +45,7 @@ class JobPostingsController < ApplicationController
 	end
 
 	def update # Updates the job posting
+		params[:job_posting][:job_category_id] = JobCategory.find_or_create_by(name: params[:job_posting][:job_category]).id
 		if @job_posting.update_attributes(job_posting_params) && process_skills(params[:job_posting]["job_posting_skills_attributes"],@job_posting.id)
 			redirect_to @job_posting, flash: {success: "Job Posting Updated!"}
 		else
@@ -82,16 +84,26 @@ private
 		end
 	end
 
+	def add_view(job_posting) # Checks to make sure the user doesn't own the posting and hasn't seen it this session
+		return nil if user_signed_in? && @job_posting.user_id == current_user.id
+		session[:job_posting_views] = Array.new if session[:job_posting_views].nil?
+		if !session[:job_posting_views].include? job_posting.id
+			job_posting.update(views: @job_posting.views+1)
+			session[:job_posting_views].push(job_posting.id)
+		end
+	end
+
 	def check_fields # Performs rigorous checks to ensure that the job posting is valid
 		args = params[:job_posting]
-		if args[:title].blank? || args[:location].blank? || args[:description].blank? || args[:open_date].blank? || args[:close_date].blank? || args[:category].blank?
-			redirect_to edit_job_posting_path, flash: {warning: "Missing required fields"}
+		if args[:title].blank? || args[:location].blank? || args[:description].blank? || args[:open_date].blank? || args[:close_date].blank? || args[:job_category].blank?
+			flash[:warning] = "Missing required fields"
+			redir = true
 		elsif args[:location].split(',').length != 2 || args[:location].split(',')[1].strip.length > 2
-			redirect_to edit_job_posting_path, flash: {warning: "Location must in the form: City , Province Code"}
+			flash[:warning] = "Location must in the form: City , Province Code"
 		elsif args[:open_date] > args[:close_date]
-			redirect_to edit_job_posting_path, flash: {warning: "Open date must be before close date"}
+			flash[:warning] ="Open date must be before close date"
 		elsif args["job_posting_skills_attributes"].nil?
-			redirect_to edit_job_posting_path, flash: {warning: "You must enter some skills associated with this job."}
+			flash[:warning] = "You must enter some skills associated with this job."
 		elsif !args["job_posting_skills_attributes"].nil?
 			destroy = true
 			missing = false
@@ -101,9 +113,10 @@ private
 				missing = true if m[1]["importance"].blank?
 				destroy = false if m[1]["_destroy"] == "false"
 			end
-			redirect_to edit_job_posting_path, flash: {warning: "You must enter all skill fields."} if missing
-			redirect_to edit_job_posting_path, flash: {warning: "You must enter some skills associated with this job."} if destroy
+			flash[:warning] = "You must enter all skill fields." if missing
+			flash[:warning] = "You must enter some skills associated with this job." if destroy
 		end
+		redirect_back_or job_postings_path if redir || missing || destroy
 	end
 
 	def process_skills(hash,job_posting_id) # Creates and Updates job posting skills, creating new skills when needed.

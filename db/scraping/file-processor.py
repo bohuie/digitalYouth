@@ -24,10 +24,16 @@ def add_skills(skill_str,arr):
 	return arr
 
 def check_string(string):
+	if "\n\n" in string:
+		string = string.replace("\n\n", "\n")
+
 	if string.endswith('\\') or string.endswith(';'):
 		return string[:-1]
 	else:
 		return string
+
+def rd(string):
+	return ''.join([i for i in string if not i.isdigit()])
 
 def process(file,cnt,skill_cnt,companies,user_cnt):
 	try:
@@ -46,13 +52,21 @@ def process(file,cnt,skill_cnt,companies,user_cnt):
 		skip = False
 		skills_strings = ['qualif','skill','abil,','able','capab','experi','criter','knowl','educ','']
 		prefer_strings = ['prefer','good','nice','bonus','addit']
+		benefits_strings = ['benefit']
+		roles_strings = ['role']
 
 		tags = tree.xpath('//section[@class="job-view-content-wrapper js-job-view-header-apply"]/*')
 		for p in tags:
 			ptext = "".join(p.itertext())
-			if any(substr in ptext.lower() for substr in skills_strings): #and not in responibility strings
+			if any(substr in ptext.lower() for substr in benefits_strings): # NOT WORKING
+				next
+			if any(substr in ptext.lower() for substr in skills_strings):
 				sibling = p.getnext()
 				if sibling is not None:
+					if sibling.tag == "p":
+						second_sibling = sibling.getnext()
+						if second_sibling is not None:
+							sibling = second_sibling
 					if sibling.tag == "ul":
 						children = sibling.getchildren()
 						for c in children:
@@ -79,8 +93,14 @@ def process(file,cnt,skill_cnt,companies,user_cnt):
 		closing = check_string(closing.strip().replace("\"", ""))
 		desc = check_string(desc.strip().replace("\"", ""))
 
-		create_job = "jobposting"+str(cnt)+" = JobPosting.create("
-		create_user = "user" + str(user_cnt) + " = create_random_user("
+		# These being lower case is breaking it
+		job = "jp"+str(cnt)
+		user = "u"+str(user_cnt)
+		jobcat = "jc"+str(cnt)
+
+		create_job = job+"=JobPosting.create("
+		create_user = user+"=create_random_user("
+
 		line = "\n"
 
 		if req_skills == [] or desc == "":
@@ -91,26 +111,28 @@ def process(file,cnt,skill_cnt,companies,user_cnt):
 			line += create_user+ "\""+company_name+"\")\n"
 			user_cnt += 1
 
-		line += "jobcategory"+str(cnt)+" = create_category(\""+category+"\")\n"
+		line += jobcat+"=create_category(\""+category+"\")\n"
 
-		line += create_job + "title: \""+title+"\","
-		line += "" if desc == "" or "<" in desc else "description: \""+desc+"\","
+		line += create_job+"title: \""+title+"\","
+		line += "user_id: "+rd(user)+str(companies[company_name])+".id,"
+		line += "job_category_id: "+jobcat+".id,"
 		line += "location: \""+location +"\","
 		line += "link: \""+link+"\","
-		line += "job_category_id: "+"JobCategory"+str(cnt)+".id,"
-		line += "" if closing == "" else "close_date: \"" + closing + "\","
-		line += "user_id: User"+str(companies[company_name])+".id)"
-		line += "\n"
+		line += "" if desc == "" or "<" in desc else "description: \""+desc+"\","
+		line += "" if closing == "" else "close_date: \"" + closing + "\""
+		line += ")\n"
 
 		for s in req_skills:
-			line += "skill"+str(skill_cnt)+" = create_skill(\""+s+"\")\n"
-			line += "jobpostingskill"+str(skill_cnt)+" = JobPostingSkill.create(skill_id: Skill"+str(skill_cnt)+".id,job_posting_id: JobPosting"+str(cnt)+".id,importance:2)\n"
+			skill = "s"+str(skill_cnt)
+			line += skill+"=create_skill(\""+s+"\")\n"
+			line += "JobPostingSkill.create(skill_id: "+skill+".id,job_posting_id: "+job+".id,importance:2)\n"
 			skill_cnt += 1
 		for s in pref_skills:
-			line += "skill"+str(skill_cnt)+" = create_skill(\""+s+"\")\n"
-			line += "jobpostingskill"+str(skill_cnt)+" = JobPostingSkill.create(skill_id: Skill"+str(skill_cnt)+".id,job_posting_id: JobPosting"+str(cnt)+".id,importance:1)\n"
+			skill = "s"+str(skill_cnt)
+			line += skill+"=create_skill(\""+s+"\")\n"
+			line += "JobPostingSkill.create(skill_id: "+skill+".id,job_posting_id: "+job+".id,importance:1)\n"
 			skill_cnt += 1
-		line += "\n"
+
 		if "skill" not in line:
 			return ""
 		return [line,skill_cnt,companies,user_cnt]

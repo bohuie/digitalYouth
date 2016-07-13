@@ -39,7 +39,7 @@
 						<p class="refLeft" id="refName"><%= r.first_name%> <%= r.last_name %></p>
 						<h4 class="refLeft"><%= r.position %></h4>
 						<h4 class="refLeft"><%= r.company%></h4>
-						<h6 class="refLeft"><b>Contact:</b></h6>
+						<h6 class="refLeft">Contact:</h6>
 						<h6 class="refLeft contactElm">Email: <%= r.email %></h6>
 						<h6 class="refLeft contactElm">Phone: <%= r.phone_number %> </h6>
 						<h5 class="refLeft"><%= link_to "Confirm", update_reference_path(r), method: "patch" %> <%= link_to "Delete", delete_reference_path(r), method: "delete" %></h5>

@@ -18,11 +18,16 @@ def add_skills(skill_str,arr):
 				tokens = tokenizer.tokenize(skill_str)
 				for token in tokens:
 					if len(token) < 400:
-						arr.append(token)
+						arr.append(check_string(token))
 			else:
-				arr.append(skill_str)
+				arr.append(check_string(skill_str))
 	return arr
 
+def check_string(string):
+	if string.endswith('\\') or string.endswith(';'):
+		return string[:-1]
+	else:
+		return string
 
 def process(file,cnt,skill_cnt,companies,user_cnt):
 	try:
@@ -45,7 +50,7 @@ def process(file,cnt,skill_cnt,companies,user_cnt):
 		tags = tree.xpath('//section[@class="job-view-content-wrapper js-job-view-header-apply"]/*')
 		for p in tags:
 			ptext = "".join(p.itertext())
-			if any(substr in ptext.lower() for substr in skills_strings):
+			if any(substr in ptext.lower() for substr in skills_strings): #and not in responibility strings
 				sibling = p.getnext()
 				if sibling is not None:
 					if sibling.tag == "ul":
@@ -68,15 +73,15 @@ def process(file,cnt,skill_cnt,companies,user_cnt):
 
 		desc = ''.join(desc)
 
-		company_name = company_name.strip().replace("\"", "")
-		title = title.strip().replace("\"", "")
-		location = location.strip().replace("\"", "")
-		closing = closing.strip().replace("\"", "")
-		desc = desc.strip().replace("\"", "")
+		company_name = check_string(company_name.strip().replace("\"", ""))
+		title = check_string(title.strip().replace("\"", ""))
+		location = check_string(location.strip().replace("\"", ""))
+		closing = check_string(closing.strip().replace("\"", ""))
+		desc = check_string(desc.strip().replace("\"", ""))
 
-		create_job = "JobPosting"+str(cnt)+" = JobPosting.create("
-		create_user = "User" + str(user_cnt) + " = create_random_user("
-		line = ""
+		create_job = "jobposting"+str(cnt)+" = JobPosting.create("
+		create_user = "user" + str(user_cnt) + " = create_random_user("
+		line = "\n"
 
 		if req_skills == [] or desc == "":
 			return ""
@@ -85,9 +90,8 @@ def process(file,cnt,skill_cnt,companies,user_cnt):
 			companies[company_name] = user_cnt
 			line += create_user+ "\""+company_name+"\")\n"
 			user_cnt += 1
-		line += "\n"
 
-		line += "JobCategory"+str(cnt)+"= create_category(\""+category+"\")\n"
+		line += "jobcategory"+str(cnt)+" = create_category(\""+category+"\")\n"
 
 		line += create_job + "title: \""+title+"\","
 		line += "" if desc == "" or "<" in desc else "description: \""+desc+"\","
@@ -99,15 +103,15 @@ def process(file,cnt,skill_cnt,companies,user_cnt):
 		line += "\n"
 
 		for s in req_skills:
-			line += "Skill"+str(skill_cnt)+" = create_skill(\""+s+"\")\n"
-			line += "JobPostingSkill"+str(skill_cnt)+" = JobPostingSkill.create(skill_id: Skill"+str(skill_cnt)+".id,job_posting_id: JobPosting"+str(cnt)+".id,importance:2)\n"
+			line += "skill"+str(skill_cnt)+" = create_skill(\""+s+"\")\n"
+			line += "jobpostingskill"+str(skill_cnt)+" = JobPostingSkill.create(skill_id: Skill"+str(skill_cnt)+".id,job_posting_id: JobPosting"+str(cnt)+".id,importance:2)\n"
 			skill_cnt += 1
 		for s in pref_skills:
-			line += "Skill"+str(skill_cnt)+" = create_skill(\""+s+"\")\n"
-			line += "JobPostingSkill"+str(skill_cnt)+" = JobPostingSkill.create(skill_id: Skill"+str(skill_cnt)+".id,job_posting_id: JobPosting"+str(cnt)+".id,importance:1)\n"
+			line += "skill"+str(skill_cnt)+" = create_skill(\""+s+"\")\n"
+			line += "jobpostingskill"+str(skill_cnt)+" = JobPostingSkill.create(skill_id: Skill"+str(skill_cnt)+".id,job_posting_id: JobPosting"+str(cnt)+".id,importance:1)\n"
 			skill_cnt += 1
-		line += "\n\n"
-		if "Skill" not in line:
+		line += "\n"
+		if "skill" not in line:
 			return ""
 		return [line,skill_cnt,companies,user_cnt]
 	except (IndexError, etree.XMLSyntaxError):
@@ -135,7 +139,6 @@ def endProgress():
 path = os.path.realpath(__file__).strip(__file__)
 os.chdir(path)
 print("----------- File Processor -----------\n")
-
 print("Ensure the path below contains the file processor:")
 print(path)
 print("If it doesn't then cd to the correct path and run again.\n")
@@ -174,11 +177,11 @@ companies = {}
 user_cnt = 0
 cnt = 0
 pointer = 0
+num_files = 0
 skill_cnt = 0
 subdirs = [x[0] for x in os.walk(path)]
 del subdirs[0]
 
-num_files = 0
 for subdir in subdirs:
 	num_files += len([f for f in os.listdir(subdir) if os.path.isfile(os.path.join(subdir, f))])
 num_files -= len(subdirs) + 1
@@ -190,18 +193,14 @@ for subdir in subdirs:
 		rtns = process(file_name,cnt,skill_cnt,companies,user_cnt)
 		try:
 			if not rtns[0] == "":
-				percent = (pointer/num_files)*100
-				progress(percent)
+				progress((pointer/num_files)*100)
 				file.write(rtns[0] + "\n")
 				skill_cnt = rtns[1]
 				companies = rtns[2]
 				user_cnt = rtns[3]
 				cnt += 1
-				
 		except IndexError:
 			do_nothing = True
 		pointer += 1
 endProgress()
 print(str(cnt)+" Files Successfully Processed.")
-
-

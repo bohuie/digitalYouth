@@ -28,9 +28,10 @@ class JobPostingsController < ApplicationController
 
 	def create # Creates a new job posting and skills
 		params[:job_posting][:user_id] = current_user.id
-		params[:job_posting][:job_category_id] = JobCategory.find_or_create_by(name: params[:job_posting][:job_category]).id
+		category = set_category(params[:job_posting][:job_category])
+		params[:job_posting][:job_category_id] = category.id if !category.nil?
 		@job_posting = JobPosting.new(job_posting_params)
-		if @job_posting.save && process_skills(params[:job_posting]["job_posting_skills_attributes"],@job_posting.id)
+		if !category.nil? && @job_posting.save && process_skills(params[:job_posting]["job_posting_skills_attributes"],@job_posting.id)
 			redirect_to job_postings_path, flash: {success: "Job Posting Created!"}
 		else
 			flash[:warning] = "Oops, there was an issue in creating your Job Posting."
@@ -39,14 +40,15 @@ class JobPostingsController < ApplicationController
 	end
 
 	def edit # Creates the form to edit a job posting
-		@job_posting_skills = JobPostingSkill.where(job_posting_id:params[:id]) 
+		@job_posting_skills = JobPostingSkill.where(job_posting_id:params[:id])
 		@questions = Question.get_label_map
 		@skills = Skill.all
 	end
 
 	def update # Updates the job posting
-		params[:job_posting][:job_category_id] = JobCategory.find_or_create_by(name: params[:job_posting][:job_category]).id
-		if @job_posting.update_attributes(job_posting_params) && process_skills(params[:job_posting]["job_posting_skills_attributes"],@job_posting.id)
+		category = set_category(params[:job_posting][:job_category])
+		params[:job_posting][:job_category_id] = category.id if !category.nil?
+		if !category.nil? && @job_posting.update_attributes(job_posting_params) && process_skills(params[:job_posting]["job_posting_skills_attributes"],@job_posting.id)
 			redirect_to @job_posting, flash: {success: "Job Posting Updated!"}
 		else
 			redirect_to edit_job_posting_path, flash: {warning: 'Oops, there was an issue in editing your Job Posting.'}
@@ -82,6 +84,15 @@ private
 		else
 			return @job_posting
 		end
+	end
+
+	def set_category(name) # Checks to see if the category exists, creates if it doesn't exist
+		category = JobCategory.find_by(name: name)
+		if category.nil?
+			category = JobCategory.new(name: name)
+			return nil if !category.save #If Save fails method returns nil
+		end
+		return category
 	end
 
 	def add_view(job_posting) # Checks to make sure the user doesn't own the posting and hasn't seen it this session

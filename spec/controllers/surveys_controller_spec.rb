@@ -1,12 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe SurveysController, type: :controller do
-
+	#If these fail, reseed or seed test DB
 	describe "GET show" do
 		let(:survey1) { Survey.find_by(title: "General") }
 		let(:response1) {FactoryGirl.create(:response1)}
 		let(:user) { FactoryGirl.create(:user) }
-
 		before do
 			user.confirm
 		end

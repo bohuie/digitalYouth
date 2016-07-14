@@ -12,7 +12,6 @@ class NotificationsController < ApplicationController
 	end
 
 	def show # Get 5 notifications first, then get one and offset the page
-		byebug
 		params[:page] = 1 if params[:page].nil?
 		per_pg = 6
 		if Integer(params[:page]) > 1

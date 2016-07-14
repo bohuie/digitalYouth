@@ -7,7 +7,6 @@ RSpec.describe ReferencesController, type: :controller do
 		let(:reference1) { FactoryGirl.create(:reference1) }
 		let(:reference2) { FactoryGirl.create(:reference2) }
 		let(:user) { FactoryGirl.create(:user) }
-
 		before do
 			user.confirm
 		end
@@ -42,7 +41,6 @@ RSpec.describe ReferencesController, type: :controller do
 
 		let(:reference_redirection1) { FactoryGirl.create(:reference_redirection1) }
 		let(:user) { FactoryGirl.create(:user) }
-
 		before do
 			user.confirm
 		end
@@ -65,7 +63,6 @@ RSpec.describe ReferencesController, type: :controller do
 	describe "GET email" do
 
 		let(:user) { FactoryGirl.create(:user) }
-
 		before do
 			user.confirm
 		end
@@ -89,7 +86,6 @@ RSpec.describe ReferencesController, type: :controller do
 		let(:reference1) { FactoryGirl.create(:reference_email1) }
 		let(:reference_email) { { first_name: reference1.first_name, last_name: reference1.last_name, email: reference1.email, reference_url: reference1.reference_url} }
 		let(:user) { FactoryGirl.create(:user) }
-
 		before do
 			user.confirm
 		end

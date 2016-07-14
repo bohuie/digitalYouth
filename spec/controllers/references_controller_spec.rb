@@ -8,6 +8,10 @@ RSpec.describe ReferencesController, type: :controller do
 		let(:reference2) { FactoryGirl.create(:reference2) }
 		let(:user) { FactoryGirl.create(:user) }
 
+		before do
+			user.confirm
+		end
+
 		context "user is logged in" do
 			before(:each) do
 				sign_in user
@@ -39,6 +43,10 @@ RSpec.describe ReferencesController, type: :controller do
 		let(:reference_redirection1) { FactoryGirl.create(:reference_redirection1) }
 		let(:user) { FactoryGirl.create(:user) }
 
+		before do
+			user.confirm
+		end
+
 		it "redirects to root if the phrase is not in the db" do
 			get :new, id:"phrase"
 
@@ -57,6 +65,10 @@ RSpec.describe ReferencesController, type: :controller do
 	describe "GET email" do
 
 		let(:user) { FactoryGirl.create(:user) }
+
+		before do
+			user.confirm
+		end
 
 		it "redirects the user when not logged in" do
 			get :email
@@ -78,6 +90,9 @@ RSpec.describe ReferencesController, type: :controller do
 		let(:reference_email) { { first_name: reference1.first_name, last_name: reference1.last_name, email: reference1.email, reference_url: reference1.reference_url} }
 		let(:user) { FactoryGirl.create(:user) }
 
+		before do
+			user.confirm
+		end
 
 		it "sends an email to the reference" do
 			sign_in user
@@ -135,6 +150,11 @@ RSpec.describe ReferencesController, type: :controller do
 		let(:user) { FactoryGirl.create(:user) }
 		let(:user2) { FactoryGirl.create(:user2) }
 
+		before do
+			user.confirm
+			user2.confirm
+		end
+
 		context "user is not logged in" do
 			it "redirects the user when not logged in" do
 				patch :update, id: reference1.id
@@ -168,6 +188,11 @@ RSpec.describe ReferencesController, type: :controller do
 		let(:reference1) { FactoryGirl.create(:reference1) }
 		let(:user) { FactoryGirl.create(:user) }
 		let(:user2) { FactoryGirl.create(:user2) }
+
+		before do
+			user.confirm
+			user2.confirm
+		end
 
 		context "incorrect user" do
 			it "redirects the user when not logged in" do

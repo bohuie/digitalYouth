@@ -9,6 +9,7 @@ RSpec.describe NotificationsController, type: :controller do
 		
 		context "user is logged in" do
 			before(:each) do
+				user.confirm
 				sign_in user
 				user.references << reference1
 				notification.owner = user

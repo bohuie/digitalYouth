@@ -7,7 +7,12 @@ RSpec.describe SurveysController, type: :controller do
 		let(:response1) {FactoryGirl.create(:response1)}
 		let(:user) { FactoryGirl.create(:user) }
 
+		before do
+			user.confirm
+		end
+
 		it "redirects when not logged in" do
+			byebug
 			get :show, title: survey1.title
 			expect(response).to redirect_to(new_user_session_path)
 		end

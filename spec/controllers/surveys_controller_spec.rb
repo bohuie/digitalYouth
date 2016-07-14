@@ -11,7 +11,6 @@ RSpec.describe SurveysController, type: :controller do
 		end
 
 		it "redirects when not logged in" do
-			byebug
 			get :show, title: survey1.title
 			expect(response).to redirect_to(new_user_session_path)
 		end

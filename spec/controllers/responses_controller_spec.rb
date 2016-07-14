@@ -10,6 +10,10 @@ RSpec.describe ResponsesController, type: :controller do
 		let(:questions) { {"0" => response1.question_ids[0], "1" => response1.question_ids[1], "2" => response1.question_ids[2], "3" => response1.question_ids[3]} }
 		let(:response_attr) { {survey_id: 1, scores: scores , question_ids: questions } }
 
+		before do
+			user.confirm
+		end
+
 		it "redirects when not logged in" do
 			post :create
 			expect(response).to redirect_to(new_user_session_path)
@@ -56,6 +60,10 @@ RSpec.describe ResponsesController, type: :controller do
 		let(:questions) { {"0" => response2.question_ids[0], "1" => response2.question_ids[1], "2" => response2.question_ids[2], "3" => response2.question_ids[3]} }
 		let(:response_attr) { {survey_id: 1, scores: scores , question_ids: questions } }
 
+		before do
+			user.confirm
+		end
+		
 		it "redirects when not logged in" do
 			patch :update
 			expect(response).to redirect_to(new_user_session_path)

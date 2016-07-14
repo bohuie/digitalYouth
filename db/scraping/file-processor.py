@@ -24,6 +24,7 @@ def add_skills(skill_str,arr):
 	return arr
 
 def check_string(string):
+	string = string.strip().replace("\"", "")
 	if "\n\n" in string:
 		string = string.replace("\n\n", "\n")
 
@@ -32,10 +33,25 @@ def check_string(string):
 	else:
 		return string
 
-def rd(string):
-	return ''.join([i for i in string if not i.isdigit()])
+def acronym(string):
+	rtn_str = ""
+	for i in string.split():
+		if i[0].isupper():
+			rtn_str += i[0]
+	return rtn_str
 
-def process(file,cnt,skill_cnt,companies,user_cnt):
+def get_silbing_ul(elem):
+	sibling = elem.getnext()
+	if sibling is not None:
+		if sibling.tag == "p":
+			second_sibling = sibling.getnext()
+			if second_sibling is not None:
+				sibling = second_sibling
+		if sibling.tag == "ul":
+			return sibling
+	return None:
+
+def extract_data(file):
 	try:
 		tree = html.fromstring(open(file, "r").read())
 		logo = tree.xpath('//a[@class="job-view-company-logo-link"]/img/@src')
@@ -61,22 +77,17 @@ def process(file,cnt,skill_cnt,companies,user_cnt):
 			if any(substr in ptext.lower() for substr in benefits_strings): # NOT WORKING
 				next
 			if any(substr in ptext.lower() for substr in skills_strings):
-				sibling = p.getnext()
-				if sibling is not None:
-					if sibling.tag == "p":
-						second_sibling = sibling.getnext()
-						if second_sibling is not None:
-							sibling = second_sibling
-					if sibling.tag == "ul":
-						children = sibling.getchildren()
-						for c in children:
-							if not c == "\n":
-								if any(substr in ptext.lower() for substr in prefer_strings):
-									pref_skills = add_skills(c.text,pref_skills)
-								else:
-									req_skills = add_skills(c.text,req_skills)
+				sibling = get_silbing_ul(p.getnext())
+				if sibling is None:
+					next
+				children = sibling.getchildren()
+				for c in children:
+					if any(substr in ptext.lower() for substr in prefer_strings):
+						pref_skills = add_skills(c.text,pref_skills)
+					else:
+						req_skills = add_skills(c.text,req_skills)
 
-			elif "closing" in ptext.lower() and "date" in ptext.lower() and len(ptext) < 50:
+			elif "closing" in ptext.lower() and "date" in ptext.lower() and len(ptext) < 80:
 				closing = ptext
 			# Can add condition here to get requirements too
 
@@ -86,58 +97,60 @@ def process(file,cnt,skill_cnt,companies,user_cnt):
 					desc.append(ptext)
 
 		desc = ''.join(desc)
+		if (req_skills == [] and pref_skills == []) or desc == "":
+			return None
+	except (IndexError, etree.XMLSyntaxError):
+		return None
 
-		company_name = check_string(company_name.strip().replace("\"", ""))
-		title = check_string(title.strip().replace("\"", ""))
-		location = check_string(location.strip().replace("\"", ""))
-		closing = check_string(closing.strip().replace("\"", ""))
-		desc = check_string(desc.strip().replace("\"", ""))
+	company_name = check_string(company_name)
+	title = check_string(title)
+	location = check_string(location)
+	closing = check_string(closing)
+	desc = check_string(desc)
+	return [closing,company_name,desc,link,location,logo,title,req_skills,pref_skills]
 
-		# These being lower case is breaking it
-		job = "jp"+str(cnt)
-		user = "u"+str(user_cnt)
-		jobcat = "jc"+str(cnt)
 
-		create_job = job+"=JobPosting.create("
-		create_user = user+"=create_random_user("
-
-		line = "\n"
-
-		if req_skills == [] or desc == "":
-			return ""
-
+def process(file,cnt,skill_cnt,companies,user_cnt,file_cat):
+		data = extract_data(file)
+		#Make data
+		USER = ""
+		CATEGORY = ""
 		if company_name not in companies:
+			USER = create_user+ "\""+company_name+"\")"
 			companies[company_name] = user_cnt
-			line += create_user+ "\""+company_name+"\")\n"
 			user_cnt += 1
 
-		line += jobcat+"=create_category(\""+category+"\")\n"
+		if category not in categories:
+			CATEGORY = '{name:\"'+category+'\"}'
+			categories[category] = cat_cnt
+			cat_cnt += 1
 
-		line += create_job+"title: \""+title+"\","
-		line += "user_id: "+rd(user)+str(companies[company_name])+".id,"
-		line += "job_category_id: "+jobcat+".id,"
-		line += "location: \""+location +"\","
-		line += "link: \""+link+"\","
-		line += "" if desc == "" or "<" in desc else "description: \""+desc+"\","
-		line += "" if closing == "" else "close_date: \"" + closing + "\""
-		line += ")\n"
+		JOBPOSTING = '{title:\"'+title+'\",user_id: usrs['+companies[company_name]+'],'
+		JOBPOSTING += 'job_category_id: jcats['+categories[category]+'], location:\"'+location+'\",'
+		JOBPOSTING += '' if desc == "" or "<" in desc else "description: \""+desc+"\""
+		JOBPOSTING += '' if closing == "" else ",close_date: \"" + closing + "\""
+		JOBPOSTING += '}'
+
+		SKILLS = []
+		JOBPOSTINGSKILLS = []
 
 		for s in req_skills:
-			skill = "s"+str(skill_cnt)
-			line += skill+"=create_skill(\""+s+"\")\n"
-			line += "JobPostingSkill.create(skill_id: "+skill+".id,job_posting_id: "+job+".id,importance:2)\n"
-			skill_cnt += 1
+			if s not in skills:
+				skills[s] = skill_cnt
+				skill_cnt += 1
+				SKILLS.append('{name: \"'+s+'\"}')
+			JOBPOSTINGSKILLS.append('{skill_id: skills['++'],job_posting_id: '++',importance: 2}')
 		for s in pref_skills:
-			skill = "s"+str(skill_cnt)
-			line += skill+"=create_skill(\""+s+"\")\n"
-			line += "JobPostingSkill.create(skill_id: "+skill+".id,job_posting_id: "+job+".id,importance:1)\n"
-			skill_cnt += 1
+			if s not in skills:
+				skills[s] = skill_cnt
+				skill_cnt += 1
+				SKILLS.append('{name: \"'+s+'\"}')
+			JOBPOSTINGSKILLS.append('{skill_id: skills['++'],job_posting_id: '++',importance: 1}')
 
-		if "skill" not in line:
-			return ""
+		if SKILLS == []:
+			return None
 		return [line,skill_cnt,companies,user_cnt]
-	except (IndexError, etree.XMLSyntaxError):
-		return ""
+	
 
 def startProgress(title):
     global progress_x
@@ -192,15 +205,24 @@ print("----------------------------------")
 os.chdir(path)
 file = open("job_posting_seeds_"+cat+".rb", 'w')
 file.write("puts \"Seeding Job Postings for: "+cat+"\"\n")
+file.write("ActiveRecord::Base.transaction do\n")
 path+=cat_path
 os.chdir(path)
 
 companies = {}
-user_cnt = 0
-cnt = 0
-pointer = 0
+categories = {}
+skills = {}
+user_cnt = 0 #Switch to amount in map
+cnt = 0 #Switch to amount in map?
+pointer = 0 
 num_files = 0
-skill_cnt = 0
+skill_cnt = 0 #Switch to amount in map?
+USERS = []
+JOBCATEGORIES = []
+JOBPOSTINGS = []
+SKILLS = []
+JOBPOSTINGSKILLS = []
+
 subdirs = [x[0] for x in os.walk(path)]
 del subdirs[0]
 
@@ -212,10 +234,16 @@ startProgress("Processing")
 for subdir in subdirs:
 	os.chdir(subdir)
 	for file_name in os.listdir(subdir):
-		rtns = process(file_name,cnt,skill_cnt,companies,user_cnt)
+		rtns = process(file_name,cnt,skill_cnt,companies,user_cnt,cat)
 		try:
 			if not rtns[0] == "":
 				progress((pointer/num_files)*100)
+
+				USERS.append(rtn[0])
+				JOBCATEGORY.append(rtn[1])
+				JOBPOSTINGS.append(rtn[2])
+				SKILLS.extend(rtn[3])
+				JOBPOSTINGSKILLS.extend([4])
 				file.write(rtns[0] + "\n")
 				skill_cnt = rtns[1]
 				companies = rtns[2]
@@ -224,5 +252,6 @@ for subdir in subdirs:
 		except IndexError:
 			do_nothing = True
 		pointer += 1
+file.write("end\n")
 endProgress()
 print(str(cnt)+" Files Successfully Processed.")

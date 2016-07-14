@@ -339,15 +339,23 @@ def create_random_user(company_name = "")
 	if rand(2) == 1 && company_name == ""
 		usr = User.new(first_name: first, last_name: last, email: "#{first}_#{last}@example.com", password:"password", password_confirmation: 'password')
 		usr.add_role :employee
+		usr.skip_confirmation!
+		usr.save
 	else
-		company_name = company_names[rand(company_names.length)] if company_name == ""
-		usr = User.new(first_name: first, last_name: last, email: "#{first}_#{last}@example.com", password:"password", password_confirmation: 'password', 
+		if company_name != ""
+			usr = {first_name: first, last_name: last, email: "#{first}_#{last}@example.com", password:"password", password_confirmation: 'password', 
+				company_name: company_name, company_address: (111 + rand(999)).to_s <<  " " << streets[rand(streets.length)], company_city: cities[rand(cities.length)], 
+				company_province: provinces[rand(provinces.length)], company_postal_code: chars[rand(chars.length)] << rand(9).to_s << chars[rand(chars.length)] << " " + rand(9).to_s << chars[rand(chars.length)] << rand(9).to_s}
+		else
+			company_name = company_names[rand(company_names.length)]
+			usr = User.new(first_name: first, last_name: last, email: "#{first}_#{last}@example.com", password:"password", password_confirmation: 'password', 
 				company_name: company_name, company_address: (111 + rand(999)).to_s <<  " " << streets[rand(streets.length)], company_city: cities[rand(cities.length)], 
 				company_province: provinces[rand(provinces.length)], company_postal_code: chars[rand(chars.length)] << rand(9).to_s << chars[rand(chars.length)] << " " + rand(9).to_s << chars[rand(chars.length)] << rand(9).to_s)
-		usr.add_role :employer
+			usr.add_role :employer
+			usr.skip_confirmation!
+			usr.save
+		end
 	end
-	usr.skip_confirmation!
-	usr.save
 	return usr
 end
 

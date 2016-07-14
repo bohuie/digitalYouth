@@ -38,6 +38,9 @@ RSpec.describe NotificationsController, type: :controller do
 	describe "GET show" do
 		let(:user) { FactoryGirl.create(:user) }
 		let(:reference1) { FactoryGirl.create(:reference1) }
+		before do
+			user.confirm
+		end
 		
 		context "user is logged in and clicks on the notifications icon" do
 			before(:each) do

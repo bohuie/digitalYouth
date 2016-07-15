@@ -51,6 +51,14 @@ def get_silbing_ul(elem):
 			return sibling
 	return None:
 
+def process_skills(skills,s,importance):
+	skill = None
+	if s not in skills:
+		skills[s] = len(skills)
+		skill = '{name: \"'+s+'\"}'
+	jobpostingskill = '{skill_id: skills['++'],job_posting_id: '++',importance: '+importance+'}'
+	return [skill,jobpostingskill,skills]
+
 def extract_data(file):
 	try:
 		tree = html.fromstring(open(file, "r").read())
@@ -59,13 +67,13 @@ def extract_data(file):
 		title = tree.xpath('//*[@data-automation="job-title"]')[0].text.title()
 		loc_arr = tree.xpath('//*[@data-automation="job-Location"]')[0].text.title().split(',')
 		location = loc_arr[0] + "," + loc_arr[1].upper()
-		closing = ""
 		link = tree.xpath('//*[@class="page-link"]/@href')[0]
 		category = tree.xpath('//a[@class="job-view-header-link link"]')[0].text.title()
+		closing = ""
 		req_skills = []
 		pref_skills = []
 		desc = []
-		skip = False
+		#--- Strings to filter by ---
 		skills_strings = ['qualif','skill','abil,','able','capab','experi','criter','knowl','educ','']
 		prefer_strings = ['prefer','good','nice','bonus','addit']
 		benefits_strings = ['benefit']
@@ -112,18 +120,25 @@ def extract_data(file):
 
 def process(file,cnt,skill_cnt,companies,user_cnt,file_cat):
 		data = extract_data(file)
-		#Make data
+		closing = data[0]
+		company_name = data[1]
+		desc = data[2]
+		link = data[3]
+		location = data[4]
+		logo = data[5]
+		title = data[6]
+		req_skills = data[7]
+		pref_skills = data[8]
+
 		USER = ""
 		CATEGORY = ""
 		if company_name not in companies:
 			USER = create_user+ "\""+company_name+"\")"
-			companies[company_name] = user_cnt
-			user_cnt += 1
+			companies[company_name] = len(companies)
 
 		if category not in categories:
 			CATEGORY = '{name:\"'+category+'\"}'
-			categories[category] = cat_cnt
-			cat_cnt += 1
+			categories[category] = len(categories)
 
 		JOBPOSTING = '{title:\"'+title+'\",user_id: usrs['+companies[company_name]+'],'
 		JOBPOSTING += 'job_category_id: jcats['+categories[category]+'], location:\"'+location+'\",'
@@ -135,20 +150,19 @@ def process(file,cnt,skill_cnt,companies,user_cnt,file_cat):
 		JOBPOSTINGSKILLS = []
 
 		for s in req_skills:
-			if s not in skills:
-				skills[s] = skill_cnt
-				skill_cnt += 1
-				SKILLS.append('{name: \"'+s+'\"}')
-			JOBPOSTINGSKILLS.append('{skill_id: skills['++'],job_posting_id: '++',importance: 2}')
+			skls = process_skills(skills,s,2)
+			if skls[0] is not None:
+				SKILLS.append(skls[0])
+			JOBPOSTINGSKILLS.append(skls[1])
+			skills = skls[2]
+			
 		for s in pref_skills:
-			if s not in skills:
-				skills[s] = skill_cnt
-				skill_cnt += 1
-				SKILLS.append('{name: \"'+s+'\"}')
-			JOBPOSTINGSKILLS.append('{skill_id: skills['++'],job_posting_id: '++',importance: 1}')
+			skls = process_skills(skills,s,2)
+			if skls[0] is not None:
+				SKILLS.append(skls[0])
+			JOBPOSTINGSKILLS.append(skls[1])
+			skills = skls[2]
 
-		if SKILLS == []:
-			return None
 		return [line,skill_cnt,companies,user_cnt]
 	
 

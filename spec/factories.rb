@@ -1,6 +1,7 @@
 include ActionDispatch::TestProcess
 
 FactoryGirl.define do
+
   factory :job_history do
     employer "The Boss"
     start_date Date.new(2016,2,1)
@@ -8,7 +9,6 @@ FactoryGirl.define do
     position "Some Job Title"
     description "Something to do with working hard"
     skills "Twitter"
-    user
   end
   factory :user do
     first_name	"John"

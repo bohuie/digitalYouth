@@ -13,6 +13,7 @@ class JobPostingsController < ApplicationController
 	
 	def show # Shows a specific job posting and its skills
 		@job_posting = JobPosting.includes(:user,:job_category).find(params[:id])
+		@job_posting.company_name = @job_posting.user.company_name if @job_posting.company_name.nil?
 		@req_skills  = JobPostingSkill.where(job_posting_id:params[:id], importance: 2).includes(:skill)
 		@pref_skills = JobPostingSkill.where(job_posting_id:params[:id], importance: 1).includes(:skill)
 		add_view(@job_posting)

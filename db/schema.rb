@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 20160712181356) do
 
   create_table "job_postings", force: :cascade do |t|
     t.string   "title"
+    t.string   "company_name"
     t.string   "location"
     t.string   "pay_range"
     t.string   "link"

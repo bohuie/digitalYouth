@@ -13,7 +13,7 @@ def add_skills(skill_str,arr):
 	if skill_str is not None:
 		skill_str = skill_str.lower()
 		skill_str = skill_str.strip().replace("\"", "").replace(";", "")
-		if not skill_str == "":
+		if not skill_str == "" and len(skill_str) > 1:
 			if len(skill_str) > 300:
 				tokens = tokenizer.tokenize(skill_str)
 				for token in tokens:
@@ -41,23 +41,24 @@ def acronym(string):
 	return rtn_str
 
 def get_silbing_ul(elem):
-	sibling = elem.getnext()
-	if sibling is not None:
-		if sibling.tag == "p":
-			second_sibling = sibling.getnext()
-			if second_sibling is not None:
-				sibling = second_sibling
-		if sibling.tag == "ul":
-			return sibling
-	return None:
+	if elem is not None:
+		sibling = elem.getnext()
+		if sibling is not None:
+			if sibling.tag == "p":
+				second_sibling = sibling.getnext()
+				if second_sibling is not None:
+					sibling = second_sibling
+			if sibling.tag == "ul":
+				return sibling
+	return None
 
-def process_skills(skills,s,importance):
+def process_skills(SKL_MAP,s,importance,cnt,ARR_NAMES):
 	skill = None
-	if s not in skills:
-		skills[s] = len(skills)
+	if s not in SKL_MAP:
+		SKL_MAP[s] = len(SKL_MAP)
 		skill = '{name: \"'+s+'\"}'
-	jobpostingskill = '{skill_id: skills['++'],job_posting_id: '++',importance: '+importance+'}'
-	return [skill,jobpostingskill,skills]
+	jobpostingskill = '{skill_id: '+ARR_NAMES[3]+'['+str(SKL_MAP[s])+'].id,job_posting_id: '+ARR_NAMES[2]+'['+str(cnt)+'].id,importance: '+str(importance)+'}'
+	return [skill,jobpostingskill,SKL_MAP]
 
 def extract_data(file):
 	try:
@@ -86,14 +87,13 @@ def extract_data(file):
 				next
 			if any(substr in ptext.lower() for substr in skills_strings):
 				sibling = get_silbing_ul(p.getnext())
-				if sibling is None:
-					next
-				children = sibling.getchildren()
-				for c in children:
-					if any(substr in ptext.lower() for substr in prefer_strings):
-						pref_skills = add_skills(c.text,pref_skills)
-					else:
-						req_skills = add_skills(c.text,req_skills)
+				if sibling is not None:
+					children = sibling.getchildren()
+					for c in children:
+						if any(substr in ptext.lower() for substr in prefer_strings):
+							pref_skills = add_skills(c.text,pref_skills)
+						else:
+							req_skills = add_skills(c.text,req_skills)
 
 			elif "closing" in ptext.lower() and "date" in ptext.lower() and len(ptext) < 80:
 				closing = ptext
@@ -115,56 +115,66 @@ def extract_data(file):
 	location = check_string(location)
 	closing = check_string(closing)
 	desc = check_string(desc)
-	return [closing,company_name,desc,link,location,logo,title,req_skills,pref_skills]
+	category = check_string(category)
+	return [category,closing,company_name,desc,link,location,logo,title,req_skills,pref_skills]
 
 
-def process(file,cnt,skill_cnt,companies,user_cnt,file_cat):
+def process(file,cnt,CAT_map,SKL_map,JOB_postings,ARR_names):
 		data = extract_data(file)
-		closing = data[0]
-		company_name = data[1]
-		desc = data[2]
-		link = data[3]
-		location = data[4]
-		logo = data[5]
-		title = data[6]
-		req_skills = data[7]
-		pref_skills = data[8]
+		if data is None:
+			return None
+		category = data[0]
+		closing = data[1]
+		company_name = data[2]
+		desc = data[3]
+		link = data[4]
+		location = data[5]
+		logo = data[6]
+		title = data[7]
+		req_skills = data[8]
+		pref_skills = data[9]
 
-		USER = ""
 		CATEGORY = ""
-		if company_name not in companies:
-			USER = create_user+ "\""+company_name+"\")"
-			companies[company_name] = len(companies)
-
-		if category not in categories:
+		if category not in CAT_map:
 			CATEGORY = '{name:\"'+category+'\"}'
-			categories[category] = len(categories)
+			CAT_map[category] = len(CAT_map)
 
-		JOBPOSTING = '{title:\"'+title+'\",user_id: usrs['+companies[company_name]+'],'
-		JOBPOSTING += 'job_category_id: jcats['+categories[category]+'], location:\"'+location+'\",'
+		JOBPOSTING = '{title:\"'+title+'\",company_name:\"'+company_name+'\",'
+		JOBPOSTING += 'job_category_id: '+ARR_names[1]+'['+str(CAT_map[category])+'].id,'
+		JOBPOSTING += 'location:\"'+location+'\", link: \"'+ link +'\",'
 		JOBPOSTING += '' if desc == "" or "<" in desc else "description: \""+desc+"\""
 		JOBPOSTING += '' if closing == "" else ",close_date: \"" + closing + "\""
 		JOBPOSTING += '}'
+
+		for j in JOB_postings:
+			if JOBPOSTING == j:
+				return None
 
 		SKILLS = []
 		JOBPOSTINGSKILLS = []
 
 		for s in req_skills:
-			skls = process_skills(skills,s,2)
+			skls = process_skills(SKL_map,s,2,cnt,ARR_names)
 			if skls[0] is not None:
 				SKILLS.append(skls[0])
 			JOBPOSTINGSKILLS.append(skls[1])
-			skills = skls[2]
+			SKL_map = skls[2]
 			
 		for s in pref_skills:
-			skls = process_skills(skills,s,2)
+			skls = process_skills(SKL_map,s,1,cnt,ARR_names)
 			if skls[0] is not None:
 				SKILLS.append(skls[0])
 			JOBPOSTINGSKILLS.append(skls[1])
-			skills = skls[2]
+			SKL_map = skls[2]
 
-		return [line,skill_cnt,companies,user_cnt]
-	
+		return [CATEGORY,JOBPOSTING,SKILLS,JOBPOSTINGSKILLS,CAT_map,SKL_map]
+
+def stringifyList(start_str,lst,btwn):
+	rtn_str = str(start_str)
+	for item in lst:
+		rtn_str += str(item) + str(btwn)
+	rtn_str = rtn_str[:-1] + "])"
+	return rtn_str
 
 def startProgress(title):
     global progress_x
@@ -192,80 +202,86 @@ print("Ensure the path below contains the file processor:")
 print(path)
 print("If it doesn't then cd to the correct path and run again.\n")
 
-categories = ["Arts, Media and Entertainment","Technology and Digital Media"]
-print("----------- Categories -----------")
-num = 0 # input number
-for c in categories:
-	print("[" + str(num) + "] " + c)
-	num = num+1
-print("----------------------------------")
+print("--------------------------------------------------")
+cont = input("Is the path correct? (y/n): ")
+cont = str(cont).lower()
+if cont == "y" or cont.lower() == "yes":
+	print("Processing:")
+else:
+	print("Exiting..")
+	exit()
 
-cat_path = ""
-while True:
-	cat = input('\nChoose an above Category to process or enter one: ')
-	try:
-		cat = categories[int(cat)]
-	except ValueError:
-		cat = cat
-
-	cat_path = "/data/categories/" + cat
-	try:
-		os.chdir(path+cat_path)
-		break
-	except FileNotFoundError:
-		print("Directory Not Found")
-print("----------------------------------")
-
+file = open("job_posting_seeds.rb", 'w')
+path += "data/categories/"
 os.chdir(path)
-file = open("job_posting_seeds_"+cat+".rb", 'w')
-file.write("puts \"Seeding Job Postings for: "+cat+"\"\n")
-file.write("ActiveRecord::Base.transaction do\n")
-path+=cat_path
-os.chdir(path)
+file.write("puts \"Seeding Auto-Populated Job Posting Data\"\n")
 
-companies = {}
-categories = {}
-skills = {}
-user_cnt = 0 #Switch to amount in map
-cnt = 0 #Switch to amount in map?
-pointer = 0 
-num_files = 0
-skill_cnt = 0 #Switch to amount in map?
-USERS = []
+cat_map = {}
+skl_map = {}
 JOBCATEGORIES = []
 JOBPOSTINGS = []
 SKILLS = []
 JOBPOSTINGSKILLS = []
+cnt = 0 
+array_names = ["usrs","jcs","jps","ss","jpss"]
 
-subdirs = [x[0] for x in os.walk(path)]
-del subdirs[0]
+#Get Category directories and remove the subdirectories
+catdirs = [x[0] for x in os.walk(path)]
+del catdirs[0]
+keep = []
+for c in catdirs:
+	if c.split("/")[-2] == "categories":
+		keep.append(c)
+catdirs = keep
 
-for subdir in subdirs:
-	num_files += len([f for f in os.listdir(subdir) if os.path.isfile(os.path.join(subdir, f))])
-num_files -= len(subdirs) + 1
+for cdir in catdirs:
+	path = cdir
+	os.chdir(path)
+	print(path.split("/")[-1])
+	pointer = 0 
+	num_files = 0
+	subdirs = [x[0] for x in os.walk(path)]
+	del subdirs[0]
+	for subdir in subdirs:
+		num_files += len([f for f in os.listdir(subdir) if os.path.isfile(os.path.join(subdir, f))])
+	num_files -= len(subdirs) + 1
+	startProgress("Processing")
+	for subdir in subdirs:
+		os.chdir(subdir)
+		for file_name in os.listdir(subdir):
+			rtns = process(file_name,cnt,cat_map,skl_map,JOBPOSTINGS,array_names)
+			try:
+				if rtns is not None:
+					progress((pointer/num_files)*100)
+					if not rtns[0] == "":
+						JOBCATEGORIES.append(rtns[0])
+					JOBPOSTINGS.append(rtns[1])
+					SKILLS.extend(rtns[2])
+					JOBPOSTINGSKILLS.extend(rtns[3])
+					cat_map = rtns[4]
+					skl_map = rtns[5]
 
-startProgress("Processing")
-for subdir in subdirs:
-	os.chdir(subdir)
-	for file_name in os.listdir(subdir):
-		rtns = process(file_name,cnt,skill_cnt,companies,user_cnt,cat)
-		try:
-			if not rtns[0] == "":
-				progress((pointer/num_files)*100)
+					cnt += 1
+			except IndexError:
+				do_nothing = True
+			pointer += 1
+	endProgress()
+	print(str(pointer)+" Files Processed.")
 
-				USERS.append(rtn[0])
-				JOBCATEGORY.append(rtn[1])
-				JOBPOSTINGS.append(rtn[2])
-				SKILLS.extend(rtn[3])
-				JOBPOSTINGSKILLS.extend([4])
-				file.write(rtns[0] + "\n")
-				skill_cnt = rtns[1]
-				companies = rtns[2]
-				user_cnt = rtns[3]
-				cnt += 1
-		except IndexError:
-			do_nothing = True
-		pointer += 1
+print("Concatenating data..")
+categories_string = stringifyList(array_names[1]+" = JobCategory.create([",JOBCATEGORIES,",")
+postings_string = stringifyList(array_names[2]+" = JobPosting.create([",JOBPOSTINGS,",\n")
+skills_string = stringifyList(array_names[3]+" = Skill.create([",SKILLS,",\n")
+jobskills_string = stringifyList(array_names[4]+" = JobPostingSkill.create([",JOBPOSTINGSKILLS,",\n")
+
+print("Writing to file..")
+file.write("ActiveRecord::Base.transaction do\n")
+file.write(categories_string+"\n\n")
+file.write(postings_string+"\n\n")
+file.write(skills_string+"\n\n")
+file.write(jobskills_string+"\n\n")
 file.write("end\n")
-endProgress()
-print(str(cnt)+" Files Successfully Processed.")
+print("Write complete, Created:")
+print(str(len(JOBPOSTINGS))+" Job Postings.")
+print(str(len(SKILLS))+" Skills.")
+print(str(len(JOBPOSTINGSKILLS))+" Job Posting Skill links.")

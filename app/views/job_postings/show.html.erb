@@ -2,7 +2,7 @@
 	<%= image_tag @job_posting.company_logo.url %>
 <% end %>
 <h3><%= @job_posting.title %></h3>
-<h4><%= @job_posting.user.company_name %></h4>
+<h4><%= @job_posting.company_name %></h4>
 <p> <%= @job_posting.location %><br>
 	<%= @job_posting.job_category.name %><br>
 	<%= raw("Pay Range: #{@job_posting.pay_range}<br>") if !@job_posting.pay_range.blank? %>

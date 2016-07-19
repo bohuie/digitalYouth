@@ -3,6 +3,7 @@
     create_table :job_postings do |t|
 
     	t.string :title
+      t.string :company_name #ONLY USED FOR AUTOPOPULATION
       t.string :location
       t.string :pay_range
       t.string :link

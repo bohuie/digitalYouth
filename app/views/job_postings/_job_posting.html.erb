@@ -1,0 +1,37 @@
+<% if !@job_posting.company_logo_file_name.nil? %>
+	<%= image_tag @job_posting.company_logo.url %>
+<% end %>
+
+<h3><%= @job_posting.title %></h3>
+<h4><%= @job_posting.company_name %></h4>
+<p> <%= @job_posting.location %><br>
+	<%= @job_posting.job_category.name %><br>
+	<%= raw("Pay Range: #{@job_posting.pay_range}<br>") if !@job_posting.pay_range.blank? %>
+	<%= raw("<a href=\"http://#{@job_posting.link}\">#{@job_posting.link}</a><br>") if !@job_posting.link.blank? %>
+	<%= raw("Posted By: #{@job_posting.posted_by}<br>") if !@job_posting.posted_by.blank? %>
+</p>
+
+<p><%= @job_posting.description %></p>
+
+<% if !@req_skills.empty? %>
+	<h4> Required Skills </h4>
+	<ul><%@req_skills.each do |r| %>
+		<li><%=r.skill.name.capitalize%></li><% end %>
+	</ul>
+<% end %>
+
+<% if !@pref_skills.empty? %>
+	<h4> Preferred Skills </h4>
+	<ul><%@pref_skills.each do |p| %>
+		<li><%=p.skill.name.capitalize%></li><% end %>
+	</ul>
+<% end %>
+
+<p>	<%= raw("Open date: #{@job_posting.open_date}<br>") if !@job_posting.open_date.blank? %>
+	<%= raw("Close date: #{@job_posting.close_date}<br>") if !@job_posting.close_date.blank? %>
+</p>
+
+<% if user_signed_in? && @current_user.id == @job_posting.user_id %>
+	<%= link_to "Edit Posting", edit_job_posting_path(@job_posting) %> <%= link_to "Delete Posting", job_posting_path(@job_posting), method: "delete" %>
+	<p>This job posting has been viewed <%= @job_posting.views %> <%= @job_posting.views == 1 ? "time." : "times."%></p>
+<% end %>

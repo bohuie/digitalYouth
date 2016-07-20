@@ -38,4 +38,11 @@ class JobPosting < ActiveRecord::Base
 		end
 		return true
 	end
+
+	def is_expired? # checks to see if a job posting is expired
+		if !self.close_date.nil?
+			return true if self.close_date < Date.today
+		end
+		return false
+	end
 end

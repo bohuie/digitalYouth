@@ -1,12 +1,7 @@
 include ActionDispatch::TestProcess
 
 FactoryGirl.define do
-  factory :job_category do
-    
-  end
-  factory :job_posting_skill do
-    
-  end
+  
   factory :user do
     first_name	"John"
     last_name	"Smith"
@@ -26,6 +21,19 @@ FactoryGirl.define do
     company_city "Kelowna"
     company_province "BC"
     company_postal_code "V1V 1V1"
+  end
+
+  factory :employer2, class: User do
+    first_name  "Janes"
+    last_name "Sanders"
+    email   "js@example.com"
+    password  "password"
+    password_confirmation "password"
+    company_name "Google"
+    company_address "321 Fake Street"
+    company_city "Penticton"
+    company_province "BC"
+    company_postal_code "V7V 7X7"
   end
 
   factory :user2, class: User do
@@ -100,9 +108,43 @@ FactoryGirl.define do
 
   factory :job_posting do
     title "Social Media Expert"
+    location "Kelowna, BC"
+    pay_range "30¢/hr-40¢/hr"
+    link "www.google.ca"
+    posted_by "Testing"
     description "Handling SM sites"
     open_date Date.new(2016,1,1)
     close_date Date.new(2016, 3, 1)
+    job_category
     user
+  end
+
+  factory :job_posting2, class: JobPosting  do
+    title "Social Media Manager"
+    location "Kelowna, BC"
+    pay_range "$30/hr-$40/hr"
+    link "www.google.com"
+    posted_by "Testing"
+    description "Handling SM Teams"
+    open_date Date.new(2016,2,1)
+    close_date Date.new(2016, 3, 1)
+    job_category
+    user
+  end
+
+  factory :job_category do
+    name "Communications"
+  end
+
+  factory :job_posting_skill do
+    importance 2
+    job_posting
+    skill
+  end
+
+  factory :job_posting_skill2, class: JobPostingSkill do
+    importance 1
+    job_posting
+    skill
   end
 end

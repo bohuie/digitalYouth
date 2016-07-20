@@ -6,7 +6,9 @@ class JobPostingsController < ApplicationController
 	before_action :check_fields, only: [:create, :update]
 
 	def index # Lists all job_postings a company has.
-		params[:user] = current_user if user_signed_in? if current_user.has_role? :employer if params[:user].nil?
+		if user_signed_in?
+			params[:user] = current_user if current_user.has_role? :employer && params[:user].nil?
+		end
 		@job_postings = JobPosting.where(user_id: params[:user])
 		@company = User.find(params[:user])
 	end

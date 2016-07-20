@@ -6,7 +6,7 @@ class JobPostingsController < ApplicationController
 	before_action :check_fields, only: [:create, :update]
 
 	def index # Lists all job_postings a company has.
-		params[:user] = current_user if current_user.has_role? :employer if params[:user].nil?
+		params[:user] = current_user if user_signed_in? if current_user.has_role? :employer if params[:user].nil?
 		@job_postings = JobPosting.where(user_id: params[:user])
 		@company = User.find(params[:user])
 	end
@@ -32,11 +32,11 @@ class JobPostingsController < ApplicationController
 		category = set_category(params[:job_posting][:job_category])
 		params[:job_posting][:job_category_id] = category.id if !category.nil?
 		@job_posting = JobPosting.new(job_posting_params)
-		if !category.nil? && @job_posting.save && process_skills(params[:job_posting]["job_posting_skills_attributes"],@job_posting.id)
+		if !category.nil? && @job_posting.save && @job_posting.process_skills(params[:job_posting]["job_posting_skills_attributes"])
 			redirect_to job_postings_path, flash: {success: "Job Posting Created!"}
 		else
 			flash[:warning] = "Oops, there was an issue in creating your Job Posting."
-			redirect_back_or current_user
+			redirect_back_or job_postings_path
 		end
 	end
 
@@ -49,10 +49,11 @@ class JobPostingsController < ApplicationController
 	def update # Updates the job posting
 		category = set_category(params[:job_posting][:job_category])
 		params[:job_posting][:job_category_id] = category.id if !category.nil?
-		if !category.nil? && @job_posting.update_attributes(job_posting_params) && process_skills(params[:job_posting]["job_posting_skills_attributes"],@job_posting.id)
-			redirect_to @job_posting, flash: {success: "Job Posting Updated!"}
+		if !category.nil? && @job_posting.update_attributes(job_posting_params) && @job_posting.process_skills(params[:job_posting]["job_posting_skills_attributes"])
+			redirect_to job_postings_path, flash: {success: "Job Posting Updated!"}
 		else
-			redirect_to edit_job_posting_path, flash: {warning: 'Oops, there was an issue in editing your Job Posting.'}
+			flash[:warning] = "Oops, there was an issue in editing your Job Posting."
+			redirect_back_or edit_job_posting_path
 		end
 	end
 
@@ -129,33 +130,5 @@ private
 			flash[:warning] = "You must enter some skills associated with this job." if destroy
 		end
 		redirect_back_or job_postings_path if redir || missing || destroy
-	end
-
-	def process_skills(hash,job_posting_id) # Creates and Updates job posting skills, creating new skills when needed.
-		hash.each do |m|
-			id = m[1]["id"]
-			if m[1]["_destroy"] == "true"
-				JobPostingSkill.find(id).destroy if !id.blank?
-			elsif m[1]["_destroy"] == "false"
-				skill_name = m[1]["skill_attributes"]["name"].downcase
-				skill = Skill.find_by(name: skill_name)
-				if skill.nil?
-					skill = Skill.new(name: skill_name)
-					return false if !skill.save
-				end
-				skill_id = skill.id
-				question_id = m[1]["question_id"]
-				importance = m[1]["importance"]
-
-				if id.blank?
-					job_posting_skill = JobPostingSkill.new(skill_id: skill_id, question_id: question_id, importance: importance, job_posting_id: job_posting_id)
-					return false if !job_posting_skill.save
-				else
-					job_posting_skill = JobPostingSkill.find(id)
-					return false if !job_posting_skill.update(skill_id: skill_id, question_id: question_id, importance: importance, job_posting_id: job_posting_id)
-				end
-			end
-		end
-		return true
 	end
 end

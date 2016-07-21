@@ -11,7 +11,6 @@
     	t.text :description
     	t.date :open_date
     	t.date :close_date
-      t.attachment :company_logo
       t.integer :views, null: false, default: 0
 
     	t.references :user

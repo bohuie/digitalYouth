@@ -22,11 +22,7 @@
 			<%i=i+1%>
 		<% end%>
 	</div>
-	<p><%= link_to_add_fields "Add Skill", f %></p>
-
-	<br>
-	<%= f.input :company_logo, as: :file %>
-	<br>
+	<p><%= link_to_add_fields "Add Skill", f, "btn btn-default" %></p>
 
 	<%= f.button :submit %>
 <% end %>

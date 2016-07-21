@@ -62,15 +62,11 @@ ActiveRecord::Schema.define(version: 20160712181356) do
     t.text     "description"
     t.date     "open_date"
     t.date     "close_date"
-    t.string   "company_logo_file_name"
-    t.string   "company_logo_content_type"
-    t.integer  "company_logo_file_size"
-    t.datetime "company_logo_updated_at"
-    t.integer  "views",                     default: 0, null: false
+    t.integer  "views",           default: 0, null: false
     t.integer  "user_id"
     t.integer  "job_category_id"
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   create_table "project_skills", force: :cascade do |t|

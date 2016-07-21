@@ -14,7 +14,7 @@ function skill_autocomplete(id){
 	$("#skill-name-"+id).autocomplete({
 		    minLength: 2,
       	source: function(request, response){
-        var term = request.term;
+        var term = request.term.toLowerCase();
         if (term in cache){
           response(cache[term]);
           return;
@@ -26,6 +26,7 @@ function skill_autocomplete(id){
         }); 
     }
   });
+  $('.ui-helper-hidden-accessible').hide();
 }
 
 function add_fields(association, content){

@@ -1,5 +1,5 @@
-<% if !@job_posting.company_logo_file_name.nil? %>
-	<%= image_tag @job_posting.company_logo.url %>
+<% if !@job_posting.user.nil? %>
+	<%#= image_tag @job_posting.user.image if !@job_posting.user.image.nil? %>
 <% end %>
 
 <h3><%= @job_posting.title %></h3>

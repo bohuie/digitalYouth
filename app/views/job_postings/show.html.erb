@@ -1,8 +1,9 @@
 <% if @job_posting.is_expired? %>
-	<p>This job posting is expired.</p>
 	<% if user_signed_in? && current_user.id == @job_posting.user_id %>
-		<p> It will no longer be visible to other users. </p>
+		<%= render 'shared/dismissable_alert', msg:"This job posting is expired. It will no longer be visible to other users.", type: "warning" %>
 		<%= render 'job_postings/job_posting' %>
+	<% else %>
+		<%= render 'shared/dismissable_alert', msg:"This job posting is expired.", type: "warning" %>
 	<% end %>
 <% else %>
 	<%= render 'job_postings/job_posting' %>

@@ -10,6 +10,14 @@ FactoryGirl.define do
     password_confirmation	"password"
   end
 
+  factory :user2, class: User do
+    first_name  "Foo"
+    last_name "Bar"
+    email   "foo@example.com"
+    password  "password"
+    password_confirmation "password"
+  end
+
   factory :employer, class: User do
     first_name  "John"
     last_name "Doe"
@@ -24,9 +32,9 @@ FactoryGirl.define do
   end
 
   factory :employer2, class: User do
-    first_name  "Janes"
+    first_name  "Greg"
     last_name "Sanders"
-    email   "js@example.com"
+    email   "gregs@example.com"
     password  "password"
     password_confirmation "password"
     company_name "Google"
@@ -34,14 +42,6 @@ FactoryGirl.define do
     company_city "Penticton"
     company_province "BC"
     company_postal_code "V7V 7X7"
-  end
-
-  factory :user2, class: User do
-    first_name	"Foo"
-    last_name	"Bar"
-    email		"foo@example.com"
-    password	"password"
-    password_confirmation	"password"
   end
 
   factory :project do
@@ -114,12 +114,11 @@ FactoryGirl.define do
     posted_by "Testing"
     description "Handling SM sites"
     open_date Date.new(2016,1,1)
-    close_date Date.new(2016, 3, 1)
+    close_date Date.today
     job_category
-    user
   end
 
-  factory :job_posting2, class: JobPosting  do
+  factory :job_posting2, class: JobPosting do
     title "Social Media Manager"
     location "Kelowna, BC"
     pay_range "$30/hr-$40/hr"
@@ -127,9 +126,8 @@ FactoryGirl.define do
     posted_by "Testing"
     description "Handling SM Teams"
     open_date Date.new(2016,2,1)
-    close_date Date.new(2016, 3, 1)
+    close_date Date.new(2016,3,1)
     job_category
-    user
   end
 
   factory :job_category do
@@ -138,13 +136,9 @@ FactoryGirl.define do
 
   factory :job_posting_skill do
     importance 2
-    job_posting
-    skill
   end
 
   factory :job_posting_skill2, class: JobPostingSkill do
     importance 1
-    job_posting
-    skill
   end
 end

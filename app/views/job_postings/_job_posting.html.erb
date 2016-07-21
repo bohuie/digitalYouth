@@ -9,6 +9,7 @@
 	<%= raw("Pay Range: #{@job_posting.pay_range}<br>") if !@job_posting.pay_range.blank? %>
 	<%= raw("<a href=\"http://#{@job_posting.link}\">#{@job_posting.link}</a><br>") if !@job_posting.link.blank? %>
 	<%= raw("Posted By: #{@job_posting.posted_by}<br>") if !@job_posting.posted_by.blank? %>
+	Posted On: <%= local_date(@job_posting.created_at)%>
 </p>
 
 <p><%= @job_posting.description %></p>
@@ -27,11 +28,11 @@
 	</ul>
 <% end %>
 
-<p>	<%= raw("Open date: #{@job_posting.open_date}<br>") if !@job_posting.open_date.blank? %>
-	<%= raw("Close date: #{@job_posting.close_date}<br>") if !@job_posting.close_date.blank? %>
+<p><%= raw("Open date: #{@job_posting.open_date}<br>")   if !@job_posting.open_date.blank? %>
+   <%= raw("Close date: #{@job_posting.close_date}<br>") if !@job_posting.close_date.blank? %>
 </p>
 
 <% if user_signed_in? && @current_user.id == @job_posting.user_id %>
 	<%= link_to "Edit Posting", edit_job_posting_path(@job_posting) %> <%= link_to "Delete Posting", job_posting_path(@job_posting), method: "delete" %>
-	<p>This job posting has been viewed <%= @job_posting.views %> <%= @job_posting.views == 1 ? "time." : "times."%></p>
+	<p><span class="label label-default"><%=@job_posting.views%> Views</span></p>
 <% end %>

@@ -7,7 +7,7 @@ class JobPostingsController < ApplicationController
 
 	def index # Lists all job_postings a company has.
 		if user_signed_in?
-			params[:user] = current_user if current_user.has_role? :employer && params[:user].nil?
+			params[:user] = current_user.id if current_user.has_role? :employer if params[:user].nil?
 		end
 		@job_postings = JobPosting.where(user_id: params[:user])
 		@company = User.find(params[:user])
@@ -61,7 +61,7 @@ class JobPostingsController < ApplicationController
 
 	def destroy # Deletes the job posting from the database
 		if @job_posting.destroy
-			redirect_to job_postings_path, flash: {success: "Job Posting deleted!"}
+			redirect_to job_postings_path, flash: {success: "Job Posting Deleted!"}
 		else
 			flash[:danger] = 'There was an error while deleting your Job Posting.'
 			redirect_back_or job_postings_path
@@ -100,7 +100,7 @@ private
 	end
 
 	def add_view(job_posting) # Checks to make sure the user doesn't own the posting and hasn't seen it this session
-		return nil if user_signed_in? && @job_posting.user_id == current_user.id
+		return nil if (user_signed_in? && @job_posting.user_id == current_user.id)||(job_posting.is_expired?)
 		session[:job_posting_views] = Array.new if session[:job_posting_views].nil?
 		if !session[:job_posting_views].include? job_posting.id
 			job_posting.update(views: @job_posting.views+1)

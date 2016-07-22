@@ -2,6 +2,7 @@ class JobPosting < ActiveRecord::Base
 
 	has_many :job_posting_skills, dependent: :destroy
 	has_many :skills, through: :job_posting_skills
+	has_many :job_posting_applications, dependent: :destroy
 	belongs_to :job_category
 	belongs_to :user
 	accepts_nested_attributes_for :job_posting_skills, reject_if: lambda {|a| a[:question_id].blank?}, allow_destroy: true

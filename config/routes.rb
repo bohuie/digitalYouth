@@ -35,7 +35,7 @@ Rails.application.routes.draw do
   patch '/user_skills/:id' => 'user_skills#update'
   post '/user_skills' => 'user_skills#create'
 
-  # Job posting routes
+  # Job Posting routes
   get 'job_postings' => 'job_postings#index'
   get 'job_postings/new' => 'job_postings#new', as: :new_job_posting
   get 'job_postings/:id' => 'job_postings#show', as: :job_posting
@@ -43,6 +43,14 @@ Rails.application.routes.draw do
   patch 'job_postings/:id' => 'job_postings#update'
   delete 'job_postings/:id' => 'job_postings#destroy'
   post 'job_postings' => 'job_postings#create'
+
+  # Job Posting Application routes
+  get 'job_posting_applications' => 'job_posting_applications#index'
+  get 'job_posting_applications/new' => 'job_posting_applications#new', as: :new_job_posting_application
+  get 'job_posting_applications/:id' => 'job_posting_applications#show', as: :job_posting_application
+  post 'job_posting_applications' => 'job_posting_applications#create'
+  patch 'job_posting_applications/:id' => 'job_posting_applications#update'
+  delete 'job_posting_applications/:id' => 'job_posting_applications#destroy'
 
   # Project routes
   get 'projects/new' => 'projects#new', as: :new_project

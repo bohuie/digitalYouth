@@ -268,6 +268,11 @@ for cdir in catdirs:
 	endProgress()
 	print(str(pointer)+" Files Processed.")
 
+
+#To print out just skills
+#skill_string = '\n'.join(['%s' % (key) for (key, value) in skl_map.items()])
+#file.write(skill_string)
+
 print("Concatenating data..")
 categories_string = stringifyList(array_names[1]+" = JobCategory.create([",JOBCATEGORIES,",")
 postings_string = stringifyList(array_names[2]+" = JobPosting.create([",JOBPOSTINGS,",\n")

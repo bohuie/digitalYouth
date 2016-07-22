@@ -1,6 +1,9 @@
 include ActionDispatch::TestProcess
 
 FactoryGirl.define do
+  factory :job_posting_application do
+    
+  end
   
   factory :user do
     first_name	"John"

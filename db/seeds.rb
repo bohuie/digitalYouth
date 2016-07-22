@@ -11,6 +11,7 @@ end
 #----------- Load every seed file in the /seed folder ---------------------
 Dir[File.join(Rails.root, 'db', 'seeds', '*.rb')].sort.each { |seed| load seed }
 # Every large set of seeds should be put in a file in the /db/seeds folder
+puts "Seeding Test Data"
 
 #--- Users for testing ---
 user1 = User.new(first_name: 'John', last_name: 'Doe', email: 'john@doe.com', password: 'password', password_confirmation: 'password')
@@ -54,6 +55,10 @@ jobposting1 = JobPosting.create(title: 'Social Media Manager', location: "Kelown
 			  description: 'Handling our Facebook and Twitter account, posting messages, and responding to clients.', open_date: '2016-01-01', close_date: '2016-04-01',
 			  job_category_id: jobcategory1.id, user_id: user3.id)
 
+jobposting2 = JobPosting.create(title: 'Social Media Expert', location: "Kelowna, BC", pay_range: "#$30-$40/hr", link:"wwww.google.ca", posted_by:"Seed File",
+			  description: 'Handling our Facebook and Twitter account, posting messages, and responding to clients.', open_date: Date.today-7, close_date: Date.today,
+			  job_category_id: jobcategory1.id, user_id: user3.id)
+
 
 #--- Projects for testing ---
 project1 = user1.projects.create(title: 'No Image project', description: 'some description')
@@ -70,11 +75,15 @@ JobPostingSkill.create(job_posting_id: jobposting1.id, skill_id:skill1.id, impor
 JobPostingSkill.create(job_posting_id: jobposting1.id, skill_id:skill2.id, importance:2, question_id:42)
 JobPostingSkill.create(job_posting_id: jobposting1.id, skill_id:skill3.id, importance:1, question_id:37)
 
+JobPostingSkill.create(job_posting_id: jobposting2.id, skill_id:skill1.id, importance:2, question_id:41)
+JobPostingSkill.create(job_posting_id: jobposting2.id, skill_id:skill2.id, importance:2, question_id:42)
+JobPostingSkill.create(job_posting_id: jobposting2.id, skill_id:skill3.id, importance:2, question_id:37)
+
 ProjectSkill.create(project_id: project1.id, skill_id: skill1.id)
 ProjectSkill.create(project_id: project1.id, skill_id: skill2.id)
 
 
 #----------- Load Job Posting data from scraping and processing ---------------------
 if !Rails.env.test?
-	Dir[File.join(Rails.root, 'db', 'scraping', '*.rb')].sort.each { |seed| load seed }
+	#Dir[File.join(Rails.root, 'db', 'scraping', '*.rb')].sort.each { |seed| load seed }
 end

@@ -1,0 +1,20 @@
+<% if current_user.has_role? :employee %>
+	<%@job_posting_applications.each do |j|%>
+		<div class="row"> 
+			<div class="col-md-4">
+				<h4 class="job-application-content">
+					<%="#{j.job_posting.title} #{j.job_posting.user.company_name}"%>
+					<small><span class=" label label-<%=j.get_bootstrap_status%>"><%="#{j.get_status_string}"%></span></small>
+				</h4>
+			</div>
+			<div class="col-xs-1">
+				<%= link_to "Delete", job_posting_applications_path(j.id), method: "delete"%>
+			</div>
+		</div>
+	<% end %>
+<% elsif current_user.has_role? :employer %>
+	<%@job_posting_applications.each do |j|%>
+	<% end %>
+<% end %>
+
+

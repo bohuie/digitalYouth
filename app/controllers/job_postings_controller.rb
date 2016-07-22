@@ -7,7 +7,7 @@ class JobPostingsController < ApplicationController
 
 	def index # Lists all job_postings a company has.
 		if user_signed_in?
-			params[:user] = current_user.id if current_user.has_role? :employer if params[:user].nil?
+			params[:user] = current_user.id if current_user.has_role?(:employer) && params[:user].nil?
 		end
 		@job_postings = JobPosting.where(user_id: params[:user])
 		@company = User.find(params[:user])

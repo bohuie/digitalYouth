@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
     has_many :references
     has_many :reference_redirections
     has_many :responses
+    has_many :job_posting_applications
     
     has_many :user_skills, dependent: :destroy
     has_many :skills, through: :user_skills

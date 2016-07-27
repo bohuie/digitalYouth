@@ -41,6 +41,10 @@
 <% end %>
 
 <% if user_signed_in? && @current_user.id == @job_posting.user_id %>
-	<%= link_to "Edit Posting", edit_job_posting_path(@job_posting) %> <%= link_to "Delete Posting", job_posting_path(@job_posting), method: "delete" %>
+	<%= link_to "Edit Posting", edit_job_posting_path(@job_posting), class: "btn btn-default"%>
+	<%= link_to "Delete Posting", job_posting_path(@job_posting), method: "delete", class: "btn btn-danger"%>
+	<% application_count = @job_posting.job_posting_applications.where("status = 0").count %>
+	<% application_count = "" if application_count == 0 %>
+	<%= link_to raw("Applications <span class=\"badge\">#{application_count.to_s}</span>"), job_posting_applications_path(job_posting:@job_posting), class: "btn btn-success"%>
 	<p><span class="label label-default"><%=@job_posting.views%> Views</span></p>
 <% end %>

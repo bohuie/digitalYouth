@@ -118,7 +118,6 @@ FactoryGirl.define do
     description "Handling SM sites"
     open_date Date.new(2016,1,1)
     close_date Date.today
-    job_category
   end
 
   factory :job_posting2, class: JobPosting do
@@ -130,11 +129,6 @@ FactoryGirl.define do
     description "Handling SM Teams"
     open_date Date.new(2016,2,1)
     close_date Date.new(2016,3,1)
-    job_category
-  end
-
-  factory :job_category do
-    name "Communications"
   end
 
   factory :job_posting_skill do

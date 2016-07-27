@@ -1,6 +1,7 @@
 class JobPostingApplication < ActiveRecord::Base
-	has_one :applicant, :class_name => "User"
-	has_one :company, :class_name => "User"
+	include PublicActivity::Common
+	belongs_to :applicant, :class_name => "User"
+	belongs_to :company, :class_name => "User"
 	belongs_to :job_posting
 
 	def get_status_string #Returns a string representation of the status

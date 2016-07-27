@@ -41,4 +41,89 @@ class JobPosting < ActiveRecord::Base
 		end
 		return false
 	end
+
+	def compare_skills(user)
+		# Distance function
+		distance = 0
+		user_skills = user.user_skills
+		responses = user.responses
+		job_skills = self.job_posting_skills.includes(:skill)
+		user_skill_matches = Array.new
+		response_skill_matches = Array.new
+
+		# Compare to User Reported Skills
+		if !user_skills.empty?
+			job_skills.each do |j|
+				match = false
+				score = 0
+				user_skills.each do |u|
+					if u.skill_id == j.skill.id
+						match = true
+						score = u.rating
+						user_skill_matches.push(u.skill)
+					end
+				end
+				distance += compute_distance(match,j.importance,score) 
+			end
+		end
+
+		# Compare to User Project Skills
+		#if !project_skills.empty?
+		#	job_skills.each do |j|
+		#		user_skills.each do |u|
+		#			if u == j.skill
+		#				match = true
+		#				score = u.rating
+		#			end
+		#		end
+		#		distance = distance + compute_distance(match,j.importance,score) 
+		#	end
+		#end
+
+		# Compare to Survey Response
+		if !responses.empty?
+			job_skills.each do |j|
+				match = false
+				score = 0
+				responses.each do |r|
+					i = 0
+					r.question_ids.each do |q|
+						if q == j.question_id
+							match = true
+							score = r.scores[i]
+						end
+						i+=1
+					end
+				end
+				distance += compute_distance(match,j.importance,score) 
+			end
+		end
+		byebug
+		return {distance:distance, user_skill_matches: user_skill_matches, response_skill_matches: response_skill_matches}
+	end
+
+	# Raw distance above
+	# Should also have ability to report:
+	#  User has these skills in common with job posting
+	#  User has completed these projectes which have skills in common with job posting
+	#  User completed the survey which matches to the skills like this...
+
+private
+	def compute_distance(match,importance,score)
+		dist = 0
+		if match
+			if importance == 2 #Required
+				dist -= score
+			else #Preferred
+				dist -= score*0.5
+			end
+		else
+			if importance == 2 #Required
+				dist += 2
+			else #Preferred
+				dist += 1
+			end
+		end
+		return dist
+	end
 end

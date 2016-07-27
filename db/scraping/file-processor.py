@@ -60,6 +60,38 @@ def process_skills(SKL_MAP,s,importance,cnt,ARR_NAMES):
 	jobpostingskill = '{skill_id: '+ARR_NAMES[3]+'['+str(SKL_MAP[s])+'].id,job_posting_id: '+ARR_NAMES[2]+'['+str(cnt)+'].id,importance: '+str(importance)+'}'
 	return [skill,jobpostingskill,SKL_MAP]
 
+def get_category_id(wCat):
+	#Mapping of Workopolis Categories to NAICS codes
+	NAICS_switch = {
+		"accounting and finance": 52,
+		"administrative and clerical": 56,
+		"arts, media and entertainment": 71,
+		"customer service": 44,
+		"engineering": 54,
+		"environmental": 11,
+		"financial services": 52,
+		"healthcare services and wellness": 62,
+		"hospitality and food service": 72,
+		"human resources and recruitment": 54,
+		"insurance": 52,
+		"legal": 54,
+		"manufacturing": 31,
+		"marketing": 54,
+		"operations": 55,
+		"project management and business analysis": 55,
+		"retail in-store": 44,
+		"sales and business development": 52,
+		"science and research": 54,
+		"security and surveillance": 55,
+		"skilled trades and labour": 54,
+		"supply chain and logistics": 54,
+		"technology and digital media": 54,
+		"training and education":61}
+		#Mapping the NAICS codes to the order in the DB
+	ORDER_switch = {11:"1",21:"2",22:"3",23:"4",31:"5",32:"5",33:"5",42:"6",44:"7",45:"7",48:"8",49:"8",51:"9",
+					52:"10",53:"11",54:"12",55:"13",56:"14",61:"15",62:"16",71:"17",72:"18",81:"19",92:"20"}
+	return ORDER_switch.get(NAICS_switch.get(wCat.lower()),"nil")
+
 def extract_data(file):
 	try:
 		tree = html.fromstring(open(file, "r").read())
@@ -75,7 +107,7 @@ def extract_data(file):
 		pref_skills = []
 		desc = []
 		#--- Strings to filter by ---
-		skills_strings = ['qualif','skill','abil,','able','capab','experi','criter','knowl','educ','']
+		skills_strings = ['qualif','skill','abil,','able','capab','experi','criter','knowl','educ','criteria']
 		prefer_strings = ['prefer','good','nice','bonus','addit']
 		benefits_strings = ['benefit']
 		roles_strings = ['role']
@@ -119,7 +151,7 @@ def extract_data(file):
 	return [category,closing,company_name,desc,link,location,logo,title,req_skills,pref_skills]
 
 
-def process(file,cnt,CAT_map,SKL_map,JOB_postings,ARR_names):
+def process(file,cnt,SKL_map,JOB_postings,ARR_names):
 		data = extract_data(file)
 		if data is None:
 			return None
@@ -134,13 +166,8 @@ def process(file,cnt,CAT_map,SKL_map,JOB_postings,ARR_names):
 		req_skills = data[8]
 		pref_skills = data[9]
 
-		CATEGORY = ""
-		if category not in CAT_map:
-			CATEGORY = '{name:\"'+category+'\"}'
-			CAT_map[category] = len(CAT_map)
-
 		JOBPOSTING = '{title:\"'+title+'\",company_name:\"'+company_name+'\",'
-		JOBPOSTING += 'job_category_id: '+ARR_names[1]+'['+str(CAT_map[category])+'].id,'
+		JOBPOSTING += 'job_category_id: '+get_category_id(category)+','
 		JOBPOSTING += 'location:\"'+location+'\", link: \"'+ link +'\",'
 		JOBPOSTING += '' if desc == "" or "<" in desc else "description: \""+desc+"\""
 		JOBPOSTING += '' if closing == "" else ",close_date: \"" + closing + "\""
@@ -167,7 +194,7 @@ def process(file,cnt,CAT_map,SKL_map,JOB_postings,ARR_names):
 			JOBPOSTINGSKILLS.append(skls[1])
 			SKL_map = skls[2]
 
-		return [CATEGORY,JOBPOSTING,SKILLS,JOBPOSTINGSKILLS,CAT_map,SKL_map]
+		return [JOBPOSTING,SKILLS,JOBPOSTINGSKILLS,SKL_map]
 
 def stringifyList(start_str,lst,btwn):
 	rtn_str = str(start_str)
@@ -216,9 +243,7 @@ path += "data/categories/"
 os.chdir(path)
 file.write("puts \"Seeding Auto-Populated Job Posting Data\"\n")
 
-cat_map = {}
 skl_map = {}
-JOBCATEGORIES = []
 JOBPOSTINGS = []
 SKILLS = []
 JOBPOSTINGSKILLS = []
@@ -249,17 +274,14 @@ for cdir in catdirs:
 	for subdir in subdirs:
 		os.chdir(subdir)
 		for file_name in os.listdir(subdir):
-			rtns = process(file_name,cnt,cat_map,skl_map,JOBPOSTINGS,array_names)
+			rtns = process(file_name,cnt,skl_map,JOBPOSTINGS,array_names)
 			try:
 				if rtns is not None:
 					progress((pointer/num_files)*100)
-					if not rtns[0] == "":
-						JOBCATEGORIES.append(rtns[0])
-					JOBPOSTINGS.append(rtns[1])
-					SKILLS.extend(rtns[2])
-					JOBPOSTINGSKILLS.extend(rtns[3])
-					cat_map = rtns[4]
-					skl_map = rtns[5]
+					JOBPOSTINGS.append(rtns[0])
+					SKILLS.extend(rtns[1])
+					JOBPOSTINGSKILLS.extend(rtns[2])
+					skl_map = rtns[3]
 
 					cnt += 1
 			except IndexError:
@@ -274,13 +296,11 @@ for cdir in catdirs:
 #file.write(skill_string)
 
 print("Concatenating data..")
-categories_string = stringifyList(array_names[1]+" = JobCategory.create([",JOBCATEGORIES,",")
 postings_string = stringifyList(array_names[2]+" = JobPosting.create([",JOBPOSTINGS,",\n")
 skills_string = stringifyList(array_names[3]+" = Skill.create([",SKILLS,",\n")
 jobskills_string = stringifyList(array_names[4]+" = JobPostingSkill.create([",JOBPOSTINGSKILLS,",\n")
 
 print("Writing to file..")
-file.write(categories_string+"\n\n")
 file.write(postings_string+"\n\n")
 file.write(skills_string+"\n\n")
 file.write(jobskills_string+"\n\n")

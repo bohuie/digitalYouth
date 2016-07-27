@@ -8,7 +8,7 @@
 	</div>
 
  	<div class = "survey-table">
-		<%= render '/users/partials/show_survey_table' %>
+		<%= render '/users/partials/show_survey_table', results: @survey_results, user:@user %>
 	</div>
 
 	<div class = "references">

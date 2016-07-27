@@ -2,9 +2,9 @@
 	<%= f.input :title, required: true %>
 	<%= f.input :location, required: true, label: "Location (City, Province Code)"%>
 	<% if !@job_posting.job_category.nil? %>
-		<%= f.input :job_category, required: true, label: "Category", input_html:{value:@job_posting.job_category.name}%>
+		<%= f.input :job_category_id, required: true, label: "Category", collection: @categories, selected: @job_posting.job_category.id %>
 	<% else %>
-		<%= f.input :job_category, required: true, label: "Category" %>
+		<%= f.input :job_category_id, required: true, label: "Category", collection: @categories, prompt: "Select Category" %>
 	<% end %>
 	<%= f.input :pay_range %>
 	<%= f.input :link %>

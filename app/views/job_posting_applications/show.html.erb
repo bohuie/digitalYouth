@@ -1,0 +1,6 @@
+<%= render 'shared/user_summary', user: @job_posting_application.applicant %>
+<%= raw("<p>#{@job_posting_application.message}</p>") if !@job_posting_application.message.blank?%>
+<h3><span class=" label label-<%=@job_posting_application.get_bootstrap_status%>"><%="#{@job_posting_application.get_status_string}"%></span></h3><br>
+<%= link_to "Reject", update_job_posting_application_path(@job_posting_application,status:"Rejected"), class: "btn btn-danger", method: "patch" %>
+<%= link_to "Consider", update_job_posting_application_path(@job_posting_application, status:"Considering"), class: "btn btn-info", method: "patch" %>
+<%= link_to "Accept", update_job_posting_application_path(@job_posting_application, status:"Accepted"), class: "btn btn-success", method: "patch" %>

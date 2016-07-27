@@ -6,7 +6,7 @@ class CreateJobPostingApplications < ActiveRecord::Migration
     	t.references :applicant
       	t.references :company
       	t.references :job_posting
-      	t.integer :status, null: false, default: 0 #0 = Undetermined, -1 = rejected, 1 = considering, 2 = accepted
+      	t.integer :status, null: false, default: 0 #0 = Undetermined, -2 = deleted, -1 = rejected, 1 = considering, 2 = accepted
       	t.timestamps null: false
     end
   end

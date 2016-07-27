@@ -137,13 +137,12 @@ RSpec.describe JobPostingsController, type: :controller do
 		let(:employer) { FactoryGirl.create(:employer) }
 		let(:user) { FactoryGirl.create(:user) }
 		let(:job_posting) { FactoryGirl.build(:job_posting) }
-		let(:job_category) { FactoryGirl.create(:job_category) }
 		let(:skill) { FactoryGirl.build(:skill) }
 		let(:skill2) { FactoryGirl.build(:skill_2) }
 		let(:job_posting_attr) { {
 			  title: job_posting.title,
 			  location: job_posting.location,
-			  job_category: job_category.name,
+			  job_category_id: 10,
 			  pay_range: job_posting.pay_range,
 			  link: job_posting.link,
 			  posted_by: job_posting.posted_by,
@@ -274,7 +273,6 @@ RSpec.describe JobPostingsController, type: :controller do
 		let(:employer) { FactoryGirl.create(:employer) }
 		let(:employer2) { FactoryGirl.create(:employer2) }
 		let(:job_posting) { FactoryGirl.create(:job_posting) }
-		let(:job_category) { FactoryGirl.create(:job_category) }
 		let(:skill){ FactoryGirl.build(:skill) }
 		let(:skill2){ FactoryGirl.build(:skill_2) }
 		let(:job_posting_skill) { FactoryGirl.create(:job_posting_skill) }
@@ -282,7 +280,7 @@ RSpec.describe JobPostingsController, type: :controller do
 		let(:job_posting_attr) { {
 			  title: "New Title",
 			  location: job_posting.location,
-			  job_category: job_category.name,
+			  job_category_id: 10,
 			  pay_range: job_posting.pay_range,
 			  link: job_posting.link,
 			  posted_by: job_posting.posted_by,

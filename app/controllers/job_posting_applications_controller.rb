@@ -9,18 +9,18 @@ class JobPostingApplicationsController < ApplicationController
 
 	def index # Show a users job applications (either a employer or employee)
 		if current_user.has_role? :employee
-			@job_posting_applications = JobPostingApplication.where(applicant_id:current_user.id)
+			@job_posting_applications = JobPostingApplication.where(applicant_id:current_user.id).order(status: :desc).includes(:job_posting)
 		elsif current_user.has_role? :employer
 			if params[:job_posting].blank?
-				@job_posting_applications = JobPostingApplication.where(company_id:current_user.id)
+				@job_posting_applications = JobPostingApplication.where(company_id:current_user.id).order(status: :desc).includes(:applicant,:job_posting)
 			else
-				@job_posting_applications = JobPostingApplication.where(company_id:current_user.id,job_posting_id:params[:job_posting])
+				@job_posting_applications = JobPostingApplication.where(company_id:current_user.id,job_posting_id:params[:job_posting]).order(status: :desc).includes(:applicant,:job_posting)
 			end
 		end
 	end
 
 	def show # Show the information of an application
-		#@job_posting_application is retrieved in the check_association method
+		@job_posting_application.job_posting.compare_skills(@job_posting_application.applicant)
 	end
 
 	def new
@@ -37,6 +37,8 @@ class JobPostingApplicationsController < ApplicationController
 		params[:job_posting_application][:applicant_id] = current_user.id
 		@job_posting_application = JobPostingApplication.new(job_posting_application_params)
 		if @job_posting_application.save
+			#Create notification for user
+			@job_posting_application.create_activity :create,  owner: @job_posting_application.company
 			redirect_to job_posting_applications_path, flash: {success: "Application Sent!"}
 		else
 			flash[:warning] = "Oops, there was an issue in sending your application."
@@ -44,10 +46,37 @@ class JobPostingApplicationsController < ApplicationController
 		end
 	end
 
+	def update # Set the status to the parameter
+		case params[:status] 
+			when "Rejected"
+				save = @job_posting_application.update(status:-1)
+			when "Considering"
+				save = @job_posting_application.update(status:1)
+			when "Accepted"
+				save = @job_posting_application.update(status:2)
+		end
+		if save
+			#Create notification for user
+			@job_posting_application.create_activity :update,  owner: @job_posting_application.applicant
+			redirect_to job_posting_applications_path, flash: {success: "Updated Application Status!"}
+		else
+			flash[:warning] = "Oops, there was an issue in updating that application."
+			redirect_back_or job_posting_application_path(params[:id])
+		end
+	end
+
 	def destroy
-		#delete the application
-		#@job_posting_application is retrieved in the check_applicant method
-		# Shouldn't actually delete it, should set a deleted flag to true to still ensure that people can't reapply.
+		save = @job_posting_application.update(status:2)
+		if save
+			 @activity = PublicActivity::Activity.where(trackable_id: (params[:id]), trackable_type: controller_path.classify)
+			 @activity.each do |a| 
+			 	a.destroy
+			 end
+			redirect_to job_posting_applications_path, flash: {success: "Deleted Application!"}
+		else
+			flash[:warning] = "Oops, there was an issue in deleting that application."
+			redirect_back_or job_posting_application_path(params[:id])
+		end
 	end
 
 

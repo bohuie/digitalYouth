@@ -49,7 +49,7 @@ Rails.application.routes.draw do
   get 'job_posting_applications/new' => 'job_posting_applications#new', as: :new_job_posting_application
   get 'job_posting_applications/:id' => 'job_posting_applications#show', as: :job_posting_application
   post 'job_posting_applications' => 'job_posting_applications#create'
-  patch 'job_posting_applications/:id' => 'job_posting_applications#update'
+  patch 'job_posting_applications/:id' => 'job_posting_applications#update', as: :update_job_posting_application
   delete 'job_posting_applications/:id' => 'job_posting_applications#destroy'
 
   # Project routes

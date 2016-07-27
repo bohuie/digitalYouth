@@ -27,14 +27,13 @@ class JobPostingsController < ApplicationController
 		job_posting_skills.skill = Skill.new
 		@questions = Question.get_label_map
 		@skills = Skill.all
+		@categories = JobCategory.all
 	end
 
 	def create # Creates a new job posting and skills
 		params[:job_posting][:user_id] = current_user.id
-		category = set_category(params[:job_posting][:job_category])
-		params[:job_posting][:job_category_id] = category.id if !category.nil?
 		@job_posting = JobPosting.new(job_posting_params)
-		if !category.nil? && @job_posting.save && @job_posting.process_skills(params[:job_posting]["job_posting_skills_attributes"])
+		if @job_posting.save && @job_posting.process_skills(params[:job_posting]["job_posting_skills_attributes"])
 			redirect_to job_postings_path, flash: {success: "Job Posting Created!"}
 		else
 			flash[:warning] = "Oops, there was an issue in creating your Job Posting."
@@ -46,12 +45,11 @@ class JobPostingsController < ApplicationController
 		@job_posting_skills = JobPostingSkill.where(job_posting_id:params[:id])
 		@questions = Question.get_label_map
 		@skills = Skill.all
+		@categories = JobCategory.all
 	end
 
 	def update # Updates the job posting
-		category = set_category(params[:job_posting][:job_category])
-		params[:job_posting][:job_category_id] = category.id if !category.nil?
-		if !category.nil? && @job_posting.update_attributes(job_posting_params) && @job_posting.process_skills(params[:job_posting]["job_posting_skills_attributes"])
+		if @job_posting.update_attributes(job_posting_params) && @job_posting.process_skills(params[:job_posting]["job_posting_skills_attributes"])
 			redirect_to job_postings_path, flash: {success: "Job Posting Updated!"}
 		else
 			flash[:warning] = "Oops, there was an issue in editing your Job Posting."
@@ -90,15 +88,6 @@ private
 		end
 	end
 
-	def set_category(name) # Checks to see if the category exists, creates if it doesn't exist
-		category = JobCategory.find_by(name: name)
-		if category.nil?
-			category = JobCategory.new(name: name)
-			return nil if !category.save #If Save fails method returns nil
-		end
-		return category
-	end
-
 	def add_view(job_posting) # Checks to make sure the user doesn't own the posting and hasn't seen it this session
 		return nil if (user_signed_in? && @job_posting.user_id == current_user.id)||(job_posting.is_expired?)
 		session[:job_posting_views] = Array.new if session[:job_posting_views].nil?
@@ -110,7 +99,7 @@ private
 
 	def check_fields # Performs rigorous checks to ensure that the job posting is valid
 		args = params[:job_posting]
-		if args[:title].blank? || args[:location].blank? || args[:description].blank? || args[:open_date].blank? || args[:close_date].blank? || args[:job_category].blank?
+		if args[:title].blank? || args[:location].blank? || args[:description].blank? || args[:open_date].blank? || args[:close_date].blank? || args[:job_category_id].blank?
 			flash[:warning] = "Missing required fields"
 			redir = true
 		elsif args[:location].split(',').length != 2 || args[:location].split(',')[1].strip.length > 2

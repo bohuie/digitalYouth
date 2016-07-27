@@ -1,4 +1,10 @@
 <%#= image_tag .user.image if !user.image.nil? %>
 <p>User Image</p>
-<h4><%="#{user.first_name} #{user.last_name}"%></h4>
-<p> User description</p>
+<h4><%= link_to "#{user.first_name} #{user.last_name}", user_path(user)%></h4>
+
+<% survey_results = Survey.get_table_data(user) %>
+<% if survey_results.count > 0 %>
+	<%= render 'users/partials/show_survey_table', results: survey_results, user: user %>
+<% end %>
+
+<p> User description </p>

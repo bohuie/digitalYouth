@@ -1,17 +1,22 @@
 <% cnt = 0 %>
 <% if current_user.has_role? :employee %>
+	<h4>These are your current job applications.</h4>
+	<p> The status is displayed beside the posting title.<br>
+		The company which owns the job posting will update the status of the posting and it will be shown here.<br>
+		You have the option to delete your application but you will not be able to reapply.
+	</p>
 	<%@job_posting_applications.each do |j|%>
 		<% if j.status != -2 %>
-			<% cnt = cnt + 1 %>
+			<% cnt += 1 %>
 			<div class="row"> 
 				<div class="col-md-4">
 					<h4 class="job-application-content">
-						<%=raw("#{j.job_posting.title} (<i>#{j.job_posting.user.company_name}</i>)")%>
+						<%= link_to raw("#{j.job_posting.title} (<i>#{j.job_posting.user.company_name}</i>)"), job_posting_application_path(j) %>
 						<small><span class=" label label-<%=j.get_bootstrap_status%>"><%="#{j.get_status_string}"%></span></small>
 					</h4>
 				</div>
 				<div class="col-xs-1">
-					<%= link_to "Delete", job_posting_applications_path(j.id), method: "delete", class: "btn btn-default"%>
+					<%= link_to "Delete", job_posting_application_path(j.id), method: "delete", class: "btn btn-default"%>
 				</div>
 			</div>
 		<% end %>
@@ -20,10 +25,10 @@
 	<% last_posting = -1 %>
 	<%@job_posting_applications.each do |j|%>
 		<% if j.status != -2 %>
-			<% cnt = cnt + 1 %>
+			<% cnt += 1 %>
 			<div class="row">
 				<% if last_posting != j.job_posting.id %>
-					<div class="col-md-2">
+					<div class="col-md-4">
 						<h4><%= link_to j.job_posting.title, job_posting_path(j.job_posting.id) %></h4>
 					<% last_posting = j.job_posting.id %>
 					</div>

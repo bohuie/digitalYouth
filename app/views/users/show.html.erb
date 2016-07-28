@@ -7,6 +7,10 @@
 		<p> <%= @user.email %> </p>
 	</div>
 
+	<% if user_signed_in? && @current_user==@user %>
+		<%= link_to "Job Applications", job_posting_applications_path %>
+	<% end %>
+
  	<div class = "survey-table">
 		<%= render '/users/partials/show_survey_table', results: @survey_results, user:@user %>
 	</div>
@@ -84,9 +88,13 @@
 		<%= @user.company_address %>, <%= @user.company_province %><br>
 		<%= @user.company_postal_code %> 
 	</p>
+	
 	<%= link_to "Job Postings", job_postings_path(user: @user) %>
+	<% if user_signed_in? && @current_user==@user %>
+		<br><%= link_to "Job Applications", job_posting_applications_path %>
+	<% end %>
+
 <% elsif @user.has_role? :admin%>
 	You are an admin!
 	<%= %> 
-<% else %>
 <% end %>

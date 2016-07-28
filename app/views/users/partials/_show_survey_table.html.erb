@@ -16,7 +16,7 @@
 		<% end %>
 		<div class ="<%= css_class %>" onclick="<%=raw div_onclick %>">
 			<h5><%= s.format_title.html_safe %></h5>
-			<%= column_chart results[i], height: "100px", min: 0, max: 5, library: {hAxis: {textPosition: 'none'}, vAxis: {textPosition: 'none'}} %>
+			<%= column_chart results[i], height: "100px", min: 0, max: 4, library: {hAxis: {textPosition: 'none'}, vAxis: {textPosition: 'none'}} %>
 			<% if user.answered_surveys[i - 1] && user_signed_in? && current_user==user%>
 				<%= link_to "Update", survey_path(s.title) %>
 			<% end %>

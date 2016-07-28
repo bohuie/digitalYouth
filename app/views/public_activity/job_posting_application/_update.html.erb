@@ -1,3 +1,9 @@
-<% j = activity.trackable %>
+<% j = activity.trackable %><%p = activity.parameters %>
 <img src="<%=asset_path('avatar-placeholder.svg')%>" alt="User Icon" height="30" width="30"> <%=j.company.company_name%>
-<%="has rejected" if j.status == -1 %><%="is considering" if j.status == 1 %><%="has accepted" if j.status == 2 %> your application.
+<% if p[:status] == -1 %>
+	has rejected your application.
+<% elsif p[:status] == 1 %>
+	is considering your application.
+<% elsif p[:status] == 2 %>
+	has accepted your application.
+<% end %>

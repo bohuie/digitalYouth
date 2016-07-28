@@ -8,6 +8,113 @@ import sys
 import time
 from lxml import etree
 # --------------- Functions ---------------
+
+# Extracts data from the html file and returns array of data
+def extract_data(file):
+	try:
+		tree = html.fromstring(open(file, "r").read())
+		logo = tree.xpath('//a[@class="job-view-company-logo-link"]/img/@src')
+		company_name = tree.xpath('//span[@data-automation="job-company"]')[0].text.title()
+		title = tree.xpath('//*[@data-automation="job-title"]')[0].text.title()
+		loc_arr = tree.xpath('//*[@data-automation="job-Location"]')[0].text.title().split(',')
+		location = loc_arr[0] + "," + loc_arr[1].upper() #Converts location string to city, Province code
+		link = tree.xpath('//*[@class="page-link"]/@href')[0]
+		category = tree.xpath('//a[@class="job-view-header-link link"]')[0].text.title()
+		closing = ""
+		req_skills = []
+		pref_skills = []
+		desc = []
+
+		#--- Strings to filter by ---
+		skills_strings = ['qualif','skill','abil,','able','capab','experi','criter','knowl','educ']
+		prefer_strings = ['prefer','good','nice','bonus','addit']
+		benefits_strings = ['benefit']
+		roles_strings = ['role']
+
+		tags = tree.xpath('//section[@class="job-view-content-wrapper js-job-view-header-apply"]/*')
+		for p in tags:
+			ptext = "".join(p.itertext())
+			if any(substr in ptext.lower() for substr in benefits_strings): # Used to skip any ul of benefits, doesn't seem to be working.
+				next
+			if any(substr in ptext.lower() for substr in skills_strings):
+				sibling = get_silbing_ul(p.getnext())
+				if sibling is not None:
+					children = sibling.getchildren()
+					for c in children:
+						if any(substr in ptext.lower() for substr in prefer_strings):
+							pref_skills = add_skills(c.text,pref_skills)
+						else:
+							req_skills = add_skills(c.text,req_skills)
+
+			elif "closing" in ptext.lower() and "date" in ptext.lower() and len(ptext) < 80:
+				closing = ptext
+
+			# Add to description string
+			if len(ptext) > 100:
+				ptext = ptext.replace("\r\n"," ").replace("\xa0"," ")
+				if not any(substr in ptext.lower() for substr in req_skills) and not any(substr in ptext.lower() for substr in pref_skills):
+					desc.append(ptext)
+
+		desc = ''.join(desc)
+		if (req_skills == [] and pref_skills == []) or desc == "":
+			return None
+	except (IndexError, etree.XMLSyntaxError):
+		return None
+
+	company_name = check_string(company_name)
+	title = check_string(title)
+	location = check_string(location)
+	closing = check_string(closing)
+	desc = check_string(desc)
+	category = check_string(category)
+	return [category,closing,company_name,desc,link,location,logo,title,req_skills,pref_skills]
+
+# Processes data, formatting for ruby
+def process(file,cnt,SKL_map,JOB_postings,ARR_names):
+	data = extract_data(file)
+	if data is None:
+		return None
+	category = data[0]
+	closing = data[1]
+	company_name = data[2]
+	desc = data[3]
+	link = data[4]
+	location = data[5]
+	logo = data[6]
+	title = data[7]
+	req_skills = data[8]
+	pref_skills = data[9]
+
+	JOBPOSTING = '{title:\"'+title+'\",company_name:\"'+company_name+'\",'
+	JOBPOSTING += 'job_category_id: '+get_category_id(category)+','
+	JOBPOSTING += 'location:\"'+location+'\", link: \"'+ link +'\",'
+	JOBPOSTING += '' if desc == "" or "<" in desc else "description: \""+desc+"\""
+	JOBPOSTING += '' if closing == "" else ",close_date: \"" + closing + "\""
+	JOBPOSTING += '}'
+
+	for j in JOB_postings:
+		if JOBPOSTING == j:
+			return None
+
+	SKILLS = []
+	JOBPOSTINGSKILLS = []
+
+	for s in req_skills:
+		skls = process_skills(SKL_map,s,2,cnt,ARR_names)
+		if skls[0] is not None:
+			SKILLS.append(skls[0])
+		JOBPOSTINGSKILLS.append(skls[1])
+		SKL_map = skls[2]
+			
+	for s in pref_skills:
+		skls = process_skills(SKL_map,s,1,cnt,ARR_names)
+		if skls[0] is not None:
+			SKILLS.append(skls[0])
+		JOBPOSTINGSKILLS.append(skls[1])
+		SKL_map = skls[2]
+
+	return [JOBPOSTING,SKILLS,JOBPOSTINGSKILLS,SKL_map]
+
 def add_skills(skill_str,arr):
 	tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
 	if skill_str is not None:
@@ -32,13 +139,6 @@ def check_string(string):
 		return string[:-1]
 	else:
 		return string
-
-def acronym(string):
-	rtn_str = ""
-	for i in string.split():
-		if i[0].isupper():
-			rtn_str += i[0]
-	return rtn_str
 
 def get_silbing_ul(elem):
 	if elem is not None:
@@ -92,110 +192,6 @@ def get_category_id(wCat):
 					52:"10",53:"11",54:"12",55:"13",56:"14",61:"15",62:"16",71:"17",72:"18",81:"19",92:"20"}
 	return ORDER_switch.get(NAICS_switch.get(wCat.lower()),"nil")
 
-def extract_data(file):
-	try:
-		tree = html.fromstring(open(file, "r").read())
-		logo = tree.xpath('//a[@class="job-view-company-logo-link"]/img/@src')
-		company_name = tree.xpath('//span[@data-automation="job-company"]')[0].text.title()
-		title = tree.xpath('//*[@data-automation="job-title"]')[0].text.title()
-		loc_arr = tree.xpath('//*[@data-automation="job-Location"]')[0].text.title().split(',')
-		location = loc_arr[0] + "," + loc_arr[1].upper()
-		link = tree.xpath('//*[@class="page-link"]/@href')[0]
-		category = tree.xpath('//a[@class="job-view-header-link link"]')[0].text.title()
-		closing = ""
-		req_skills = []
-		pref_skills = []
-		desc = []
-		#--- Strings to filter by ---
-		skills_strings = ['qualif','skill','abil,','able','capab','experi','criter','knowl','educ','criteria']
-		prefer_strings = ['prefer','good','nice','bonus','addit']
-		benefits_strings = ['benefit']
-		roles_strings = ['role']
-
-		tags = tree.xpath('//section[@class="job-view-content-wrapper js-job-view-header-apply"]/*')
-		for p in tags:
-			ptext = "".join(p.itertext())
-			if any(substr in ptext.lower() for substr in benefits_strings): # NOT WORKING
-				next
-			if any(substr in ptext.lower() for substr in skills_strings):
-				sibling = get_silbing_ul(p.getnext())
-				if sibling is not None:
-					children = sibling.getchildren()
-					for c in children:
-						if any(substr in ptext.lower() for substr in prefer_strings):
-							pref_skills = add_skills(c.text,pref_skills)
-						else:
-							req_skills = add_skills(c.text,req_skills)
-
-			elif "closing" in ptext.lower() and "date" in ptext.lower() and len(ptext) < 80:
-				closing = ptext
-			# Can add condition here to get requirements too
-
-			if len(ptext) > 100:
-				ptext = ptext.replace("\r\n"," ").replace("\xa0"," ")
-				if not any(substr in ptext.lower() for substr in req_skills) and not any(substr in ptext.lower() for substr in pref_skills):
-					desc.append(ptext)
-
-		desc = ''.join(desc)
-		if (req_skills == [] and pref_skills == []) or desc == "":
-			return None
-	except (IndexError, etree.XMLSyntaxError):
-		return None
-
-	company_name = check_string(company_name)
-	title = check_string(title)
-	location = check_string(location)
-	closing = check_string(closing)
-	desc = check_string(desc)
-	category = check_string(category)
-	return [category,closing,company_name,desc,link,location,logo,title,req_skills,pref_skills]
-
-
-def process(file,cnt,SKL_map,JOB_postings,ARR_names):
-		data = extract_data(file)
-		if data is None:
-			return None
-		category = data[0]
-		closing = data[1]
-		company_name = data[2]
-		desc = data[3]
-		link = data[4]
-		location = data[5]
-		logo = data[6]
-		title = data[7]
-		req_skills = data[8]
-		pref_skills = data[9]
-
-		JOBPOSTING = '{title:\"'+title+'\",company_name:\"'+company_name+'\",'
-		JOBPOSTING += 'job_category_id: '+get_category_id(category)+','
-		JOBPOSTING += 'location:\"'+location+'\", link: \"'+ link +'\",'
-		JOBPOSTING += '' if desc == "" or "<" in desc else "description: \""+desc+"\""
-		JOBPOSTING += '' if closing == "" else ",close_date: \"" + closing + "\""
-		JOBPOSTING += '}'
-
-		for j in JOB_postings:
-			if JOBPOSTING == j:
-				return None
-
-		SKILLS = []
-		JOBPOSTINGSKILLS = []
-
-		for s in req_skills:
-			skls = process_skills(SKL_map,s,2,cnt,ARR_names)
-			if skls[0] is not None:
-				SKILLS.append(skls[0])
-			JOBPOSTINGSKILLS.append(skls[1])
-			SKL_map = skls[2]
-			
-		for s in pref_skills:
-			skls = process_skills(SKL_map,s,1,cnt,ARR_names)
-			if skls[0] is not None:
-				SKILLS.append(skls[0])
-			JOBPOSTINGSKILLS.append(skls[1])
-			SKL_map = skls[2]
-
-		return [JOBPOSTING,SKILLS,JOBPOSTINGSKILLS,SKL_map]
-
 def stringifyList(start_str,lst,btwn):
 	rtn_str = str(start_str)
 	for item in lst:
@@ -225,14 +221,14 @@ def endProgress():
 path = os.path.realpath(__file__).strip(__file__)
 os.chdir(path)
 print("----------- File Processor -----------\n")
-print("Ensure the path below contains the file processor:")
+print("Ensure the path below contains the file processor and the '/data/categories' folder containing files to process:")
 print(path)
 print("If it doesn't then cd to the correct path and run again.\n")
-
 print("--------------------------------------------------")
+
 cont = input("Is the path correct? (y/n): ")
 cont = str(cont).lower()
-if cont == "y" or cont.lower() == "yes":
+if cont == "y" or cont == "yes":
 	print("Processing:")
 else:
 	print("Exiting..")
@@ -282,7 +278,6 @@ for cdir in catdirs:
 					SKILLS.extend(rtns[1])
 					JOBPOSTINGSKILLS.extend(rtns[2])
 					skl_map = rtns[3]
-
 					cnt += 1
 			except IndexError:
 				do_nothing = True
@@ -290,10 +285,6 @@ for cdir in catdirs:
 	endProgress()
 	print(str(pointer)+" Files Processed.")
 
-
-#To print out just skills
-#skill_string = '\n'.join(['%s' % (key) for (key, value) in skl_map.items()])
-#file.write(skill_string)
 
 print("Concatenating data..")
 postings_string = stringifyList(array_names[2]+" = JobPosting.create([",JOBPOSTINGS,",\n")
@@ -304,6 +295,7 @@ print("Writing to file..")
 file.write(postings_string+"\n\n")
 file.write(skills_string+"\n\n")
 file.write(jobskills_string+"\n\n")
+
 print("Write complete, Created:")
 print(str(len(JOBPOSTINGS))+" Job Postings.")
 print(str(len(SKILLS))+" Skills.")

@@ -11,8 +11,8 @@
 	<%= f.input :posted_by %>
 	<%= f.input :description, required: true, as: :text %>
 	<div class="row">
-		<div class="col-md-6"><%= f.input :open_date, as: :string, required: true, input_html: {type: :date} %></div>
-		<div class="col-md-6"><%= f.input :close_date, as: :string, required: true, input_html: {type: :date} %></div>
+		<div class="col-md-6"><%= f.input :open_date, as: :string, required: true, input_html: {type: :date, id: "open-date"} %></div>
+		<div class="col-md-6"><%= f.input :close_date, as: :string, required: true, input_html: {type: :date, id: "close-date"} %></div>
 	</div>
 
 	<%i=0%>

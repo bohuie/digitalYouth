@@ -36,3 +36,19 @@ function add_fields(association, content){
   var regexp = new RegExp("new_" + association, "g");
   $('#job-skills').append(content.replace(regexp, new_id));
 }
+
+function set_date(){
+  if ($('.job_postings.new').length > 0 && $('#open-date').val() == ""){
+    var today = new Date();
+    var day = today.getDate();
+    var month = today.getMonth()+1;
+    var year = today.getFullYear();
+    if(day<10) {day='0'+day;}
+    if(month<10) {month='0'+month;}
+    $('#open-date').val(year+'-'+month+'-'+day);
+  }
+}
+
+$( document ).ready(function() {set_date();});
+$( document ).on('page:load',function() {set_date();});
+

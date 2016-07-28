@@ -199,6 +199,10 @@ ActiveRecord::Schema.define(version: 20160721192354) do
     t.string   "encrypted_password",     default: "",                                                                                   null: false
     t.string   "first_name"
     t.string   "last_name"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
     t.string   "github"
     t.string   "linkedin"
     t.string   "twitter"

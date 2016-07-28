@@ -19,11 +19,6 @@ user4.add_role :employee
 user4.skip_confirmation!
 user4.save
 
-for i in 0..20
-	Reference.create(first_name: 'Andrew'+i.to_s, last_name: 'Smith', email: 'Andrew@gmail.com', company: 'Apple Picking Co.',
-		position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)
-end
-
 reference1 = Reference.create(first_name: 'Bernie', last_name: 'Smith', email: 'Andrew@gmail.com', company: 'Apple Picking Co.',
 			 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user4.id)
 

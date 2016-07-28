@@ -1,5 +1,5 @@
 class ReferenceMailer < ApplicationMailer
-	default from: "digitalyouthtest@gmail.com"
+	default from: ENV['EMAIL_USERNAME']
 
 	def reference_email(reference_email, user)
 		@user = user

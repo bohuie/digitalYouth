@@ -40,6 +40,7 @@ Rails.application.routes.draw do
   post 'job_postings' => 'job_postings#create'
 
   # Project routes
+  get 'projects' => 'projects#index'
   get 'projects/new' => 'projects#new', as: :new_project
   get 'projects/:id' => 'projects#show', as: :project
   get 'projects/:id/edit' => 'projects#edit', as: :edit_project
@@ -65,6 +66,7 @@ Rails.application.routes.draw do
   delete 'references/:id' => 'references#delete', as: :delete_reference
 
   # Survey routes
+  get 'surveys' => 'surveys#index'
   get 'surveys/:title' => 'surveys#show', as: :survey
   post 'responses' => 'responses#create'
   patch 'responses' => 'responses#update'

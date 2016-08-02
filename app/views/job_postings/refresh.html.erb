@@ -1,0 +1,13 @@
+
+<p> This is an admin only page</p>
+<p> Ensure that the scraper python file has been run and the job_postings_seeds.rb file has been run </p>
+<p> Upload the job_posting_seeds.rb file and wait for the process to run </p>
+<p> The page will appear to be loading but the file is just being run. </p>
+<p> Please note, this will take some time. </p>
+<%= form_tag({action: :refresh_process}, multipart: true) do %>
+	<%= file_field_tag 'job_posting_seeds' %>
+  	<%= submit_tag "Refresh", onclick:"display_loading();" %><br>
+<% end %>
+<div class="progress col-md-6" id="refresh-progress" style="display: none;">
+	<div class="progress-bar progress-bar-striped active" role="progressbar" style="width: 100%"></div>
+</div>

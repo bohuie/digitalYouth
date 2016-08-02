@@ -3,19 +3,19 @@ require 'rails_helper'
 RSpec.describe JobPostingsController, type: :controller do 
 
 	describe "GET index" do
-			let(:employer) { FactoryGirl.create(:employer) }
-			let(:employer2) { FactoryGirl.create(:employer2) }
-			let(:job_posting) { FactoryGirl.create(:job_posting) }
-			let(:job_posting2) { FactoryGirl.create(:job_posting2) }
+		let(:employer) { FactoryGirl.create(:employer) }
+		let(:employer2) { FactoryGirl.create(:employer2) }
+		let(:job_posting) { FactoryGirl.create(:job_posting) }
+		let(:job_posting2) { FactoryGirl.create(:job_posting2) }
 			
-			before do
-				employer.confirm
-				employer2.confirm
-				employer.add_role :employer
-				employer2.add_role :employer
-				employer.job_postings << job_posting
-				employer2.job_postings << job_posting2
-			end
+		before do
+			employer.confirm
+			employer2.confirm
+			employer.add_role :employer
+			employer2.add_role :employer
+			employer.job_postings << job_posting
+			employer2.job_postings << job_posting2
+		end
 		
 		context "employer is logged in" do
 			before(:each) do
@@ -433,4 +433,96 @@ RSpec.describe JobPostingsController, type: :controller do
 			end
 		end
  	end
+
+ 	describe "GET refresh" do
+		let(:employer) { FactoryGirl.create(:employer) }
+		let(:user) { FactoryGirl.create(:user) }
+		let(:user2) { FactoryGirl.create(:user2) }
+	
+		before do
+			employer.confirm
+			employer.add_role :employer
+			user.confirm
+			user.add_role :employee
+			user2.confirm
+			user2.add_role :admin
+		end
+
+		context "user is logged in is employer" do
+			it "redirects the user" do
+				sign_in employer
+				get :refresh
+				expect(response).to redirect_to(employer)
+			end
+		end
+
+		context "user is logged in is employee" do
+			it "redirects the user" do
+				sign_in user
+				get :refresh
+				expect(response).to redirect_to(user)
+			end
+		end
+
+		context "user is not logged in" do
+			it "redirects the user" do
+				get :refresh
+				expect(response).to redirect_to(new_user_session_path)
+			end
+		end
+
+		context "user is logged in is an admin" do
+			it "redirects the user" do
+				sign_in user2
+				get :refresh
+				expect(response).to render_template(:refresh)
+			end
+		end
+	end
+
+	describe "POST refresh_process" do
+		let(:employer) { FactoryGirl.create(:employer) }
+		let(:user) { FactoryGirl.create(:user) }
+		let(:user2) { FactoryGirl.create(:user2) }
+	
+		before do
+			employer.confirm
+			employer.add_role :employer
+			user.confirm
+			user.add_role :employee
+			user2.confirm
+			user2.add_role :admin
+		end
+
+		context "user is logged in is employer" do
+			it "redirects the user" do
+				sign_in employer
+				post :refresh_process
+				expect(response).to redirect_to(employer)
+			end
+		end
+
+		context "user is logged in is employee" do
+			it "redirects the user" do
+				sign_in user
+				post :refresh_process
+				expect(response).to redirect_to(user)
+			end
+		end
+
+		context "user is not logged in" do
+			it "redirects the user" do
+				post :refresh
+				expect(response).to redirect_to(new_user_session_path)
+			end
+		end
+
+		context "user is logged in is an admin" do
+			it "redirects the user because no file is uploaded" do
+				sign_in user2
+				post :refresh_process
+				expect(response).to redirect_to(refresh_job_posting_path)
+			end
+		end
+	end
 end

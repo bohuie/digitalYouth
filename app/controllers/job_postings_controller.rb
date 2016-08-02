@@ -1,7 +1,8 @@
 class JobPostingsController < ApplicationController
 
 	before_action :authenticate_user!, except: [:show, :index]
-	before_action :check_employer, except: [:show, :index]
+	before_action :check_employer, except: [:show, :index,:refresh,:refresh_process]
+	before_action :check_admin, only: [:refresh,:refresh_process]
 	before_action :job_owner, only: [:edit, :update, :destroy]
 	before_action :check_fields, only: [:create, :update]
 
@@ -66,6 +67,35 @@ class JobPostingsController < ApplicationController
 		end
 	end
 
+	def refresh
+		# Page to display the upload form
+	end
+
+	def refresh_process	# Takes in a .rb file and runs the file to refresh the job postings
+		if !params[:job_posting_seeds].nil? and !params[:job_posting_seeds].tempfile.nil?
+			puts "Deleting data.."
+			ActiveRecord::Base.transaction do
+				silence_stream(STDOUT) do
+					@job_postings = JobPosting.where("company_name IS NOT NULL")
+					@ids = @job_postings.map(&:id)
+					@job_postings.delete_all
+					JobPostingSkill.where(job_posting_id: @ids).delete_all
+				end
+			end
+			puts "Inserting data.."
+			# NEED TO CHANGE THE SKILLS TO FIND OR CREATE FOR AN ARRAY
+			ActiveRecord::Base.transaction do
+				silence_stream(STDOUT) do
+					load params[:job_posting_seeds].tempfile
+				end
+			end
+			puts "Completed."
+			redirect_to root_path, flash: {success: "Refreshed Auto Populated Job Postings"}
+		else
+			redirect_to refresh_job_posting_path, flash: {success: "Need to upload a file"}
+		end
+	end
+
 private
 	def job_posting_params # Restricts parameters
 		params.require(:job_posting).permit(:title, :location, :pay_range, :link, :job_category_id, :posted_by, :description, :open_date, :close_date, :user_id)
@@ -74,6 +104,13 @@ private
 	def check_employer # Checks current user is an employer
 		if !current_user.has_role? :employer
 			flash[:warning] = 'You are not an employer!'
+			redirect_back_or current_user
+		end
+	end
+
+	def check_admin # Checks current user is an admin
+		if !current_user.has_role? :admin
+			flash[:danger] = 'Admins only.'
 			redirect_back_or current_user
 		end
 	end

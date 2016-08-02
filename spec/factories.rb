@@ -1,9 +1,6 @@
 include ActionDispatch::TestProcess
 
 FactoryGirl.define do
-  factory :job_posting_application do
-    
-  end
   
   factory :user do
     first_name	"John"
@@ -138,4 +135,9 @@ FactoryGirl.define do
   factory :job_posting_skill2, class: JobPostingSkill do
     importance 1
   end
+
+  factory :job_posting_application, class: JobPostingApplication do
+    message "this is a message"
+  end
+
 end

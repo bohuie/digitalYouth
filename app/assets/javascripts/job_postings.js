@@ -49,6 +49,10 @@ function set_date(){
   }
 }
 
+function display_loading(){
+  $('#refresh-progress').show();
+}
+
 $( document ).ready(function() {set_date();});
 $( document ).on('page:load',function() {set_date();});
 

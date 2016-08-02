@@ -34,7 +34,7 @@ def extract_data(file):
 		tags = tree.xpath('//section[@class="job-view-content-wrapper js-job-view-header-apply"]/*')
 		for p in tags:
 			ptext = "".join(p.itertext())
-			if any(substr in ptext.lower() for substr in benefits_strings): # Used to skip any ul of benefits, doesn't seem to be working.
+			if any(substr in ptext.lower() for substr in benefits_strings) or any(substr in ptext.lower() for substr in roles_strings):
 				next
 			if any(substr in ptext.lower() for substr in skills_strings):
 				sibling = get_silbing_ul(p.getnext())
@@ -46,16 +46,13 @@ def extract_data(file):
 						else:
 							req_skills = add_skills(c.text,req_skills)
 
-			elif "closing" in ptext.lower() and "date" in ptext.lower() and len(ptext) < 80:
-				closing = ptext
+			elif "clos" in ptext.lower() and "date" in ptext.lower() and len(ptext) < 80:
+				closing = ptext.split(':')[1].strip()
 
-			# Add to description string
-			if len(ptext) > 100:
-				ptext = ptext.replace("\r\n"," ").replace("\xa0"," ")
-				if not any(substr in ptext.lower() for substr in req_skills) and not any(substr in ptext.lower() for substr in pref_skills):
-					desc.append(ptext)
+			elif len(ptext) > 5: # Add to description string
+				desc.append(check_string(ptext))
 
-		desc = ''.join(desc)
+		desc = ' '.join(desc)
 		if (req_skills == [] and pref_skills == []) or desc == "":
 			return None
 	except (IndexError, etree.XMLSyntaxError):
@@ -88,8 +85,8 @@ def process(file,cnt,SKL_map,JOB_postings,ARR_names):
 	JOBPOSTING = '{title:\"'+title+'\",company_name:\"'+company_name+'\",'
 	JOBPOSTING += 'job_category_id: '+get_category_id(category)+','
 	JOBPOSTING += 'location:\"'+location+'\", link: \"'+ link +'\",'
-	JOBPOSTING += '' if desc == "" or "<" in desc else "description: \""+desc+"\""
-	JOBPOSTING += '' if closing == "" else ",close_date: \"" + closing + "\""
+	JOBPOSTING += 'description: \"'+desc+'\",'
+	JOBPOSTING += '' if closing == "" else "close_date: \""+closing+"\""
 	JOBPOSTING += '}'
 
 	for j in JOB_postings:
@@ -132,8 +129,18 @@ def add_skills(skill_str,arr):
 
 def check_string(string):
 	string = string.strip().replace("\"", "")
+
+	if "\n\n\n" in string:
+		string = string.replace("\n\n\n", "\n")
+
 	if "\n\n" in string:
 		string = string.replace("\n\n", "\n")
+
+	if "\r\n" in string:
+		string = string.replace("\r\n","\n")
+
+	if "\xa0" in string:
+		string = string.replace("\xa0"," ")
 
 	if string.endswith('\\') or string.endswith(';'):
 		return string[:-1]
@@ -292,6 +299,7 @@ skills_string = stringifyList(array_names[3]+" = Skill.create([",SKILLS,",\n")
 jobskills_string = stringifyList(array_names[4]+" = JobPostingSkill.create([",JOBPOSTINGSKILLS,",\n")
 
 print("Writing to file..")
+
 file.write(postings_string+"\n\n")
 file.write(skills_string+"\n\n")
 file.write(jobskills_string+"\n\n")

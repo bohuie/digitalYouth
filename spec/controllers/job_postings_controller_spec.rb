@@ -143,6 +143,7 @@ RSpec.describe JobPostingsController, type: :controller do
 			  title: job_posting.title,
 			  location: job_posting.location,
 			  job_category_id: 10,
+			  job_type: job_posting.job_type,
 			  pay_range: job_posting.pay_range,
 			  link: job_posting.link,
 			  posted_by: job_posting.posted_by,
@@ -189,6 +190,30 @@ RSpec.describe JobPostingsController, type: :controller do
 
 			it "redirects back if there are no skills" do
 				job_posting_attr["job_posting_skills_attributes"] = {}
+				post :create, job_posting: job_posting_attr
+				expect(response).to redirect_to(request.env["HTTP_REFERER"])
+			end
+		end
+
+		context "user is logged in and is an employer and not all required fields are filled correctly" do
+			before(:each) do
+				sign_in employer
+			end
+			it "redirects back if location has too long of province code" do
+				job_posting_attr[:location] = "hello, this"
+				post :create, job_posting: job_posting_attr
+				expect(response).to redirect_to(request.env["HTTP_REFERER"])
+			end
+
+			it "redirects back if location doesn't contain the province code" do
+				job_posting_attr[:location] = "hello"
+				post :create, job_posting: job_posting_attr
+				expect(response).to redirect_to(request.env["HTTP_REFERER"])
+			end
+
+			it "redirects back if close date is before open date" do
+				job_posting_attr[:open_date] = Date.today
+				job_posting_attr[:close_date] = Date.today-7
 				post :create, job_posting: job_posting_attr
 				expect(response).to redirect_to(request.env["HTTP_REFERER"])
 			end
@@ -281,6 +306,7 @@ RSpec.describe JobPostingsController, type: :controller do
 			  title: "New Title",
 			  location: job_posting.location,
 			  job_category_id: 10,
+			  job_type: job_posting.job_type,
 			  pay_range: job_posting.pay_range,
 			  link: job_posting.link,
 			  posted_by: job_posting.posted_by,

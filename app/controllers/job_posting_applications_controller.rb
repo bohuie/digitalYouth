@@ -51,15 +51,7 @@ class JobPostingApplicationsController < ApplicationController
 	end
 
 	def update # Set the status to the value matching the parameter
-		case params[:status] 
-			when "Rejected"
-				status = -1
-			when "Considering"
-				status = 1
-			when "Accepted"
-				status = 2
-		end
-		save = @job_posting_application.update(status: status)
+		save = @job_posting_application.update(status: JobPostingApplication.get_status_int(params[:status]))
 		if save #Create notification for user
 			@job_posting_application.create_activity :update, owner: @job_posting_application.applicant, parameters: {status: status}
 			redirect_to job_posting_applications_path, flash: {success: "Updated Application Status!"}

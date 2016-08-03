@@ -112,6 +112,7 @@ FactoryGirl.define do
     pay_range "30¢/hr-40¢/hr"
     link "www.google.ca"
     posted_by "Testing"
+    job_type 0
     description "Handling SM sites"
     open_date Date.new(2016,1,1)
     close_date Date.today
@@ -123,6 +124,7 @@ FactoryGirl.define do
     pay_range "$30/hr-$40/hr"
     link "www.google.com"
     posted_by "Testing"
+    job_type 1
     description "Handling SM Teams"
     open_date Date.new(2016,2,1)
     close_date Date.new(2016,3,1)

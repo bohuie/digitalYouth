@@ -20,6 +20,18 @@ def extract_data(file):
 		location = loc_arr[0] + "," + loc_arr[1].upper() #Converts location string to city, Province code
 		link = tree.xpath('//*[@class="page-link"]/@href')[0]
 		category = tree.xpath('//a[@class="job-view-header-link link"]')[0].text.title()
+		job_type_elem = tree.xpath('//section[@class="job-summary"]//li[./span[@class="sidebar-content-heading job-position-label"]]//span[@class="sidebar-sub-item"]')
+		
+		#--- Extract job type --- 
+		if len(job_type_elem) > 0:
+			if len(job_type_elem) > 1:
+				job_type = job_type_elem[1].text
+			else:
+				job_type = job_type_elem[0].text
+		else:
+			job_type = None
+			
+		
 		closing = ""
 		req_skills = []
 		pref_skills = []
@@ -64,7 +76,7 @@ def extract_data(file):
 	closing = check_string(closing)
 	desc = check_string(desc)
 	category = check_string(category)
-	return [category,closing,company_name,desc,link,location,logo,title,req_skills,pref_skills]
+	return [category,closing,company_name,desc,link,location,logo,title,req_skills,pref_skills,job_type]
 
 # Processes data, formatting for ruby
 def process(file,cnt,SKL_map,JOB_postings,ARR_names):
@@ -81,10 +93,19 @@ def process(file,cnt,SKL_map,JOB_postings,ARR_names):
 	title = data[7]
 	req_skills = data[8]
 	pref_skills = data[9]
+	job_type = data[10]
+
+
+	job_dict = {"full time":0,"part time":1,"contract":2,"casual":3,
+			 "summer positions":4,"graduate year recruitment program":5,
+			 "field placement/work practicum":6,"internship":7,"volunteer":8}
+	if job_type is not None:
+		job_type = job_dict[job_type.lower()]
 
 	JOBPOSTING = '{title:\"'+title+'\",company_name:\"'+company_name+'\",'
 	JOBPOSTING += 'job_category_id: '+get_category_id(category)+','
 	JOBPOSTING += 'location:\"'+location+'\", link: \"'+ link +'\",'
+	JOBPOSTING += '' if job_type == None else "job_type: "+str(job_type)+"," 
 	JOBPOSTING += 'description: \"'+desc+'\",'
 	JOBPOSTING += '' if closing == "" else "close_date: \""+closing+"\""
 	JOBPOSTING += '}'
@@ -199,11 +220,11 @@ def get_category_id(wCat):
 					52:"10",53:"11",54:"12",55:"13",56:"14",61:"15",62:"16",71:"17",72:"18",81:"19",92:"20"}
 	return ORDER_switch.get(NAICS_switch.get(wCat.lower()),"nil")
 
-def stringifyList(start_str,lst,btwn):
+def stringifyList(start_str,lst,btwn,end):
 	rtn_str = str(start_str)
 	for item in lst:
 		rtn_str += str(item) + str(btwn)
-	rtn_str = rtn_str[:-1] + "])"
+	rtn_str = rtn_str[:-1] + end
 	return rtn_str
 
 def startProgress(title):
@@ -294,14 +315,18 @@ for cdir in catdirs:
 
 
 print("Concatenating data..")
-postings_string = stringifyList(array_names[2]+" = JobPosting.create([",JOBPOSTINGS,",\n")
-skills_string = stringifyList(array_names[3]+" = Skill.create([",SKILLS,",\n")
-jobskills_string = stringifyList(array_names[4]+" = JobPostingSkill.create([",JOBPOSTINGSKILLS,",\n")
+postings_string = stringifyList(array_names[2]+" = JobPosting.create([", JOBPOSTINGS, ",\n", "])")
+skills_string = stringifyList("arr = [", SKILLS, ",\n", "]\n")
+jobskills_string = stringifyList(array_names[4]+" = JobPostingSkill.create([", JOBPOSTINGSKILLS, ",\n", "])")
 
 print("Writing to file..")
 
 file.write(postings_string+"\n\n")
-file.write(skills_string+"\n\n")
+file.write(array_names[3]+" = []\n")
+file.write(skills_string+"\n")
+file.write("arr.each do |a|\n")
+file.write("   "+array_names[3]+".push(Skill.find_or_create_by(a))\nend\n\n")
+
 file.write(jobskills_string+"\n\n")
 
 print("Write complete, Created:")

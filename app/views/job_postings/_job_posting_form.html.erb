@@ -1,15 +1,29 @@
 <%= simple_form_for @job_posting do |f| %>
 	<%= f.input :title, required: true %>
 	<%= f.input :location, required: true, label: "Location (City, Province Code)"%>
-	<% if !@job_posting.job_category.nil? %>
-		<%= f.input :job_category_id, required: true, label: "Category", collection: @categories, selected: @job_posting.job_category.id %>
-	<% else %>
-		<%= f.input :job_category_id, required: true, label: "Category", collection: @categories, prompt: "Select Category" %>
-	<% end %>
+
+	<div class="row">
+		<div class="col-md-6">
+			<% if !@job_posting.job_category.nil? %>
+				<%= f.input :job_category_id, required: true, label: "Category", collection: @categories, selected: @job_posting.job_category.id %>
+			<% else %>
+				<%= f.input :job_category_id, required: true, label: "Category", collection: @categories, prompt: "Select Category" %>
+			<% end %>
+		</div>
+
+		<div class="col-md-6">
+			<% if !@job_posting.job_type.nil? %>
+				<%= f.input :job_type, required: true, label: "Type", collection: @job_types, selected: @job_posting.job_type %>
+			<% else %>
+				<%= f.input :job_type, required: true, label: "Type", collection: @job_types, prompt: "Select Type" %>
+			<% end %>
+		</div>
+	</div>
+
 	<%= f.input :pay_range %>
 	<%= f.input :link %>
 	<%= f.input :posted_by %>
-	<%= f.input :description, required: true, as: :text %>
+	<%= f.input :description, required: true, as: :text, input_html: {rows: "4"}%>
 	<div class="row">
 		<div class="col-md-6"><%= f.input :open_date, as: :string, required: true, input_html: {type: :date, id: "open-date"} %></div>
 		<div class="col-md-6"><%= f.input :close_date, as: :string, required: true, input_html: {type: :date, id: "close-date"} %></div>

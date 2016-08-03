@@ -2,9 +2,9 @@ class JobPostingsController < ApplicationController
 
 	before_action :authenticate_user!, except: [:show, :index]
 	before_action :check_employer, except: [:show, :index,:refresh,:refresh_process]
-	before_action :check_admin, only: [:refresh,:refresh_process]
-	before_action :job_owner, only: [:edit, :update, :destroy]
-	before_action :check_fields, only: [:create, :update]
+	before_action :check_admin	 , only: [:refresh,:refresh_process]
+	before_action :job_owner	 , only: [:edit, :update, :destroy]
+	before_action :check_fields	 , only: [:create, :update]
 
 	def index # Lists all job_postings a company has.
 		if user_signed_in?
@@ -16,7 +16,7 @@ class JobPostingsController < ApplicationController
 	
 	def show # Shows a specific job posting and its skills
 		@job_posting = JobPosting.includes(:user,:job_category).find(params[:id])
-		@job_posting.company_name = @job_posting.user.company_name if @job_posting.company_name.nil?
+		@company_name = @job_posting.company_name.nil? ? @job_posting.user.company_name : @job_posting.company_name
 		@req_skills  = JobPostingSkill.where(job_posting_id:params[:id], importance: 2).includes(:skill)
 		@pref_skills = JobPostingSkill.where(job_posting_id:params[:id], importance: 1).includes(:skill)
 		add_view(@job_posting)
@@ -29,6 +29,7 @@ class JobPostingsController < ApplicationController
 		@questions = Question.get_label_map
 		@skills = Skill.all
 		@categories = JobCategory.all
+		@job_types = JobPosting.get_types_collection
 	end
 
 	def create # Creates a new job posting and skills
@@ -47,6 +48,7 @@ class JobPostingsController < ApplicationController
 		@questions = Question.get_label_map
 		@skills = Skill.all
 		@categories = JobCategory.all
+		@job_types = JobPosting.get_types_collection
 	end
 
 	def update # Updates the job posting
@@ -68,10 +70,10 @@ class JobPostingsController < ApplicationController
 	end
 
 	def refresh
-		# Page to display the upload form
+		# Page to display the upload form for auto populating job postings
 	end
 
-	def refresh_process	# Takes in a .rb file and runs the file to refresh the job postings
+	def refresh_process	# Takes in a .rb file and runs the file to refresh the auto populated job postings
 		if !params[:job_posting_seeds].nil? and !params[:job_posting_seeds].tempfile.nil?
 			puts "Deleting data.."
 			ActiveRecord::Base.transaction do
@@ -83,7 +85,6 @@ class JobPostingsController < ApplicationController
 				end
 			end
 			puts "Inserting data.."
-			# NEED TO CHANGE THE SKILLS TO FIND OR CREATE FOR AN ARRAY
 			ActiveRecord::Base.transaction do
 				silence_stream(STDOUT) do
 					load params[:job_posting_seeds].tempfile
@@ -98,7 +99,7 @@ class JobPostingsController < ApplicationController
 
 private
 	def job_posting_params # Restricts parameters
-		params.require(:job_posting).permit(:title, :location, :pay_range, :link, :job_category_id, :posted_by, :description, :open_date, :close_date, :user_id)
+		params.require(:job_posting).permit(:title, :location, :pay_range, :link, :job_category_id, :posted_by, :description, :open_date, :close_date, :user_id, :job_type)
 	end
 
 	def check_employer # Checks current user is an employer
@@ -136,10 +137,9 @@ private
 
 	def check_fields # Performs rigorous checks to ensure that the job posting is valid
 		args = params[:job_posting]
-		if args[:title].blank? || args[:location].blank? || args[:description].blank? || args[:open_date].blank? || args[:close_date].blank? || args[:job_category_id].blank?
+		if args[:title].blank? || args[:location].blank? || args[:description].blank? || args[:open_date].blank? || args[:close_date].blank? || args[:job_category_id].blank? || args[:job_type].blank?
 			flash[:warning] = "Missing required fields"
-			redir = true
-		elsif args[:location].split(',').length != 2 || args[:location].split(',')[1].strip.length > 2
+		elsif args[:location].split(',').length != 2 || args[:location].split(',')[1].strip.length != 2
 			flash[:warning] = "Location must in the form: City , Province Code"
 		elsif args[:open_date] > args[:close_date]
 			flash[:warning] ="Open date must be before close date"
@@ -157,6 +157,6 @@ private
 			flash[:warning] = "You must enter all skill fields." if missing
 			flash[:warning] = "You must enter some skills associated with this job." if destroy
 		end
-		redirect_back_or job_postings_path if redir || missing || destroy
+		redirect_back_or job_postings_path if !flash[:warning].blank?
 	end
 end

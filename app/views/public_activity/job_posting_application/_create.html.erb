@@ -1,3 +1,14 @@
-j = activity.trackable %>
-<img src="<%=asset_path('avatar-placeholder.svg')%>" alt="User Icon" height="30" width="30"> 
-<%="#{j.applicant.first_name} #{j.applicant.last_name}"%> applied for your <%=j.job_posting.title%> posting.
+<%j = activity.trackable %>
+<div>
+	<%= image_tag j.applicant.image.url, alt:"User Icon", class:"notif-image" %>
+	
+	<%="#{j.applicant.first_name} #{j.applicant.last_name}"%> applied for your 
+	<% if j.job_posting.title.length < 40 %>
+		<%=j.job_posting.title%>
+	<% else %>
+		<%=j.job_posting.title.first(40)%><i>...</i>
+	<% end %>
+	 posting.<br>
+	<%= local_time_ago(activity.created_at) %>
+</div>
+<div style="clear:both;"></div>

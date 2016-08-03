@@ -7,6 +7,10 @@ class JobPosting < ActiveRecord::Base
 	belongs_to :user
 	accepts_nested_attributes_for :job_posting_skills, reject_if: lambda {|a| a[:question_id].blank?}, allow_destroy: true
 
+	@@job_types = {"Full Time"=>0,"Part Time"=>1,"Contract"=>2,"Casual"=>3,
+			 "Summer Positions"=>4,"Graduate Year Recruitment Program"=>5,
+			 "Field Placement/Work Practicum"=>6,"Internship"=>7,"Volunteer"=>8}
+
 	def process_skills(hash) # Creates and Updates job posting skills, creating new skills when needed.
 		hash.each do |m|
 			id = m[1]["id"]
@@ -40,6 +44,14 @@ class JobPosting < ActiveRecord::Base
 			return true if self.close_date < Date.today
 		end
 		return false
+	end
+
+	def get_type_string # Returns a string representation of the job type
+		return @@job_types.key(self.job_type)
+	end
+
+	def self.get_types_collection
+		return @@job_types
 	end
 
 	def compare_skills(user)

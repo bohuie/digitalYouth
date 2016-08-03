@@ -3,7 +3,9 @@
 	<h4>These are your current job applications.</h4>
 	<p> The status is displayed beside the posting title.<br>
 		The company which owns the job posting will update the status of the posting and it will be shown here.<br>
-		You have the option to delete your application but you will not be able to reapply.
+		You have the option to delete your application but <b>you will not be able to reapply.</b><br>
+		Feel free to delete your application if you are rejected but keep in mind that it is possible for a 
+		company to change their mind and "unreject" your application.
 	</p>
 	<%@job_posting_applications.each do |j|%>
 		<% if j.status != -2 %>
@@ -37,7 +39,7 @@
 				<div class="col-md-1"></div>
 				<div class="col-md-4">
 					<%= link_to "#{j.applicant.first_name} #{j.applicant.last_name}", job_posting_application_path(j) %>
-					<small><span class=" label label-<%=j.get_bootstrap_status%>"><%="#{j.get_status_string}"%></span></small>
+					<small class="job-application-content"><span class=" label label-<%=j.get_bootstrap_status%>"><%="#{j.get_status_string}"%></span></small>
 				</div>
 			</div>
 		<% end %>
@@ -46,4 +48,3 @@
 <% if cnt == 0 %>
 	<p>You have no job applications</p>
 <% end %>
-

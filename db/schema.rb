@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(version: 20160721192354) do
     t.string   "pay_range"
     t.string   "link"
     t.string   "posted_by"
+    t.integer  "job_type"
     t.text     "description"
     t.date     "open_date"
     t.date     "close_date"

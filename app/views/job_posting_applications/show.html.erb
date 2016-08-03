@@ -1,6 +1,5 @@
 <% if current_user.has_role? :employee %>
-	<% string = %>
-	<h3><%= link_to raw("#{@job_posting.title} (<i>#{@job_posting.user.company_name}</i>)"), job_posting_path(@job_posting) %>
+	<h3 class="job-application-content"><%= link_to raw("#{@job_posting.title} (<i>#{@job_posting.user.company_name}</i>)"), job_posting_path(@job_posting) %>
 		<span class=" label label-<%=@job_posting_application.get_bootstrap_status%>"><%="#{@job_posting_application.get_status_string}"%></span>
 	</h3>
 	<% if @job_posting_application.status == -1 %>
@@ -65,11 +64,12 @@
 		</p>
 	</div>
 
-	<div>
-		<h3><span class=" label label-<%=@job_posting_application.get_bootstrap_status%>"><%="#{@job_posting_application.get_status_string}"%></span></h3><br>
+	<div>		
+		<h3 class="job-application-content"><span class=" label label-<%=@job_posting_application.get_bootstrap_status%>"><%="#{@job_posting_application.get_status_string}"%></span></h3>
+		<%= raw("<i>You should contact this applicant and continue the hiring process.</i><br>") if @job_posting_application.status == 2%>
+		<br>
 		<%= link_to "Reject", update_job_posting_application_path(@job_posting_application,status:"Rejected"), class: "btn btn-danger", method: "patch" %>
 		<%= link_to "Consider", update_job_posting_application_path(@job_posting_application, status:"Considering"), class: "btn btn-info", method: "patch" %>
 		<%= link_to "Accept", update_job_posting_application_path(@job_posting_application, status:"Accepted"), class: "btn btn-success", method: "patch" %>
 	</div>
 <% end %>
-

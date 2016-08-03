@@ -29,11 +29,15 @@ def make_files(job_links,i,j,k,l):
 		page = make_connection("http://www.workopolis.com/" + j_link)
 		tree = html.fromstring(page.content)
 		section = tree.xpath('//section[@class="main-content job-view-main-content js-analyticsJobView"]')
+		side_bar = tree.xpath('//section[@class="sidebar-block sidebar-clean"]')
 		#page_cat = tree.xpath('//a[@class="job-view-header-link link"]')
 		#if len(page_cat) > 0: Results are too restrictive if we cut all other categories (Too many miscategorized)
 		#	page_cat = etree.tostring(page_cat[0]).decode("utf-8")
 		if len(section) > 0: #and c_link.text in page_cat:
 			page_str = etree.tostring(section[0]).decode("utf-8")
+			page_str += etree.tostring(side_bar[0]).decode("utf-8")
+			page_str = page_str.replace("&#13;","")
+
 			if len(page_str) > 0:
 				file3.write("http://www.workopolis.com" + j_link + "\n")
 				file4 = open(str(i) +".html", 'w')
@@ -49,6 +53,13 @@ def make_files(job_links,i,j,k,l):
 			k = k + 1 # Increment empty count
 	return [i,j,k,l]
 
+def progStr(amount,total):
+	prog = round((amount/total)*100)
+	if prog == 0:
+		return '   '
+	if prog < 10:
+		return ' '+str(prog)+'%'
+	return str(prog)+'%'
 # ---------------------------------------
 path = os.path.realpath(__file__).strip(__file__)
 make_dir(path, "data")
@@ -87,6 +98,7 @@ page = make_connection(c_link.xpath('@href')[0])
 tree = html.fromstring(page.content)
 sub_cat_links = tree.xpath('//ul[@class="jobTitleList"]/li/a')
 
+progress = 0
 l = 0 # Category count
 empty = 0 # Category empty count
 for sc_link in sub_cat_links:
@@ -94,7 +106,7 @@ for sc_link in sub_cat_links:
 		make_dir(cat_path, sc_link.text)
 		file2.write(sc_link.text + ': ')
 		sub_path = cat_path + "/" + sc_link.text
-		print(" SubCategory LVL: " + sc_link.text)
+		print(progStr(progress,len(sub_cat_links))+" SubCategory LVL: " + sc_link.text)
 		
 	if sc_link.text == "Select Province":
 		page = make_connection(sc_link.xpath('@href')[0])
@@ -103,17 +115,19 @@ for sc_link in sub_cat_links:
 		i = 0 # count per sub-category
 		file3 = open("index.txt", 'w')
 
+		subcat_progress = 0
 		for p_link in prov_links:
 			page = make_connection(p_link.xpath('@href')[0])
 			tree = html.fromstring(page.content)
 			city_links = tree.xpath('//ul[@class="citiesList"]/li/a')
-			print("  Province LVL: " + p_link.text)
-				
+			print(progStr(subcat_progress,len(prov_links))+"  Province LVL: " + p_link.text)
+			
+			city_progress = 0
 			for cl_link in city_links:
 				page = make_connection(cl_link.xpath('@href')[0])
 				tree = html.fromstring(page.content)
 				job_links = tree.xpath('//div[@id="divJobSearchResult"]/article/a/@href')
-				print("   City LVL: " + cl_link.text)
+				print(progStr(city_progress,len(city_links))+"   City LVL: " + cl_link.text)
 
 				j = 0 #count per city
 				k = 0 #count empty per city
@@ -125,7 +139,7 @@ for sc_link in sub_cat_links:
 
 				next_pg = tree.xpath('//a[@class="bjPageNumLink sr-paginator-next"]/@href')
 				if len(next_pg) > 0:
-					print("Scraping Paginated results")
+					print("       Scraping Paginated results")
 					page_cnt = 1
 					while len(next_pg) > 0 and page_cnt < pg_lvl:
 						page = make_connection(next_pg[0])
@@ -138,13 +152,16 @@ for sc_link in sub_cat_links:
 						l = rtns[3]
 						next_pg = tree.xpath('//a[@class="bjPageNumLink sr-paginator-next"]/@href')
 						page_cnt += 1
-						print("PG"+str(page_cnt))
+						print("        PG"+str(page_cnt))
 
-				print("    Scraped: " + str(j) + " | Empty: " + str(k) + " | Total: " + str(j + k))
+				print("      Scraped: " + str(j) + " | Empty: " + str(k) + " | Total: " + str(j + k))
 				empty = empty + k
+				city_progress+=1
+			subcat_progress += 1
 
 		file3.close()
 		file2.write(str(i) + '\n')
+	progress += 1
 
 file2.write('\n--------------------------------------\n')
 file2.write(str(l) + " Jobs Scraped.\n")

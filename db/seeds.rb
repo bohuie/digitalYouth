@@ -15,7 +15,8 @@ Dir[File.join(Rails.root, 'db', 'seeds', '*.rb')].sort.each { |seed| load seed }
 puts "Seeding Test Data"
 
 #--- Users for testing ---
-user1 = User.new(first_name: 'John', last_name: 'Doe', email: 'john@doe.com', password: 'password', password_confirmation: 'password', answered_surveys:[true,true,true,true,true,true,true,true,false,true,true,true])
+user1 = User.new(first_name: 'John', last_name: 'Doe', email: 'john@doe.com', password: 'password', password_confirmation: 'password',
+				 answered_surveys:[true,true,true,true,true,true,true,true,false,true,true,true])
 user1.add_role :employee
 user1.skip_confirmation!
 user1.save
@@ -26,7 +27,7 @@ user2.skip_confirmation!
 user2.save
 
 user3 = User.new(first_name: 'Foo', last_name: 'Bar', email: 'foo@bar.com', password: 'password', password_confirmation: 'password', 
-	company_name: 'Google', company_address: '123 Fake Street', company_city: 'Kelowna', company_province: 'BC', company_postal_code: 'V1V 1V1')
+		company_name: 'Google', company_address: '123 Fake Street', company_city: 'Kelowna', company_province: 'BC', company_postal_code: 'V1V 1V1')
 user3.add_role :employer
 user3.skip_confirmation!
 user3.save
@@ -49,11 +50,11 @@ reference2 = Reference.create(first_name: 'Bernie', last_name: 'Smith', email: '
 			 position: "Apple QC Specialist", phone_number:"(250)555-5050", reference_body: "They were the best.", user_id: user2.id)
 
 #--- JobPostings for testing ---
-jobposting1 = JobPosting.create(title: 'Social Media Manager', location: "Kelowna, BC", pay_range: "30¢/hr-40¢/hr", link:"www.google.ca", posted_by:"Seed File",
+jobposting1 = JobPosting.create(title: 'Social Media Manager', location: "Kelowna, BC", pay_range: "30¢/hr-40¢/hr", link:"www.google.ca", posted_by:"Seed File", job_type: 1,
 			  description: 'Handling our Facebook and Twitter account, posting messages, and responding to clients.', open_date: '2016-01-01', close_date: '2016-04-01',
 			  job_category_id: 12, user_id: user3.id)
 
-jobposting2 = JobPosting.create(title: 'Social Media Expert', location: "Kelowna, BC", pay_range: "#$30-$40/hr", link:"www.google.ca", posted_by:"Seed File",
+jobposting2 = JobPosting.create(title: 'Social Media Expert', location: "Kelowna, BC", pay_range: "#$30-$40/hr", link:"www.google.ca", posted_by:"Seed File", job_type: 0,
 			  description: 'Handling our Facebook and Twitter account, posting messages, and responding to clients.', open_date: Date.today-7, close_date: Date.today,
 			  job_category_id: 12, user_id: user3.id)
 
@@ -102,5 +103,5 @@ ProjectSkill.create(project_id: project1.id, skill_id: skill2.id)
 
 #----------- Load Job Posting data from scraping and processing ---------------------
 if !Rails.env.test?
-	Dir[File.join(Rails.root, 'db', 'scraping', '*.rb')].sort.each { |seed| load seed }
+	#Dir[File.join(Rails.root, 'db', 'scraping', '*.rb')].sort.each { |seed| load seed }
 end

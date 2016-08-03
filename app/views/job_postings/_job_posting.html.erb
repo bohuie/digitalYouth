@@ -3,16 +3,17 @@
 <% end %>
 
 <h3><%= @job_posting.title %></h3>
-<h4><%= @job_posting.company_name %></h4>
+<h4><%= @company_name %></h4>
 <p> <%= @job_posting.location %><br>
 	<%= @job_posting.job_category.name %><br>
 	<%= raw("Pay Range: #{@job_posting.pay_range}<br>") if !@job_posting.pay_range.blank? %>
 	<%= raw("<a href=\"http://#{@job_posting.link}\">#{@job_posting.link}</a><br>") if !@job_posting.link.blank? %>
 	<%= raw("Posted By: #{@job_posting.posted_by}<br>") if !@job_posting.posted_by.blank? %>
 	Posted On: <%= local_date(@job_posting.created_at)%>
+	<%= raw("<br>"+@job_posting.get_type_string) if !@job_posting.job_type.nil? %>
 </p>
 
-<p><%= @job_posting.description %></p>
+<br><p><%= @job_posting.description %></p><br>
 
 <% if !@req_skills.empty? %>
 	<h4> Required Skills </h4>

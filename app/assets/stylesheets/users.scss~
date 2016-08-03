@@ -41,14 +41,14 @@
 }
 #ref
 {
-	border: 2px solid red;
+	//border: 2px solid red;
 	width: 100%;
+	overflow: hidden;
 }
 #refImage
 {
-	height: 250px;
-	width: 250px;
-	margin-top: -4%;
+	height: 150px;
+	width: 150px;
 	//border: 2px solid blue;
 }
 #refName
@@ -60,6 +60,12 @@
 {
 	margin-left: 2%;
 }
+//Aligns all items for Right side of the displayed reference
+.refRight
+{
+	margin-left: 70%;
+	margin-top: 4%;
+}
 //Aligns all items for centre of the displayed reference
 .refCentre
 {
@@ -69,4 +75,41 @@
 .contactElm
 {
 	margin-left: 6%;
+}
+#contact
+{
+	width: 60%;
+	height: 10%;
+	float: right;
+}
+#relEmployment
+{
+	float: right;
+	overflow: hidden;
+	width: 60%;
+}
+#relProjects
+{
+	float: right;
+	overflow: hidden;
+	width: 60%;
+}
+#left
+{
+	//border: 2px solid blue;
+	width: 25%;
+	float: left;
+}
+#centre
+{
+	//border: 2px solid yellow;
+	width: 50%;
+	overflow: hidden;
+	float: left;
+}
+#right
+{
+	border: 2px solid purple;
+	width: 25%;
+	overflow: hidden;
 }

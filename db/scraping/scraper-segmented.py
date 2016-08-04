@@ -26,31 +26,34 @@ def make_dir(p, new_dir):
 
 def make_files(job_links,i,j,k,l):
 	for j_link in job_links:
-		page = make_connection("http://www.workopolis.com/" + j_link)
-		tree = html.fromstring(page.content)
-		section = tree.xpath('//section[@class="main-content job-view-main-content js-analyticsJobView"]')
-		side_bar = tree.xpath('//section[@class="sidebar-block sidebar-clean"]')
-		#page_cat = tree.xpath('//a[@class="job-view-header-link link"]')
-		#if len(page_cat) > 0: Results are too restrictive if we cut all other categories (Too many miscategorized)
-		#	page_cat = etree.tostring(page_cat[0]).decode("utf-8")
-		if len(section) > 0: #and c_link.text in page_cat:
-			page_str = etree.tostring(section[0]).decode("utf-8")
-			page_str += etree.tostring(side_bar[0]).decode("utf-8")
-			page_str = page_str.replace("&#13;","")
+		try:
+			page = make_connection("http://www.workopolis.com/" + j_link)
+			tree = html.fromstring(page.content)
+			section = tree.xpath('//section[@class="main-content job-view-main-content js-analyticsJobView"]')
+			side_bar = tree.xpath('//section[@class="sidebar-block sidebar-clean"]')
+			#page_cat = tree.xpath('//a[@class="job-view-header-link link"]')
+			#if len(page_cat) > 0: Results are too restrictive if we cut all other categories (Too many miscategorized)
+			#	page_cat = etree.tostring(page_cat[0]).decode("utf-8")
+			if len(section) > 0: #and c_link.text in page_cat:
+				page_str = etree.tostring(section[0]).decode("utf-8")
+				page_str += etree.tostring(side_bar[0]).decode("utf-8")
+				page_str = page_str.replace("&#13;","")
 
-			if len(page_str) > 0:
-				file3.write("http://www.workopolis.com" + j_link + "\n")
-				file4 = open(str(i) +".html", 'w')
-				file4.write("<a class=\"page-link\" href=\"www.workopolis.com"+j_link+"\"></a>\n")
-				file4.write(page_str)
-				file4.close()
-				i = i + 1 # Increment sub category count
-				j = j + 1 # Increment city count
-				l = l + 1 # Increment category count
+				if len(page_str) > 0:
+					file3.write("http://www.workopolis.com" + j_link + "\n")
+					file4 = open(str(i) +".html", 'w')
+					file4.write("<a class=\"page-link\" href=\"www.workopolis.com"+j_link+"\"></a>\n")
+					file4.write(page_str)
+					file4.close()
+					i += 1 # Increment sub category count
+					j += 1 # Increment city count
+					l += 1 # Increment category count
+				else:
+					k += 1 # Increment empty count
 			else:
-				k = k + 1 # Increment empty count
-		else:
-			k = k + 1 # Increment empty count
+				k += 1 # Increment empty count
+		except etree.XMLSyntaxError:
+			k += 1 # Increment empty count
 	return [i,j,k,l]
 
 def progStr(amount,total):

@@ -21,11 +21,8 @@ RSpec.describe JobPostingApplicationsController, type: :controller do
 		end
 
 		context "employee is logged in" do
-			before(:each) do
-				sign_in user
-			end
-
 			it "loads the job posting applications that aren't deleted" do
+				sign_in user
 				get :index
 				expect(assigns(:job_posting_applications)).to match_array(JobPostingApplication.where(applicant_id:user.id, status:-1..Float::INFINITY).order(status: :desc))
 			end
@@ -95,7 +92,7 @@ RSpec.describe JobPostingApplicationsController, type: :controller do
 			it "loads the application" do
 				sign_in user
 				get :show, id: job_posting_application.id 
-				expect(assigns(:job_posting_application)).to eq(JobPostingApplication.find(job_posting_application.id))
+				expect(assigns(:job_posting_application)).to eq(job_posting_application)
 			end
 		end
 
@@ -103,7 +100,9 @@ RSpec.describe JobPostingApplicationsController, type: :controller do
 			it "loads the application" do
 				sign_in employer
 				get :show, id: job_posting_application.id 
-				expect(assigns(:job_posting_application)).to eq(JobPostingApplication.find(job_posting_application.id))
+				expect(assigns(:job_posting_application)).to eq(job_posting_application)
+				expect(assigns(:job_posting)).to eq(job_posting_application.job_posting)
+				#Also loads skill match data
 			end
 		end
 	end

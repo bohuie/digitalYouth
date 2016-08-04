@@ -21,10 +21,12 @@ class JobPostingApplicationsController < ApplicationController
 
 	def show # Show the information of an application
 		@job_posting = @job_posting_application.job_posting
-		skills = @job_posting_application.job_posting.compare_skills(@job_posting_application.applicant)
-		@user_skill_matches = skills[:user_skill_matches]
-		@response_skill_matches = skills[:response_skill_matches]
-		@project_skill_matches = skills[:project_skill_matches]
+		if current_user.has_role? :employer 
+			skills = @job_posting.compare_skills(@job_posting_application.applicant)
+			@user_skill_matches = skills[:user_skill_matches]
+			@response_skill_matches = skills[:response_skill_matches]
+			@project_skill_matches = skills[:project_skill_matches]
+		end
 	end
 
 	def new # Displays the forum to create an application

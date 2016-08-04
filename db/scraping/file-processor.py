@@ -4,6 +4,7 @@ from lxml.html.clean import clean_html
 import nltk.data
 import requests
 import os
+import re
 import sys
 import time
 from lxml import etree
@@ -35,6 +36,8 @@ def extract_data(file):
 		closing = ""
 		req_skills = []
 		pref_skills = []
+		req_skills_raw = []
+		pref_skills_raw = []
 		desc = []
 
 		#--- Strings to filter by ---
@@ -45,17 +48,19 @@ def extract_data(file):
 
 		tags = tree.xpath('//section[@class="job-view-content-wrapper js-job-view-header-apply"]/*')
 		for p in tags:
-			ptext = "".join(p.itertext())
+			ptext = "\n ".join(p.itertext())
 			if any(substr in ptext.lower() for substr in benefits_strings) or any(substr in ptext.lower() for substr in roles_strings):
 				next
-			if any(substr in ptext.lower() for substr in skills_strings):
+			if any(substr in ptext.lower() for substr in skills_strings) and len(ptext) < 50:
 				sibling = get_silbing_ul(p.getnext())
 				if sibling is not None:
 					children = sibling.getchildren()
 					for c in children:
 						if any(substr in ptext.lower() for substr in prefer_strings):
+							pref_skills_raw.append(c.text)
 							pref_skills = add_skills(c.text,pref_skills)
 						else:
+							req_skills_raw.append(c.text)
 							req_skills = add_skills(c.text,req_skills)
 
 			elif "clos" in ptext.lower() and "date" in ptext.lower() and len(ptext) < 80:
@@ -64,7 +69,14 @@ def extract_data(file):
 			elif len(ptext) > 5: # Add to description string
 				desc.append(check_string(ptext))
 
-		desc = ' '.join(desc)
+		desc = '\n '.join(desc)
+		for r in req_skills_raw:
+			if r is not None:
+				desc = ireplace(r, "", desc)
+		for p in pref_skills_raw:
+			if p is not None:
+				desc = ireplace(p, "", desc)
+
 		if (req_skills == [] and pref_skills == []) or desc == "":
 			return None
 	except (IndexError, etree.XMLSyntaxError):
@@ -94,7 +106,6 @@ def process(file,cnt,SKL_map,JOB_postings,ARR_names):
 	req_skills = data[8]
 	pref_skills = data[9]
 	job_type = data[10]
-
 
 	job_dict = {"full time":0,"part time":1,"contract":2,"casual":3,
 			 "summer positions":4,"graduate year recruitment program":5,
@@ -133,6 +144,9 @@ def process(file,cnt,SKL_map,JOB_postings,ARR_names):
 
 	return [JOBPOSTING,SKILLS,JOBPOSTINGSKILLS,SKL_map]
 
+def ireplace(old, repl, text):
+    return re.sub('(?i)'+re.escape(old), lambda m: repl, text)
+
 def add_skills(skill_str,arr):
 	tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
 	if skill_str is not None:
@@ -151,17 +165,13 @@ def add_skills(skill_str,arr):
 def check_string(string):
 	string = string.strip().replace("\"", "")
 
-	if "\n\n\n" in string:
-		string = string.replace("\n\n\n", "\n")
+	string = string.replace("\r\n","\n")
+	string = string.replace("\n ", "\n")
 
-	if "\n\n" in string:
-		string = string.replace("\n\n", "\n")
+	string = string.replace("\n\n\n", "\n")
+	string = string.replace("\n\n", "\n")
 
-	if "\r\n" in string:
-		string = string.replace("\r\n","\n")
-
-	if "\xa0" in string:
-		string = string.replace("\xa0"," ")
+	string = string.replace("\xa0"," ")
 
 	if string.endswith('\\') or string.endswith(';'):
 		return string[:-1]

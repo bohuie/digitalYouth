@@ -63,7 +63,6 @@ jobpostingapplication = JobPostingApplication.create(message: "This is a message
 jobpostingapplication = JobPostingApplication.create(message: "This be a message", job_posting_id: jobposting1.id, applicant_id: user2.id, company_id: user3.id, status:-2)
 
 
-
 #--- Projects for testing ---
 project1 = user1.projects.create(title: 'No Image project', description: 'some description')
 

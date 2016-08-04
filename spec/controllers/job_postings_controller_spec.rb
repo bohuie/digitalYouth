@@ -17,26 +17,18 @@ RSpec.describe JobPostingsController, type: :controller do
 			employer2.job_postings << job_posting2
 		end
 		
-		context "employer is logged in" do
-			before(:each) do
-				sign_in employer
-			end	
-
-			it "loads the users job posting" do
-				get :index
+		context "user param is present" do
+			it "loads the 'user's job postings" do
+				get :index, user: employer.id
 				expect(assigns(:job_postings)).to match_array(JobPosting.where(user_id: employer))
-			end
-
-			it "loads another users job postings if params[:user] is present" do
-				get :index, user: employer2.id
-				expect(assigns(:job_postings)).to match_array(JobPosting.where(user_id: employer2))
+				expect(assigns(:company)).to eq(employer)
 			end
 		end
 
-		context "an employer is not logged in" do
-			it "loads another users job postings if params[:user] is present" do
-				get :index, user: employer.id
-				expect(assigns(:job_postings)).to match_array(JobPosting.where(user_id: employer))
+		context "user param is not present" do
+			it "loads all job postings" do
+				get :index
+				expect(assigns(:job_postings)).to match_array(JobPosting.all.order(views: :desc).limit(25))
 			end
 		end
 	end
@@ -69,18 +61,9 @@ RSpec.describe JobPostingsController, type: :controller do
 
 			it "loads the job posting" do
 				expect(assigns(:job_posting)).to eq(JobPosting.find(job_posting.id))
-			end
-
-			it "sets the company name to the associated user company name if it is nil" do
-				expect(assigns(:job_posting).company_name).to eq(employer.company_name)
-			end
-
-			it "loads the required skills" do
-				expect(assigns(:req_skills)).to match_array(JobPostingSkill.where(job_posting_id: job_posting.id, importance: 2))
-			end
-
-			it "loads the preferred skills" do
-				expect(assigns(:pref_skills)).to match_array(JobPostingSkill.where(job_posting_id: job_posting.id, importance: 1))
+				expect(assigns(:company_name)).to eq(employer.company_name)
+				expect(assigns(:req_skills)).to match_array(JobPostingSkill.where(job_posting_id: job_posting.id, importance: 2).order(:id))
+				expect(assigns(:pref_skills)).to match_array(JobPostingSkill.where(job_posting_id: job_posting.id, importance: 1).order(:id))
 			end
 
 			it "increments the view counter if it is unexpired" do
@@ -125,10 +108,19 @@ RSpec.describe JobPostingsController, type: :controller do
 		end
 
 		context "user is logged in and is an employer" do
-			it "loads the new page " do
+			before(:each) do
 				sign_in employer
 				get :new
+			end
+
+			it "loads the new page " do
 				expect(response).to render_template(:new)
+			end
+
+			it "loads the required data" do
+				expect(assigns(:questions)).to eq(Question.get_label_map)
+				expect(assigns(:categories)).to match_array(JobCategory.all)
+				expect(assigns(:job_types)).to eq(JobPosting.get_types_collection)
 			end
 		end
 	end
@@ -285,10 +277,23 @@ RSpec.describe JobPostingsController, type: :controller do
 		end
 
 		context "user is logged in and is an employer" do
-			it "loads the edit page " do
+			before(:each) do
 				sign_in employer
 				get :edit, id: job_posting.id
+			end
+
+			it "loads the edit page " do
 				expect(response).to render_template(:edit)
+			end
+
+			it "loads the job posting skills" do
+				expect(assigns(:job_posting_skills)).to match_array(JobPostingSkill.where(job_posting_id: job_posting.id).order(:id))
+			end
+
+			it "loads the required data" do
+				expect(assigns(:questions)).to eq(Question.get_label_map)
+				expect(assigns(:categories)).to match_array(JobCategory.all)
+				expect(assigns(:job_types)).to eq(JobPosting.get_types_collection)
 			end
 		end
 	end

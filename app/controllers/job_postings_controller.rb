@@ -6,19 +6,20 @@ class JobPostingsController < ApplicationController
 	before_action :job_owner	 , only: [:edit, :update, :destroy]
 	before_action :check_fields	 , only: [:create, :update]
 
-	def index # Lists all job_postings a company has.
-		if user_signed_in?
-			params[:user] = current_user.id if current_user.has_role?(:employer) && params[:user].nil?
+	def index # Job Postings landing page
+		if params[:user].nil?
+			@job_postings = JobPosting.all.order(views: :desc).limit(25)
+		else
+			@job_postings = JobPosting.where(user_id: params[:user])
+			@company = User.find(params[:user])
 		end
-		@job_postings = JobPosting.where(user_id: params[:user])
-		@company = User.find(params[:user])
 	end
 	
 	def show # Shows a specific job posting and its skills
 		@job_posting = JobPosting.includes(:user,:job_category).find(params[:id])
 		@company_name = @job_posting.company_name.nil? ? @job_posting.user.company_name : @job_posting.company_name
-		@req_skills  = JobPostingSkill.where(job_posting_id:params[:id], importance: 2).includes(:skill)
-		@pref_skills = JobPostingSkill.where(job_posting_id:params[:id], importance: 1).includes(:skill)
+		@req_skills  = JobPostingSkill.where(job_posting_id:params[:id], importance: 2).includes(:skill).order(:id)
+		@pref_skills = JobPostingSkill.where(job_posting_id:params[:id], importance: 1).includes(:skill).order(:id)
 		add_view(@job_posting)
 	end
 
@@ -27,7 +28,6 @@ class JobPostingsController < ApplicationController
 		job_posting_skills = @job_posting.job_posting_skills.build
 		job_posting_skills.skill = Skill.new
 		@questions = Question.get_label_map
-		@skills = Skill.all
 		@categories = JobCategory.all
 		@job_types = JobPosting.get_types_collection
 	end
@@ -44,9 +44,8 @@ class JobPostingsController < ApplicationController
 	end
 
 	def edit # Creates the form to edit a job posting
-		@job_posting_skills = JobPostingSkill.where(job_posting_id:params[:id])
+		@job_posting_skills = JobPostingSkill.where(job_posting_id:params[:id]).order(:id)
 		@questions = Question.get_label_map
-		@skills = Skill.all
 		@categories = JobCategory.all
 		@job_types = JobPosting.get_types_collection
 	end

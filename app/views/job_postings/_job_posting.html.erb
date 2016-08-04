@@ -3,7 +3,14 @@
 <% end %>
 
 <h3><%= @job_posting.title %></h3>
-<h4><%= @company_name %></h4>
+
+
+<h4><% if @job_posting.user.nil? %>
+		<%= @company_name %>
+	<% else %>
+		<%= link_to @company_name, user_path(@job_posting.user) %>
+	<% end %>
+</h4>
 <p> <%= @job_posting.location %><br>
 	<%= @job_posting.job_category.name %><br>
 	<%= raw("Pay Range: #{@job_posting.pay_range}<br>") if !@job_posting.pay_range.blank? %>
@@ -13,7 +20,7 @@
 	<%= raw("<br>"+@job_posting.get_type_string) if !@job_posting.job_type.nil? %>
 </p>
 
-<br><p><%= @job_posting.description %></p><br>
+<br><%= simple_format @job_posting.description %><br>
 
 <% if !@req_skills.empty? %>
 	<h4> Required Skills </h4>

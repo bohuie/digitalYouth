@@ -16,13 +16,13 @@ function skill_autocomplete(id){
       	source: function(request, response){
         var term = request.term.toLowerCase();
         if (term in cache){
-          response(cache[term]);
+          response(cache[term].slice(0, 4));
           return;
         }
  
         $.getJSON('/skills/autocomplete.json', request, function(data, status, xhr){
           cache[term] = data;
-          response(data);
+          response(data.slice(0, 4));
         }); 
     }
   });

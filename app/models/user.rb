@@ -1,20 +1,9 @@
 class User < ActiveRecord::Base
-  searchkick
+  	searchkick
+  	scope :search_import, -> { includes(:roles,:users_roles) }
+  	
     include PublicActivity::Model
     tracked only: :create, owner: ->(controller,model) {model && model.itself}
-
-  def search_data
-    data = Hash.new
-    data[:first_name] = first_name
-    data[:last_name] = last_name
-    data[:company_name] = company_name
-    data[:company_city] = company_city
-    data[:company_address] = company_address
-    data[:company_province] = company_province
-    data[:role] = self.roles.first.name if !self.roles.first.nil?
-    return data
-  end
-  scope :search_import, -> { includes(:roles,:users_roles) }
 
 	rolify
 	# Include default devise modules. Others available are:
@@ -35,4 +24,16 @@ class User < ActiveRecord::Base
       
     has_many :user_skills, dependent: :destroy
     has_many :skills, through: :user_skills
+
+    def search_data
+	  data = Hash.new
+	  data[:first_name] = first_name
+	  data[:last_name] = last_name
+	  data[:company_name] = company_name
+	  data[:company_city] = company_city
+	  data[:company_address] = company_address
+	  data[:company_province] = company_province
+	  data[:role] = self.roles.first.name if !self.roles.first.nil?
+	  return data
+	end
 end

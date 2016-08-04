@@ -2,6 +2,11 @@ class User < ActiveRecord::Base
     include PublicActivity::Model
     tracked only: :create, owner: ->(controller,model) {model && model.itself}
 
+  rolify
+  # Include default devise modules. Others available are:
+  # :timeoutable and :omniauthable, :lockable, :rememberable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :trackable, :validatable, :confirmable
     has_attached_file :image, default_url: 'avatar-placeholder.svg'
     include DeletableAttachment
     validates_attachment :image, content_type: { content_type: ["image/jpg", "image/jpeg", "image/png", "image/svg"] }

@@ -1,2 +1,7 @@
-<% r = activity.trackable %>
-<img src="<%=asset_path('avatar-placeholder.svg')%>" alt="User Icon" height="30" width="30"> <%= "#{r.first_name} #{r.last_name}"%> gave you a reference!
+<%r = activity.trackable %>
+<div>
+	<img src="<%=asset_path('avatar-placeholder.svg')%>" alt="User Icon" height="50" width="50" style="float: left;  padding-right: 5px;">
+	<%= "#{r.first_name} #{r.last_name}"%> gave you a reference!<br>
+	<%= local_time_ago(activity.created_at) %>
+</div>
+<div style="clear:both;"></div>

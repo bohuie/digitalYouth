@@ -1,5 +1,4 @@
 <% if @user.has_role? :employee %>
-	
 	<div class ="container">
 		<p> User Information </p>
 		<p> <%= @user.first_name %> </p>
@@ -7,8 +6,12 @@
 		<p> <%= @user.email %> </p>
 	</div>
 
+	<% if user_signed_in? && @current_user==@user %>
+		<%= link_to "Job Applications", job_posting_applications_path %>
+	<% end %>
+
  	<div class = "survey-table">
-		<%= render '/users/partials/show_survey_table' %>
+		<%= render '/users/partials/show_survey_table', results: @survey_results, user:@user %>
 	</div>
 
 	<div class = "references">
@@ -79,47 +82,18 @@
 	<% end %>
 	</div>
 <% elsif @user.has_role? :employer %>
-
-	<% if !@job_postings.empty? %>
-		<div class="job-postings">
-			<div class="container">
-				<div class="row">
-					<div class="col-xs-6">
-						<% @job_postings.each do |j| %>
-							<h2><%= j.title %></h2>
-							<p><%= j.description %></p>
-							<p>Job Posting available at: <%= j.open_date %></p>
-							<p>Cut off for applicants is: <%=j.close_date%></p>
-							<% if user_signed_in? && @current_user==@user %>
-								<%= link_to "Edit Posting", edit_job_posting_path(j) %>
-							<% end %>
-						<% end %>
-					</div>
-				</div>
-				<div class="row">
-					<h2>Add another job posting below!</h2>
-				</div>
-			</div>
-		</div>
-	<% else %>
-		<h3>You have no job postings here.  Would you like to create one?</h3>
-	<% end %>
+	<p> Company Information: <br>
+		<%= @user.company_name %><br>
+		<%= @user.company_address %>, <%= @user.company_province %><br>
+		<%= @user.company_postal_code %> 
+	</p>
+	
+	<%= link_to "Job Postings", job_postings_path(user: @user) %>
 	<% if user_signed_in? && @current_user==@user %>
-	<div class ="container">
-		<div class ="row">
-			<div class="col-xs-6">
-				<%= simple_form_for @job_posting do |f| %>
-					<%= f.input :title, required: true %>
-					<%= f.input :description, required: true, as: :text %>
-					<%= f.input :open_date, required: true %>
-					<%= f.input :close_date, required: true %>
-					<%= f.button :submit %>
-				<% end %>
-			</div>
-		</div>
-	</div>
+		<br><%= link_to "Job Applications", job_posting_applications_path %>
 	<% end %>
-<% elsif @user.has_role? :admin%>
 
-<% else %>
+<% elsif @user.has_role? :admin%>
+	You are an admin!
+	<%= %> 
 <% end %>

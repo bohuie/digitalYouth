@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160608180310) do
+ActiveRecord::Schema.define(version: 20160721192354) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,14 +35,49 @@ ActiveRecord::Schema.define(version: 20160608180310) do
   add_index "activities", ["recipient_id", "recipient_type"], name: "index_activities_on_recipient_id_and_recipient_type", using: :btree
   add_index "activities", ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type", using: :btree
 
+  create_table "job_categories", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "job_posting_applications", force: :cascade do |t|
+    t.text     "message"
+    t.integer  "applicant_id"
+    t.integer  "company_id"
+    t.integer  "job_posting_id"
+    t.integer  "status",         default: 0, null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  create_table "job_posting_skills", force: :cascade do |t|
+    t.integer "importance"
+    t.integer "job_posting_id"
+    t.integer "skill_id"
+    t.integer "question_id"
+  end
+
+  add_index "job_posting_skills", ["job_posting_id"], name: "index_job_posting_skills_on_job_posting_id", using: :btree
+  add_index "job_posting_skills", ["question_id"], name: "index_job_posting_skills_on_question_id", using: :btree
+  add_index "job_posting_skills", ["skill_id"], name: "index_job_posting_skills_on_skill_id", using: :btree
+
   create_table "job_postings", force: :cascade do |t|
     t.string   "title"
+    t.string   "company_name"
+    t.string   "location"
+    t.string   "pay_range"
+    t.string   "link"
+    t.string   "posted_by"
+    t.integer  "job_type"
     t.text     "description"
     t.date     "open_date"
     t.date     "close_date"
+    t.integer  "views",           default: 0, null: false
     t.integer  "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer  "job_category_id"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   create_table "project_skills", force: :cascade do |t|
@@ -165,6 +200,10 @@ ActiveRecord::Schema.define(version: 20160608180310) do
     t.string   "encrypted_password",     default: "",                                                                                   null: false
     t.string   "first_name"
     t.string   "last_name"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
     t.string   "github"
     t.string   "linkedin"
     t.string   "twitter"

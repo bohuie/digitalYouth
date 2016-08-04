@@ -144,6 +144,23 @@
 
 	opacity: 0.6;
 }
+.tab-content
+{
+	width: 100%;
+}
+#profileButtons
+{
+	//border: 2px solid blue;
+	overflow: hidden;
+}
+.profileButtonContent
+{
+	float: right;
+}
+.profileButtonContent div
+{
+
+}
 .profileButtons
 {
 	//border: 2px solid green;
@@ -241,11 +258,11 @@
   transform: skewY(10deg);
 }
 //Partials
-#survey-table,
-#references,
-#projects,
-#job-posting,
-#skills
-{
-	display: none;
-}
+//#survey-table,
+//#references,
+//#projects,
+//#job-posting,
+//#skills
+//{
+//	display: none;
+//}

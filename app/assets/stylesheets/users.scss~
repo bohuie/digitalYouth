@@ -74,7 +74,7 @@
 	width: 600px;
 	height: 300px;
 	margin-left: 380px;
-	border: 2px solid blue;
+	//border: 2px solid blue;
 }
 .profileContainerContent input
 {
@@ -144,6 +144,23 @@
 
 	opacity: 0.6;
 }
+.tab-content
+{
+	width: 100%;
+}
+#profileButtons
+{
+	border: 2px solid blue;
+	overflow: hidden;
+}
+.profileButtonContent
+{
+	float: right;
+}
+.profileButtonContent div
+{
+
+}
 .profileButtons
 {
 	//border: 2px solid green;
@@ -173,7 +190,7 @@
 }
 .profileButtonResume
 {
-	border: 2px solid yellow;
+	//border: 2px solid yellow;
 	height: 60px;
 	width: 200px;
 	margin: 0 auto;
@@ -241,11 +258,11 @@
   transform: skewY(10deg);
 }
 //Partials
-#survey-table,
-#references,
-#projects,
-#job-posting,
-#skills
-{
-	display: none;
-}
+//#survey-table,
+//#references,
+//#projects,
+//#job-posting,
+//#skills
+//{
+//	display: none;
+//}

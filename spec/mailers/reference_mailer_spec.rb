@@ -18,7 +18,7 @@ RSpec.describe ReferenceMailer do
     end
 
     it 'renders the sender email' do
-      expect(mail.from).to eq(['digitalyouthtest@gmail.com'])
+      expect(mail.from).to eq(['digitalyouthtest2@gmail.com'])
     end
 
     it 'assigns reference_url' do

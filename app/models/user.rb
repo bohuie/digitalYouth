@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
-  include PublicActivity::Model
-  tracked only: :create, owner: ->(controller,model) {model && model.itself}
   searchkick
+    include PublicActivity::Model
+    tracked only: :create, owner: ->(controller,model) {model && model.itself}
 
   def search_data
     data = Hash.new
@@ -16,18 +16,23 @@ class User < ActiveRecord::Base
   end
   scope :search_import, -> { includes(:roles,:users_roles) }
 
-  rolify
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :confirmable
+	rolify
+	# Include default devise modules. Others available are:
+	# :timeoutable and :omniauthable, :lockable, :rememberable
+	devise :database_authenticatable, :registerable,
+	       :recoverable, :trackable, :validatable, :confirmable
+
+    has_attached_file :image, default_url: 'avatar-placeholder.svg'
+    include DeletableAttachment
+    validates_attachment :image, content_type: { content_type: ["image/jpg", "image/jpeg", "image/png", "image/svg"] }
 
     has_many :job_postings
     has_many :projects
     has_many :references
     has_many :reference_redirections
     has_many :responses
-    
+    has_many :job_posting_applications
+      
     has_many :user_skills, dependent: :destroy
     has_many :skills, through: :user_skills
 end

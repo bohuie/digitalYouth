@@ -44,15 +44,17 @@ Rails.application.configure do
   config.action_mailer.default_url_options = {:host => 'localhost:3000'}
 
   config.action_mailer.perform_deliveries = true
-  config.action_mailer.delivery_method = :smtp 
-  config.action_mailer.smtp_settings = {
-  address: ENV['EMAIL_ADDRESS'],
-  port: 587,
-  authentication: "plain",
-  enable_starttls_auto: true,
-  user_name: ENV['EMAIL_USERNAME'],
-  password: ENV['EMAIL_PASSWORD']
-}
+  config.action_mailer.delivery_method = :sendmail
+  config.action_mailer.sendmail_settings = {
+
+    location: '/usr/sbin/sendmail',
+    arguments: '-i -t'
+  } 
+  config.action_mailer.default_options = {
+    from: 'edge.map@ubc.ca',
+    reply_to: 'edge.map@ubc.ca',
+    user_name: 'edge.map@ubc.ca'
+  }
 
   # Paperclip
   Paperclip.options[:command_path] = "/usr/local/bin/"

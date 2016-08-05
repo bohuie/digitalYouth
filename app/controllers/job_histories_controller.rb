@@ -2,6 +2,7 @@ class JobHistoriesController < ApplicationController
 
   before_action :authenticate_user!
   before_action :job_histories_owner, only: [:edit, :update, :destroy]
+  before_action :check_fields, only [:update, :create]
 
   def index
 	@job_history = JobHistory.where(user_id: current_user.id)
@@ -15,6 +16,7 @@ class JobHistoriesController < ApplicationController
   end
 
   def create
+	params[:user_id]=current_user.id
 	@job_histories = JobHistory.new(job_history_params)
 	if @job_histories.save
 		redirect_to job_histories_path , flash: {success: "Thank you for adding to your Job History!"}
@@ -34,10 +36,10 @@ class JobHistoriesController < ApplicationController
 	@job_history = JobHistory.find(params[:id])
 	if @job_history.update(job_history_params)
 		flash[:success]="Thank you for updating to your Job History!"
-		redirect_back_or job_histories_path
+		redirect_to job_history_path(@job_history)
 	else
 		flash[:danger]="There was a problem in updating your Job History!"
-		redirect_back_or job_histories_path
+		redirect_back_or job_history_path(@job_history)
 	end
 	
   end
@@ -61,9 +63,16 @@ def job_histories_owner
 		@job_histories = JobHistory.find(params[:id])
 		
 		unless @job_histories.user_id == current_user.id
-			flash[:notice] = 'Access denied as you are not owner of this Job History'
+			flash[:danger] = 'Access denied as you are not owner of this Job History'
 			redirect_to current_user
 		end
 	end
 end
 
+def check_fields
+	args=params[:job_history]
+	if args[:start_date].blank? || args[:employer].blank? || args[:position].blank? || args[:description].blank? || args[:skills].blank?
+		flash[:warning]="Missing Required Fields"
+		redirect_back_or job_histories_path
+	end
+end

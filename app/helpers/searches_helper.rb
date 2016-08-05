@@ -14,7 +14,6 @@ module SearchesHelper
 	end
 
 	def add_filter(filter,filter_to_add,vals)
-
 			rtn_val = filter.nil? ? nil : filter.dup
 			if rtn_val.blank? 
 				rtn_val = filter_to_add
@@ -31,7 +30,7 @@ module SearchesHelper
 
 	def get_path_hash(input_hash,query,type)
 		path_hash = Hash.new
-		input_hash.each {|key, value| path_hash[key] = value if !value.empty?}
+		input_hash.each {|key, value| path_hash[key] = value if !value.blank?}
 		path_hash[:q] = query 
 		path_hash[:t] = type
 		return path_hash

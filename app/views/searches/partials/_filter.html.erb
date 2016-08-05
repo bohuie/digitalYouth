@@ -1,4 +1,5 @@
 <% formatted_name = name.downcase.tr(" ", "_") %>
+<% byebug %>
 <hr>
 <h6 class="filter-title" onclick="$('#<%=formatted_name%>').slideToggle(100);"> <%=name%> <span class="caret"></span></h6>
 <div id="<%=formatted_name%>" style="display: none;"> 
@@ -9,4 +10,15 @@
 		<% path_hash[:f] = add_filter(@filters, formatted_name, current_values) %>
 		<%= link_to v, search_path(path_hash) %><br>
 	<%end%>
+
+	<% if local_assigns[:input] == true %>
+		<button class="btn btn-default btn-xs" onclick="hideUnHide('btn-<%=formatted_name%>','input-<%=formatted_name%>')" id="btn-<%=formatted_name%>">
+			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
+		</button> 
+		<div class="input-group input-group-sm">
+			<% byebug %>
+			<%= text_field_tag key,'', class: 'form-control', placeholder: name, onchange: "filterInputChange('input-#{formatted_name}')", 
+				style:"display:none", id:"input-#{formatted_name}"%>
+		</div>
+	<% end %>
 </div>

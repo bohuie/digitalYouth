@@ -1,7 +1,7 @@
 <% if !results.nil? %>
 	<% results.each do |r|%>
 		<% path = search_nav_path(obj:r.class.name,obj_id:r.id,id:results.search.id,path:polymorphic_path(r))%>
-		<div id="search-result-<%="#{r.class.name}-#{r.id}"%>" onclick="window.location='<%=path%>'">
+		<div id="search-result-<%="#{r.class.name}-#{r.id}"%>" class="search-result" onclick="window.location='<%=path%>'">
 			<%= render "searches/results/#{r.class.name.downcase}", result: r %>
 		</div>
 	<% end %>

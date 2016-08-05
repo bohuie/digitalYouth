@@ -1,30 +1,13 @@
-<% if !@toggles[:l].nil? %>
-	<%= render "searches/partials/filter", name: "Location", key: :l, filter_values: @locations, current_values: @l%>
-<% end%>
+<% path="searches/partials/filter"%>
 
-<% if !@toggles[:r].nil? && user_signed_in? %>
-	<%= render "searches/partials/filter", name: "Relationship", key: :r, filter_values: @relationships, current_values: @r%>
-<% end%>
-
-<% if !@toggles[:cc].nil? %>
-	<%= render "searches/partials/filter", name: "Current Company", key: :cc, filter_values: @current_companies, current_values: @cc %>
-<% end%>
-
-<% if !@toggles[:i].nil? %>
-	<%= render "searches/partials/filter", name: "Industry", key: :i, filter_values: @industries, current_values: @i %>
-<% end%>
-
-<% if !@toggles[:pc].nil? %>
-	<%= render "searches/partials/filter", name: "Past_Company", key: :pc, filter_values: @past_companies, current_values: @pc %>
-<% end%>
-
-<% if !@toggles[:e].nil? %>
-	<%= render "searches/partials/filter", name: "Education", key: :e, filter_values: @educations, current_values: @e %>
-<% end%>
-
-<% if !@toggles[:s].nil? %>
-	<%= render "searches/partials/filter", name: "Skills", key: :s, filter_values: @skills, current_values: @s %>
-<% end%>
+<%= render path, name: "Location"		, key: :l, filter_values: @locations, current_values: @l, input: true 			if !@toggles[:l].nil?%>
+<%= render path, name: "Current Company", key: :cc,filter_values: @current_companies, current_values: @cc, input: true  if !@toggles[:cc].nil?%>
+<%= render path, name: "Company"	 	, key: :c, filter_values: @companies, current_values: @c, input: true 			if !@toggles[:c].nil? %>
+<%= render path, name: "Industry"	 	, key: :i, filter_values: @industries, current_values: @i 						if !@toggles[:i].nil? %>
+<%= render path, name: "Past Company"	, key: :pc,filter_values: @past_companies, current_values: @pc, input: true 	if !@toggles[:pc].nil? %>
+<%= render path, name: "Skills"		 	, key: :s, filter_values: @skills, current_values: @s, input: true 				if !@toggles[:s].nil? %>
+<%= render path, name: "Job Type"	 	, key: :el,filter_values: @job_types, current_values: @jt 						if !@toggles[:jt].nil? %>
+<%= render path, name: "Relationship"	, key: :r, filter_values: @relationships, current_values: @r if !@toggles[:r].nil? && user_signed_in?%>
 
 <% if !@toggles[:h].nil? %>
 	<hr>
@@ -35,20 +18,13 @@
 		<% path_hash[:f] = add_filter(@filters,"hiring",@h) %>
 		<%= link_to "Hiring", search_path(path_hash) %><br>
 	</div>
-<% end%>
-
-<% if !@toggles[:cz].nil? %>
-	<%= render "searches/partials/filter", name: "Company Size", key: :cz, filter_values: @company_sizes, current_values: @cz %>
-<% end%>
-
-<% if !@toggles[:c].nil? %>
-	<%= render "searches/partials/filter", name: "Company", key: :c, filter_values: @companies, current_values: @c %>
-<% end%>
+<% end%>	
 			
 <% if !@toggles[:dp].nil? %>
 	<hr>
 	<h6 class="filter-title" onclick="$('#date-posted').slideToggle(100);">Date Posted <span class="caret"></span></h6>
 	<div id="date-posted" style="display: none;">
+		This needs to be replaceive not additive
 		<%= link_to	"All", search_path(q:@query, t:@type, f:"date_posted") %><br>
 		<% str = "day" %> 
 		<% cnt = 0 %>
@@ -63,10 +39,5 @@
 	</div>
 <% end %>
 
-<% if !@toggles[:jf].nil? %>
-	<%= render "searches/partials/filter", name: "Job Function", key: :jf, filter_values: @job_functions, current_values: @jf%>
-<% end %>
 
-<% if !@toggles[:el].nil? %>
-	<%= render "searches/partials/filter", name: "Experience Level", key: :el, filter_values: @experience_levels, current_values: @el%>
-<% end %>
+

@@ -16,12 +16,9 @@ class SearchesController < ApplicationController
 		@c 	= params[:c].nil?  ? "" : params[:c]  #company
 		@cc = params[:cc].nil? ? "" : params[:cc] #current_company
 		@pc = params[:pc].nil? ? "" : params[:pc] #past_company
-		@cz = params[:cz].nil? ? "" : params[:cz] #company_size
-		@e 	= params[:e].nil?  ? "" : params[:e]  #education
 		@r 	= params[:r].nil?  ? "" : params[:r]  #relationship
 		@s 	= params[:s].nil?  ? "" : params[:s]  #skills
-		@jf = params[:jf].nil? ? "" : params[:jf] #job_function
-		@el = params[:el].nil? ? "" : params[:el] #experience_level
+		@jt = params[:jt].nil? ? "" : params[:jt] #job_type
 		@dp = params[:dp].nil? ? "" : params[:dp] #date_posted
 		@h 	= params[:h].nil?  ? "" : params[:h]  #hiring
 
@@ -38,38 +35,35 @@ class SearchesController < ApplicationController
 		when "People"
 			idxs=[User.searchkick_index.name]
 			where_clause[:role]="employee"
-			@toggles = {r: @r, l: @l, cc: @cc, i: @i, pc: @pc, e: @e, s: @s}
+			@toggles = {r: @r, l: @l, cc: @cc, pc: @pc, e: @e, s: @s}
 			@locations = []
 			@relationships = ["1st","2nd", "Group Members", "3rd + Everyone"]
-			@industries = []
 			@current_companies = []
 			@past_companies = []
-			@educations = []
-			@skills = []
+			@skills = Skill.all.group(:name).order("COUNT(id)").limit(5).pluck(:name)
 		when "Companies"
 			idxs=[User.searchkick_index.name]
 			where_clause[:role]="employer"
-			@toggles = {r: @r, l: @l, h: @h, i: @i, cz: @cz}
+			@toggles = {r: @r, l: @l, h: @h, i: @i}
+			#Need to adapt to handle city and province
 			@locations = User.where.not(company_province: nil).uniq.order(:company_province).pluck(:company_province)
-			@company_sizes = ["1-10","11-50","51-200","201-500","501-1000","1001-5000","5001-10000","10000+"]
 			@relationships = ["1st","2nd", "Group Members", "3rd + Everyone"]
-			@industries = []
+			@industries = JobCategory.all.pluck(:name)
 		when "Projects"
 			idxs=[Project.searchkick_index.name]
-			@toggles = {s: @s, i: @i}
-			@industries = []
-			@skills = []
-			@industry = []
+			@toggles = {s: @s, dp: @dp}
+			@dates_posted = ["1", "2-7", "8-14","15-30","30+"]
+			@skills = Skill.all.group(:name).order("COUNT(id)").limit(5).pluck(:name)
 		when "JobPostings"
 			idxs=[JobPosting.searchkick_index.name]
-			@toggles = {l: @l, c: @c, dp: @dp, jf: @jf, i: @i, el: @el, s: @s}
-			@locations = []
+			@toggles = {l: @l, c: @c, dp: @dp, jf: @jf, i: @i, jt: @jt, s: @s}
+			@locations = JobPosting.all.group(:location).order("COUNT(id)").limit(5).pluck(:location)
 			@companies = []
 			@dates_posted = ["1", "2-7", "8-14","15-30","30+"]
 			@job_functions = []
-			@industries = []
-			@experience_levels = ["Entry Level", "Associate", "Not Applicable", "Internship", "Mid-Senior Level", "Director", "Executive"]
-			@skills = []
+			@industries = JobCategory.all.pluck(:name)
+			@job_types = JobPosting.get_types_collection.keys
+			@skills = Skill.all.group(:name).order("COUNT(id)").limit(5).pluck(:name)
 		else
 			idxs=[]
 		end
@@ -79,7 +73,9 @@ class SearchesController < ApplicationController
 			filter.each do |f|
 				case f # Modifies the where portion of the query
 				when "location"
-					where_clause[:company_province]=@l.split(',') if !@l.empty?
+					# User filter -> need to split 
+					# Job Posting filter -> just process as is
+					#where_clause[:company_province]=@l.split(',') if !@l.empty?
 				when "industry"
 					where_clause[:industry]=@i.split(',') if !@i.empty?
 				when "company"
@@ -88,21 +84,17 @@ class SearchesController < ApplicationController
 					where_clause[:current_company]=@cc.split(',') if !@cc.empty?
 				when "past_company"
 					where_clause[:past_company]=@pc.split(',') if !@pc.empty?
-				when "company_size"
-					where_clause[:company_size]=@cz.split(',') if !@cz.empty?
-				when "education"
-					where_clause[:education]=@e.split(',') if !@e.empty?
 				when "relationship"
 					where_clause[:relationship]=@r.split(',') if !@r.empty?
 				when "skills"
 					where_clause[:skills]=@s.split(',') if !@s.empty?
 				when "job_function"
 					where_clause[:job_function]=@jf.split(',') if !@jf.empty?
-				when "experience_level"
-					where_clause[:experience_level]=@el.split(',') if !@el.empty?
+				when "job_type"
+					where_clause[:job_type]=@jt.split(',') if !@jt.empty?
 				when "date_posted"
 					where_clause[:created_on]=@dp.split(',') if !@dp.empty?
-				where "hiring"
+				when "hiring"
 					where_clause[:hiring]=@h.split(',') if !@h.empty?
 				end
 			end
@@ -124,5 +116,4 @@ class SearchesController < ApplicationController
 		Searchjoy::Search.find(params[:id]).convert(obj)
 		redirect_to params[:path]
 	end
-
 end

@@ -78,7 +78,7 @@ class JobPostingsController < ApplicationController
 			ActiveRecord::Base.transaction do
 				silence_stream(STDOUT) do
 					@job_postings = JobPosting.where("company_name IS NOT NULL")
-					@ids = @job_postings.map(&:id)
+					@ids = @job_postings.pluck(:id)
 					@job_postings.delete_all
 					JobPostingSkill.where(job_posting_id: @ids).delete_all
 				end

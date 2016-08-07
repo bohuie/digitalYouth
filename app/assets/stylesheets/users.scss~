@@ -148,18 +148,19 @@
 {
 	width: 100%;
 }
+.tab-content div
+{
+	width: 50%;
+    	margin: 0 auto; 
+}
 #profileButtons
 {
-	border: 2px solid blue;
+	//border: 2px solid blue;
 	overflow: hidden;
 }
 .profileButtonContent
 {
 	float: right;
-}
-.profileButtonContent div
-{
-
 }
 .profileButtons
 {
@@ -170,7 +171,7 @@
 	bottom: 75px;
 	right: 10px;
 }
-.profileButtons input
+.profileButtonContent li
 {
     	background-color: Transparent;
     	background-repeat:no-repeat;
@@ -178,7 +179,6 @@
     	overflow: hidden;
     	outline:none;
 
-	height: 65px;
 	width: 150px;
 	margin: 3px;
 	color: #01B1AF;

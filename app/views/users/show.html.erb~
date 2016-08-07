@@ -18,17 +18,17 @@
 			<div class="resumeShadowBox bottom"> </div>
 			<div class="resumeShadowBox left"> </div>
 			<input type="button" value="RESUME"/>		
-		</div>
+		</div>&nbsp;
 		<div class="container" id="profileButtons">
 			<ul class="nav nav-tabs profileButtonContent">
-    				<li class="active"><a data-toggle="tab" href="#surveys">SURVEYS</a></li>
-    				<li><a data-toggle="tab" href="#employment">EMPLOYMENT</a></li>
-    				<li><a data-toggle="tab" href="#projects">PROJECTS</a></li>
-    				<li><a data-toggle="tab" href="#skills">SKILLS</a></li>
-    				<li><a data-toggle="tab" href="#references">REFERENCES</a></li>
+    				<li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#surveys">SURVEYS</a></li>
+    				<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#employment">EMPLOYMENT</a></li>
+    				<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#projects">PROJECTS</a></li>
+    				<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#skills">SKILLS</a></li>
+    				<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#references">REFERENCES</a></li>
   			</ul>
   
-  			<div class="tab-content profileButtonContent" style="border: 2px solid red">
+  			<div class="tab-content profileButtonContent">
     				<div id="surveys" class="tab-pane fade in active">
        					<div class = "survey-table" id= "survey-table">
 						<%= render '/users/partials/show_survey_table' %>

@@ -2,11 +2,16 @@ class JobHistoriesController < ApplicationController
 
   before_action :authenticate_user!
   before_action :job_histories_owner, only: [:edit, :update, :destroy]
-  before_action :check_fields, only [:update, :create]
+  before_action :check_fields, only: [:update, :create]
+
+#route errors from :job_histories_owner, index no longer displaying content reloading after adding check fields, when all r full believes one is empty
 
   def index
 	@job_history = JobHistory.where(user_id: current_user.id)
 	@user=current_user
+  end
+  def show
+
   end
 
   def new

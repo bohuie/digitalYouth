@@ -46,19 +46,27 @@ RSpec.describe JobHistoriesController, type: :controller do
 			  position: job_history.position,
 			  description: job_history.description,
 			  skills: job_history.skills,
-			  user_id: job_history.user_id
+			  user_id: user.id
 			} 
 		}
 
-		context "creates the job history" do
-			before(:each) do
-				
+		context "user is not logged in" do
+			it "redirects the user when not logged in" do
+				post :create, job_history: job_histories_attr
+		
+								
+				expect(response).to redirect_to(new_user_session_path)
+			end
+		end
+
+		context "user is logged in" do
+
+			it "create Job History" do
 				sign_in user
 				post :create, job_history: job_histories_attr
 			end
-
 			it "should have the new jobhistory" do
-				expect(JobHistory.last.user_id).to eq(job_history.user_id)
+				expect(job_history.user_id).to eq((JobHistory.user_id).last)
 			end
 
 
@@ -93,7 +101,7 @@ describe "PATCH update" do
 				sign_in user
 				patch :update, id: job_history.id
 
-				expect(response).to redirect_to(job_history_path(job_history))
+				expect(response).to redirect_to(job_histories_path)
 				expect(flash[:success]).to eq("Thank you for updating to your Job History!")
 			end
 		end

@@ -2,10 +2,16 @@ class JobHistoriesController < ApplicationController
 
   before_action :authenticate_user!
   before_action :job_histories_owner, only: [:edit, :update, :destroy]
+  before_action :check_fields, only: [:update, :create]
+
+#route errors from :job_histories_owner, index no longer displaying content
 
   def index
 	@job_history = JobHistory.where(user_id: current_user.id)
 	@user=current_user
+  end
+  def show
+
   end
 
   def new
@@ -68,16 +74,10 @@ def job_histories_owner
 	end
 end
 
-def checkFields
+def check_fields
 	args=params[:job_history]
-	if args[:start_date].blank?
+	if args[:start_date].blank? || args[:employer].blank? || args[:position].blank? || args[:description].blank? || args[:skills].blank?
+		flash[:warning]="Missing Required Fields"
+		redirect_back_or job_histories_path
 	end
-	if args[:employer].blank?
-	end
-	if args[:position].blank?
-	end
-	if args[:description].blank?
-	end
-	if args[:skills].blank?
-	end
-
+end

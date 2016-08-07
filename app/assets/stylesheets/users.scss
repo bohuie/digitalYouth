@@ -39,19 +39,19 @@
     	background: #333;
     	background-image: linear-gradient(to right, #ccc, #333, #ccc);
 }
-#ref
+#ref, #ref2
 {
 	//border: 2px solid red;
 	width: 100%;
 	overflow: hidden;
 }
-#refImage
+#refImage, #refImage2
 {
 	height: 150px;
 	width: 150px;
 	//border: 2px solid blue;
 }
-#refName
+#refName, #refName2
 {
 	font-size: 32px;
 }
@@ -76,38 +76,38 @@
 {
 	margin-left: 6%;
 }
-#contact
+#contact, #contact2
 {
 	width: 60%;
 	height: 10%;
 	float: right;
 }
-#relEmployment
+#relEmployment, #relEmployment2
 {
 	float: right;
 	overflow: hidden;
 	width: 60%;
 }
-#relProjects
+#relProjects, #relProjects2
 {
 	float: right;
 	overflow: hidden;
 	width: 60%;
 }
-#left
+#left, #left2
 {
 	//border: 2px solid blue;
 	width: 25%;
 	float: left;
 }
-#centre
+#centre, #centre2
 {
 	//border: 2px solid yellow;
 	width: 50%;
 	overflow: hidden;
 	float: left;
 }
-#right
+#right, #right2
 {
 	//border: 2px solid purple;
 	width: 25%;

@@ -6,7 +6,7 @@
 <%= render path, name: "Industry"	 	, key: :i, filter_values: @industries, current_values: @i 						if !@toggles[:i].nil? %>
 <%= render path, name: "Past Company"	, key: :pc,filter_values: @past_companies, current_values: @pc, input: true 	if !@toggles[:pc].nil? %>
 <%= render path, name: "Skills"		 	, key: :s, filter_values: @skills, current_values: @s, input: true 				if !@toggles[:s].nil? %>
-<%= render path, name: "Job Type"	 	, key: :el,filter_values: @job_types, current_values: @jt 						if !@toggles[:jt].nil? %>
+<%= render path, name: "Job Type"	 	, key: :jt,filter_values: @job_types, current_values: @jt 						if !@toggles[:jt].nil? %>
 <%= render path, name: "Relationship"	, key: :r, filter_values: @relationships, current_values: @r if !@toggles[:r].nil? && user_signed_in?%>
 
 <% if !@toggles[:h].nil? %>
@@ -14,8 +14,8 @@
 	<h6 class="filter-title" onclick="$('#hiring').slideToggle(100);">Hiring <span class="caret"></span></h6>
 	<div id="hiring" style="display: none;">
 		<% path_hash = get_path_hash(@toggles,@query,@type) %>
-		<% path_hash[:h] = add_value(@l,"true") %>
-		<% path_hash[:f] = add_filter(@filters,"hiring",@h) %>
+		<% path_hash[:h] = "true" %>
+		<% path_hash[:f] = add_filter(@filters,"hiring") %>
 		<%= link_to "Hiring", search_path(path_hash) %><br>
 	</div>
 <% end%>	
@@ -24,15 +24,14 @@
 	<hr>
 	<h6 class="filter-title" onclick="$('#date-posted').slideToggle(100);">Date Posted <span class="caret"></span></h6>
 	<div id="date-posted" style="display: none;">
-		This needs to be replaceive not additive
 		<%= link_to	"All", search_path(q:@query, t:@type, f:"date_posted") %><br>
 		<% str = "day" %> 
 		<% cnt = 0 %>
 		<% @dates_posted.each do |dp| %>
 			<% str = "days" if cnt > 0 %>
 			<% path_hash = get_path_hash(@toggles,@query,@type) %>
-			<% path_hash[:dp] = add_value(@dp,dp) %>
-			<% path_hash[:f] = add_filter(@filters,"date_posted",@dp) %>
+			<% path_hash[:dp] = dp %>
+			<% path_hash[:f] = add_filter(@filters,"date_posted") %>
 			<%= link_to "#{dp} #{str} ago", search_path(path_hash) %><br>
 			<% cnt = cnt + 1 %>
 		<%end%>

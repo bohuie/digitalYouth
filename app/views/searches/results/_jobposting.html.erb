@@ -1,2 +1,8 @@
 <p><%=result.title%><br>
-   <i><%=result.description[0..30]%> ...</i></p>
+<% if !result.company_name.nil? %>
+	<%=result.company_name%><br>
+<% else %>
+	<%=result.user.company_name%><br>
+<% end %>
+   <i><%=result.description[0..30]%> ...</i>
+</p>

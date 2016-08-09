@@ -40,10 +40,10 @@ begin
 	user4.skip_confirmation!
 	user4.save
 
-	#Create many random users
-	#for 0..10 do
-	#	create_random_user()
-	#end
+	#-- Create many random users --
+	for i in 0...40
+		create_random_user()
+	end
 
 	#--- References for testing ---
 	reference1 = Reference.create(first_name: 'Bernie', last_name: 'Smith', email: 'Andrew@gmail.com', company: 'Apple Picking Co.',
@@ -55,11 +55,11 @@ begin
 	#--- JobPostings for testing ---
 	jobposting1 = JobPosting.create(title: 'Social Media Manager', location: "Kelowna, BC", pay_range: "30¢/hr-40¢/hr", link:"www.google.ca", posted_by:"Seed File", job_type: 1,
 				  description: 'Handling our Facebook and Twitter account, posting messages, and responding to clients.', open_date: '2016-01-01', close_date: '2016-04-01',
-				  job_category_id: 12, user_id: user3.id)
+				  job_category_id: 12, user_id: user3.id, created_at:'2016-01-01')
 
 	jobposting2 = JobPosting.create(title: 'Social Media Expert', location: "Kelowna, BC", pay_range: "#$30-$40/hr", link:"www.google.ca", posted_by:"Seed File", job_type: 0,
 				  description: 'Handling our Facebook and Twitter account, posting messages, and responding to clients.', open_date: Date.today-7, close_date: Date.today,
-				  job_category_id: 12, user_id: user3.id)
+				  job_category_id: 12, user_id: user3.id, created_at:Date.today-7)
 
 	# --- JobPostingApplications for testing ---
 	jobpostingapplication = JobPostingApplication.create(message: "This is a message", job_posting_id: jobposting1.id, applicant_id: user1.id, company_id: user3.id, status: 0)
@@ -105,7 +105,7 @@ begin
 
 	#----------- Load Job Posting data from scraping and processing ---------------------
 	if !Rails.env.test?
-		#Dir[File.join(Rails.root, 'db', 'scraping', '*.rb')].sort.each { |seed| load seed }
+		Dir[File.join(Rails.root, 'db', 'scraping', '*.rb')].sort.each { |seed| load seed }
 	end
 
 rescue Faraday::ConnectionFailed

@@ -26,14 +26,14 @@ class User < ActiveRecord::Base
     has_many :skills, through: :user_skills
 
     def search_data
-	  data = Hash.new
-	  data[:first_name] = first_name
-	  data[:last_name] = last_name
-	  data[:company_name] = company_name
-	  data[:company_city] = company_city
-	  data[:company_address] = company_address
-	  data[:company_province] = company_province
-	  data[:role] = self.roles.first.name if !self.roles.first.nil?
-	  return data
+        data = Hash.new
+        data[:first_name] = first_name
+        data[:last_name] = last_name
+        data[:company_name] = company_name
+        data[:company_city] = company_city
+        data[:company_address] = company_address
+        data[:company_province] = company_province
+        data[:role] = self.roles.first.name if !self.roles.first.nil?
+        return data
 	end
 end

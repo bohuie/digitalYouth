@@ -13,17 +13,12 @@ module SearchesHelper
 		return rtn_val
 	end
 
-	def add_filter(filter,filter_to_add,vals)
-			rtn_val = filter.nil? ? nil : filter.dup
+	def add_filter(filters,filter_to_add)
+			rtn_val = filters.nil? ? nil : filters.dup
 			if rtn_val.blank? 
 				rtn_val = filter_to_add
 			elsif !rtn_val.include? filter_to_add
 				rtn_val = rtn_val + ',' + filter_to_add
-			end
-			if vals.blank?
-				rtn_val.slice! ","+filter_to_add
-				rtn_val.slice! filter_to_add+","
-				rtn_val.slice! filter_to_add
 			end
 			return rtn_val
 	end
@@ -35,5 +30,4 @@ module SearchesHelper
 		path_hash[:t] = type
 		return path_hash
 	end
-
 end

@@ -13,6 +13,20 @@ class JobPosting < ActiveRecord::Base
 			 "Summer Positions"=>4,"Graduate Year Recruitment Program"=>5,
 			 "Field Placement/Work Practicum"=>6,"Internship"=>7,"Volunteer"=>8}
 
+
+	def search_data
+		data = Hash.new
+	  	data[:title] = title
+	  	data[:company_name] = company_name
+	  	data[:location] = location
+	  	data[:pay_range] = pay_range
+	  	data[:job_type] = job_type
+	  	data[:description] = description
+	  	data[:industry] = job_category_id
+	  	data[:skills] = self.skills.pluck(:name)
+	  	return data
+	end
+
 	def process_skills(hash) # Creates and Updates job posting skills, creating new skills when needed.
 		hash.each do |m|
 			id = m[1]["id"]

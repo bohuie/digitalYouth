@@ -87,6 +87,13 @@ FactoryGirl.define do
     email   "James@example.com"
   end
 
+  factory :reference_redirection2, class: ReferenceRedirection do
+    reference_url "cdhxcf5FJFdG_w"
+    first_name  "James"
+    last_name "Andrew"
+    email   "john@example.com"
+  end
+
   factory :reference_email1, class: ReferenceEmail do
     first_name  "James"
     last_name "Andrew"

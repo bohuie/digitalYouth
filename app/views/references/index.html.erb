@@ -43,5 +43,16 @@
 				<h6> You have no unconfirmed references. </h6>
 			<% end %>
 		</div>
+
+		<div class="col-xs-6">
+			<h3> References Requests </h3>
+			<% if !@reference_requests.empty? %>
+				<% @reference_requests.each do |r| %>
+					<h4><%= link_to "#{r.user.first_name} #{r.user.last_name}", user_path(r.user_id) %> <%= link_to "Refer", new_reference_path(r.reference_url)%></h4>
+				<% end %>
+			<% else %>
+				<h6> You have no reference requests. </h6>
+			<% end %>
+		</div>
 	</div>
 </div>

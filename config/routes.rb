@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   delete 'notifications/all' => 'notifications#delete_all', as: :delete_all_notifications
 
   # Devise_for :users
-  devise_for :users, controllers: { sessions: "users/sessions", registrations: "users/registrations" }
+  devise_for :users, controllers: { sessions: "users/sessions", :registrations => "registrations" }
  #devise_for :users
   #resources :users, only: :show, as: :user
   get 'users' => 'users#index'
@@ -76,7 +76,7 @@ Rails.application.routes.draw do
   post 'references/refer' => 'references#send_mail', as: :reference_emails
   post 'references' => 'references#create'
   patch 'references/:id' => 'references#update', as: :update_reference
-  delete 'references/:id' => 'references#delete', as: :delete_reference
+  delete 'references/:id' => 'references#destroy', as: :delete_reference
 
   # Survey routes
   get 'surveys/:title' => 'surveys#show', as: :survey

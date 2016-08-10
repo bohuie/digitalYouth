@@ -3,7 +3,8 @@ class SearchesController < ApplicationController
 	respond_to :js, only: :index # Formating for the AJAX requests
 	respond_to :html
 
-	def index
+	def index # index page displays all search data
+
 		# Basic Filtering parameters
 		@query 	= params[:q].blank? ? "*" : params[:q]
 		@type 	= params[:t].blank? ? "All" : params[:t]
@@ -26,19 +27,21 @@ class SearchesController < ApplicationController
 		@toggles = Hash.new()
 		where_clause = Hash.new()
 
-		case @type # Modifies the indexes to search with, i.e. selects the model(s) to search from, also sets up extra data
-		when "All"
+		case @type # Modifies the indexes to search with, i.e. selects the model(s) to search from, sets up extra data, and filters
+		when "All" # Searches all models, has no filters
 			idxs=[User.searchkick_index.name,Project.searchkick_index.name,JobPosting.searchkick_index.name]
 			@toggles = {}
-		when "People"
+
+		when "People" # Searches User model, just employees, filters relationship, location, current + past company, and skills
 			idxs=[User.searchkick_index.name]
 			where_clause[:role]="employee"
-			@toggles = {r: @r, l: @l, cc: @cc, pc: @pc, e: @e, s:@s}
-			@locations = []
+			@toggles = {r: @r, l: @l, cc: @cc, pc: @pc, s:@s}
+			@locations = [] # To be implemented
 			@relationships = ["1st","2nd", "Group Members", "3rd + Everyone"]
-			@current_companies = []
-			@past_companies = []
+			@current_companies = [] # To be implemented
+			@past_companies = [] # To be implemented
 
+			# Postgres query finds the most popular skill names (restricting length)
 			@pgrec = ActiveRecord::Base.connection.execute("
 					SELECT skills.name 
 					FROM user_skills, skills 
@@ -50,10 +53,10 @@ class SearchesController < ApplicationController
 			@skills = Array.new
 			@pgrec.each do |s| @skills.push(s["name"]) end
 
-		when "Companies"
+		when "Companies" # Searches User model, just employers, filters location and industry
 			idxs=[User.searchkick_index.name]
 			where_clause[:role]="employer"
-			@toggles = {r: @r, l: @l, i: @i}
+			@toggles = {l: @l, i: @i}
 
 			@locations = Array.new
 			locs = User.where.not(company_province: nil).group(:company_province,:company_city).order("COUNT(id)").limit(5).pluck(:company_city, :company_province)
@@ -62,10 +65,12 @@ class SearchesController < ApplicationController
 			end
 			@relationships = ["1st","2nd", "Group Members", "3rd + Everyone"]
 			@industries = JobCategory.all.pluck(:name)
-		when "Projects"
+
+		when "Projects" # Searches Project model, filters date-posted and skills
 			idxs=[Project.searchkick_index.name]
 			@toggles = { dp: @dp, s:@s}
 
+			# Postgres query finds the most popular skill names (restricting length)
 			@pgrec = ActiveRecord::Base.connection.execute("
 					SELECT skills.name 
 					FROM project_skills, skills 
@@ -78,10 +83,12 @@ class SearchesController < ApplicationController
 			@pgrec.each do |s| @skills.push(s["name"]) end
 
 			@dates_posted = ["1", "2-7", "8-14","15-30","30+"]
-		when "JobPostings"
+
+		when "JobPostings" # Searches JobPosting, filters location, company, dateposted, industry, job type, skills.
 			idxs=[JobPosting.searchkick_index.name]
 			@toggles = {l: @l, c: @c, dp: @dp, i: @i, jt: @jt, s:@s}
 			
+			# Postgres query finds the most popular company names joining between the two places the name can exist
 			@pgrec = ActiveRecord::Base.connection.execute("
 							SELECT company_name FROM(
 							(SELECT users.company_name, COUNT(job_postings.id) AS cnt
@@ -99,6 +106,7 @@ class SearchesController < ApplicationController
 			@companies = Array.new
 			@pgrec.each do |p| @companies.push(p["company_name"]) end
 
+			# Postgres query finds the most popular skill names (restricting length)
 			@pgrec = ActiveRecord::Base.connection.execute("
 					SELECT skills.name 
 					FROM job_posting_skills, skills 
@@ -114,13 +122,14 @@ class SearchesController < ApplicationController
 			@dates_posted = ["1", "2-7", "8-14","15-30","30+"]
 			@industries = JobCategory.all.pluck(:name)
 			@job_types = JobPosting.get_types_collection.keys
-		else
+		else # Search nothing
 			idxs=[]
 		end
+
+		# Large block that modifies the where portion of the query
 		if !@filters.blank?
-			filter = @filters.split(',') if !@filters.blank?
-			filter.each do |f|
-				case f # Modifies the where portion of the query
+			@filters.split(',').each do |f|
+				case f
 				when "location"
 					if @type == "Companies"
 						where_clause[:company_city] = @l.split(',')[0].strip
@@ -139,26 +148,29 @@ class SearchesController < ApplicationController
 						where_clause[:user_id]=ids if !ids.blank?
 					end
 				when "current_company"
+					# To be implemented
 					where_clause[:current_company]=@cc if !@cc.blank?
 				when "past_company"
+					# To be implemented
 					where_clause[:past_company]=@pc if !@pc.blank?
 				when "relationship"
+					# To be implemented
 					where_clause[:relationship]=@r if !@r.blank?
 				when "skills"
+					# To be implemented
 					if @type == "People"
-						where_clause[:user_skills]=@s if !@s.blank?
+						where_clause[:skills]=@s if !@s.blank?
 					elsif @type == "Projects"
-						where_clause[:project_skills]=@s if !@s.blank?
+						where_clause[:skills]=@s if !@s.blank?
 					elsif @type == "JobPostings"
-						where_clause[:job_posting_skills]=@s if !@s.blank?
+						where_clause[:skills]=@s if !@s.blank?
 					end
-					
 				when "job_type"
 					where_clause[:job_type]=JobPosting.get_types_collection[@jt] if !@jt.blank?
 				when "date_posted"
 					if !@dp.blank?
 						if @dp == "1"
-							where_clause[:created_at]={gte:Date.today-1, lte:Date.today}
+							where_clause[:created_at]={gte:Date.today-1}
 						elsif @dp == "30+"
 							where_clause[:created_at]={lte:Date.today-30}
 						else
@@ -170,7 +182,7 @@ class SearchesController < ApplicationController
 			end
 		end
 
-		# Need to fix N+1 query problem here with rolify
+		# There is an N+1 query problem here with rolify
 		@results = User.search @query, 
 				 index_name: idxs,
 				 operator: "or", 
@@ -180,15 +192,13 @@ class SearchesController < ApplicationController
 
 		@query = "" if @query == "*"
 
-		# Need to fix problem with query only have a fraction of the results
-		# Need to fix scroll problem
 		# Need to fix remaining query filters.
 		# Need to finish "Add" button filter option
 		# Testing?
 		# Merge
 	end
 
-	def navigate
+	def navigate # Converts parameters to path and redirects to the object
 		obj = params[:obj].constantize.find(params[:obj_id])
 		Searchjoy::Search.find(params[:id]).convert(obj)
 		redirect_to params[:path]

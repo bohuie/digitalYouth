@@ -8,6 +8,15 @@
     if (!($(".searches.index").length > 0)) {return;}
     $(window).scroll(function() {checkScroll(15, 'ajax-loading', window.location.href);});
     $(window).unload(function() {$(window).unbind();});
+
+    $( document ).ready(function() {
+        console.log($('#results').length);
+        if($('#total-results').val()<=($('#results').length)){
+          can_request = false;
+          $('#load-more').hide();
+        }
+    });
+    
   });
 
 function hideUnHide(hide,unhide){
@@ -28,5 +37,4 @@ $(document).on "page:change", ->
   $(window).unload(() ->
   	$(window).unbind();)
   ""
-
-  */
+*/

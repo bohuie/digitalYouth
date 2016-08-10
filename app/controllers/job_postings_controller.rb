@@ -89,6 +89,7 @@ class JobPostingsController < ApplicationController
 					load params[:job_posting_seeds].tempfile
 				end
 			end
+			JobPosting.reindex
 			puts "Completed."
 			redirect_to root_path, flash: {success: "Refreshed Auto Populated Job Postings"}
 		else

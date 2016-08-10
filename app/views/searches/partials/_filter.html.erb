@@ -2,7 +2,7 @@
 <hr>
 <h6 class="filter-title" onclick="$('#<%=formatted_name%>').slideToggle(100);"> <%=name%> <span class="caret"></span></h6>
 <div id="<%=formatted_name%>" style="display: none;"> 
-	<%= link_to	"All", search_path(q:@query, t:@type, f:@filters)%><br>
+	<%= link_to	"All", search_path(get_path_hash(@toggles,@query,@type))%><br>
 	<%filter_values.each do |v|%>
 		<% path_hash = get_path_hash(@toggles,@query,@type) %>
 		<% path_hash[key] = v %>

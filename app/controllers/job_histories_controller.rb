@@ -2,9 +2,9 @@ class JobHistoriesController < ApplicationController
 
   before_action :authenticate_user!
   before_action :job_histories_owner, only: [:edit, :update, :destroy]
-  before_action :check_fields, only: [:update, :create]
+  #before_action :check_fields, only: [:update, :create]
 
-#route errors from :job_histories_owner, index no longer displaying content reloading after adding check fields, when all r full believes one is empty
+#route errors from :job_histories_owner, index no longer displaying content reloading after adding check fields, when all r full believes one is empty userid not being set in test same as in create below
 
   def index
 	@job_history = JobHistory.where(user_id: current_user.id)
@@ -21,7 +21,9 @@ class JobHistoriesController < ApplicationController
   end
 
   def create
-	params[:user_id]=current_user.id
+	#Not working added hidden field back
+	#params[:user_id]=current_user.id
+
 	@job_histories = JobHistory.new(job_history_params)
 	if @job_histories.save
 		redirect_to job_histories_path , flash: {success: "Thank you for adding to your Job History!"}
@@ -60,19 +62,22 @@ class JobHistoriesController < ApplicationController
   
 private
 def job_history_params
-	params.require(:job_history).permit(:user_id, :employer, :position, :start_date, :end_date, :description, :skills)
-
+	params.require(:job_history).permit(:user_id, :employer, :position, :start_date, :description, :skills)
   end 
 
 def job_histories_owner
 		@job_histories = JobHistory.find(params[:id])
-		
-		unless @job_histories.user_id == current_user.id
+
+		if @job_histories.user_id != current_user.id
 			flash[:danger] = 'Access denied as you are not owner of this Job History'
 			redirect_to current_user
+		else
+			return @job_histories
 		end
 	end
 end
+
+
 
 def check_fields
 	args=params[:job_history]

@@ -45,10 +45,16 @@
 				<%=j.start_date%>
 			</div>
 			<div class="col-xs-2" style="border: 1px black solid;">
-				<%=j.end_date%>
+				<%=
+				if(j.end_date.blank?)
+					"Current"
+				else
+					j.end_date
+				end
+				%>
 			</div>
 			<div class="col-xs-1">
-				<%= link_to  'edit', {:action => 'edit', :id => j.id} %>
+				<%=link_to  'edit', {:action => 'edit', :id => j.id} %>
 				<%=link_to 'delete',delete_job_history_path(j.id), 'data-method' => :delete%>
 			</div>
 		<%end%>

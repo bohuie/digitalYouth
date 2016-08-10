@@ -1,8 +1,9 @@
 class ReferencesController < ApplicationController
 
 	before_action :authenticate_user!, except: [:new, :create]
-	before_action :reference_owner, only: [:update, :delete]
+	before_action :reference_owner, only: [:update, :destroy]
 	before_action :check_email_fields, only: [:send_mail]
+	before_action :check_reference_fields, only: [:create]
 
 	def index # Shows a users unconfirmed, confirmed references and reference requests
 		@confirmed_references = Reference.where(user_id: current_user.id, confirmed: true)
@@ -23,7 +24,7 @@ class ReferencesController < ApplicationController
 		redirect_to references_path, flash: {info: msg}
 	end
 
-	def delete # Deletes (destroys) a reference
+	def destroy # Deletes a reference
 		@reference.destroy
 		redirect_to references_path, flash: {info: "Reference deleted!"}
 	end
@@ -54,25 +55,36 @@ class ReferencesController < ApplicationController
 			@user = User.find(@reference_link.user_id)
 			@reference = Reference.new
 		else
-			redirect_to root_path , flash: {danger: "Invalid reference link."}
+			redirect_to root_path , flash: {danger: "Invalid reference link"}
 		end
 	end
 
 	def create # Post action which creates the reference
-		@reference = Reference.new(reference_params)
-		@reference.referee_id = current_user.id if user_signed_in?
-		@verified = verify_recaptcha(model: @reference)
-		if @verified && !@owner && @reference.save
-			@url_string = request.referer.rpartition('/')[-1] # Retrieves the random part of the url on the new page
-			ReferenceRedirection.find_by(reference_url: @url_string).destroy # Removes the redirection url
-			redirect_to root_path , flash: {success: "Thank you for making a reference!"}
-		else
-			if !@verified
-				flash[:warning] = "Please redo the Captcha"
+		@url_string = request.referer.rpartition('/')[-1] if !request.referer.nil? # Retrieves the random part of the url on the new page
+		@reference_redirection = ReferenceRedirection.find_by(reference_url: @url_string)
+		if !@reference_redirection.nil?
+			@owner = false
+			params[:reference][:user_id] = @reference_redirection.user_id
+			@reference = Reference.new(reference_params)
+			if user_signed_in?
+				@reference.referee_id = current_user.id
+				@owner = (@reference_redirection.user_id == current_user.id) # Stops a user from referencing themself
+			end
+			@verified = verify_recaptcha(model: @reference)
+			if @verified && !@owner && @reference.save
+				ReferenceRedirection.find_by(reference_url: @url_string).destroy # Removes the redirection url
+				redirect_to root_path , flash: {success: "Thank you for making a reference!"}
 			else
-				flash[:warning] = "There was an issue in creating your reference."
-			end 
-			redirect_back_or new_reference_path(request.referer.rpartition('/')[-1]) 
+				if !@verified
+					flash[:warning] = "Please redo the Captcha"
+				else
+					flash[:warning] = "There was an issue in creating your reference"
+				end 
+				redirect_back_or new_reference_path(@url_string)
+			end
+		else
+			flash[:danger] = "Invalid reference link"
+			redirect_back_or root_path
 		end
 	end
 
@@ -97,7 +109,9 @@ private
 
 	def check_email_fields # Validate email parameters
 		args = params[:reference_email]
-		if args[:first_name].blank? || args[:last_name].blank? || args[:email].blank?
+		if args.nil?
+			flash[:warning] = "Missing required fields"
+		elsif args[:first_name].blank? || args[:last_name].blank? || args[:email].blank?
 			flash[:warning] = "Missing required fields"
 		elsif args[:email] !~ Devise::email_regexp
 			flash[:warning] =  "Enter a valid email address"
@@ -109,12 +123,12 @@ private
 
 	def check_reference_fields # Validate reference parameters
 		args = params[:reference]
-		if args[:first_name].blank? || args[:last_name].blank?|| args[:company].blank? || args[:position].blank? || args[:reference_body].blank?  
+		if args.nil?
+			flash[:warning] = "Missing required fields"
+		elsif args[:first_name].blank? || args[:last_name].blank?|| args[:company].blank? || args[:position].blank? || args[:reference_body].blank?  
 			flash[:warning] = "Missing required fields"
 		elsif args[:email] !~ Devise::email_regexp
 			flash[:warning] = "Enter a valid email address"
-		elsif user_signed_in? && params[:reference_email][:user_id] == current_user.id
-			flash[:warning] = "You cannot reference yourself"
 		end
 		redirect_back_or new_reference_path(request.referer.rpartition('/')[-1]) if !flash[:warning].blank?
 	end

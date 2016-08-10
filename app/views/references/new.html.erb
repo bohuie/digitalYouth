@@ -1,11 +1,13 @@
 <div class ="container">
 	<p>Refer: <%= @user.first_name %> <%= @user.last_name %></p>
 	<%if !user_signed_in?%>
-		<%  if User.find_by(email: @reference_link.email.downcase) != nil%>
-			<p> Hey we can see you have a <%=ENV['HOST_NAME']%> account<br> 
-				Please <%= link_to "sign in", new_user_session_path %> and then fill in this form</p>
-			</p>
+	<p><% if User.find_by(email: @reference_link.email.downcase) != nil%>
+			Hey we can see you have a <%=ENV['HOST_NAME']%> account<br>
+			Please <%= link_to "sign in", new_user_session_path %> and then fill in this form
+		<% else %>
+			If you have a <%=ENV['HOST_NAME']%> account please <%= link_to "sign in", new_user_session_path %> and then fill in this form
 		<% end %>
+	</p>
 	<% end %>
 
 	<%= simple_form_for @reference do |r| %>
@@ -16,8 +18,7 @@
 		<%= r.input :position, required: true %>
 		<%= r.input :phone_number, :input_html => { :type => "tel", :pattern => "[\+]\d{1}[\(]\d{3}[\)]\d{3}[\-]\d{4}", :placeholder => "+9(999)999-9999" }%>
 		<%= r.input :reference_body, required: true%>
-		<%= r.hidden_field :user_id, :value => @user.id %>
-		<%= recaptcha_tags %>
+		<%= recaptcha_tags %><br>
 		<%= r.button :submit %>
 	<% end -%>
 </div>

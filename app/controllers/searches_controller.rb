@@ -8,24 +8,25 @@ class SearchesController < ApplicationController
 		# Basic Filtering parameters
 		@query 	= params[:q].blank? ? "*" : params[:q]
 		@type 	= params[:t].blank? ? "All" : params[:t]
-		@filters = params[:f].nil? ? "" : params[:f]
+		@filters= params[:f].nil? ? "" : params[:f]
 		@usr 	= current_user.id if user_signed_in?
 
 		#Values for where clause
-		@l 	= params[:l].nil?  ? "" : params[:l]  #location
-		@i 	= params[:i].nil?  ? "" : params[:i]  #industry
-		@c 	= params[:c].nil?  ? "" : params[:c]  #company
-		@cc = params[:cc].nil? ? "" : params[:cc] #current_company
-		@pc = params[:pc].nil? ? "" : params[:pc] #past_company
-		@r 	= params[:r].nil?  ? "" : params[:r]  #relationship
-		@s 	= params[:s].nil?  ? "" : params[:s]  #skills
-		@jt = params[:jt].nil? ? "" : params[:jt] #job_type
-		@dp = params[:dp].nil? ? "" : params[:dp] #date_posted
-		@h 	= params[:h].nil?  ? "" : params[:h]  #hiring
+		@l = params[:l].nil?  ? "" : params[:l]  #location
+		@i = params[:i].nil?  ? "" : params[:i]  #industry
+		@c = params[:c].nil?  ? "" : params[:c]  #company
+		@cc= params[:cc].nil? ? "" : params[:cc] #current_company
+		@pc= params[:pc].nil? ? "" : params[:pc] #past_company
+		@r = params[:r].nil?  ? "" : params[:r]  #relationship
+		@s = params[:s].nil?  ? "" : params[:s]  #skills
+		@jt= params[:jt].nil? ? "" : params[:jt] #job_type
+		@dp= params[:dp].nil? ? "" : params[:dp] #date_posted
+		@h = params[:h].nil?  ? "" : params[:h]  #hiring
 
 		#Hashes for filtering
 		@toggles = Hash.new()
 		where_clause = Hash.new()
+		aggs = Array.new()
 
 		case @type # Modifies the indexes to search with, i.e. selects the model(s) to search from, sets up extra data, and filters
 		when "All" # Searches all models, has no filters
@@ -57,6 +58,7 @@ class SearchesController < ApplicationController
 			idxs=[User.searchkick_index.name]
 			where_clause[:role]="employer"
 			@toggles = {l: @l, i: @i}
+			aggs = [:location, :industry]
 
 			@locations = Array.new
 			locs = User.where.not(company_province: nil).group(:company_province,:company_city).order("COUNT(id)").limit(5).pluck(:company_city, :company_province)
@@ -87,6 +89,7 @@ class SearchesController < ApplicationController
 		when "JobPostings" # Searches JobPosting, filters location, company, dateposted, industry, job type, skills.
 			idxs=[JobPosting.searchkick_index.name]
 			@toggles = {l: @l, c: @c, dp: @dp, i: @i, jt: @jt, s:@s}
+			aggs = [:location, :company, :industry, :job_type, :skills]
 			
 			# Postgres query finds the most popular company names joining between the two places the name can exist
 			@pgrec = ActiveRecord::Base.connection.execute("
@@ -157,14 +160,7 @@ class SearchesController < ApplicationController
 					# To be implemented
 					where_clause[:relationship]=@r if !@r.blank?
 				when "skills"
-					# To be implemented
-					if @type == "People"
-						where_clause[:skills]=@s if !@s.blank?
-					elsif @type == "Projects"
-						where_clause[:skills]=@s if !@s.blank?
-					elsif @type == "JobPostings"
-						where_clause[:skills]=@s if !@s.blank?
-					end
+					where_clause[:skills]=@s if !@s.blank?
 				when "job_type"
 					where_clause[:job_type]=JobPosting.get_types_collection[@jt] if !@jt.blank?
 				when "date_posted"
@@ -182,12 +178,16 @@ class SearchesController < ApplicationController
 			end
 		end
 
+		if where_clause == {}
+			aggs = []
+		end
 		# There is an N+1 query problem here with rolify
 		@results = User.search @query, 
 				 index_name: idxs,
 				 operator: "or", 
 				 track: {user_id:@usr,search_type:@type},
 				 where: where_clause,
+				 aggs: aggs,
 				 page: params[:page], per_page: 15
 
 		@query = "" if @query == "*"
@@ -196,11 +196,46 @@ class SearchesController < ApplicationController
 		# Need to finish "Add" button filter option
 		# Testing?
 		# Merge
+
+		
+		if where_clause != {} && where_clause != {:role=>"employee"}
+			# Aggregates for the filters when the where clause is specified change filter values to work with whats queried
+			@skills   = make_agg_array("skills",@results.aggs,@skills,5)
+			@locations= make_agg_array("location",@results.aggs,@locations,5)
+			#Need to add company name aggregate
+			#Need to add company location aggregate for companies
+
+			#Add queried value to collection
+			@locations= add_to_if_not_in(@l, @locations)
+			@skills   = add_to_if_not_in(@s, @skills)
+			@companies= add_to_if_not_in(@c, @companies)
+		end
+		
 	end
 
 	def navigate # Converts parameters to path and redirects to the object
 		obj = params[:obj].constantize.find(params[:obj_id])
 		Searchjoy::Search.find(params[:id]).convert(obj)
 		redirect_to params[:path]
+	end
+
+
+private
+	def add_to_if_not_in(val,arr)
+		if !val.nil? && !arr.nil?
+			arr.push(val) if !arr.include?(val)
+		end
+		return arr
+	end
+
+	def make_agg_array(attribute,aggs,inpt,n)
+		if aggs != nil && !aggs[attribute].nil?
+			arr = Array.new
+			agg_locs = aggs[attribute]["buckets"][0..n-1]
+			agg_locs.each do |s| arr.push(s["key"]) end
+			return arr
+		else
+			return inpt
+		end
 	end
 end

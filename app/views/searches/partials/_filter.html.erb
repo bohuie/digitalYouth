@@ -15,7 +15,7 @@
 			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
 		</button> 
 		<div class="input-group input-group-sm">
-			<%= text_field_tag key,'', class: 'form-control', placeholder: name, onchange: "filterInputChange('input-#{formatted_name}')", 
+			<%= text_field_tag key,'', class: 'form-control', placeholder: name, onchange: "filterInputChange('input-#{formatted_name}','#{key}','#{name.downcase}')", 
 				style:"display:none", id:"input-#{formatted_name}"%>
 		</div>
 	<% end %>

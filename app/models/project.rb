@@ -1,5 +1,5 @@
 class Project < ActiveRecord::Base
-	searchkick
+	searchkick callbacks: :async
 
 	belongs_to :user
 
@@ -13,4 +13,14 @@ class Project < ActiveRecord::Base
 	validates_attachment :image, content_type: { content_type: ["image/jpg", "image/jpeg", "image/png"] }
 
 	validates :user, presence: true
+
+	def search_data
+		data = Hash.new
+	  	data[:title] = title
+	  	data[:description] = title
+	  	data[:user_id] = self.user_id
+	  	data[:created_at] = created_at
+	  	data[:skills] = self.skills.pluck(:name)
+	  	return data
+	end
 end

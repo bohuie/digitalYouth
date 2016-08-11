@@ -22,6 +22,7 @@ class ProjectsController < ApplicationController
 		@project = current_user.projects.build(project_params)
 		if @project.save
 			#current_user.projects << @project
+			Project.reindex
 			flash[:success] = "Project successfully created."
 			redirect_to current_user
 		else
@@ -36,6 +37,7 @@ class ProjectsController < ApplicationController
 		@project_skill = @project.project_skills.create
 		
 		if @project.update_attributes(project_params)
+			Project.reindex
 			flash[:success] = "Project successfully updated."
 			redirect_to current_user
 		else

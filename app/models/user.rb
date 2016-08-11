@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
-  	searchkick
+  	searchkick callbacks: :async
   	scope :search_import, -> { includes(:roles,:users_roles) }
+    after_save :user_reindex
+
   	
     include PublicActivity::Model
     tracked only: :create, owner: ->(controller,model) {model && model.itself}
@@ -34,6 +36,11 @@ class User < ActiveRecord::Base
         data[:company_address] = company_address
         data[:company_province] = company_province
         data[:role] = self.roles.first.name if !self.roles.first.nil?
+        data[:skills] = self.skills.pluck(:name)
         return data
 	end
+
+    def user_reindex
+        User.reindex
+    end
 end

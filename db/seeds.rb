@@ -106,6 +106,7 @@ begin
 	#----------- Load Job Posting data from scraping and processing ---------------------
 	if !Rails.env.test?
 		Dir[File.join(Rails.root, 'db', 'scraping', '*.rb')].sort.each { |seed| load seed }
+		JobPosting.reindex
 	end
 
 rescue Faraday::ConnectionFailed

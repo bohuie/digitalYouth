@@ -2,15 +2,15 @@ require 'rails_helper'
 
 RSpec.describe JobHistoriesController, type: :controller do
 
-	let(:user) { FactoryGirl.create(:user) }
-	let(:user2) { FactoryGirl.create(:user2) }
-	let(:job_history) { FactoryGirl.create(:job_history) }
-	before do
-		user.confirm
-		user2.confirm
-	end
 	
 	describe "Get index" do
+
+		let(:user) { FactoryGirl.create(:user) }
+		let(:job_history) { FactoryGirl.create(:job_history) }
+	
+		before do
+			user.confirm
+		end
 		
 		it "loads the jobs related to current user" do
 			sign_in user
@@ -20,6 +20,13 @@ RSpec.describe JobHistoriesController, type: :controller do
 	end
 
 	describe "Get new" do
+
+		let(:user) { FactoryGirl.create(:user) }
+		let(:job_history) { FactoryGirl.create(:job_history) }
+		
+		before do
+			user.confirm
+		end
 	
 		let(:job_history) { FactoryGirl.create(:job_history) }
 		let(:user) { FactoryGirl.create(:user) }
@@ -46,10 +53,14 @@ RSpec.describe JobHistoriesController, type: :controller do
 			  end_date: job_history.end_date,
 			  position: job_history.position,
 			  description: job_history.description,
-			  skills: job_history.skills,
-			  user_id: user.id,
+			  skills: job_history.skills
 			} 
 		}
+
+		before do
+			user.confirm
+			user.job_histories << job_history
+		end
 
 		context "user is not logged in" do
 			it "redirects the user when not logged in" do
@@ -61,15 +72,21 @@ RSpec.describe JobHistoriesController, type: :controller do
 
 		context "user is logged in" do
 
-			it "create Job History" do
+			before (:each) do
 				sign_in user
+				@count= JobHistory.count
 				post :create, job_history: job_histories_attr
 			end
-			it "should have the new jobhistory" do
-				#expect(job_history).to eq(nil)
-				expect([user.id]).to eq(JobHistory.where(user_id: user.id).where_values_hash.values())
+
+			it "increases count by 1" do
+				expect(JobHistory.count).to eq(@count+1)
 			end
 
+			it "last record in db is job history created" do
+				expect(JobHistory.last.description).to eq(job_history.description)
+				expect(JobHistory.last.employer).to eq(job_history.employer)
+				expect(JobHistory.last.position).to eq(job_history.position)
+			end
 
 			it "redirects to the root page if sucessful with a message" do
 				expect(response).to redirect_to(job_histories_path)
@@ -78,10 +95,27 @@ RSpec.describe JobHistoriesController, type: :controller do
 		end
 	end
 describe "PATCH update" do
+	let(:user) { FactoryGirl.create(:user) }
+	let(:user2) { FactoryGirl.create(:user2) }
+	let(:job_history) { FactoryGirl.create(:job_history) }
+	let(:job_histories_attr) { 
+			{ employer: job_history.employer,
+			  start_date: job_history.start_date,
+			  end_date: job_history.end_date,
+			  position: "different",
+			  description: "test",
+			  skills: job_history.skills
+			} 
+		}
+	before do
+		user.confirm
+		user2.confirm
+		user.job_histories << job_history
+	end
 
 		context "user is not logged in" do
 			it "redirects the user when not logged in" do
-				patch :update, id: job_history.id
+				patch :update, id: job_history.id, job_history: job_histories_attr
 		
 								
 				expect(response).to redirect_to(new_user_session_path)
@@ -92,7 +126,7 @@ describe "PATCH update" do
 
 			it "redirects if user is not the job history's owner" do
 				sign_in user2
-				patch :update, id: job_history.id
+				patch :update, id: job_history.id, job_history: job_histories_attr
 
 				expect(response).to redirect_to(user_path(user2))
 				expect(flash[:danger]).to eq("Access denied as you are not owner of this Job History")
@@ -100,14 +134,24 @@ describe "PATCH update" do
 
 			it "updates the job history" do
 				sign_in user
-				patch :update, id: job_history.id
+				patch :update, id: job_history.id, job_history: job_histories_attr
 
-				expect(response).to redirect_to(job_histories_path)
+				expect(response).to redirect_to(job_history_path(job_history.id))
 				expect(flash[:success]).to eq("Thank you for updating to your Job History!")
 			end
 		end
 	end
 	describe "DELETE delete" do
+
+		let(:user) { FactoryGirl.create(:user) }
+		let(:user2) { FactoryGirl.create(:user2) }
+		let(:job_history) { FactoryGirl.create(:job_history) }
+		before do
+			user.confirm
+			user2.confirm
+			user.job_histories << job_history
+		end
+
 		context "incorrect user" do
 			it "redirects the user when not logged in" do
 				delete :destroy, id: job_history.id
@@ -132,7 +176,7 @@ describe "PATCH update" do
 			end
 			it "should not have the job history" do
 				#delete not working bcuz userid not being set in create delete cannot be done as user cannot access if userid doesnt exist
-				expect(JobHistory.where(id: job_history.id).where_values_hash.values()).to be_nil
+				expect(JobHistory.where(id: job_history.id)).to be_empty
 			end
 
 

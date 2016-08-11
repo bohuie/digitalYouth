@@ -22,7 +22,8 @@ class JobHistoriesController < ApplicationController
 
   def create
 	#Not working added hidden field back
-	#params[:user_id]=current_user.id
+	params[:job_history][:user_id]=current_user.id
+
 
 	@job_histories = JobHistory.new(job_history_params)
 	if @job_histories.save
@@ -41,14 +42,14 @@ class JobHistoriesController < ApplicationController
 
   def update
 	@job_history = JobHistory.find(params[:id])
+
 	if @job_history.update(job_history_params)
 		flash[:success]="Thank you for updating to your Job History!"
-		redirect_to job_history_path(@job_history)
+		redirect_to job_histories_path
 	else
 		flash[:danger]="There was a problem in updating your Job History!"
-		redirect_back_or job_history_path(@job_history)
+		redirect_back_or edit_job_history_path(@job_history)
 	end
-	
   end
 
   def destroy
@@ -66,9 +67,9 @@ def job_history_params
   end 
 
 def job_histories_owner
-		@job_histories = JobHistory.find(params[:id])
+		@job_history = JobHistory.find(params[:id])
 
-		if @job_histories.user_id != current_user.id
+		if @job_history.user_id != current_user.id
 			flash[:danger] = 'Access denied as you are not owner of this Job History'
 			redirect_to current_user
 		else

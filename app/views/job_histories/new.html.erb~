@@ -5,7 +5,7 @@
 	<!--Hidden value with user id, required in table-->
 	<%= f.hidden_field :user_id, :value => @user.id%>
 	<%= f.input :start_date, required: true, as: :date %>
-	<%= f.input :end_date, as: :date %>
+	<%= f.input :end_date, as: :date, include_blank: true %>
 	<%= f.input :employer, required: true %>
 	<%= f.input :position, required: true %>
 	<%= f.input :description, required: true, as: :text %>

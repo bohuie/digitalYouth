@@ -2,8 +2,6 @@
 
 <!--form to be filled out with changed information for job-->
 <%= simple_form_for @job_history, method: "patch" do |f| %>
-	<!--Hidden value with user id, required in table-->
-	<%= f.hidden_field :user_id, :value => @user.id%>
 	<%= f.input :start_date, input_html: {value: @job_history.start_date}, required: true %>
 	<%= f.input :end_date, input_html: {value: @job_history.end_date}, required: true%>
 	<%= f.input :employer, input_html: {value: @job_history.employer}, required: true %>

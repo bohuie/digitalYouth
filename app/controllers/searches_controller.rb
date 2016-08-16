@@ -21,7 +21,6 @@ class SearchesController < ApplicationController
 		@s = params[:s].nil?  ? "" : params[:s]  #skills
 		@jt= params[:jt].nil? ? "" : params[:jt] #job_type
 		@dp= params[:dp].nil? ? "" : params[:dp] #date_posted
-		@h = params[:h].nil?  ? "" : params[:h]  #hiring - not implemented
 
 		#Hashes for filtering
 		@toggles = Hash.new()

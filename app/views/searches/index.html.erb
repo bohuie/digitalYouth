@@ -1,11 +1,11 @@
 <div class="row">
 	<div class="col-md-2 search-sidebar">
 		<div id="filters">
-			<%= link_to "All", search_path(q:@query) %><br>
-			<%= link_to "People", search_path(q:@query, t:"People") %><br>
-			<%= link_to "Companies", search_path(q:@query, t:"Companies") %><br>
-			<%= link_to "Projects", search_path(q:@query, t:"Projects") %><br>
-			<%= link_to "Job Postings", search_path(q:@query, t:"JobPostings") %><br>
+			<%= link_to "All", search_path(q:@query), class: active_search("All",@type)%><br>
+			<%= link_to "People", search_path(q:@query, t:"People"), class: active_search("People",@type) %><br>
+			<%= link_to "Companies", search_path(q:@query, t:"Companies"), class: active_search("Companies",@type) %><br>
+			<%= link_to "Projects", search_path(q:@query, t:"Projects"), class: active_search("Projects",@type)%><br>
+			<%= link_to "Job Postings", search_path(q:@query, t:"JobPostings"), class: active_search("JobPostings",@type)%><br>
 		</div>
 		<%= render "searches/partials/filters" %>
 	</div>

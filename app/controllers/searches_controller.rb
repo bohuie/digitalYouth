@@ -15,13 +15,13 @@ class SearchesController < ApplicationController
 		@l = params[:l].nil?  ? "" : params[:l]  #location
 		@i = params[:i].nil?  ? "" : params[:i]  #industry
 		@c = params[:c].nil?  ? "" : params[:c]  #company
-		@cc= params[:cc].nil? ? "" : params[:cc] #current_company
-		@pc= params[:pc].nil? ? "" : params[:pc] #past_company
-		@r = params[:r].nil?  ? "" : params[:r]  #relationship
+		@cc= params[:cc].nil? ? "" : params[:cc] #current_company - not implemented
+		@pc= params[:pc].nil? ? "" : params[:pc] #past_company - not implemented
+		@r = params[:r].nil?  ? "" : params[:r]  #relationship - not implemented
 		@s = params[:s].nil?  ? "" : params[:s]  #skills
 		@jt= params[:jt].nil? ? "" : params[:jt] #job_type
 		@dp= params[:dp].nil? ? "" : params[:dp] #date_posted
-		@h = params[:h].nil?  ? "" : params[:h]  #hiring
+		@h = params[:h].nil?  ? "" : params[:h]  #hiring - not implemented
 
 		#Hashes for filtering
 		@toggles = Hash.new()
@@ -33,10 +33,10 @@ class SearchesController < ApplicationController
 			idxs=[User.searchkick_index.name,Project.searchkick_index.name,JobPosting.searchkick_index.name]
 			@toggles = {}
 
-		when "People" # Searches User model, just employees, filters relationship, location, current + past company, and skills
+		when "People" # Searches User model, just employees, current + past company, skills, (and should have location and relationship) 
 			idxs=[User.searchkick_index.name]
 			where_clause[:role]="employee"
-			@toggles = {r: @r, l: @l, cc: @cc, pc: @pc, s:@s}
+			@toggles = {cc: @cc, pc: @pc, s:@s}
 			@locations = [] # To be implemented
 			@relationships = ["1st","2nd", "Group Members", "3rd + Everyone"]
 			@current_companies = [] # To be implemented
@@ -54,10 +54,10 @@ class SearchesController < ApplicationController
 			@skills = Array.new
 			@pgrec.each do |s| @skills.push(s["name"]) end
 
-		when "Companies" # Searches User model, just employers, filters location and industry
+		when "Companies" # Searches User model, just employers, filters location (and should have industry)
 			idxs=[User.searchkick_index.name]
 			where_clause[:role]="employer"
-			@toggles = {l: @l, i: @i}
+			@toggles = {l: @l}
 			aggs = [:location, :industry]
 
 			@locations = Array.new
@@ -65,6 +65,7 @@ class SearchesController < ApplicationController
 			locs.each do |l| 
 				@locations.push(l[0]+', '+l[1])
 			end
+
 			@relationships = ["1st","2nd", "Group Members", "3rd + Everyone"]
 			@industries = JobCategory.all.pluck(:name)
 
@@ -198,7 +199,7 @@ class SearchesController < ApplicationController
 		# Merge
 
 		
-		if where_clause != {} && where_clause != {:role=>"employee"}
+		if where_clause != {} && where_clause != {:role=>"employer"}
 			# Aggregates for the filters when the where clause is specified change filter values to work with whats queried
 			@skills   = make_agg_array("skills",@results.aggs,@skills,5)
 			@locations= make_agg_array("location",@results.aggs,@locations,5)

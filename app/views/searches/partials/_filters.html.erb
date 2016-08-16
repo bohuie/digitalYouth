@@ -1,5 +1,4 @@
 <% path="searches/partials/filter"%>
-
 <%= render path, name: "Location"		, key: :l, filter_values: @locations, current_values: @l, input: true 			if !@toggles[:l].nil?%>
 <%= render path, name: "Current Company", key: :cc,filter_values: @current_companies, current_values: @cc, input: true  if !@toggles[:cc].nil?%>
 <%= render path, name: "Company"	 	, key: :c, filter_values: @companies, current_values: @c, input: true 			if !@toggles[:c].nil? %>
@@ -32,8 +31,8 @@
 			<% path_hash = get_path_hash(@toggles,@query,@type) %>
 			<% path_hash[:dp] = dp %>
 			<% path_hash[:f] = add_filter(@filters,"date_posted") %>
-			<%= link_to "#{dp} #{str} ago", search_path(path_hash) %><br>
-			<% cnt = cnt + 1 %>
+			<%= link_to "#{dp} #{str} ago", search_path(path_hash), class: active_search(dp,params[:dp]) %><br>
+			<% cnt += 1 %>
 		<%end%>
 	</div>
 <% end %>

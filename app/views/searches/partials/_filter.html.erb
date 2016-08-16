@@ -1,13 +1,17 @@
 <% formatted_name = name.downcase.tr(" ", "_") %>
 <hr>
 <h6 class="filter-title" onclick="$('#<%=formatted_name%>').slideToggle(100);"> <%=name%> <span class="caret"></span></h6>
-<div id="<%=formatted_name%>" style="display: none;"> 
-	<%= link_to	"All", search_path(get_path_hash(@toggles,@query,@type))%><br>
+<% if @filters.include? name.downcase %>
+	<div id="<%=formatted_name%>">
+<% else %>
+	<div id="<%=formatted_name%>" style="display: none;"> 
+<% end %>
+	<%= link_to	"All", search_path(get_path_hash(@toggles,@query,@type,key,true))%><br>
 	<%filter_values.each do |v|%>
 		<% path_hash = get_path_hash(@toggles,@query,@type) %>
 		<% path_hash[key] = v %>
 		<% path_hash[:f] = add_filter(@filters, formatted_name) %>
-		<%= link_to v, search_path(path_hash) %><br>
+		<%= link_to v, search_path(path_hash), class: active_search(v,params[key]) %><br>
 	<%end%>
 
 	<% if local_assigns[:input] == true %>

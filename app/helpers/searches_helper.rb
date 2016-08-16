@@ -23,11 +23,16 @@ module SearchesHelper
 			return rtn_val
 	end
 
-	def get_path_hash(input_hash,query,type)
+	def get_path_hash(input_hash,query,type,key=nil,all=false)
 		path_hash = Hash.new
 		input_hash.each {|key, value| path_hash[key] = value if !value.blank?}
-		path_hash[:q] = query 
+		path_hash[:q] = query
 		path_hash[:t] = type
+		path_hash.delete(key) if !key.nil? && all
 		return path_hash
+	end
+
+	def active_search(link,type)
+		return "active-search" if link == type
 	end
 end

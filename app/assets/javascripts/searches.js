@@ -3,6 +3,12 @@
 //# All this logic will automatically be available in application.js.
 //# You can use CoffeeScript in this file: http://coffeescript.org/
 
+/*
+  On page load:
+    Setup endless scrolling events
+    Set search-type select to value
+    Restricts endless scrolling if there isn't anymore to load.
+*/
  $(document).on("page:change", function() {
     if (!($(".searches.index").length > 0)) {return;}
     $(window).scroll(function() {checkScroll(15, 'ajax-loading', window.location.href);});
@@ -10,57 +16,32 @@
 
     $( document ).ready(function() {
       $('#type-select').val(getURLParameter('t'));
-        if($('#total-results').val()<=($('#results').length)){
-          can_request = false;
-          $('#load-more').hide();
-        }
+      if($('#total-results').val()<=($('#results').length)){
+        can_request = false;
+        $('#load-more').hide();
+      }
     });
   });
 
+//Hides the first element, shows the second
 function hideUnHide(hide,unhide){
 	$("#"+hide).hide();
 	$("#"+unhide).show();
 }
 
+//Adds filter, and filter value to the url from the input and redirects
 function filterInputChange(id,key,filter){
-  var filt_val = getURLParameter('f');
-  var val = urlFormat($('#'+id).val());
-  filt_val = urlFormat(appendReplace(filter,filt_val));
-
-  var url = setGetParameter('f',filt_val);
-  setGetParameter(key,val,true,url);
+  var val = $('#'+id).val();
+  if(val != ""){
+    var url_obj = new Url; //Requires url.min.js
+    var filters = url_obj.query['f'];
+    url_obj.query['f'] = appendReplace(filter,filters);
+    url_obj.query[key] = val;
+    window.location.href = url_obj.toString();
+  }
 }
 
-//From Stackoverflow
-function getURLParameter(param_name) {
-  return decodeURIComponent((new RegExp('[?|&]' + param_name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
-}
-
-//From Stackoverflow
-function setGetParameter(paramName, paramValue,redir=false, url=window.location.href){
-    var hash = location.hash;
-    url = url.replace(hash, '');
-    if (url.indexOf(paramName + "=") >= 0){
-        var prefix = url.substring(0, url.indexOf(paramName));
-        var suffix = url.substring(url.indexOf(paramName));
-        suffix = suffix.substring(suffix.indexOf("=") + 1);
-        suffix = (suffix.indexOf("&") >= 0) ? suffix.substring(suffix.indexOf("&")) : "";
-        url = prefix + paramName + "=" + paramValue + suffix;
-    }
-    else{
-    if (url.indexOf("?") < 0)
-        url += "?" + paramName + "=" + paramValue;
-    else
-        url += "&" + paramName + "=" + paramValue;
-    }
-    if(redir){
-      console.log("url:"+url);
-      window.location.href = url + hash;
-    }
-    else
-      return url + hash;
-}
-
+//Appends or keeps current string
 function appendReplace(strIN,str){
   if(str == null)
     return strIN;
@@ -70,13 +51,8 @@ function appendReplace(strIN,str){
     return str+"%2C"+strIN;
 }
 
-function urlFormat(str){
-  str = encodeURI(str);
-  str = str.replace("%20",'+');
-  str = str.replace(',',"%2C");
-  return str;
-}
-
+//Function quickly retrieves a get parameter (from Stackoverflow)
+function getURLParameter(param) {return decodeURIComponent((new RegExp('[?|&]'+param+'='+'([^&;]+?)(&|#|;|$)').exec(location.search)||[null,''])[1].replace(/\+/g,'%20'))||null;}
 
 /* Old coffee script
 $(document).on "page:change", ->

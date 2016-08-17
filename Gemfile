@@ -2,6 +2,9 @@ source 'https://rubygems.org'
 
 gem 'rake'
 
+# ahoy for analytics
+gem 'ahoy_matey'
+
 # recaptcha for captcha authentication
 gem 'recaptcha', require: "recaptcha/rails"
 

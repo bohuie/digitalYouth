@@ -12,7 +12,7 @@
  $(document).on("page:change", function() {
     if (!($(".searches.index").length > 0)) {return;}
     $(window).scroll(function() {checkScroll(15, 'ajax-loading', window.location.href);});
-    $(window).unload(function() {$(window).unbind();});
+    $(window).unload(function() {$(window).unbind("scroll");});
 
     $( document ).ready(function() {
       $('#type-select').val(getURLParameter('t'));

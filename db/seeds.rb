@@ -41,8 +41,10 @@ begin
 	user4.save
 
 	#-- Create many random users --
-	for i in 0...40
-		create_random_user()
+	if !Rails.env.test?
+		for i in 0...40
+			create_random_user()
+		end
 	end
 
 	#--- References for testing ---

@@ -11,4 +11,5 @@ require 'rails_helper'
 #   end
 # end
 RSpec.describe JobPostingApplicationsHelper, type: :helper do
+
 end

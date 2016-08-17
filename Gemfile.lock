@@ -313,7 +313,6 @@ DEPENDENCIES
   public_activity
   rails (= 4.2.6)
   rails_admin
-  rake
   recaptcha
   rolify
   rspec-rails

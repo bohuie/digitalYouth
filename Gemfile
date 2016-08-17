@@ -6,6 +6,9 @@ gem "searchjoy"
 # Searchkick gem for searching
 gem 'searchkick'
 
+# recaptcha for captcha authentication
+gem 'recaptcha', require: "recaptcha/rails"
+
 # pagination for any results that need pagination
 gem 'will_paginate'
 

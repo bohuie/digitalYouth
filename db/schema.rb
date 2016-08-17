@@ -146,6 +146,7 @@ ActiveRecord::Schema.define(version: 20160721192354) do
     t.string   "phone_number"
     t.text     "reference_body"
     t.boolean  "confirmed",      default: false
+    t.integer  "referee_id"
     t.integer  "user_id"
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false

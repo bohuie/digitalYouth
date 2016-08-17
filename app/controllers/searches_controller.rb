@@ -4,7 +4,6 @@ class SearchesController < ApplicationController
 	respond_to :html
 
 	def index # index page displays all search data
-
 		# Basic Filtering parameters
 		@query 	= params[:q].blank? ? "*" : params[:q]
 		@type 	= params[:t].blank? ? "All" : params[:t]
@@ -177,10 +176,8 @@ class SearchesController < ApplicationController
 				end
 			end
 		end
+		aggs = [] if where_clause == {}
 
-		if where_clause == {}
-			aggs = []
-		end
 		# There is an N+1 query problem here with rolify
 		@results = User.search @query, 
 				 index_name: idxs,
@@ -191,20 +188,13 @@ class SearchesController < ApplicationController
 				 page: params[:page], per_page: 15
 
 		@query = "" if @query == "*"
-
-		# Need to fix remaining query filters.
-		# Need to finish "Add" button filter option
-		# Testing?
-		# Merge
-
 		
-		if where_clause != {} && where_clause != {:role=>"employer"}
-			# Aggregates for the filters when the where clause is specified change filter values to work with whats queried
-			@skills   = make_agg_array("skills",@results.aggs,@skills,5)
-			@locations= make_agg_array("location",@results.aggs,@locations,5)
-			#Need to add company name aggregate
-			#Need to add company location aggregate for companies
-
+		if where_clause != {}
+			if where_clause != {:role=>"employer"}
+				# Aggregates for the filters when the where clause is specified change filter values to work with whats queried
+				@skills   = make_agg_array("skills",@results.aggs,@skills,5)
+				@locations= make_agg_array("location",@results.aggs,@locations,5)
+			end
 			#Add queried value to collection
 			@locations= add_to_if_not_in(@l, @locations)
 			@skills   = add_to_if_not_in(@s, @skills)
@@ -218,7 +208,6 @@ class SearchesController < ApplicationController
 		Searchjoy::Search.find(params[:id]).convert(obj)
 		redirect_to params[:path]
 	end
-
 
 private
 	def add_to_if_not_in(val,arr)

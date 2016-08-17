@@ -47,20 +47,11 @@ function appendReplace(strIN,str){
     return strIN;
   else if(str.includes(strIN))
     return str;
+  else if (str === "")
+    return strIN;
   else
-    return str+"%2C"+strIN;
+    return str+","+strIN;
 }
 
 //Function quickly retrieves a get parameter (from Stackoverflow)
 function getURLParameter(param) {return decodeURIComponent((new RegExp('[?|&]'+param+'='+'([^&;]+?)(&|#|;|$)').exec(location.search)||[null,''])[1].replace(/\+/g,'%20'))||null;}
-
-/* Old coffee script
-$(document).on "page:change", ->
-  return unless $(".searches.index").length > 0
-
-  $(window).scroll(() ->
-  	checkScroll(15,'ajax-loading',window.location.href);)
-  $(window).unload(() ->
-  	$(window).unbind();)
-  ""
-*/

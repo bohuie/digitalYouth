@@ -23,6 +23,8 @@ GEM
     activejob (4.2.6)
       activesupport (= 4.2.6)
       globalid (>= 0.3.0)
+    activejob_backport (0.0.3)
+      activesupport (>= 4.0.0)
     activemodel (4.2.6)
       activesupport (= 4.2.6)
       builder (~> 3.1)
@@ -293,6 +295,7 @@ PLATFORMS
 
 DEPENDENCIES
   actionmailer
+  activejob_backport
   ahoy_matey
   authority
   autoprefixer-rails
@@ -307,6 +310,7 @@ DEPENDENCIES
   devise
   factory_girl_rails
   figaro
+  geocoder
   jbuilder (~> 2.0)
   jquery-rails
   local_time

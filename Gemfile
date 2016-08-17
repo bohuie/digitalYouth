@@ -2,6 +2,12 @@ source 'https://rubygems.org'
 
 gem 'rake'
 
+# geocoder for distance and geo location functions
+gem 'geocoder'
+
+# activejob backport makes Active Job usable. Used for background jobs
+gem 'activejob_backport'
+
 # ahoy for analytics
 gem 'ahoy_matey'
 

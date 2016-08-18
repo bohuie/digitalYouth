@@ -1,28 +1,28 @@
-//Setup event tracking
-$(document).ready(function() {
-	ahoy.trackClicks(); //Not working
-	ahoy.trackSubmits(); //Not working
-	var pageLoad;
-});
+//Setup event tracking and timing
+timer();
+ahoy.trackClicks();
+ahoy.trackSubmits();
 
-//On page change and before change track events
-$(document).on("page:change", function() {recordViewStart();});
-$(document).on("page:before-change", function() {recordViewEnd();});
-$(window).bind('beforeunload',function(){recordViewEnd();}); //Works for refreshes, doesn't work for closing or nav away
-//$(window).unload(function(){recordViewEnd();}); 
+$(document).on("page:change", function() {recordViewStart();}); //Handles page load effectively
+$(document).on("page:before-change", function() {recordViewEnd();}); //Handles site-site link navigation
+window.onbeforeunload = recordViewEnd(); // attempts to handle other types of page ends like a refresh or in some cases page closing
 
 //page view end
 function recordViewEnd(){
-	var dt = new Date;
-	var pageUnload = Date.UTC(dt.getFullYear(),dt.getMonth(),dt.getDate(),dt.getHours(),dt.getMinutes(),dt.getSeconds(),dt.getMilliseconds());
-	var url = new Url; //Requires domurl.min.js
-	var path = url.path;
-	ahoy.track("$view_end", {page: path, time: pageUnload-pageLoad});
+	var pageTime = TimeMe.getTimeOnCurrentPageInSeconds();
+	TimeMe.resetAllRecordedPageTimes(); //TimeMe likes to keep recording page times after a 'view end' so reset is required.
+	//TimeMe.resetRecordedPageTime(pageName);
+	ahoy.track("$view_end", {page: new Url().path, time: pageTime}); // Sometimes records a false 0 time, should be able to query view, view end in this case. (Generally happens with a refresh)
 }
 
 //page view start
 function recordViewStart(){
- 	var dt = new Date;
-	pageLoad = Date.UTC(dt.getFullYear(),dt.getMonth(),dt.getDate(),dt.getHours(),dt.getMinutes(),dt.getSeconds(),dt.getMilliseconds());
+	timer();
 	ahoy.trackView();
+}
+
+function timer(){
+	TimeMe.setIdleDurationInSeconds(60);
+	TimeMe.setCurrentPageName(new Url().path);
+	TimeMe.initialize();
 }

@@ -16,7 +16,7 @@ class JobPosting < ActiveRecord::Base
 	def search_data
 		data = Hash.new
 	  	data[:title] = title
-	  	if self.user_id == nil
+	  	if self.user_id.nil?
 	  		data[:company_name] = company_name
 	  	else
 	  		data[:company_name] = self.user.company_name

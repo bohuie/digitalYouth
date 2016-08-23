@@ -34,7 +34,7 @@ class SearchesController < ApplicationController
 		when "People" # Searches User model, just employees, current + past company, skills, (and should have location and relationship) 
 			idxs=[User.searchkick_index.name]
 			where_clause[:role]="employee"
-			@toggles = {cc: @cc, pc: @pc, s:@s}
+			@toggles = {s:@s} #need to add cc: @cc, pc: @pc for current company and past company
 			@locations = [] # To be implemented
 			@relationships = ["1st","2nd", "Group Members", "3rd + Everyone"]
 			@current_companies = [] # To be implemented
@@ -145,7 +145,7 @@ class SearchesController < ApplicationController
 					ids = User.where(company_name: @c).pluck(:id)
 					if @type == "Companies"
 						where_clause[:user_id]=ids
-					elsif 
+					elsif
 						where_clause[:company_name]=@c
 						where_clause[:user_id]=ids if !ids.blank?
 					end

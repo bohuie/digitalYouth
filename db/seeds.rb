@@ -41,11 +41,11 @@ begin
 	user4.save
 
 	#-- Create many random users --
-	if !Rails.env.test?
-		for i in 0...40
-			create_random_user()
-		end
-	end
+	#if !Rails.env.test?
+	#	for i in 0...40
+	#		create_random_user()
+	#	end
+	#end
 
 	#--- References for testing ---
 	reference1 = Reference.create(first_name: 'Bernie', last_name: 'Smith', email: 'Andrew@gmail.com', company: 'Apple Picking Co.',
@@ -99,7 +99,6 @@ begin
 
 	JobPostingSkill.create(job_posting_id: jobposting2.id, skill_id:skill1.id, importance:2, question_id:41)
 	JobPostingSkill.create(job_posting_id: jobposting2.id, skill_id:skill2.id, importance:2, question_id:42)
-	JobPostingSkill.create(job_posting_id: jobposting2.id, skill_id:skill3.id, importance:2, question_id:37)
 
 	ProjectSkill.create(project_id: project1.id, skill_id: skill1.id)
 	ProjectSkill.create(project_id: project1.id, skill_id: skill2.id)

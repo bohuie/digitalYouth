@@ -16,7 +16,7 @@
 
     $( document ).ready(function() {
       $('#type-select').val(getURLParameter('t'));
-      if($('#total-results').val()<=($('#results').length)){
+      if($('#total-results').val()<=($('#results').children().length - 1)){
         can_request = false;
         $('#load-more').hide();
       }

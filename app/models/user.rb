@@ -41,6 +41,6 @@ class User < ActiveRecord::Base
 	end
 
     def user_reindex
-        User.reindex
+        User.reindex if !Rails.env.test?
     end
 end

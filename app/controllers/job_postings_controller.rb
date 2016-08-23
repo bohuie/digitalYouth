@@ -37,7 +37,7 @@ class JobPostingsController < ApplicationController
 		@job_posting = JobPosting.new(job_posting_params)
 		if @job_posting.save && @job_posting.process_skills(params[:job_posting]["job_posting_skills_attributes"])
 			redirect_to job_postings_path, flash: {success: "Job Posting Created!"}
-			JobPosting.reindex
+			JobPosting.reindex if !Rails.env.test?
 		else
 			flash[:warning] = "Oops, there was an issue in creating your Job Posting."
 			redirect_back_or job_postings_path
@@ -54,7 +54,7 @@ class JobPostingsController < ApplicationController
 	def update # Updates the job posting
 		if @job_posting.update_attributes(job_posting_params) && @job_posting.process_skills(params[:job_posting]["job_posting_skills_attributes"])
 			redirect_to job_postings_path, flash: {success: "Job Posting Updated!"}
-			JobPosting.reindex
+			JobPosting.reindex if !Rails.env.test?
 		else
 			flash[:warning] = "Oops, there was an issue in editing your Job Posting."
 			redirect_back_or edit_job_posting_path

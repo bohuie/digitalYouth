@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 
+  # Analytics
+  get 'analytics' => 'analytics#index'
+  get 'analytics/:id' => 'analytics#show', as: :analytics_report
+
   #notifications
   get 'notifications' => 'notifications#index'
   get 'notifications/show' => 'notifications#show', as: :show_notifications

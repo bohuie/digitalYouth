@@ -2,6 +2,9 @@ source 'https://rubygems.org'
 
 gem 'rake'
 
+# groupdate for grouping data by dates easily
+gem 'groupdate'
+
 # geocoder for distance and geo location functions
 gem 'geocoder'
 

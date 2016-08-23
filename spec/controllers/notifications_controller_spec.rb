@@ -6,9 +6,13 @@ RSpec.describe NotificationsController, type: :controller do
 		let(:user) { FactoryGirl.create(:user) }
 		let(:reference1) { FactoryGirl.create(:reference1) }
 		let(:notification) {PublicActivity::Activity.find_by(trackable: reference1)}
+		before do
+			user.confirm
+		end
 		
 		context "user is logged in" do
 			before(:each) do
+				user.confirm
 				sign_in user
 				user.references << reference1
 				notification.owner = user
@@ -37,6 +41,9 @@ RSpec.describe NotificationsController, type: :controller do
 	describe "GET show" do
 		let(:user) { FactoryGirl.create(:user) }
 		let(:reference1) { FactoryGirl.create(:reference1) }
+		before do
+			user.confirm
+		end
 		
 		context "user is logged in and clicks on the notifications icon" do
 			before(:each) do
@@ -80,6 +87,10 @@ RSpec.describe NotificationsController, type: :controller do
 		let(:user2) { FactoryGirl.create(:user2) }
 		let(:reference1) { FactoryGirl.create(:reference1) }
 		let(:notification) {PublicActivity::Activity.find_by(trackable: reference1)}
+		before do
+			user.confirm
+			user2.confirm
+		end
 
 		context "correct user is logged in" do # THESE FAIL FOR SOME REASON
 			it "marks the notification as read" do
@@ -121,6 +132,10 @@ RSpec.describe NotificationsController, type: :controller do
 		let(:user2) { FactoryGirl.create(:user2) }
 		let(:reference1) { FactoryGirl.create(:reference1) }
 		let(:notification) {PublicActivity::Activity.find_by(trackable: reference1)}
+		before do
+			user.confirm
+			user2.confirm
+		end
 
 		context "correct user is logged in" do # THESE FAIL FOR SOME REASON
 			before(:each) do
@@ -168,6 +183,10 @@ RSpec.describe NotificationsController, type: :controller do
 		let(:user2) { FactoryGirl.create(:user2) }
 		let(:reference1) { FactoryGirl.create(:reference1) }
 		let(:notification) {PublicActivity::Activity.find_by(trackable: reference1)}
+		before do
+			user.confirm
+			user2.confirm
+		end
 
 		context "correct user is logged in" do # THESE FAIL FOR SOME REASON
 			it "marks all notifications as read" do
@@ -197,6 +216,10 @@ RSpec.describe NotificationsController, type: :controller do
 		let(:user2) { FactoryGirl.create(:user2) }
 		let(:reference1) { FactoryGirl.create(:reference1) }
 		let(:notification) {PublicActivity::Activity.find_by(trackable: reference1)}
+		before do
+			user.confirm
+			user2.confirm
+		end
 
 		context "correct user is logged in" do # THESE FAIL FOR SOME REASON
 			it "should have no notifications left" do
@@ -226,6 +249,10 @@ RSpec.describe NotificationsController, type: :controller do
 		let(:user2) { FactoryGirl.create(:user2) }
 		let(:reference1) { FactoryGirl.create(:reference1) }
 		let(:notification) {PublicActivity::Activity.find_by(trackable: reference1)}
+		before do
+			user.confirm
+			user2.confirm
+		end
 
 		context "user is logged in" do
 			before(:each) do
@@ -271,6 +298,9 @@ RSpec.describe NotificationsController, type: :controller do
 		let(:user) { FactoryGirl.create(:user) }
 		let(:reference1) { FactoryGirl.create(:reference1) }
 		let(:notification) {PublicActivity::Activity.find_by(trackable: reference1)}
+		before do
+			user.confirm
+		end
 		
 		context "user is logged in with a few notifications" do
 			before(:each) do

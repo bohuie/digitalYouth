@@ -1,0 +1,58 @@
+<% if !@job_posting.user.nil? %>
+	<%= image_tag @job_posting.user.image if !@job_posting.user.image_file_name.nil? %>
+<% end %>
+
+<h3><%= @job_posting.title %></h3>
+
+
+<h4><% if @job_posting.user.nil? %>
+		<%= @company_name %>
+	<% else %>
+		<%= link_to @company_name, user_path(@job_posting.user) %>
+	<% end %>
+</h4>
+<p> <%= @job_posting.location %><br>
+	<%= @job_posting.job_category.name %><br>
+	<%= raw("Pay Range: #{@job_posting.pay_range}<br>") if !@job_posting.pay_range.blank? %>
+	<%= raw("<a href=\"http://#{@job_posting.link}\">#{@job_posting.link}</a><br>") if !@job_posting.link.blank? %>
+	<%= raw("Posted By: #{@job_posting.posted_by}<br>") if !@job_posting.posted_by.blank? %>
+	Posted On: <%= local_date(@job_posting.created_at)%>
+	<%= raw("<br>"+@job_posting.get_type_string) if !@job_posting.job_type.nil? %>
+</p>
+
+<br><%= simple_format @job_posting.description %><br>
+
+<% if !@req_skills.empty? %>
+	<h4> Required Skills </h4>
+	<ul><%@req_skills.each do |r| %>
+		<li><%=r.skill.name.capitalize%></li><% end %>
+	</ul>
+<% end %>
+
+<% if !@pref_skills.empty? %>
+	<h4> Preferred Skills </h4>
+	<ul><%@pref_skills.each do |p| %>
+		<li><%=p.skill.name.capitalize%></li><% end %>
+	</ul>
+<% end %>
+
+<p><%= raw("Open date: #{@job_posting.open_date.strftime('%B %d, %Y')}<br>")   if !@job_posting.open_date.blank? %>
+   <%= raw("Close date: #{@job_posting.close_date.strftime('%B %d, %Y')}<br>") if !@job_posting.close_date.blank? %>
+</p>
+
+<% if !@job_posting.user.nil? %>
+	<% if (!user_signed_in?)||(user_signed_in? && current_user.has_role?(:employee)) %>
+		<%= link_to "Apply Now", new_job_posting_application_path(job_posting: @job_posting), class: "btn btn-success" %>
+	<% end %>
+<% else %>
+	<p> Please visit the job posting link to apply.</p>
+<% end %>
+
+<% if user_signed_in? && @current_user.id == @job_posting.user_id %>
+	<%= link_to "Edit Posting", edit_job_posting_path(@job_posting), class: "btn btn-default"%>
+	<%= link_to "Delete Posting", job_posting_path(@job_posting), method: "delete", class: "btn btn-danger"%>
+	<% application_count = @job_posting.job_posting_applications.where(status:-1..Float::INFINITY).count %>
+	<% application_count = "" if application_count == 0 %>
+	<%= link_to raw("Applications <span class=\"badge\">#{application_count.to_s}</span>"), job_posting_applications_path(job_posting:@job_posting), class: "btn btn-success"%>
+	<p><span class="label label-default"><%=@job_posting.views%> Views</span></p>
+<% end %>

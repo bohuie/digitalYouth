@@ -1,4 +1,5 @@
 <% if @user.has_role? :employee %>
+<<<<<<< HEAD
 <!------Employee Profile--------->
 	<div class ="profileContainer">
 		<div class ="profileContainerImage" id="shadow-arch-edges">
@@ -56,6 +57,40 @@
 									<% end %>
 								<% if user_signed_in? && @current_user==@user %>
 									<%= link_to "Edit Project", edit_project_path(p) %><br />
+=======
+	<div class ="container">
+		<p> User Information </p>
+		<p> <%= @user.first_name %> </p>
+		<p> <%= @user.last_name %> </p>
+		<p> <%= @user.email %> </p>
+	</div>
+
+	<% if user_signed_in? && @current_user==@user %>
+		<%= link_to "Job Applications", job_posting_applications_path %>
+	<% end %>
+
+ 	<div class = "survey-table">
+		<%= render '/users/partials/show_survey_table', results: @survey_results, user:@user %>
+	</div>
+
+	<div class = "references">
+		<%= render '/users/partials/show_references' %>
+	</div>
+
+	<% if !@projects.empty? %>
+		<div class="projects">
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-6">
+						<% @projects.each do |p| %>
+							<%= image_tag p.image.url %>
+							<h2><%= p.title %></h2>
+							<p><%= p.description %></p>
+							<% if !@skills.empty? %>
+								<p>Skills associated with this project</p>
+								<% @skills[p.id].each do |s| %>
+									<p><%= s.name%> </p>
+>>>>>>> master
 								<% end %>
 							<% end %>
 						</div>
@@ -216,6 +251,7 @@
 			<input type="button" style="float:right;" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=rendering('job-postings') value="JOB POSTINGS"/>
 		</div>
 	</div>
+<<<<<<< HEAD
 <!--------------->
 	<div id="job-posting">
 	<% if !@job_postings.empty? %>
@@ -242,23 +278,29 @@
 	<% else %>
 		<h3>You have no job postings here.  Would you like to create one?</h3>
 	<% end %>
+=======
+<% elsif @user.has_role? :employer %>
+	<p> Company Information: <br>
+		<%= @user.company_name %><br>
+		<%= @user.company_address %>, <%= @user.company_province %><br>
+		<%= @user.company_postal_code %> 
+	</p>
+	
+	<%= link_to "Job Postings", job_postings_path(user: @user) %>
+>>>>>>> master
 	<% if user_signed_in? && @current_user==@user %>
-	<div class ="container">
-		<div class ="row">
-			<div class="col-xs-6">
-				<%= simple_form_for @job_posting do |f| %>
-					<%= f.input :title, required: true %>
-					<%= f.input :description, required: true, as: :text %>
-					<%= f.input :open_date, required: true %>
-					<%= f.input :close_date, required: true %>
-					<%= f.button :submit %>
-				<% end %>
-			</div>
-		</div>
-	</div>
+		<br><%= link_to "Job Applications", job_posting_applications_path %>
 	<% end %>
+<<<<<<< HEAD
 	</div>
 <% elsif @user.has_role? :admin%>
 
 <% else %>
 <% end %>
+=======
+
+<% elsif @user.has_role? :admin%>
+	You are an admin!
+	<%= %> 
+<% end %>
+>>>>>>> master

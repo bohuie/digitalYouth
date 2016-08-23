@@ -6,6 +6,7 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string  :encrypted_password, null: false, default: ""
       t.string  :first_name
       t.string  :last_name
+      t.attachment :image
 
       #social media
       t.string  :github
@@ -28,7 +29,7 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.datetime :reset_password_sent_at
 
       ## Rememberable
-      t.datetime :remember_created_at
+      # t.datetime :remember_created_at
 
       ## Trackable
       t.integer  :sign_in_count, default: 0, null: false

@@ -11,6 +11,7 @@ class CreateReferences < ActiveRecord::Migration
       t.text	:reference_body
       t.boolean :confirmed, default: false
 
+      t.references :referee
       t.references :user
       t.timestamps null: false
     end

@@ -1,9 +1,9 @@
 <% if @user.has_role? :employee %>
-<!------Employee Profile--------->
+<!-- Employee Profile -->
 <div class ="profileContainer">
 	<div class ="profileContainerImage" id="shadow-arch-edges">
 		<div class ="profileFrame">
-			<img src="https://image.freepik.com/free-icon/user-male-silhouette_318-55563.png"/>
+			<%= image_tag @user.image.url, alt:"User Icon" %> <!-- Should add a max size or auto scale pics that are uploaded -->
 		</div>
 	</div>
 	<div class ="profileContainerContent">
@@ -127,11 +127,11 @@
 
 
 <% elsif @user.has_role? :employer %>
-<!------Employer Profile--------->
+<!-- Employer Profile -->
 	<div class ="profileContainer">
 		<div class ="profileContainerImage" id="shadow-arch-edges">
 			<div class ="profileFrame">
-				<img src="https://image.freepik.com/free-icon/user-male-silhouette_318-55563.png"/>
+				<%= image_tag @user.image.url, alt:"User Icon" %> <!-- Should add a max size or auto scale pics that are uploaded -->
 			</div>
 		</div>
 		<div class ="profileContainerContent">

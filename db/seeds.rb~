@@ -16,7 +16,7 @@ puts "Seeding Test Data"
 
 #--- Users for testing ---
 user1 = User.new(first_name: 'John', last_name: 'Doe', email: 'john@doe.com', password: 'password', password_confirmation: 'password',
-				 github: 'https://github.com/bohuie/digitalYouth', twitter: 'https://twitter.com/ShawnMendes?lang=en',
+				 github: 'https://github.com/bohuie/digitalYouth', twitter: 'https://twitter.com/ShawnMendes?lang=en'
 				 answered_surveys:[true,true,true,true,true,true,true,true,false,true,true,true])
 user1.add_role :employee
 user1.skip_confirmation!

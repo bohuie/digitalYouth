@@ -151,11 +151,11 @@
 		</div>
 		<div class="container" id="profileButtons">
 			<ul class="nav nav-tabs profileButtonContent">
-    				<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#employment">EMPLOYMENT</a></li>
+    				<li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#employment">EMPLOYMENT</a></li>
   			</ul>
   	
 			<div class="tab-content profileButtonContent">
-				<div id="employment" class="tab-pane fade">
+				<div id="employment">
 					<%= link_to "Job Postings", job_postings_path(user: @user) %>
 					<% if user_signed_in? && @current_user==@user %>
 						<br><%= link_to "Job Applications", job_posting_applications_path %>

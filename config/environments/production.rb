@@ -18,6 +18,14 @@ Rails.application.configure do
     reply_to: 'edge.map@ubc.ca',
     user_name: 'edge.map@ubc.ca'
   }
+
+  Recaptcha.configure do |config|
+    config.public_key  = ENV['RECAPTCHA_PUBLIC_KEY']
+    config.private_key = ENV['RECAPTCHA_PRIVATE_KEY']
+    # Uncomment the following line if you are using a proxy server:
+    # config.proxy = 'http://myproxy.com.au:8080'
+  end
+
   # Code is not reloaded between requests.
   config.cache_classes = true
 

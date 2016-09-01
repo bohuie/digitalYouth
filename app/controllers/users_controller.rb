@@ -13,16 +13,7 @@ class UsersController < ApplicationController
 			@projects = @user.projects;
 			@references = Reference.where(user_id: @user.id, confirmed: true)
 			
-			#Survey Results
-			@surveys = Survey.all
-
-			@responses = @user.responses
-			@survey_results = Hash.new
-			if !@responses.empty?
-				@responses.each do |r| #performs 12 queries
-					@survey_results[r.survey_id] = r.get_data_map
-				end
-			end
+			@survey_results = Survey.get_table_data(@user)
 
 			if !@projects.empty?
 				@skills = Hash.new

@@ -18,8 +18,8 @@ class Response < ActiveRecord::Base
 				title = Question.find(question_ids[i]).classification
 			end
 			score = self.scores[i]
-			rtn[title] = score + 1 #this is +1 so the chart displays something
-			i = i + 1
+			rtn[title] = score
+			i += 1
 		end
 		return rtn
 	end

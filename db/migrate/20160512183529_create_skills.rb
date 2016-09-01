@@ -3,7 +3,6 @@ class CreateSkills < ActiveRecord::Migration
 		create_table :skills do |t|
 
 			t.string :name
-
 			t.timestamps null: false
 		end
 	end

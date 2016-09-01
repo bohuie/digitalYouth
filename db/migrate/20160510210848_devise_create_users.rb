@@ -6,6 +6,7 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string  :encrypted_password, null: false, default: ""
       t.string  :first_name
       t.string  :last_name
+      t.attachment :image
 
       #social media
       t.string  :github

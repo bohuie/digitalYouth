@@ -49,7 +49,6 @@
 				<% end %>	
     			</div>
     			<div id="projects" class="tab-pane fade">
-    			<%= render 'projects/project_form' %>
 				<% if !@projects.empty? %>
 					<div class="projects">
 					<!--<div class="container">-->
@@ -77,6 +76,7 @@
 				<% end %>
 				<% if user_signed_in? && @current_user==@user %>
 					<div class="row">
+					<%= render 'projects/project_form' %>
 						<h3>Create another project below!</h3>
 					</div>
 					<!--Potential relocation to own page--> 

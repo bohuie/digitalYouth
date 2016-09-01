@@ -6,23 +6,6 @@
 			<%= image_tag @user.image.url, alt:"User Icon" %> <!-- Should add a max size or auto scale pics that are uploaded -->
 		</div>
 	</div>
-<<<<<<< HEAD
-
- 	<div class = "survey-table">
-		<!-- <%= render '/users/partials/show_survey_table' %> -->
-	</div>
-
-	<div class = "references">
-		<!-- <%= render '/users/partials/show_references' %> -->
-	</div>
-	<% if !@user_skills.empty? %>
-		<div class="container">
-			<h2>Here is a summary of your skill base</h2>
-			<% @user_skills.each do |us| %>
-				<div class="row">
-					<div class="col-xs-4">
-						<%= us.skill.name %> with a rating of <%= us.rating %> / <%= max_rating %>
-=======
 	<div class ="profileContainerContent">
 		<h2> <%= @user.first_name %> <%= @user.last_name %> </h2>
 		<h5> <%= @user.email %> </h5>
@@ -86,7 +69,6 @@
 							<% end %>
 						<% end %>
 					</div>
->>>>>>> master
 					</div>
 					</div>
 				<% else %>

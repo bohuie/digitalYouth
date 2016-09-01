@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   delete 'notifications/all' => 'notifications#delete_all', as: :delete_all_notifications
 
   # Devise_for :users
-  devise_for :users, controllers: { sessions: "users/sessions", :registrations => "registrations" }
+  devise_for :users, controllers: { sessions: "users/sessions", :registrations => "users/registrations" }
  #devise_for :users
   #resources :users, only: :show, as: :user
   get 'users' => 'users#index'

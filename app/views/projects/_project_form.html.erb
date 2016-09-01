@@ -1,0 +1,18 @@
+<%= simple_form_for @project do |f| %>
+	<%= f.input :title, required: true %>
+		
+	<%= f.input :description, required: true, as: :text, input_html: {rows: "4"}%>
+
+	<%i=0%>
+	<div id="project-skills">
+		<%= f.simple_fields_for :project_skills do |builder| %>
+			<%= render 'projects/project_skill_fields', id: i, f: builder %>
+			<%i=i+1%>
+		<% end%>
+	</div>
+	<p><%= link_to_add_fields "Add Skill", f, "btn btn-default" %></p>
+
+	<%= f.input :image, as: :file %>
+	
+	<%= f.button :submit %>
+<% end %>

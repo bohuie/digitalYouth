@@ -9,6 +9,8 @@ class UsersController < ApplicationController
 	def show
 		@user = User.find(params[:id])
 
+		@questions = Question.get_label_map
+
 		if @user.has_role? :employee
 			@projects = @user.projects;
 			@references = Reference.where(user_id: @user.id, confirmed: true)

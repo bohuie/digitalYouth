@@ -6,6 +6,8 @@ class CreateProjectSkills < ActiveRecord::Migration
 			t.belongs_to :skill, index: true
 
 			t.timestamps null: false
+
+			t.belongs_to :question, index: true
 		end
 	end
 end

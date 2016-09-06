@@ -91,6 +91,8 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
+  get 'lost_email' => 'welcome#lost_email', as: :lost_email
+  post 'lost_email' => 'welcome#send_lost_email', as: :send_lost_email
   root 'welcome#index'
 
   # Example of regular route:

@@ -1,7 +1,7 @@
-//# Place all the behaviors and hooks related to the matching controller here.
-//# All this logic will automatically be available in application.js.
-//# You can use CoffeeScript in this file: http://coffeescript.org/
-//Converted to Javascript for now
+# Place all the behaviors and hooks related to the matching controller here.
+# All this logic will automatically be available in application.js.
+# You can use CoffeeScript in this file: http://coffeescript.org/
+###
 
 function remove_project_skill(id){
 	$('#project-skill-destroy-'+id).val(true);
@@ -42,3 +42,4 @@ function display_loading(){
   $('#refresh-progress').show();
 }
 
+###

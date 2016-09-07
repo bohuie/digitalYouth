@@ -28,7 +28,7 @@ user2.skip_confirmation!
 user2.save
 
 user3 = User.new(first_name: 'Foo', last_name: 'Bar', email: 'foo@bar.com', password: 'password', password_confirmation: 'password', 
-		company_name: 'Google', company_address: '123 Fake Street', company_city: 'Kelowna', company_province: 'BC', company_postal_code: 'V1V 1V1')
+		company_name: 'Google', street_address: '123 Fake Street', city: 'Kelowna', province: 'BC', postal_code: 'V1V 1V1')
 user3.add_role :employer
 user3.skip_confirmation!
 user3.save

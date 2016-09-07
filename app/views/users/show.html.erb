@@ -8,6 +8,7 @@
 	</div>
 	<div class ="profileContainerContent">
 		<h2> <%= @user.first_name %> <%= @user.last_name %> </h2>
+		<h5> <%= @user.street_address %><%= @user.city %> <%= @user.province %> <%= @user.postal_code %> </h5>
 		<h5> <%= @user.email %> </h5>
 		<% if !@user.github.nil? %>
 			<%= link_to 'GitHub', @user.github, id: 'github', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
@@ -137,7 +138,7 @@
 		</div>
 		<div class ="profileContainerContent">
 			<h2> <%= @user.company_name %></h2>
-			<h5> <%= @user.company_address %><br><%= @user.company_city %> <%= @user.company_province %> <%= @user.company_postal_code %> </h5>
+			<h5> <%= @user.street_address %><br><%= @user.city %> <%= @user.province %> <%= @user.postal_code %> </h5>
 			<h5> <%= @user.email %> </h5>
 			<% if !@user.linkedin.nil? %>
 				<%= link_to 'Linkedin', @user.linkedin, id: 'linkedin', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 

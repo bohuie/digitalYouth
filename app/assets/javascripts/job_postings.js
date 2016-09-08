@@ -4,16 +4,18 @@
 //Converted to Javascript for now
 
 function remove_posting_skill(id){
-	$('#job-skill-destroy-'+id).val(true);
-	$('#job-posting-skill-'+id).fadeOut(100);
+  if ($('body').hasClass('job_postings')){
+    $('#job-skill-destroy-'+id).val(true);
+    $('#job-posting-skill-'+id).fadeOut(100);
+  }
 }
 
 var cache = {};
 function skill_autocomplete(id){
   console.log("AutoComplete");
-	$("#skill-name-"+id).autocomplete({
-		    minLength: 2,
-      	source: function(request, response){
+  $("#skill-name-"+id).autocomplete({
+        minLength: 2,
+        source: function(request, response){
         var term = request.term.toLowerCase();
         if (term in cache){
           response(cache[term].slice(0, 4));
@@ -30,11 +32,13 @@ function skill_autocomplete(id){
 }
 
 function add_fields(association, content){
-  var skills = 0;
-  $('#job-skills').children().each(function(){if(this.id.includes("job-posting-skill-")) skills++;});
-  var new_id = skills + 1;
-  var regexp = new RegExp("new_" + association, "g");
-  $('#job-skills').append(content.replace(regexp, new_id));
+  if ($('body').hasClass('job_postings')){
+    var skills = 0;
+    $('#job-skills').children().each(function(){if(this.id.includes("job-posting-skill-")) skills++;});
+    var new_id = skills + 1;
+    var regexp = new RegExp("new_" + association, "g");
+    $('#job-skills').append(content.replace(regexp, new_id));
+  }
 }
 
 function set_date(){

@@ -1,29 +1,74 @@
-
 <%= simple_form_for (@user) do |u| %>
-	<%= u.input :first_name %>
-	<%= u.input :last_name %>
-	<%= u.input :email %>
-	<%= u.input :password %>
-	<%= u.input :confirm_password %>
-	<div class="form-group">
-    <%= u.input :github, autofocus: true, class: "form-control" %>
+<div class ="profileContainerImage" id="shadow-arch-edges">
+  <div class ="profileFrame">
+    <%= image_tag @user.image.url, alt:"User Icon" %> <!-- Should add a max size or auto scale pics that are uploaded -->
   </div>
+</div>
 
-  <div class="form-group">
-    <%= u.input :linkedin, autofocus: true, class: "form-control" %>
-  </div>
+<div class ="profileContainerContent">
+  <h2> <%= @user.first_name %> <%= @user.last_name %> </h2>
+  <h5> <%= @user.street_address %><%= @user.city %> <%= @user.province %> <%= @user.postal_code %> </h5>
+  <h5> <%= @user.email %> </h5>
+  <% if !@user.github.nil? %>
+    <%= link_to 'GitHub', @user.github, id: 'github', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+  <% end %>
+  <% if !@user.linkedin.nil? %>
+    <%= link_to 'Linkedin', @user.linkedin, id: 'linkedin', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+  <% end %>
+  <% if !@user.twitter.nil? %>
+    <%= link_to 'Twitter', @user.twitter, id: 'twitter', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+  <% end %>
+  <% if !@user.facebook.nil? %>
+    <%= link_to 'Facebook', @user.facebook, id: 'facebook', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+  <% end %>
+  <%= raw('<br>') if @user.github.nil? && @user.linkedin.nil? && @user.twitter.nil? && @user.facebook.nil? %>
+</div>
 
-  <div class="form-group">
-    <%= u.input :twitter, autofocus: true, class: "form-control" %>
-  </div>
+<div class ="profileButtonResume">
+  <div class="resumeShadowBox bottom"> </div>
+  <div class="resumeShadowBox left"> </div>
+  <input type="button" value="RESUME"/>   
+</div>
 
-  <div class="form-group">
-    <%= u.input :facebook, autofocus: true, class: "form-control" %>
-  </div>
+<div class="container" id="profileButtons">
+    <ul class="nav nav-tabs profileButtonContent">
+          <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#personal">User Info</a></li>
+          <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#email">Change Email</a></li>
+          <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#password">Change Password</a></li>
+          <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#media">Social Media</a></li>
+    </ul>
+    <div class="tab-content profileButtonContent">
+        <div id="personal" class="tab-pane fade in active">
+          <%= u.input :first_name, required: true %>
+          <%= u.input :last_name, required: true %>
+          <%= u.input :street_address %>
+          <%= u.input :city %>
+          <%= u.input :province %>
+          <%= u.input :postal_code %>
+          <%= u.submit 'Update', name: 'personal' %>
+        </div>
 
-  <div class="form-group">
-    <%= u.input :company_name, autofocus: true, class: "form-control" %>
-  </div>
+        <div id="email" class="tab-pane fade">
+          <%= u.input :email, required: true, label:"Email.  You need to confirm your new email before we update to it." %>
+          <%= u.input :email_password, label: "Please confirm the change with your current password." %>
+          <%= u.submit 'Change Email', name: 'email' %>
+        </div>
 
-	<%= u.submit %>
+        <div id="password" class="tab-pane fade">
+          <%= u.input :current_password, label: "Old password." %>
+          <%= u.input :password, label: "New password." %>
+          <%= u.input :confirm_password, label: "Confirm new password." %>
+          <%= u.submit 'Change Password', name: 'password' %>
+        </div>
+
+        <div id="media" class="tab-pane fade">
+          <p>Feel free to add your social media accounts below.  These will help showcase your social media skills, projects, or other items to potential employers.</p>
+          <%= u.input :github %>
+          <%= u.input :linkedin %>
+          <%= u.input :twitter %>
+          <%= u.input :facebook %>
+          <%= u.submit 'Update', name: 'media' %>
+        </div>
+    </div>
+</div>
 <% end %>

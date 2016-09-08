@@ -2,6 +2,8 @@ class User < ActiveRecord::Base
     include PublicActivity::Model
     tracked only: :create, owner: ->(controller,model) {model && model.itself}
 
+    nilify_blanks
+
 	rolify
 	# Include default devise modules. Others available are:
 	# :timeoutable and :omniauthable, :lockable, :rememberable

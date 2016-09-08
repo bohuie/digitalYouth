@@ -2,6 +2,9 @@ source 'https://rubygems.org'
 
 gem 'rake'
 
+# Make '' -> nil when saving records to the DB
+gem "nilify_blanks"
+
 # recaptcha for captcha authentication
 gem 'recaptcha', require: "recaptcha/rails"
 

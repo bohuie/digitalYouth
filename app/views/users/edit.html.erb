@@ -7,6 +7,7 @@
 
 <div class ="profileContainerContent">
   <h2> <%= @user.first_name %> <%= @user.last_name %> </h2>
+  <h5> <%= @user.street_address %><%= @user.city %> <%= @user.province %> <%= @user.postal_code %> </h5>
   <h5> <%= @user.email %> </h5>
   <% if !@user.github.nil? %>
     <%= link_to 'GitHub', @user.github, id: 'github', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
@@ -48,8 +49,8 @@
         </div>
 
         <div id="email" class="tab-pane fade">
-          <%= u.input :email, required: true, label:"Email.  If you change this, you will be logged out until you reconfirm." %>
-          <%= u.input :current_password, label: "Please confirm the change with your current password." %>
+          <%= u.input :email, required: true, label:"Email.  You need to confirm your new email before we update to it." %>
+          <%= u.input :email_password, label: "Please confirm the change with your current password." %>
           <%= u.submit 'Change Email', name: 'email' %>
         </div>
 

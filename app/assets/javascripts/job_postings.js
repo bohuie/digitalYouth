@@ -31,7 +31,7 @@ function skill_autocomplete(id){
   $('.ui-helper-hidden-accessible').hide();
 }
 
-function add_fields(association, content){
+function add_job_posting_skill_fields(association, content){
   if ($('body').hasClass('job_postings')){
     var skills = 0;
     $('#job-skills').children().each(function(){if(this.id.includes("job-posting-skill-")) skills++;});

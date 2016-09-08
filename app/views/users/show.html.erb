@@ -77,21 +77,8 @@
 				<% end %>
 				<% if user_signed_in? && @current_user==@user %>
 					<div class="row">
+						<h3>Create a project below!</h3>
 					<%= render 'projects/project_form' %>
-						<h3>Create another project below!</h3>
-					</div>
-					<!--Potential relocation to own page--> 
-					<div class ="container">
-					<div class ="row">
-					<div class="col-xs-6">
-						<%= simple_form_for @project do |f| %>
-							<%= f.input :title, required: true %>
-							<%= f.input :description, required: true, as: :text %>
-							<%= f.input :image, as: :file %>
-							<%= f.button :submit %>
-						<% end %>
-					</div>
-					</div>
 					</div>
 				<% end %>
 			</div>

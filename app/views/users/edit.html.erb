@@ -70,21 +70,16 @@
           <%= u.submit 'Update', name: 'media' %>
 
           <div>
-Connect Account
-
-
-
-<% ['facebook'].each do |provider| %>
-
-  <% if current_user.identities.pluck(:provider).include?(provider.to_s) %>
-    <%= provider.to_s.titleize %> Connected
-  <% else %>
-      <%= link_to "Sign in with #{provider.to_s.titleize}", omniauth_authorize_path('user', provider) %>
-  <% end %>
-<br/>
-<% end %>
-
-</div>
+            <p>Connect Accounts.  Accounts connected are only used for logging in.  They are not shown on your profile page.  If you wish to do so, please fill out the information above.</p>
+            <% ['facebook'].each do |provider| %>
+              <% if current_user.identities.pluck(:provider).include?(provider.to_s) %>
+                <%= provider.to_s.titleize %> Connected
+              <% else %>
+                <%= link_to "Sign in with #{provider.to_s.titleize}", omniauth_authorize_path('user', provider) %>
+              <% end %>
+              <br/>
+            <% end %>
+          </div>
         </div>
     </div>
 </div>

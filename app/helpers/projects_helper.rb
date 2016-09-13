@@ -1,6 +1,6 @@
 module ProjectsHelper
 
-	def link_to_add_fields(name, f, css_class = "")
+	def link_to_add_project_skill_fields(name, f, css_class = "")
      	new_object = ProjectSkill.new
      	new_object.skill = Skill.new
      	association = :project_skills

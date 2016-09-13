@@ -68,6 +68,23 @@
           <%= u.input :twitter %>
           <%= u.input :facebook %>
           <%= u.submit 'Update', name: 'media' %>
+
+          <div>
+Connect Account
+
+
+
+<% ['facebook'].each do |provider| %>
+
+  <% if current_user.identities.pluck(:provider).include?(provider.to_s) %>
+    <%= provider.to_s.titleize %> Connected
+  <% else %>
+      <%= link_to "Sign in with #{provider.to_s.titleize}", omniauth_authorize_path('user', provider) %>
+  <% end %>
+<br/>
+<% end %>
+
+</div>
         </div>
     </div>
 </div>

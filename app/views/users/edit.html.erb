@@ -68,6 +68,20 @@
           <%= u.input :twitter %>
           <%= u.input :facebook %>
           <%= u.submit 'Update', name: 'media' %>
+
+          <div>
+            <p>Connect Accounts.  Accounts connected are only used for logging in.  They are not shown on your profile page.  If you wish to do so, please fill out the information above.</p>
+            <% ['facebook', 'twitter', 'github'].each do |provider| %>
+              <% if current_user.identities.pluck(:provider).include?(provider.to_s) %>
+                <%= provider.to_s.titleize %> Connected
+              <% else %>
+                <%= link_to omniauth_authorize_path('user', provider), class: "btn btn-block btn-social btn-#{provider}" do %>
+                  <span class="fa fa-<%= provider %>"></span> Connect with <%= OmniAuth::Utils.camelize(provider) %>
+                <% end %>
+              <% end %>
+              <br/>
+            <% end %>
+          </div>
         </div>
     </div>
 </div>

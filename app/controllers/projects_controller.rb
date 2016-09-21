@@ -38,6 +38,9 @@ class ProjectsController < ApplicationController
 		if @project.save
 			#current_user.projects << @project
 			flash[:success] = "Project successfully created."
+
+			#Create User-Skill relations
+			byebug
 			redirect_back_or
 		else
 			flash[:danger] = "Please fix the errors below."

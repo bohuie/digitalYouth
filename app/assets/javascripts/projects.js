@@ -33,6 +33,7 @@ function skill_autocomplete(id){
 
 function add_project_skill_fields(association, content){
   if ($('body').hasClass('users')){
+    debugger
     var skills = 0;
     $('#project-skills').children().each(function(){if(this.id.includes("project-skill-")) skills++;});
     var new_id = skills + 1;

@@ -1,125 +1,158 @@
 <% if @user.has_role? :employee %>
-	
-	<div class ="container">
-		<p> User Information </p>
-		<p> <%= @user.first_name %> </p>
-		<p> <%= @user.last_name %> </p>
-		<p> <%= @user.email %> </p>
+<!-- Employee Profile -->
+<div class ="profileContainer">
+	<div class ="profileContainerImage" id="shadow-arch-edges">
+		<div class ="profileFrame">
+			<%= image_tag @user.image.url, alt:"User Icon" %> <!-- Should add a max size or auto scale pics that are uploaded -->
+		</div>
 	</div>
-
- 	<div class = "survey-table">
-		<%= render '/users/partials/show_survey_table' %>
+	<div class ="profileContainerContent">
+		<h2> <%= @user.first_name %> <%= @user.last_name %> </h2>
+		<h5> <%= @user.street_address %><%= @user.city %> <%= @user.province %> <%= @user.postal_code %> </h5>
+		<h5> <%= @user.email %> </h5>
+		<% if !@user.github.nil? %>
+			<%= link_to 'GitHub', @user.github, id: 'github', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+		<% end %>
+		<% if !@user.linkedin.nil? %>
+			<%= link_to 'Linkedin', @user.linkedin, id: 'linkedin', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+		<% end %>
+		<% if !@user.twitter.nil? %>
+			<%= link_to 'Twitter', @user.twitter, id: 'twitter', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+		<% end %>
+		<% if !@user.facebook.nil? %>
+			<%= link_to 'Facebook', @user.facebook, id: 'facebook', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+		<% end %>
+		<%= raw('<br>') if @user.github.nil? && @user.linkedin.nil? && @user.twitter.nil? && @user.facebook.nil? %>
 	</div>
-
-	<div class = "references">
-		<%= render '/users/partials/show_references' %>
+	<div class ="profileButtonResume">
+		<div class="resumeShadowBox bottom"> </div>
+		<div class="resumeShadowBox left"> </div>
+		<input type="button" value="RESUME"/>		
 	</div>
-
-	<% if !@projects.empty? %>
-		<div class="projects">
-			<div class="container">
-				<div class="row">
+	<div class="container" id="profileButtons">
+		<ul class="nav nav-tabs profileButtonContent">
+    			<li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#surveys">SURVEYS</a></li>
+    			<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#employment">EMPLOYMENT</a></li>
+    			<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#projects">PROJECTS</a></li>
+    			<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#skills">SKILLS</a></li>
+   			<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#references">REFERENCES</a></li>
+  		</ul>
+  
+  		<div class="tab-content profileButtonContent">
+    			<div id="surveys" class="tab-pane fade in active">
+      				<div class = "survey-table" id= "survey-table">
+					<%= render '/users/partials/show_survey_table', user:@user, results:@survey_results %>
+				</div>
+    			</div>
+    			<div id="employment" class="tab-pane fade">
+				<% if user_signed_in? && @current_user==@user %>
+					<%= link_to "Job Applications", job_posting_applications_path %>
+				<% end %>	
+    			</div>
+    			<div id="projects" class="tab-pane fade">
+				<% if !@projects.empty? %>
+					<div class="projects">
+					<!--<div class="container">-->
+					<div class="row">
 					<div class="col-xs-6">
 						<% @projects.each do |p| %>
 							<%= image_tag p.image.url %>
 							<h2><%= p.title %></h2>
 							<p><%= p.description %></p>
-							<% if !@skills.empty? %>
-								<p>Skills associated with this project</p>
-								<% @skills[p.id].each do |s| %>
-									<p><%= s.name%> </p>
+								<% if !@skills.empty? %>
+									<p>Skills associated with this project</p>
+									<% @skills[p.id].each do |s| %>
+										<p><%= s.name%> </p>
+									<% end %>
 								<% end %>
-							<% end %>
 							<% if user_signed_in? && @current_user==@user %>
-								<%= link_to "Edit Project", edit_project_path(p) %><br />
+								<%= link_to "Edit Project", edit_project_path(p) %><br/>
 							<% end %>
 						<% end %>
 					</div>
+					</div>
+					</div>
+				<% else %>
+					<h3>You have no posted projects.  Fill out the form below to create one!</h3>
+				<% end %>
+				<% if user_signed_in? && @current_user==@user %>
+					<div class="row">
+						<h3>Create a project below!</h3>
+					<%= render 'projects/project_form' %>
+					</div>
+				<% end %>
+			</div>
+    			<div id="skills" class="tab-pane fade">
+				<div id="skills">
+					<% if !@user_skills.empty? %>
+						<div class="container">
+							<h2>Here is a summary of your skill base</h2>
+							<% @user_skills.each do |us| %>
+								<div class="row">
+									<div class="col-xs-4">
+										<%= us.skill.name %> with a rating of <%= us.rating %> / <%= max_rating %>
+									</div>
+								</div>
+							<% end %>
+						</div>
+					<% end %>
+					<% if user_signed_in? && @current_user==@user %>
+						<%= simple_form_for @user_skill do |g| %>
+							<%= g.input :name %>	
+							<%= g.input :rating, as: :radio_buttons, collection: 0..Integer(max_rating)%>
+							<%= g.button :submit %>
+						<% end %>
+					<% end %>
 				</div>
+    			</div>
+			<div id="references" class="tab-pane fade">
+				<div class = "references" id = "references">
+					<%= render '/users/partials/show_references' %>
+				</div>
+    			</div>
+  		</div>
+	</div>
+</div>
+
+
+<% elsif @user.has_role? :employer %>
+<!-- Employer Profile -->
+	<div class ="profileContainer">
+		<div class ="profileContainerImage" id="shadow-arch-edges">
+			<div class ="profileFrame">
+				<%= image_tag @user.image.url, alt:"User Icon" %> <!-- Should add a max size or auto scale pics that are uploaded -->
 			</div>
 		</div>
-	<% else %>
-		<h3>You have no posted projects.  Fill out the form below to create one!</h3>
-	<% end %>
-	<% if user_signed_in? && @current_user==@user %>
-		<div class="row">
-			<h3>Create another project below!</h3>
+		<div class ="profileContainerContent">
+			<h2> <%= @user.company_name %></h2>
+			<h5> <%= @user.street_address %><br><%= @user.city %> <%= @user.province %> <%= @user.postal_code %> </h5>
+			<h5> <%= @user.email %> </h5>
+			<% if !@user.linkedin.nil? %>
+				<%= link_to 'Linkedin', @user.linkedin, id: 'linkedin', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+			<% end %>
+			<% if !@user.twitter.nil? %>
+				<%= link_to 'Twitter', @user.twitter, id: 'twitter', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+			<% end %>
+			<% if !@user.facebook.nil? %>
+				<%= link_to 'Facebook', @user.facebook, id: 'facebook', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+			<% end %>
+			<%= raw('<br>') if @user.github.nil? && @user.linkedin.nil? && @user.twitter.nil? && @user.facebook.nil? %>
 		</div>
-		<div class ="container">
-			<div class ="row">
-				<div class="col-xs-6">
-					<%= simple_form_for @project do |f| %>
-						<%= f.input :title, required: true %>
-						<%= f.input :description, required: true, as: :text %>
-						<%= f.input :image, as: :file %>
-						<%= f.button :submit %>
+		<div class="container" id="profileButtons">
+			<ul class="nav nav-tabs profileButtonContent">
+    				<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#employment">EMPLOYMENT</a></li>
+  			</ul>
+  	
+			<div class="tab-content profileButtonContent">
+				<div id="employment" class="tab-pane fade">
+					<%= link_to "Job Postings", job_postings_path(user: @user) %>
+					<% if user_signed_in? && @current_user==@user %>
+						<br><%= link_to "Job Applications", job_posting_applications_path %>
 					<% end %>
 				</div>
 			</div>
 		</div>
-	<% end %>
-	<% if !@user_skills.empty? %>
-		<div class="container">
-			<h2>Here is a summary of your skill base</h2>
-			<% @user_skills.each do |us| %>
-				<div class="row">
-					<div class="col-xs-4">
-						<%= us.skill.name %> with a rating of <%= us.rating %> / <%= max_rating %>
-					</div>
-				</div>
-			<% end %>
-		</div>
-	<% end %>
-	<% if user_signed_in? && @current_user==@user %>
-		<%= simple_form_for @user_skill do |g| %>
-			<%= g.input :name %>	
-			<%= g.input :rating, as: :radio_buttons, collection: 0..Integer(max_rating)%>
-			<%= g.button :submit %>
-		<% end %>
-	<% end %>
 	</div>
-<% elsif @user.has_role? :employer %>
-
-	<% if !@job_postings.empty? %>
-		<div class="job-postings">
-			<div class="container">
-				<div class="row">
-					<div class="col-xs-6">
-						<% @job_postings.each do |j| %>
-							<h2><%= j.title %></h2>
-							<p><%= j.description %></p>
-							<p>Job Posting available at: <%= j.open_date %></p>
-							<p>Cut off for applicants is: <%=j.close_date%></p>
-							<% if user_signed_in? && @current_user==@user %>
-								<%= link_to "Edit Posting", edit_job_posting_path(j) %>
-							<% end %>
-						<% end %>
-					</div>
-				</div>
-				<div class="row">
-					<h2>Add another job posting below!</h2>
-				</div>
-			</div>
-		</div>
-	<% else %>
-		<h3>You have no job postings here.  Would you like to create one?</h3>
-	<% end %>
-	<% if user_signed_in? && @current_user==@user %>
-	<div class ="container">
-		<div class ="row">
-			<div class="col-xs-6">
-				<%= simple_form_for @job_posting do |f| %>
-					<%= f.input :title, required: true %>
-					<%= f.input :description, required: true, as: :text %>
-					<%= f.input :open_date, required: true %>
-					<%= f.input :close_date, required: true %>
-					<%= f.button :submit %>
-				<% end %>
-			</div>
-		</div>
-	</div>
-	<% end %>
 <% elsif @user.has_role? :admin%>
-
-<% else %>
+	You are an admin!
 <% end %>

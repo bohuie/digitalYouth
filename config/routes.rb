@@ -1,9 +1,23 @@
 Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
-  get 'welcome/index'
+
+  #Omniauth, different
+  #match '/auth/:provider/callback' to: 'users/sessions#create', via: [:get, :post]
+  #match '/logout', to: 'users/sessions#destroy', via: [:get, :post]
+
+  #notifications
+  get 'notifications' => 'notifications#index'
+  get 'notifications/show' => 'notifications#show', as: :show_notifications
+  get 'notifications/:id' => 'notifications#trackable', as: :show_trackable
+  patch 'notifications' => 'notifications#update'
+  patch 'notifications/all' => 'notifications#update_all', as: :update_all_notifications
+  delete 'notifications' => 'notifications#delete'
+  delete 'notifications/all' => 'notifications#delete_all', as: :delete_all_notifications
 
   # Devise_for :users
-  devise_for :users, controllers: { sessions: "users/sessions", registrations: "users/registrations" }
+  devise_for :users, controllers: { sessions: "users/sessions", :registrations => "users/registrations", omniauth_callbacks: 'users/omniauth_callbacks' }
+  match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
+
  #devise_for :users
   #resources :users, only: :show, as: :user
   get 'users' => 'users#index'
@@ -17,6 +31,7 @@ Rails.application.routes.draw do
   #get '/skills/:id/edit' => 'skills#edit', as: :edit_skill
   patch 'skills/:id' => 'skills#update'
   post 'skills' => 'skills#create'
+  get 'skills/autocomplete' => 'skills#autocomplete'
 
 
   # User-skill routes
@@ -25,13 +40,27 @@ Rails.application.routes.draw do
   patch '/user_skills/:id' => 'user_skills#update'
   post '/user_skills' => 'user_skills#create'
 
-  # Job posting routes
-  get '/job_postings/:id' => 'job_postings#show', as: :job_posting
-  get '/job_postings/:id/edit' => 'job_postings#edit', as: :edit_job_posting
+  # Job Posting routes
+  get 'job_postings' => 'job_postings#index'
+  get 'job_postings/new' => 'job_postings#new', as: :new_job_posting
+  get 'job_postings/refresh' => 'job_postings#refresh', as: :refresh_job_posting
+  post 'job_postings/refresh' => 'job_postings#refresh_process', as: :refresh_job_posting_process
+  get 'job_postings/:id' => 'job_postings#show', as: :job_posting
+  get 'job_postings/:id/edit' => 'job_postings#edit', as: :edit_job_posting
   patch 'job_postings/:id' => 'job_postings#update'
+  delete 'job_postings/:id' => 'job_postings#destroy'
   post 'job_postings' => 'job_postings#create'
 
+  # Job Posting Application routes
+  get 'job_posting_applications' => 'job_posting_applications#index'
+  get 'job_posting_applications/new' => 'job_posting_applications#new', as: :new_job_posting_application
+  get 'job_posting_application/:id' => 'job_posting_applications#show', as: :job_posting_application
+  post 'job_posting_applications' => 'job_posting_applications#create'
+  patch 'job_posting_applications/:id' => 'job_posting_applications#update', as: :update_job_posting_application
+  delete 'job_posting_application/:id' => 'job_posting_applications#destroy'
+
   # Project routes
+  get 'projects' => 'projects#index'
   get 'projects/new' => 'projects#new', as: :new_project
   get 'projects/:id' => 'projects#show', as: :project
   get 'projects/:id/edit' => 'projects#edit', as: :edit_project
@@ -48,14 +77,16 @@ Rails.application.routes.draw do
 
   # Reference routes
   get 'references' => 'references#index'
+  get 'reference/:id' => 'references#show', as: :reference
   get 'references/refer' => 'references#email', as: :email_reference
   get 'references/new/:id' => 'references#new', as: :new_reference
   post 'references/refer' => 'references#send_mail', as: :reference_emails
   post 'references' => 'references#create'
   patch 'references/:id' => 'references#update', as: :update_reference
-  delete 'references/:id' => 'references#delete', as: :delete_reference
+  delete 'references/:id' => 'references#destroy', as: :delete_reference
 
   # Survey routes
+  get 'surveys' => 'surveys#index'
   get 'surveys/:title' => 'surveys#show', as: :survey
   post 'responses' => 'responses#create'
   patch 'responses' => 'responses#update'
@@ -66,6 +97,8 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
+  get 'lost_email' => 'welcome#lost_email', as: :lost_email
+  post 'lost_email' => 'welcome#send_lost_email', as: :send_lost_email
   root 'welcome#index'
 
   # Example of regular route:

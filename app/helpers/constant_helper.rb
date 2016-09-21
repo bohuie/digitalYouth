@@ -16,4 +16,8 @@ module ConstantHelper
 		end
 		return meanings
 	end
+
+	def get_no_notifications_msg
+		return CGI.unescapeHTML("<li class=\"center-text\"> You have no notifications! </li>")
+	end
 end

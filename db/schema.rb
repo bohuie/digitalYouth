@@ -11,29 +11,95 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160602205509) do
+ActiveRecord::Schema.define(version: 20160913164318) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "activities", force: :cascade do |t|
+    t.integer  "trackable_id"
+    t.string   "trackable_type"
+    t.integer  "owner_id"
+    t.string   "owner_type"
+    t.string   "key"
+    t.text     "parameters"
+    t.integer  "recipient_id"
+    t.string   "recipient_type"
+    t.boolean  "is_read",        default: false
+    t.boolean  "is_seen",        default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "activities", ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type", using: :btree
+  add_index "activities", ["recipient_id", "recipient_type"], name: "index_activities_on_recipient_id_and_recipient_type", using: :btree
+  add_index "activities", ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type", using: :btree
+
+  create_table "identities", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "provider"
+    t.string   "uid"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "identities", ["user_id"], name: "index_identities_on_user_id", using: :btree
+
+  create_table "job_categories", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "job_posting_applications", force: :cascade do |t|
+    t.text     "message"
+    t.integer  "applicant_id"
+    t.integer  "company_id"
+    t.integer  "job_posting_id"
+    t.integer  "status",         default: 0, null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  create_table "job_posting_skills", force: :cascade do |t|
+    t.integer "importance"
+    t.integer "job_posting_id"
+    t.integer "skill_id"
+    t.integer "question_id"
+  end
+
+  add_index "job_posting_skills", ["job_posting_id"], name: "index_job_posting_skills_on_job_posting_id", using: :btree
+  add_index "job_posting_skills", ["question_id"], name: "index_job_posting_skills_on_question_id", using: :btree
+  add_index "job_posting_skills", ["skill_id"], name: "index_job_posting_skills_on_skill_id", using: :btree
+
   create_table "job_postings", force: :cascade do |t|
     t.string   "title"
+    t.string   "company_name"
+    t.string   "location"
+    t.string   "pay_range"
+    t.string   "link"
+    t.string   "posted_by"
+    t.integer  "job_type"
     t.text     "description"
     t.date     "open_date"
     t.date     "close_date"
+    t.integer  "views",           default: 0, null: false
     t.integer  "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer  "job_category_id"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   create_table "project_skills", force: :cascade do |t|
     t.integer  "project_id"
     t.integer  "skill_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "question_id"
   end
 
   add_index "project_skills", ["project_id"], name: "index_project_skills_on_project_id", using: :btree
+  add_index "project_skills", ["question_id"], name: "index_project_skills_on_question_id", using: :btree
   add_index "project_skills", ["skill_id"], name: "index_project_skills_on_skill_id", using: :btree
 
   create_table "projects", force: :cascade do |t|
@@ -92,6 +158,7 @@ ActiveRecord::Schema.define(version: 20160602205509) do
     t.string   "phone_number"
     t.text     "reference_body"
     t.boolean  "confirmed",      default: false
+    t.integer  "referee_id"
     t.integer  "user_id"
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
@@ -146,34 +213,43 @@ ActiveRecord::Schema.define(version: 20160602205509) do
     t.string   "encrypted_password",     default: "",                                                                                   null: false
     t.string   "first_name"
     t.string   "last_name"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
     t.string   "github"
     t.string   "linkedin"
     t.string   "twitter"
     t.string   "facebook"
     t.string   "company_name"
-    t.string   "company_address"
-    t.string   "company_city"
-    t.string   "company_province"
-    t.string   "company_postal_code"
+    t.string   "street_address"
+    t.string   "unit_number"
+    t.string   "city"
+    t.string   "province"
+    t.string   "postal_code"
     t.boolean  "answered_surveys",       default: [false, false, false, false, false, false, false, false, false, false, false, false],              array: true
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
     t.integer  "sign_in_count",          default: 0,                                                                                    null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
-    t.datetime "created_at",                                                                                                            null: false
-    t.datetime "updated_at",                                                                                                            null: false
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
+    t.string   "unconfirmed_email"
+    t.integer  "failed_attempts",        default: 0,                                                                                    null: false
+    t.string   "unlock_token"
+    t.datetime "locked_at"
+    t.datetime "created_at",                                                                                                            null: false
+    t.datetime "updated_at",                                                                                                            null: false
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
 
   create_table "users_roles", id: false, force: :cascade do |t|
     t.integer "user_id"
@@ -182,4 +258,5 @@ ActiveRecord::Schema.define(version: 20160602205509) do
 
   add_index "users_roles", ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
 
+  add_foreign_key "identities", "users"
 end

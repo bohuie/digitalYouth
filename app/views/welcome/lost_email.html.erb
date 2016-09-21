@@ -1,0 +1,9 @@
+<h1>Lost Login </h1>
+<p>Please fill out the form below to have an administrator check for your account informaiton. </p>
+<%= simple_form_for :user, url: send_lost_email_path do |f| %>
+	<%= f.input :email, label: "Contact email:", required: true %>
+	<%= f.input :first_name, label: "First Name:", required: true %>
+	<%= f.input :last_name, label: "Last Name:", required: true %>
+	<%= f.input :message, required: false, as: :text, label: "Please include any other details here:" %>
+	<%= f.button :submit, "Send Request" %>
+<% end %>

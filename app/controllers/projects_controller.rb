@@ -3,6 +3,21 @@ class ProjectsController < ApplicationController
 	before_action :authenticate_user!, except: [:show]
 	before_action :project_owner, only: [:edit, :update, :destroy]
 
+
+	def index
+		if !params[:user].nil?
+			@user = User.find(params[:user])
+			@projects = @user.projects
+		else
+			@user = current_user
+			@projects = current_user.projects
+		end
+
+		if user_signed_in? && current_user.id == @user.id
+			@project = Project.new
+		end
+	end
+
 	def new
 		@project = Project.new
 	end
@@ -23,7 +38,7 @@ class ProjectsController < ApplicationController
 		if @project.save
 			#current_user.projects << @project
 			flash[:success] = "Project successfully created."
-			redirect_to current_user
+			redirect_back_or
 		else
 			flash[:danger] = "Please fix the errors below."
 			render 'users/show'
@@ -62,11 +77,10 @@ class ProjectsController < ApplicationController
 	# Checks current user is the project owner
 	def project_owner
 		@project = Project.find(params[:id])
-		
 		unless @project.user_id == current_user.id
 			flash[:warning] = "You can only make changes to your projects."
 			@user = User.find(@project.user_id)
-			redirect_to current_user
+			redirect_back_or current_user
 		end
 	end
 end

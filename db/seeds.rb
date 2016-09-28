@@ -14,6 +14,13 @@ begin
 	#----------- Load every seed file in the /seed folder ---------------------
 	# Every large set of seeds should be put in a file in the /db/seeds folder
 	Dir[File.join(Rails.root, 'db', 'seeds', '*.rb')].sort.each { |seed| load seed }
+#--- Users for testing ---
+user1 = User.new(first_name: 'John', last_name: 'Doe', email: 'john@doe.com', password: 'password', password_confirmation: 'password',
+				 github: 'https://github.com/bohuie/digitalYouth', twitter: 'https://twitter.com/ShawnMendes?lang=en',
+				 answered_surveys:[true,true,true,true,true,true,true,true,false,true,true,true])
+user1.add_role :employee
+user1.skip_confirmation!
+user1.save
 
 	puts "Seeding Test Data"
 

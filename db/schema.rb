@@ -83,11 +83,13 @@ ActiveRecord::Schema.define(version: 20160721192354) do
   create_table "project_skills", force: :cascade do |t|
     t.integer  "project_id"
     t.integer  "skill_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "question_id"
   end
 
   add_index "project_skills", ["project_id"], name: "index_project_skills_on_project_id", using: :btree
+  add_index "project_skills", ["question_id"], name: "index_project_skills_on_question_id", using: :btree
   add_index "project_skills", ["skill_id"], name: "index_project_skills_on_skill_id", using: :btree
 
   create_table "projects", force: :cascade do |t|
@@ -242,6 +244,7 @@ ActiveRecord::Schema.define(version: 20160721192354) do
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
+    t.string   "unconfirmed_email"
     t.integer  "failed_attempts",        default: 0,                                                                                    null: false
     t.string   "unlock_token"
     t.datetime "locked_at"

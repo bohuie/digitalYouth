@@ -64,6 +64,7 @@ class ProjectsController < ApplicationController
 	def destroy
 		if Project.find(params[:id])
 			Project.find(params[:id]).destroy
+			Project.reindex if !Rails.env.test?
 			flash[:success] = "Project successfully deleted."
 		else
 

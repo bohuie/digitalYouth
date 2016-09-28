@@ -8,7 +8,8 @@ class JobPostingsController < ApplicationController
 
 	def index # Job Postings landing page
 		if params[:user].nil?
-			@job_postings = JobPosting.all.order(views: :desc).limit(25)
+			@job_postings = JobPosting.all.order(views: :desc).limit(10)
+			@reccommended_job_postings = reccomended_jobs
 		else
 			@job_postings = JobPosting.where(user_id: params[:user])
 			@company = User.find(params[:user])
@@ -63,6 +64,7 @@ class JobPostingsController < ApplicationController
 
 	def destroy # Deletes the job posting from the database
 		if @job_posting.destroy
+			JobPosting.reindex if !Rails.env.test?
 			redirect_to job_postings_path, flash: {success: "Job Posting Deleted!"}
 		else
 			flash[:danger] = 'There was an error while deleting your Job Posting.'
@@ -102,6 +104,51 @@ class JobPostingsController < ApplicationController
 private
 	def job_posting_params # Restricts parameters
 		params.require(:job_posting).permit(:title, :location, :pay_range, :link, :job_category_id, :posted_by, :description, :open_date, :close_date, :user_id, :job_type)
+	end
+
+	def reccomended_jobs
+		if user_signed_in? && current_user.has_role?(:employee)
+			# Viewed Job Postings Query:
+			#  Does not currently take into account the time spent on a page, or the age of the view
+			#  Limits the views to be newer than a year
+			#  ----------------------------------------
+			#  Can improve the recommendation system by:
+			#   Improving the selection weighting of time spent on a page vs its age
+			#   Could also count the number of times a page view occurs and weight it by that too
+			#   Limit to n number of job postings to use as the recommendation
+			viewed_job_postings = ActiveRecord::Base.connection.execute("
+						SELECT substring(properties->>'page', '[^/]*$') AS id 
+						FROM ahoy_events 
+						WHERE name = '$view_end' 
+						  AND visit_id IN (SELECT visit_id FROM ahoy_events WHERE user_id = #{current_user.id})
+						  AND properties ->> 'page' LIKE '/job_postings/%'
+						  AND time > NOW() - INTERVAL '1 years'
+						").values.flatten # Does not currently take into account the times on each page or much of the age, could order by time spent on a page and limit results
+			corpus = Array.new
+			corpus << viewed_job_postings if !viewed_job_postings.empty?
+		
+			if !corpus.empty?
+				corpus = JobPosting.find(corpus)
+				corpus_arr = Array.new 
+				#Add the viewed jobpostings to the corpus in the correct format
+				corpus.each do |v|  
+					corpus_arr.push({index: JobPosting.searchkick_index.name,id: v.id})
+				end
+				
+				#Add the list of user_skills the user has entered to the corpus
+				corpus_arr.push(current_user.skills.pluck(:name))
+				
+				results = JobPosting.search more_like_this: {
+									fields: [:title,:company_name,:location,:pay_range,:link,:posted_by,:job_type,:description,:open_date,:close_date,:job_category_id],
+									like: corpus_arr,
+									min_term_freq: 1
+						        }, per_page: 10
+			end
+
+			return results
+		else 
+			return nil
+		end
 	end
 
 	def check_employer # Checks current user is an employer

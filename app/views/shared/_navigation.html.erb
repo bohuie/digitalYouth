@@ -40,7 +40,7 @@
             <%= link_to show_notifications_path, html_options = 
             {class: "dropdown-toggle", "data-toggle"=>"dropdown","data-remote"=>"true"}, remote: true do %>
               <span class="glyphicon glyphicon-bell notifications-bell" aria-label="Notifications"></span>
-              <span class = "notifications-counter" id="notif-num" style="<%=@notif_count_style%>"><%= @notif_unseen %></span>
+              <span class = "notifications-counter" id="notif-num" style="<%=@notif_count_style%>" data-turbolinks-permanent><%= @notif_unseen %></span>
             <% end %>
 
             <ul class="dropdown-menu notif-bar" role="menu">

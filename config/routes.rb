@@ -8,6 +8,11 @@ Rails.application.routes.draw do
   get 'search/:id' => 'searches#navigate', as: :search_nav
 
   # Notifications
+  # Analytics
+  get 'analytics' => 'analytics#index'
+  get 'analytics/:id' => 'analytics#show', as: :analytics_report
+
+  #notifications
   get 'notifications' => 'notifications#index'
   get 'notifications/show' => 'notifications#show', as: :show_notifications
   get 'notifications/:id' => 'notifications#trackable', as: :show_trackable

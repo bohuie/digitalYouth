@@ -6,6 +6,18 @@ gem "searchjoy"
 # Searchkick gem for searching
 gem 'searchkick'
 
+# groupdate for grouping data by dates easily
+gem 'groupdate'
+
+# geocoder for distance and geo location functions
+gem 'geocoder'
+
+# activejob backport makes Active Job usable. Used for background jobs
+gem 'activejob_backport'
+
+# ahoy for analytics
+gem 'ahoy_matey'
+
 # recaptcha for captcha authentication
 gem 'recaptcha', require: "recaptcha/rails"
 

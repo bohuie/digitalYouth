@@ -12,9 +12,11 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require jquery-ui/autocomplete 
+//= require jquery-ui/autocomplete
 //= require turbolinks 
 //= require bootstrap-sprockets 
 //= require chartkick 
 //= require local_time
+//= require ahoy
+//= require_tree ./lib
 //= require_tree .

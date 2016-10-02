@@ -9,7 +9,6 @@ before_action :configure_sign_up_params, only: [:create]
 
   # POST /resource
   def create
-
     build_resource(sign_up_params)
 
     if params[:role] == 'employee'
@@ -82,7 +81,7 @@ before_action :configure_sign_up_params, only: [:create]
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:role])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:role, :first_name, :last_name])
   end
 
   # If you have extra params to permit, append them to the sanitizer.

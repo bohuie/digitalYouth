@@ -18,6 +18,9 @@ gem 'activejob_backport'
 # ahoy for analytics
 gem 'ahoy_matey'
 
+# Make '' -> nil when saving records to the DB
+gem "nilify_blanks"
+
 # recaptcha for captcha authentication
 gem 'recaptcha', require: "recaptcha/rails"
 
@@ -45,6 +48,8 @@ gem 'figaro'
 # Bootstrap
 gem 'bootstrap-sass'
 gem 'autoprefixer-rails'
+gem 'font-awesome-rails'
+gem 'bootstrap-social-rails'
 
 # Paperclip gem for images
 gem 'paperclip'
@@ -60,6 +65,8 @@ gem 'rolify'
 # Omniauth
 gem 'omniauth'
 gem 'omniauth-facebook'
+gem 'omniauth-twitter'
+gem 'omniauth-github'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.6'

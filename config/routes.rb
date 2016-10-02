@@ -12,6 +12,10 @@ Rails.application.routes.draw do
   get 'analytics' => 'analytics#index'
   get 'analytics/:id' => 'analytics#show', as: :analytics_report
 
+  #Omniauth, different
+  #match '/auth/:provider/callback' to: 'users/sessions#create', via: [:get, :post]
+  #match '/logout', to: 'users/sessions#destroy', via: [:get, :post]
+
   #notifications
   get 'notifications' => 'notifications#index'
   get 'notifications/show' => 'notifications#show', as: :show_notifications
@@ -22,7 +26,9 @@ Rails.application.routes.draw do
   delete 'notifications/all' => 'notifications#delete_all', as: :delete_all_notifications
 
   # Devise_for :users
-  devise_for :users, controllers: { sessions: "users/sessions", :registrations => "users/registrations" }
+  devise_for :users, controllers: { sessions: "users/sessions", :registrations => "users/registrations", omniauth_callbacks: 'users/omniauth_callbacks' }
+  match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
+
  #devise_for :users
   #resources :users, only: :show, as: :user
   get 'users' => 'users#index'
@@ -102,6 +108,8 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
+  get 'lost_email' => 'welcome#lost_email', as: :lost_email
+  post 'lost_email' => 'welcome#send_lost_email', as: :send_lost_email
   root 'welcome#index'
 
   # Example of regular route:

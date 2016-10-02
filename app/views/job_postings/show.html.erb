@@ -1,3 +1,4 @@
+<%= button_to 'Go Back', :back, method: :get %>
 <% if @job_posting.is_expired? %>
 	<% if (user_signed_in? && current_user.id == @job_posting.user_id) || (user_signed_in? && current_user.has_role?(:admin))%>
 		<%= render 'shared/dismissable_alert', msg:"This job posting is expired. It will no longer be visible to other users.", type: "warning" %>

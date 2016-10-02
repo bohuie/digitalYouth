@@ -59,7 +59,7 @@ class SearchesController < ApplicationController
 			aggs = [:location, :industry]
 
 			@locations = Array.new
-			locs = User.where.not(company_province: nil).group(:company_province,:company_city).order("COUNT(id)").limit(5).pluck(:company_city, :company_province)
+			locs = User.where.not(province: nil).group(:province,:city).order("COUNT(id)").limit(5).pluck(:city, :province)
 			locs.each do |l| 
 				@locations.push(l[0]+', '+l[1])
 			end
@@ -134,8 +134,8 @@ class SearchesController < ApplicationController
 				case f
 				when "location"
 					if @type == "Companies"
-						where_clause[:company_city] = @l.split(',')[0].strip
-						where_clause[:company_province] = @l.split(',')[1].strip
+						where_clause[:city] = @l.split(',')[0].strip
+						where_clause[:province] = @l.split(',')[1].strip
 					else
 						where_clause[:location] = @l if !@l.blank?
 					end

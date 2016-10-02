@@ -41,9 +41,9 @@ class User < ActiveRecord::Base
         data[:first_name] = first_name
         data[:last_name] = last_name
         data[:company_name] = company_name
-        data[:company_city] = company_city
-        data[:company_address] = company_address
-        data[:company_province] = company_province
+        data[:city] = city
+        data[:province] = province
+        data[:bio] = bio
         data[:role] = self.roles.first.name if !self.roles.first.nil?
         data[:skills] = self.skills.pluck(:name)
         return data

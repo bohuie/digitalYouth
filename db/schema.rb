@@ -11,11 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 20160817175758) do
-=======
 ActiveRecord::Schema.define(version: 20160913164318) do
->>>>>>> master
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,7 +35,6 @@ ActiveRecord::Schema.define(version: 20160913164318) do
   add_index "activities", ["recipient_id", "recipient_type"], name: "index_activities_on_recipient_id_and_recipient_type", using: :btree
   add_index "activities", ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type", using: :btree
 
-<<<<<<< HEAD
   create_table "ahoy_events", force: :cascade do |t|
     t.integer  "visit_id"
     t.integer  "user_id"
@@ -51,7 +46,7 @@ ActiveRecord::Schema.define(version: 20160913164318) do
   add_index "ahoy_events", ["name", "time"], name: "index_ahoy_events_on_name_and_time", using: :btree
   add_index "ahoy_events", ["user_id", "name"], name: "index_ahoy_events_on_user_id_and_name", using: :btree
   add_index "ahoy_events", ["visit_id", "name"], name: "index_ahoy_events_on_visit_id_and_name", using: :btree
-=======
+
   create_table "identities", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "provider"
@@ -61,7 +56,6 @@ ActiveRecord::Schema.define(version: 20160913164318) do
   end
 
   add_index "identities", ["user_id"], name: "index_identities_on_user_id", using: :btree
->>>>>>> master
 
   create_table "job_categories", force: :cascade do |t|
     t.string   "name"
@@ -294,7 +288,6 @@ ActiveRecord::Schema.define(version: 20160913164318) do
 
   add_index "users_roles", ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
 
-<<<<<<< HEAD
   create_table "visits", force: :cascade do |t|
     t.string   "visit_token"
     t.string   "visitor_token"
@@ -327,7 +320,5 @@ ActiveRecord::Schema.define(version: 20160913164318) do
   add_index "visits", ["user_id"], name: "index_visits_on_user_id", using: :btree
   add_index "visits", ["visit_token"], name: "index_visits_on_visit_token", unique: true, using: :btree
 
-=======
   add_foreign_key "identities", "users"
->>>>>>> master
 end

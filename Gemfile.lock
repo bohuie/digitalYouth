@@ -191,6 +191,8 @@ GEM
     omniauth-github (1.1.2)
       omniauth (~> 1.0)
       omniauth-oauth2 (~> 1.1)
+    omniauth-linkedin (0.2.0)
+      omniauth-oauth (~> 1.0)
     omniauth-oauth (1.1.0)
       oauth
       omniauth (~> 1.0)
@@ -374,6 +376,7 @@ DEPENDENCIES
   omniauth
   omniauth-facebook
   omniauth-github
+  omniauth-linkedin
   omniauth-twitter
   paperclip
   pg

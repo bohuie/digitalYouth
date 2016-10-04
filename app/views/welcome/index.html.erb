@@ -1,2 +1,101 @@
-<h1>Welcome#index</h1>
-<p>Find me in app/views/welcome/index.html.erb</p>
+<div class="employee">
+	<h2>Sign up for Job Seekers</h2>
+	<div class=col-xs-6>
+		<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |employee| %>
+  		<%= devise_error_messages! %>
+
+  		<div class="form-group">
+    		<%= employee.input :first_name, autofocus: true, class: "form-control" %>
+  		</div>
+
+ 	 	<div class="form-group">
+    		<%= employee.input :last_name, autofocus: true, class: "form-control" %>
+  		</div>
+
+  		<div class="form-group">
+    		<%= employee.label :email %><br />
+    		<%= employee.email_field :email, autofocus: true, class: "form-control" %>
+  		</div>
+
+  		<div class="form-group">
+    		<%= employee.label :password %>
+    		<% if @minimum_password_length %>
+    			<em>(<%= @minimum_password_length %> characters minimum)</em>
+    		<% end %><br />
+    		<%= employee.password_field :password, autocomplete: "off", class: "form-control" %>
+  		</div>
+
+  		<div class="form-group">
+    		<%= employee.label :password_confirmation %><br />
+    		<%= employee.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
+  		</div>
+
+  		<%=	hidden_field_tag :role, "employee" %>
+  
+  		<%= recaptcha_tags %>
+  
+  		<div class="submit">
+    		<%= employee.submit "Sign up", class: "btn btn-default" %>
+  		</div>
+		<% end %>
+		<br>
+	
+	</div>
+</div>
+
+<div class="employer">
+	<h2>Sign up for Employers</h2>
+	<div class=col-xs-6>
+		<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |employer| %>
+  		<%= devise_error_messages! %>
+
+  		<div class="form-group">
+    		<%= employer.input :first_name, autofocus: true, class: "form-control" %>
+  		</div>
+
+ 	 	<div class="form-group">
+    		<%= employer.input :last_name, autofocus: true, class: "form-control" %>
+  		</div>
+
+  		<div class="form-group">
+    		<%= employer.label :email %><br />
+    		<%= employer.email_field :email, autofocus: true, class: "form-control" %>
+  		</div>
+
+  		<div class="form-group">
+  			<%= employer.input :company_name, autofocus: true, class: "form-control" %>
+  		</div>
+
+  		<div class="form-group">
+    		<%= employer.label :password %>
+    		<% if @minimum_password_length %>
+    			<em>(<%= @minimum_password_length %> characters minimum)</em>
+    		<% end %><br />
+    		<%= employer.password_field :password, autocomplete: "off", class: "form-control" %>
+  		</div>
+
+  		<div class="form-group">
+    		<%= employer.label :password_confirmation %><br />
+    		<%= employer.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
+  		</div>
+
+  		<%=	hidden_field_tag :role, "employer" %>
+  
+  		<%= recaptcha_tags %>
+  
+  		<div class="submit">
+    		<%= employer.submit "Sign up", class: "btn btn-default" %>
+  		</div>
+		<% end %>
+		<br>
+	
+	</div>
+</div>
+
+<div style="clear: both;">
+</div>
+
+<div class="shared_links">
+	<%= render "users/shared/links" %>
+</div>
+	

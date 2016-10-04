@@ -9,6 +9,7 @@ before_action :configure_sign_up_params, only: [:create]
 
   # POST /resource
   def create
+    byebug
     build_resource(sign_up_params)
 
     if params[:role] == 'employee'

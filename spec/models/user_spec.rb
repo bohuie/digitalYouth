@@ -38,10 +38,10 @@ describe User do
 		it { should respond_to(:facebook) }
 		it { should respond_to(:twitter) }
 		it { should respond_to(:company_name) }
-		it { should respond_to(:company_address) }
-		it { should respond_to(:company_city) }
-		it { should respond_to(:company_province) }
-		it { should respond_to(:company_postal_code) }
+		it { should respond_to(:street_address) }
+		it { should respond_to(:city) }
+		it { should respond_to(:province) }
+		it { should respond_to(:postal_code) }
 
 		it { should be_valid }
 

@@ -1,0 +1,29 @@
+<div class="row">
+	<div class="col-md-2 search-sidebar">
+		<div id="filters">
+			<%= link_to "All", search_path(q:@query), class: active_search("All",@type)%><br>
+			<%= link_to "People", search_path(q:@query, t:"People"), class: active_search("People",@type) %><br>
+			<%= link_to "Companies", search_path(q:@query, t:"Companies"), class: active_search("Companies",@type) %><br>
+			<%= link_to "Projects", search_path(q:@query, t:"Projects"), class: active_search("Projects",@type)%><br>
+			<%= link_to "Job Postings", search_path(q:@query, t:"JobPostings"), class: active_search("JobPostings",@type)%><br>
+		</div>
+		<%= render "searches/partials/filters" %>
+	</div>
+
+	<div class="col-md-5 search">
+		<% if !@results.blank? %>
+			<p><%=raw("Search results for #{@query}<br>") if !@query.blank?%>
+			<%=@results.total_entries%> results, took <%=@results.took%>ms.</p>
+			<input id="total-results" type="hidden" value="<%=@results.total_entries%>"> 
+			<div id="results">
+				<%= render "searches/partials/results", results: @results, query: @query %>
+				<img id="ajax-loading" class="loading-image" src="<%=asset_path('loading.gif')%>" alt="Loading.." style="visibility:hidden;">
+			</div>
+			<%= link_to search_path, remote: true, method: "get", id:"load-more" do %>
+				<span class="glyphicon glyphicon-refresh"></span>
+			<% end %>
+		<% else %>
+			<p>No results found for <%=@query%></p>
+		<% end %>
+	</div>
+</div>

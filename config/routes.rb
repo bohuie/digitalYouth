@@ -1,5 +1,20 @@
 Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+  mount Searchjoy::Engine, at: "/admin/searchjoy"
+  get 'welcome/index'
+
+  # Searches
+  get 'search' => 'searches#index'
+  get 'search/:id' => 'searches#navigate', as: :search_nav
+
+  # Notifications
+  # Analytics
+  get 'analytics' => 'analytics#index'
+  get 'analytics/:id' => 'analytics#show', as: :analytics_report
+
+  #Omniauth, different
+  #match '/auth/:provider/callback' to: 'users/sessions#create', via: [:get, :post]
+  #match '/logout', to: 'users/sessions#destroy', via: [:get, :post]
 
   #notifications
   get 'notifications' => 'notifications#index'
@@ -11,7 +26,9 @@ Rails.application.routes.draw do
   delete 'notifications/all' => 'notifications#delete_all', as: :delete_all_notifications
 
   # Devise_for :users
-  devise_for :users, controllers: { sessions: "users/sessions", :registrations => "registrations" }
+  devise_for :users, controllers: { sessions: "users/sessions", :registrations => "users/registrations", omniauth_callbacks: 'users/omniauth_callbacks' }
+  match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
+
  #devise_for :users
   #resources :users, only: :show, as: :user
   get 'users' => 'users#index'
@@ -54,6 +71,7 @@ Rails.application.routes.draw do
   delete 'job_posting_application/:id' => 'job_posting_applications#destroy'
 
   # Project routes
+  get 'projects' => 'projects#index'
   get 'projects/new' => 'projects#new', as: :new_project
   get 'projects/:id' => 'projects#show', as: :project
   get 'projects/:id/edit' => 'projects#edit', as: :edit_project
@@ -79,6 +97,7 @@ Rails.application.routes.draw do
   delete 'references/:id' => 'references#destroy', as: :delete_reference
 
   # Survey routes
+  get 'surveys' => 'surveys#index'
   get 'surveys/:title' => 'surveys#show', as: :survey
   post 'responses' => 'responses#create'
   patch 'responses' => 'responses#update'
@@ -89,6 +108,8 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
+  get 'lost_email' => 'welcome#lost_email', as: :lost_email
+  post 'lost_email' => 'welcome#send_lost_email', as: :send_lost_email
   root 'welcome#index'
 
   # Example of regular route:

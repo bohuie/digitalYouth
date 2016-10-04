@@ -16,10 +16,16 @@ class DeviseCreateUsers < ActiveRecord::Migration
 
       #company info
       t.string  :company_name
-      t.string  :company_address
-      t.string  :company_city
-      t.string  :company_province
-      t.string  :company_postal_code
+
+      #location info
+      t.string  :street_address
+      t.string  :unit_number
+      t.string  :city
+      t.string  :province
+      t.string  :postal_code
+
+      #Bio info
+      t.string  :bio
 
       #Survey tracking - survey_id-1 maps to each spot in the array
       t.boolean :answered_surveys, array: true, default: [false, false, false, false, false, false, false, false, false, false, false, false]
@@ -42,7 +48,7 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string   :confirmation_token
       t.datetime :confirmed_at
       t.datetime :confirmation_sent_at
-      # t.string   :unconfirmed_email # Only if using reconfirmable
+      t.string   :unconfirmed_email # Only if using reconfirmable
 
       ## Lockable
       t.integer  :failed_attempts, default: 0, null: false # Only if lock strategy is :failed_attempts

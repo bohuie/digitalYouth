@@ -1,13 +1,14 @@
 <% if @user.has_role? :employee %>
-<!------Employee Profile--------->
+<!-- Employee Profile -->
 <div class ="profileContainer">
 	<div class ="profileContainerImage" id="shadow-arch-edges">
 		<div class ="profileFrame">
-			<img src="https://image.freepik.com/free-icon/user-male-silhouette_318-55563.png"/>
+			<%= image_tag @user.image.url, alt:"User Icon" %> <!-- Should add a max size or auto scale pics that are uploaded -->
 		</div>
 	</div>
 	<div class ="profileContainerContent">
 		<h2> <%= @user.first_name %> <%= @user.last_name %> </h2>
+		<h5> <%= @user.street_address %><%= @user.city %> <%= @user.province %> <%= @user.postal_code %> </h5>
 		<h5> <%= @user.email %> </h5>
 		<% if !@user.github.nil? %>
 			<%= link_to 'GitHub', @user.github, id: 'github', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
@@ -24,9 +25,11 @@
 		<%= raw('<br>') if @user.github.nil? && @user.linkedin.nil? && @user.twitter.nil? && @user.facebook.nil? %>
 	</div>
 	<div class ="profileButtonResume">
+<!-- Placeholder: TODO implement Resume stuff
 		<div class="resumeShadowBox bottom"> </div>
 		<div class="resumeShadowBox left"> </div>
-		<input type="button" value="RESUME"/>		
+		<input type="button" value="RESUME"/>	
+-->	
 	</div>
 	<div class="container" id="profileButtons">
 		<ul class="nav nav-tabs profileButtonContent">
@@ -76,20 +79,8 @@
 				<% end %>
 				<% if user_signed_in? && @current_user==@user %>
 					<div class="row">
-						<h3>Create another project below!</h3>
-					</div>
-					<!--Potential relocation to own page--> 
-					<div class ="container">
-					<div class ="row">
-					<div class="col-xs-6">
-						<%= simple_form_for @project do |f| %>
-							<%= f.input :title, required: true %>
-							<%= f.input :description, required: true, as: :text %>
-							<%= f.input :image, as: :file %>
-							<%= f.button :submit %>
-						<% end %>
-					</div>
-					</div>
+						<h3>Create a project below!</h3>
+					<%= render 'projects/project_form' %>
 					</div>
 				<% end %>
 			</div>
@@ -127,16 +118,16 @@
 
 
 <% elsif @user.has_role? :employer %>
-<!------Employer Profile--------->
+<!-- Employer Profile -->
 	<div class ="profileContainer">
 		<div class ="profileContainerImage" id="shadow-arch-edges">
 			<div class ="profileFrame">
-				<img src="https://image.freepik.com/free-icon/user-male-silhouette_318-55563.png"/>
+				<%= image_tag @user.image.url, alt:"User Icon" %> <!-- Should add a max size or auto scale pics that are uploaded -->
 			</div>
 		</div>
 		<div class ="profileContainerContent">
 			<h2> <%= @user.company_name %></h2>
-			<h5> <%= @user.company_address %><br><%= @user.company_city %> <%= @user.company_province %> <%= @user.company_postal_code %> </h5>
+			<h5> <%= @user.street_address %><br><%= @user.city %> <%= @user.province %> <%= @user.postal_code %> </h5>
 			<h5> <%= @user.email %> </h5>
 			<% if !@user.linkedin.nil? %>
 				<%= link_to 'Linkedin', @user.linkedin, id: 'linkedin', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
@@ -151,14 +142,41 @@
 		</div>
 		<div class="container" id="profileButtons">
 			<ul class="nav nav-tabs profileButtonContent">
-    				<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#employment">EMPLOYMENT</a></li>
+				<li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#about">ABOUT US</a></li> 
+    			<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#people">PEOPLE</a></li>
+    			<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#jobs">JOBS</a></li>
   			</ul>
   	
 			<div class="tab-content profileButtonContent">
-				<div id="employment" class="tab-pane fade">
-					<%= link_to "Job Postings", job_postings_path(user: @user) %>
-					<% if user_signed_in? && @current_user==@user %>
-						<br><%= link_to "Job Applications", job_posting_applications_path %>
+
+				<div id="about" class="tab-pane fade in active">
+					<p>About Us</p>
+					<%= @user.bio %>
+				</div>
+
+				<div id="people" class="tab-pane fade">
+					<p>Section for employees of the company, to add once the ability to follow users is added.</p>
+				</div>
+				<div id="jobs" class="tab-pane fade">
+					<br>
+					<% if @job_postings.nil? %>
+						<% if user_signed_in? && current_user == @user %>
+							<p>You have no job postings.  Please create one below</p>
+						<% else %>
+							<p><%= @user.company_name %> has no job postings right now.  Check back leter.</p>
+						<% end %>
+					<% else %>
+						<% @job_postings.each do |j| %>
+							<%= link_to "#{j.title}\n", job_posting_path(j) %>
+							<% if user_signed_in? && current_user == @user %>
+								<% application_count = j.job_posting_applications.where(status:-1..Float::INFINITY).count %>
+								<%= link_to raw("Applications <span class=\"badge\">#{application_count.to_s}</span>"), job_posting_applications_path(job_posting:j), class: "btn btn-success"%>
+							<% end %>
+							<br>
+						<% end %>
+					<% end %>
+					<% if user_signed_in? && current_user == @user %>
+						<%= link_to "Create a New Posting", new_job_posting_path %><br>
 					<% end %>
 				</div>
 			</div>

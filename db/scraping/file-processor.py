@@ -41,7 +41,7 @@ def extract_data(file):
 		desc = []
 
 		#--- Strings to filter by ---
-		skills_strings = ['qualif','skill','abil,','able','capab','experi','criter','knowl','educ']
+		skills_strings = ['qualif','skill','abil,','able','capab','experi','criter','knowl','educ','expertise']
 		prefer_strings = ['prefer','good','nice','bonus','addit']
 		benefits_strings = ['benefit']
 		roles_strings = ['role']
@@ -172,8 +172,9 @@ def check_string(string):
 	string = string.replace("\n\n", "\n")
 
 	string = string.replace("\xa0"," ")
+	string = string.replace('\\','/')
 
-	if string.endswith('\\') or string.endswith(';'):
+	if string.endswith('/') or string.endswith(';'):
 		return string[:-1]
 	else:
 		return string

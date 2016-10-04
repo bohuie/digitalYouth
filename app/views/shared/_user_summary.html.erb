@@ -1,0 +1,6 @@
+<%#= image_tag .user.image if !user.image.nil? %>
+<p>User Image</p>
+<h4> <%="#{user.first_name} #{user.last_name}"%></h4>
+<%= link_to "View Profile", user_path(user)%>
+
+<p> User description </p>

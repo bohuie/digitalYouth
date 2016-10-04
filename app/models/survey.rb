@@ -22,4 +22,16 @@ class Survey < ActiveRecord::Base
 		end
 		return title_string
 	end
+
+	def self.get_table_data(user)
+		surveys = Survey.all
+		responses = user.responses
+		survey_results = Hash.new
+		if !responses.empty?
+			responses.each do |r| #performs 12 queries
+				survey_results[r.survey_id] = r.get_data_map
+			end
+		end
+		return survey_results
+	end
 end

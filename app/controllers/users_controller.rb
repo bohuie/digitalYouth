@@ -50,7 +50,7 @@ class UsersController < ApplicationController
 
 	def update
 		@user = User.find(params[:id])
-		byebug
+		
 		if params.include?(:personal)
 			@user.update_attributes(personal_params)
 			flash[:success] = "Personal Info successfully updated."

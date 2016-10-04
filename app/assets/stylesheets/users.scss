@@ -31,6 +31,7 @@
 	margin: 5px 0px 5px 0px;
 
 }
+<<<<<<< HEAD
 //References
 .HR
 {
@@ -113,3 +114,239 @@
 	width: 25%;
 	overflow: hidden;
 }
+=======
+//Profile
+.flashContainer
+{
+	border: 2px solid red;
+	height: 60px;
+}
+.profileContainer
+{
+	height: 400px;
+	width: 1200px;
+	margin: 0 auto;
+	//border: 2px solid black;
+}
+.profileContainerImage
+{
+	border-radius: 5px;
+	border: 2px solid grey;
+	height: 200px;
+	width: 350px;
+	float: left;
+	padding: 20px;
+	margin: 0 auto;
+	background: #FFFFFF;
+}
+.profileFrame
+{
+	//border: 2px solid red;
+	height: 156px;
+	width: 306px;
+	position: relative;
+	//box-shadow: 0 12px 10px -12px hsla(0, 0%, 0%, 1);
+}
+.profileFrame img
+{
+	height: 152px;
+	width: 302px;
+	position: relative;
+}
+.profileContainerContent
+{
+	width: 600px;
+	height: 300px;
+	margin-left: 380px;
+	//border: 2px solid blue;
+}
+.profileContainerContent input
+{
+	border-radius: 5px;
+}
+#github
+{
+	background-color: Transparent;
+    	background-repeat:no-repeat;
+    	border: none;
+    	overflow: hidden;
+    	outline:none;
+
+	margin: 3px;
+	color: #000000;
+
+	border-top: 2px solid #000000;
+	border-bottom: 2px solid #000000;
+
+	opacity: 0.6;
+}
+#linkedin
+{
+	background-color: Transparent;
+    	background-repeat:no-repeat;
+    	border: none;
+    	overflow: hidden;
+    	outline:none;
+
+	margin: 3px;
+	color: #0077B5;
+
+	border-top: 2px solid #0077B5;
+	border-bottom: 2px solid #0077B5;
+
+	opacity: 0.6;
+}
+#twitter
+{
+	background-color: Transparent;
+    	background-repeat:no-repeat;
+    	border: none;
+    	overflow: hidden;
+    	outline:none;
+
+	margin: 3px;
+	color: #52B4D9;
+
+	border-top: 2px solid #52B4D9;
+	border-bottom: 2px solid #52B4D9;
+
+	opacity: 0.6;
+}
+#facebook
+{
+	background-color: Transparent;
+    	background-repeat:no-repeat;
+    	border: none;
+    	overflow: hidden;
+    	outline:none;
+
+	margin: 3px;
+	color: #3B5998;
+
+	border-top: 2px solid #3B5998;
+	border-bottom: 2px solid #3B5998;
+
+	opacity: 0.6;
+}
+.tab-content
+{
+	width: 100%;
+}
+.tab-content div
+{
+    	margin: 0 auto; 
+}
+#profileButtons
+{
+	//border: 2px solid blue;
+	overflow: hidden;
+}
+.profileButtonContent
+{
+	float: right;
+}
+.profileButtons
+{
+	//border: 2px solid green;
+	height: 60px;
+	width: 800px;
+	position: absolute;
+	bottom: 75px;
+	right: 10px;
+}
+.profileButtonContent li
+{
+    	background-color: Transparent;
+    	background-repeat:no-repeat;
+    	border: none;
+    	overflow: hidden;
+    	outline:none;
+
+	width: 150px;
+	margin: 3px;
+	color: #01B1AF;
+
+	border-top: 2px solid #01B1AF;
+	border-bottom: 2px solid #01B1AF;
+
+	opacity: 0.6;
+}
+.profileButtonResume
+{
+	//border: 2px solid yellow;
+	height: 60px;
+	width: 200px;
+	margin: 0 auto;
+	margin-right: 10px;
+	margin-top: -300px;
+	//margin-right: 1000px;
+}
+.profileButtonResume input
+{
+    	background-color: #01B1AF;
+    	background-repeat:no-repeat;
+    	border: 2px solid #01B1AF;
+    	overflow: hidden;
+    	outline:none;
+
+	height: 40px;
+	width: 150px;
+	margin: 3px;
+	color: white;
+	position: relative;
+
+}
+.resumeShadowBox
+{
+	position: absolute;
+}
+.bottom
+{
+	box-shadow: 4px 4px 8px 0 black;
+	width: 72px;
+	height: 40px;
+	margin-left: 74px;
+	margin-top: 2px;
+}
+.left
+{
+	box-shadow: 4px 4px 20px 0 grey;
+	width: 20px;
+	height: 38px;
+	margin-left: 132px;
+	margin-top: 6px;
+}
+#shadow-arch-edges {
+  position: relative;
+  box-shadow: 0 12px 10px -12px hsla(0, 0%, 0%, 1);
+}
+
+#shadow-arch-edges:before, #shadow-arch-edges:after {
+  position: absolute;
+  content: "";
+  width: 15%;
+  bottom: 10px;
+  box-shadow: 0 0 12px 20px hsla(0, 0%, 0%, .5);
+  z-index: -10;
+}
+
+#shadow-arch-edges:before {
+  left: 30px;
+  transform: skewY(-10deg);
+}
+
+
+#shadow-arch-edges:after{
+  right: 30px;
+  transform: skewY(10deg);
+}
+//Partials
+//#survey-table,
+//#references,
+//#projects,
+//#job-posting,
+//#skills
+//{
+//	display: none;
+//}
+>>>>>>> master

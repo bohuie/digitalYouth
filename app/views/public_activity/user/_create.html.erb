@@ -1,3 +1,7 @@
-<% r = activity.trackable %>
-<img src="<%=asset_path('avatar-placeholder.svg')%>" alt="User Icon" height="30" width="30"> 
-Hi <%= r.first_name%>, Welcome to digitalYouth!
+<%u = activity.trackable %>
+<div>
+	<%= image_tag u.image.url, alt:"User Icon", class:"notif-image" %>
+	Hi <%= u.first_name%>, Welcome to <%=request.host.titlecase%>!<br>
+	<%= local_time_ago(activity.created_at) %>
+</div>
+<div style="clear:both;"></div>

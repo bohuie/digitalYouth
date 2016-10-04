@@ -14,6 +14,6 @@ $(document).on "page:change", ->
   $(window).scroll(() ->
   	checkScroll(15,'ajax-loading','/notifications');)
   $(window).unload(() ->
-  	$(window).unbind();)
+  	$(window).unbind("click");)
 
   

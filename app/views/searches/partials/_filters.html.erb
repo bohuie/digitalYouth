@@ -1,0 +1,26 @@
+<% path="searches/partials/filter"%>
+<%= render path, name: "Location"		, key: :l, filter_values: @locations, current_values: @l, input: true 			if !@toggles[:l].nil?  %>
+<%= render path, name: "Current Company", key: :cc,filter_values: @current_companies, current_values: @cc, input: true  if !@toggles[:cc].nil? %>
+<%= render path, name: "Company"	 	, key: :c, filter_values: @companies, current_values: @c, input: true 			if !@toggles[:c].nil?  %>
+<%= render path, name: "Industry"	 	, key: :i, filter_values: @industries, current_values: @i 						if !@toggles[:i].nil?  %>
+<%= render path, name: "Past Company"	, key: :pc,filter_values: @past_companies, current_values: @pc, input: true 	if !@toggles[:pc].nil? %>
+<%= render path, name: "Skills"		 	, key: :s, filter_values: @skills, current_values: @s, input: true 				if !@toggles[:s].nil?  %>
+<%= render path, name: "Job Type"	 	, key: :jt,filter_values: @job_types, current_values: @jt 						if !@toggles[:jt].nil? %>
+<%= render path, name: "Relationship"	, key: :r, filter_values: @relationships, current_values: @r if !@toggles[:r].nil? && user_signed_in?  %>
+
+<% if !@toggles[:dp].nil? %>
+	<hr>
+	<h6 class="filter-title" onclick="$('#date-posted').slideToggle(100);">Date Posted <span class="caret"></span></h6>
+	<div id="date-posted" style="display: none;">
+		<%= link_to	"All", search_path(all_path_hash(@toggles,@query,@type,@filters,"date_posted", :dp)) %><br>
+		<% str = "day" %> 
+		<% cnt = 0 %>
+		<% @dates_posted.each do |dp| %>
+			<% str = "days" if cnt > 0 %>
+			<% path_hash = get_path_hash(@toggles,@query,@type,@filters,"date_posted") %>
+			<% path_hash[:dp] = dp %>
+			<%= link_to "#{dp} #{str} ago", search_path(path_hash), class: active_search(dp,params[:dp]) %><br>
+			<% cnt += 1 %>
+		<% end %>
+	</div>
+<% end %>

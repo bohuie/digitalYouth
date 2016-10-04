@@ -1,5 +1,16 @@
 Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+  mount Searchjoy::Engine, at: "/admin/searchjoy"
+  get 'welcome/index'
+
+  # Searches
+  get 'search' => 'searches#index'
+  get 'search/:id' => 'searches#navigate', as: :search_nav
+
+  # Notifications
+  # Analytics
+  get 'analytics' => 'analytics#index'
+  get 'analytics/:id' => 'analytics#show', as: :analytics_report
 
   #Omniauth, different
   #match '/auth/:provider/callback' to: 'users/sessions#create', via: [:get, :post]

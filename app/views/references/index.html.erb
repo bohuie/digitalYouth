@@ -15,29 +15,91 @@
 	</div>
 
 	<div class="row">
-		<div class="col-xs-6">
+		<div class="col-xs-12">
 			<h3> Confirmed References </h3>
 			<% if !@confirmed_references.empty? %>
 				<% @confirmed_references.each do |r| %>
-					<h3><%= r.first_name%> <%= r.last_name %></h3>
-					<h4><%= r.company%>: <%= r.position %></h4>
-					<h6>Contact: Email: <%= r.email %> , Phone: <%= r.phone_number %> </h6>
-					<p><%= r.reference_body %></p>
-					<%= link_to "UnConfirm", update_reference_path(r), method: "patch" %> <%= link_to "Delete", delete_reference_path(r), method: "delete" %>
+<div id="ref">
+						<div id="left">
+							<img src="https://image.freepik.com/free-icon/user-male-silhouette_318-55563.png" class="refLeft" id="refImage"/>
+							<p class="refLeft" id="refName"><%= r.first_name%> <%= r.last_name %></p>
+							<h4 class="refLeft"><%= r.position %></h4>
+							<h4 class="refLeft"><%= r.company%></h4>
+							<h5 class="refLeft"><%= link_to "Confirm", update_reference_path(r), method: "patch" %> <%= link_to "Delete", delete_reference_path(r), method: "delete" %></h5>
+						</div>
+						<div id="centre">
+							<p class="refCentre" id="refContent"><%= r.reference_body %></p>
+						</div>
+						<div id="right">
+							<div id="relEmployment">
+								<label for="sel1">Relevant Employment:</label>
+      								<select class="form-control" id="sel1">
+									<option value='Employer 1'>Employer 1</option>
+								</select>
+							</div>
+							<div id="relProjects">
+								<label for="sel2">Relevant Projects:</label>
+      								<select class="form-control" id="sel2">
+									<option value='Project 1'>Project 1</option>
+								</select>
+
+							</div>
+							<div id="contact">
+								<h6 class="refLeft"><b>Contact:</b></h6>
+								<h6 class="refLeft contactElm">Email: <%= r.email %></h6>
+								<h6 class="refLeft contactElm">Phone: <%= r.phone_number %> </h6>
+							</div>
+						</div>
+			
+					</div>
+					<hr class="HR"/>
 				<% end %>
 			<% else %>
 				<h6> You have no confirmed references.
 			<% end %>
 		</div>
-		<div class="col-xs-6">
-			<h3> Unconfirmed References </h3>
+		<div class="col-xs-12">
+			<h3> Unconfirmed References </h3>&nbsp;
 			<% if !@unconfirmed_references.empty? %>
 				<% @unconfirmed_references.each do |r| %>
-					<h3><%= r.first_name%> <%= r.last_name %></h3>
-					<h4><%= r.company%>: <%= r.position %></h4>
-					<h6>Contact: Email: <%= r.email %> , Phone: <%= r.phone_number %> </h6>
-					<p><%= r.reference_body %></p>
-					<%= link_to "Confirm", update_reference_path(r), method: "patch" %> <%= link_to "Delete", delete_reference_path(r), method: "delete" %>
+					<div id="ref2">
+						<div id="left2">
+							<img src="https://image.freepik.com/free-icon/user-male-silhouette_318-55563.png" class="refLeft" id="refImage2"/>
+							<p class="refLeft" id="refName2"><%= r.first_name%> <%= r.last_name %></p>
+							<h4 class="refLeft"><%= r.position %></h4>
+							<h4 class="refLeft"><%= r.company%></h4>
+							<h5 class="refLeft"><%= link_to "Confirm", update_reference_path(r), method: "patch" %> <%= link_to "Delete", delete_reference_path(r), method: "delete" %></h5>
+						</div>
+						<div id="centre2">
+							<p class="refCentre" id="refContent"><%= r.reference_body %></p>
+						</div>
+						<div id="right">
+							<div id="relEmployment2">
+								<label for="sel1">Relevant Employment:</label>
+      								<select class="form-control" id="sel1">
+									<option value='Employer 1'>Employer 1</option>
+								</select>
+							</div>
+							<div id="relProjects2">
+								<label for="sel2">Relevant Projects:</label>
+									<select class="form-control" id="sel2">
+										<option value='project1'>project1</option>
+									</select>
+								<%# @projects.each do |p| %>
+      									<!--<select class="form-control" id="sel2">
+										<option value='<%# p.title %>'><%# p.title %></option>
+									</select>-->
+								<%# end %>
+							</div>
+							<div id="contact2">
+								<h6 class="refLeft"><b>Contact:</b></h6>
+								<h6 class="refLeft contactElm">Email: <%= r.email %></h6>
+								<h6 class="refLeft contactElm">Phone: <%= r.phone_number %> </h6>
+							</div>
+						</div>
+			
+					</div>
+					<hr class="HR"/>
 				<% end %>
 			<% else %>
 				<h6> You have no unconfirmed references. </h6>

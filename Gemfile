@@ -1,6 +1,22 @@
 source 'https://rubygems.org'
 
-gem 'rake'
+# SearchJoy gem for search analytics
+gem "searchjoy"
+
+# Searchkick gem for searching
+gem 'searchkick'
+
+# groupdate for grouping data by dates easily
+gem 'groupdate'
+
+# geocoder for distance and geo location functions
+gem 'geocoder'
+
+# activejob backport makes Active Job usable. Used for background jobs
+gem 'activejob_backport'
+
+# ahoy for analytics
+gem 'ahoy_matey'
 
 # Make '' -> nil when saving records to the DB
 gem "nilify_blanks"
@@ -51,6 +67,7 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 gem 'omniauth-github'
+gem 'omniauth-linkedin'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.6'

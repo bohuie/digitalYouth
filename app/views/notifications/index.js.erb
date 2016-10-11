@@ -16,6 +16,7 @@
 	//Fade in all the notifications added
 	$('#ajax-loading').before().prevUntil($('#<%=first_id%>')).fadeIn(500);
 	$('#<%=first_id%>').fadeIn(500);
+	can_request = true;
 <% else %>
 	can_request = false;
 	$('#ajax-loading').css("display","none");

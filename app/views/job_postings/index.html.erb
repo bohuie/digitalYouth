@@ -12,3 +12,11 @@
 <% @job_postings.each do |j| %>
 	<%= link_to "#{j.title}\n", job_posting_path(j) %><br>
 <% end %>
+
+<% if !@reccommended_job_postings.blank? %>
+	<br>
+	<h3> Reccommended Job Postings </h3><br>
+	<% @reccommended_job_postings.each do |j| %>
+		<%= link_to "#{j.title}\n", job_posting_path(j) %><br>
+	<% end %>
+<% end %>

@@ -37,6 +37,7 @@ class ProjectsController < ApplicationController
 		@project = current_user.projects.build(project_params)
 		if @project.save
 			#current_user.projects << @project
+			Project.reindex if !Rails.env.test?
 			flash[:success] = "Project successfully created."
 
 			#Create User-Skill relations
@@ -54,6 +55,7 @@ class ProjectsController < ApplicationController
 		@project_skill = @project.project_skills.create
 		
 		if @project.update_attributes(project_params)
+			Project.reindex if !Rails.env.test?
 			flash[:success] = "Project successfully updated."
 			redirect_to current_user
 		else
@@ -65,6 +67,7 @@ class ProjectsController < ApplicationController
 	def destroy
 		if Project.find(params[:id])
 			Project.find(params[:id]).destroy
+			Project.reindex if !Rails.env.test?
 			flash[:success] = "Project successfully deleted."
 		else
 

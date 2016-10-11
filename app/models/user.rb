@@ -1,4 +1,9 @@
 class User < ActiveRecord::Base
+  	searchkick callbacks: :async
+  	scope :search_import, -> { includes(:roles,:users_roles) }
+    after_save :user_reindex
+
+  	
     include PublicActivity::Model
 
     TEMP_EMAIL_PREFIX = 'change@me'
@@ -30,6 +35,23 @@ class User < ActiveRecord::Base
       
     has_many :user_skills, dependent: :destroy
     has_many :skills, through: :user_skills
+
+    def search_data
+        data = Hash.new
+        data[:first_name] = first_name
+        data[:last_name] = last_name
+        data[:company_name] = company_name
+        data[:city] = city
+        data[:province] = province
+        data[:bio] = bio
+        data[:role] = self.roles.first.name if !self.roles.first.nil?
+        data[:skills] = self.skills.pluck(:name)
+        return data
+	end
+
+    def user_reindex
+        User.reindex if !Rails.env.test?
+    end
 
     def self.find_for_oauth(auth, signed_in_resource = nil)
 

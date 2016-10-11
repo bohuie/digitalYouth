@@ -8,7 +8,8 @@ class JobPostingsController < ApplicationController
 
 	def index # Job Postings landing page
 		if params[:user].nil?
-			@job_postings = JobPosting.all.order(views: :desc).limit(25)
+			@job_postings = JobPosting.all.order(views: :desc).limit(10)
+			@reccommended_job_postings = reccomended_jobs
 		else
 			@job_postings = JobPosting.where(user_id: params[:user])
 			@company = User.find(params[:user])
@@ -38,6 +39,7 @@ class JobPostingsController < ApplicationController
 		@job_posting = JobPosting.new(job_posting_params)
 		if @job_posting.save && @job_posting.process_skills(params[:job_posting]["job_posting_skills_attributes"])
 			redirect_to job_postings_path, flash: {success: "Job Posting Created!"}
+			JobPosting.reindex if !Rails.env.test?
 		else
 			flash[:warning] = "Oops, there was an issue in creating your Job Posting."
 			redirect_back_or job_postings_path
@@ -54,6 +56,7 @@ class JobPostingsController < ApplicationController
 	def update # Updates the job posting
 		if @job_posting.update_attributes(job_posting_params) && @job_posting.process_skills(params[:job_posting]["job_posting_skills_attributes"])
 			redirect_to job_postings_path, flash: {success: "Job Posting Updated!"}
+			JobPosting.reindex if !Rails.env.test?
 		else
 			flash[:warning] = "Oops, there was an issue in editing your Job Posting."
 			redirect_back_or edit_job_posting_path
@@ -62,6 +65,7 @@ class JobPostingsController < ApplicationController
 
 	def destroy # Deletes the job posting from the database
 		if @job_posting.destroy
+			JobPosting.reindex if !Rails.env.test?
 			redirect_to job_postings_path, flash: {success: "Job Posting Deleted!"}
 		else
 			flash[:danger] = 'There was an error while deleting your Job Posting.'
@@ -79,7 +83,7 @@ class JobPostingsController < ApplicationController
 			ActiveRecord::Base.transaction do
 				silence_stream(STDOUT) do
 					@job_postings = JobPosting.where("company_name IS NOT NULL")
-					@ids = @job_postings.map(&:id)
+					@ids = @job_postings.pluck(:id)
 					@job_postings.delete_all
 					JobPostingSkill.where(job_posting_id: @ids).delete_all
 				end
@@ -90,6 +94,7 @@ class JobPostingsController < ApplicationController
 					load params[:job_posting_seeds].tempfile
 				end
 			end
+			JobPosting.reindex
 			puts "Completed."
 			redirect_to root_path, flash: {success: "Refreshed Auto Populated Job Postings"}
 		else
@@ -100,6 +105,65 @@ class JobPostingsController < ApplicationController
 private
 	def job_posting_params # Restricts parameters
 		params.require(:job_posting).permit(:title, :location, :pay_range, :link, :job_category_id, :posted_by, :description, :open_date, :close_date, :user_id, :job_type)
+	end
+
+	def reccomended_jobs
+		if user_signed_in? && current_user.has_role?(:employee)
+			# Viewed Job Postings Query:
+			#  Does not currently take into account the time spent on a page, or the age of the view
+			#  Limits the views to be newer than a year
+			#  ----------------------------------------
+			#  Can improve the recommendation system by:
+			#   Improving the selection weighting of time spent on a page vs its age
+			#   Could also count the number of times a page view occurs and weight it by that too
+			#   Limit to n number of job postings to use as the recommendation
+			viewed_job_postings = ActiveRecord::Base.connection.execute("
+						SELECT substring(properties->>'page', '[^/]*$') AS id 
+						FROM ahoy_events 
+						WHERE name = '$view_end' 
+						  AND visit_id IN (SELECT visit_id FROM ahoy_events WHERE user_id = #{current_user.id})
+						  AND properties ->> 'page' LIKE '/job_postings/%'
+						  AND time > NOW() - INTERVAL '1 years'
+						").values.flatten # Does not currently take into account the times on each page or much of the age, could order by time spent on a page and limit results
+			corpus = Array.new
+			corpus << viewed_job_postings if !viewed_job_postings.empty?
+
+			if !corpus.empty?
+				corpus = JobPosting.find(corpus)
+				corpus_arr = Array.new 
+				#Add the viewed jobpostings to the corpus in the correct format
+				corpus.each do |v|  
+					corpus_arr.push({index: JobPosting.searchkick_index.name,id: v.id})
+				end
+				
+				# Add the list of user_skills the user has entered to the corpus
+				# Can be removed if needed. Added to try to make the recommendations closer to the users potential preferences
+				corpus_arr.push(current_user.skills.pluck(:name))
+				
+				results = JobPosting.search more_like_this: {
+									fields: [:title,:company_name,:location,:pay_range,:link,:posted_by,:job_type,:description,:open_date,:close_date,:job_category_id],
+									like: corpus_arr,
+									min_term_freq: 1,
+									stop_words: get_stop_word_array
+						        }, per_page: 10
+			end
+
+			return results
+		else 
+			return nil
+		end
+	end
+
+	# This method should be moved to a more general class or location (Don't know the best place to put it)
+	def get_stop_word_array
+		return ['a','about','above','after','again','against','all','am','an','and','any','are',"aren't",'as','at','be','because','been','before','being','below','between','both','but','by',
+				"can't",'cannot','could',"couldn't",'did',"didn't",'do','does',"doesn't",'doing',"don't",'down','during','each','few','for','from','further','had',"hadn't",'has',"hasn't",
+				'have',"haven't",'having','he',"he'd","he'll","he's",'her','here',"here's",'hers','herself','him','himself','his','how',"how's",'i',"i'd","i'll","i'm","i've",'if','in','into',
+				'is',"isn't",'it',"it's",'its','itself',"let's",'me','more','most',"mustn't",'my','myself','no','nor','not','of','off','on','once','only','or','other','ought','our','ours',
+				'ourselves','out','over','own','same',"shan't",'she',"she'd","she'll","she's",'should',"shouldn't",'so','some','such','than','that',"that's",'the','their','theirs','them',
+				'themselves','then','there',"there's",'these','they',"they'd","they'll","they're","they've",'this','those','through','to','too','under','until','up','very','was',"wasn't",
+				'we',"we'd","we'll","we're","we've",'were',"weren't",'what',"what's",'when',"when's",'where',"where's",'which','while','who',"who's",'whom','why',"why's",'with',"won't",
+				'would',"wouldn't",'you',"you'd","you'll","you're","you've",'your','yours','yourself','yourselves','zero']
 	end
 
 	def check_employer # Checks current user is an employer

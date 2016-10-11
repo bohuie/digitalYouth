@@ -1,5 +1,16 @@
 Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+  mount Searchjoy::Engine, at: "/admin/searchjoy"
+  get 'welcome/index'
+
+  # Searches
+  get 'search' => 'searches#index'
+  get 'search/:id' => 'searches#navigate', as: :search_nav
+
+  # Notifications
+  # Analytics
+  get 'analytics' => 'analytics#index'
+  get 'analytics/:id' => 'analytics#show', as: :analytics_report
 
   #Omniauth, different
   #match '/auth/:provider/callback' to: 'users/sessions#create', via: [:get, :post]
@@ -15,7 +26,7 @@ Rails.application.routes.draw do
   delete 'notifications/all' => 'notifications#delete_all', as: :delete_all_notifications
 
   # Devise_for :users
-  devise_for :users, controllers: { sessions: "users/sessions", :registrations => "users/registrations", omniauth_callbacks: 'users/omniauth_callbacks' }
+  devise_for :users, controllers: { passwords: "users/passwords", sessions: "users/sessions", :registrations => "users/registrations", omniauth_callbacks: 'users/omniauth_callbacks' }
   match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
 
  #devise_for :users

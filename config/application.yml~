@@ -1,0 +1,38 @@
+# Add configuration values here, as shown below.
+#
+# pusher_app_id: "2954"
+# pusher_key: 7381a978f7dd7f9a1117
+# pusher_secret: abdc3b896a0ffb85d373
+# stripe_api_key: sk_test_2J0l093xOyW72XUYJHE4Dv2r
+# stripe_publishable_key: pk_test_ro9jV5SNwGb1yYlQfzG17LHK
+#
+# production:
+#   stripe_api_key: sk_live_EeHnL644i6zo4Iyq4v1KdV9H
+#   stripe_publishable_key: pk_live_9lcthxpSIHbGwmdO941O1XVU
+
+DATABASE_USERNAME: 'ninogonzales'
+DATABASE_PASSWORD: 'letmein1234'
+
+DEVISE_SECRET_KEY: 'e2ef496a0ddfe341ee511f00b0d617f4f80264e3d9bafc8ead87bcd0f0f6aa14ada2ddeb7798d38325761d6a5caaaa05ee1af16fcf38c69980be7c53adfa08a7'
+
+MAX_RATING: "3"
+
+
+EMAIL_USERNAME: 'edge.map@ubc.ca'
+EMAIL_PASSWORD: 'EMAILPASSWORD'
+EMAIL_ADDRESS: 'smtp.mail.ubc.ca'
+
+RECAPTCHA_PUBLIC_KEY: "6LccSScTAAAAABUgAovN3YW2omGGF-N29bbeseTv"
+RECAPTCHA_PRIVATE_KEY: "6LccSScTAAAAAA3W-Qf9Rcx8mOe6NiQQcjy9Hsyw"
+
+FACEBOOK_ID: "1658895381068064"
+FACEBOOK_SECRET: "62e1735ce021a492b88d58815b098b10"
+
+TWITTER_ID: 'stE23dlrq2jrZHtgtWha3z1Er'
+TWITTER_SECRET: 'QEMrpY2FcB1cCJ1PH9MuNplM1HDrp7AOGQLWyRVex9jDL96IRI'
+
+GITHUB_ID: '3cffdf2c5ebac84e990e'
+GITHUB_SECRET: '2f316b2fad5da1064990e0c24bec473987a353b7'
+
+LINKEDIN_ID: '75wqha0p4km8hm'
+LINKEDIN_SECRET: 'hZt7pLNsIZUtdwVA'

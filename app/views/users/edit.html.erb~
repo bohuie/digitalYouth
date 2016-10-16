@@ -62,7 +62,7 @@
         </div>
 
         <div id="media" class="tab-pane fade">
-          <p>Feel free to add URL links to your social media accounts below.  These will help showcase your social media skills, projects, or other items to potential employers.</p>
+          <p>Feel free to add your social media accounts below.  These will help showcase your social media skills, projects, or other items to potential employers.</p>
           <%= u.input :github %>
           <%= u.input :linkedin %>
           <%= u.input :twitter %>

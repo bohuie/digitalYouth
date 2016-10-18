@@ -1,13 +1,15 @@
 
 <div class ="profileContainerImage" id="shadow-arch-edges">
   <div class ="profileFrame">
-    <%= simple_form_for @user do |img| %>
       <%= image_tag @user.image.url, alt:"User Icon" %> <!-- Should add a max size or auto scale pics that are uploaded -->
-      <%= img.input :image, as: :file %>
-      <%= img.check_box :delete_image %>Delete Image<br/>
-      <%= img.submit "Update Image", name: "image" %>
-    <% end %>
   </div>
+</div>
+<div class="editProfileImage">
+  <%= simple_form_for @user do |img| %>
+    <%= img.input :image, as: :file, label: "Profile Picture" %>
+    <%= img.check_box :delete_image %>Delete Image<br />
+    <%= img.submit "Update Image", name: "image" %>
+  <% end %>
 </div>
 
 <div class ="profileContainerContent">

@@ -28,6 +28,8 @@ class UsersController < ApplicationController
 			if user_signed_in? && current_user.id == @user.id
 				@num_unconfirmed_references = Reference.where(user_id: current_user.id, confirmed: false).count
 				@project = current_user.projects.build
+				project_skills = @project.project_skills.build
+				project_skills.skill = Skill.new
 			end
 
 			@user_skills = @user.user_skills

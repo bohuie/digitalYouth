@@ -4,6 +4,7 @@
 
 
 function remove_project_skill(id){
+  debugger
   if ($('body').hasClass('users')){
 	 $('#project-skill-destroy-'+id).val(true);
 	 $('#project-skill-'+id).fadeOut(100);
@@ -33,10 +34,11 @@ function skill_autocomplete(id){
 
 function add_project_skill_fields(association, content){
   if ($('body').hasClass('users')){
+    debugger
     var skills = 0;
     $('#project-skills').children().each(function(){if(this.id.includes("project-skill-")) skills++;});
     var new_id = skills + 1;
-    var regexp = new RegExp("new_" + association, "g");
+    var regexp = new RegExp("new_project_skills", "g");
     $('#project-skills').append(content.replace(regexp, new_id));
   }
 }

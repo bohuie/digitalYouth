@@ -33,6 +33,7 @@ function skill_autocomplete(id){
 
 function add_job_posting_skill_fields(association, content){
   if ($('body').hasClass('job_postings')){
+    debugger
     var skills = 0;
     $('#job-skills').children().each(function(){if(this.id.includes("job-posting-skill-")) skills++;});
     var new_id = skills + 1;

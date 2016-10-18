@@ -1,7 +1,7 @@
 <% options = get_read_options(activity)%>
 <% notification_id = "notification-" +activity.id.to_s %>
 <li id="<%=notification_id%>" class="<%=options[0]%>">
-	<div class="notif-inside">
+	<div class="notif-inside" style="width: 50px; height: 50px;">
 		<div class="content" onclick="window.location='<%=show_trackable_path(activity)%>'">
 			<div><%= render_activity activity %></div>
 		</div>

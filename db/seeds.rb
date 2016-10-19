@@ -91,8 +91,8 @@ begin
 	skill2 = Skill.create(name: 'twitter posting')
 	skill3 = Skill.create(name: 'content creator')
 
-	UserSkill.create(user_id: user1.id, skill_id: skill1.id, rating: "2")
-	UserSkill.create(user_id: user1.id, skill_id: skill2.id, rating: "3")
+	UserSkill.create(user_id: user1.id, skill_id: skill1.id, question_id: 41)
+	UserSkill.create(user_id: user1.id, skill_id: skill2.id, question_id: 41)
 
 	JobPostingSkill.create(job_posting_id: jobposting1.id, skill_id:skill1.id, importance:2, question_id:41)
 	JobPostingSkill.create(job_posting_id: jobposting1.id, skill_id:skill2.id, importance:2, question_id:42)

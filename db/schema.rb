@@ -229,11 +229,13 @@ ActiveRecord::Schema.define(version: 20160913164318) do
   create_table "user_skills", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "skill_id"
+    t.integer  "question_id"
     t.integer  "rating"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
+  add_index "user_skills", ["question_id"], name: "index_user_skills_on_question_id", using: :btree
   add_index "user_skills", ["skill_id"], name: "index_user_skills_on_skill_id", using: :btree
   add_index "user_skills", ["user_id"], name: "index_user_skills_on_user_id", using: :btree
 

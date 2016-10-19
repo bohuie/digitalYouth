@@ -70,18 +70,14 @@
 							<% @user_skills.each do |us| %>
 								<div class="row">
 									<div class="col-xs-4">
-										<%= us.skill.name %> with a rating of <%= us.rating %> / <%= max_rating %>
+										<%= us.skill.name %> 
 									</div>
 								</div>
 							<% end %>
 						</div>
 					<% end %>
 					<% if user_signed_in? && @current_user==@user %>
-						<%= simple_form_for @user_skill do |g| %>
-							<%= g.input :name %>	
-							<%= g.input :rating, as: :radio_buttons, collection: 0..Integer(max_rating)%>
-							<%= g.button :submit %>
-						<% end %>
+						<%= render 'user_skills/user_skill_form' %>
 					<% end %>
 				</div>
     			</div>

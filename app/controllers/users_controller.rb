@@ -13,6 +13,7 @@ class UsersController < ApplicationController
 
 		if @user.has_role? :employee
 			@projects = @user.projects;
+			@user_skills = @user.user_skills;
 			@references = Reference.where(user_id: @user.id, confirmed: true)
 			
 			@survey_results = Survey.get_table_data(@user)

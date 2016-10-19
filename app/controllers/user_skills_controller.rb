@@ -16,18 +16,18 @@ class UserSkillsController < ApplicationController
 
 	def create
 		@skill = Skill.find_by(name: params[:user_skill][:name])
-		@user_skill = current_user.user_skills.create(skill_id: @skill.id, rating: Integer(params[:user_skill][:rating]))
+		if @skill.nil?
+			@skill = Skill.create(name: params[:user_skill][:name])
+		end
+		@user_skill = current_user.user_skills.create(skill_id: @skill.id, question_id: params[:user_skill][:question_id])
 		if @user_skill.save
 			#session.delete(:skill_id)
+			flash[:success] = "New skill added."
 			redirect_to current_user
 		else
 			#session.delete(:skill_id)
+			flash[:error] = "There was a problem adding your skill.  Please try again later or contact an administrator."
 			redirect_to current_user
 		end
-	end
-
-	private
-	def user_skill_params
-		params.require(:user_skill).permit(:rating)
 	end
 end

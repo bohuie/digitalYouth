@@ -4,6 +4,7 @@ class Project < ActiveRecord::Base
 	belongs_to :user
 
 	has_many :project_skills, dependent: :destroy
+	accepts_nested_attributes_for :project_skills
 	has_many :skills, through: :project_skills
 
 	has_attached_file :image
@@ -31,7 +32,11 @@ class Project < ActiveRecord::Base
 			if m[1]["_destroy"] == "true"
 				ProjectSkill.find(id).destroy if !id.blank?
 			elsif m[1]["_destroy"] == "false" || m[1]["_destroy"].empty?
-				skill_name = m[1]["skill"].downcase
+				if m[1]["skill"].nil?
+					skill_name = m[1]["skill_attributes"]["name"].downcase
+				else
+					skill_name = m[1]["skill"].downcase
+				end
 				skill = Skill.find_by(name: skill_name)
 				if skill.nil?
 					skill = Skill.new(name: skill_name)

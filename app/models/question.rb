@@ -15,4 +15,13 @@ class Question < ActiveRecord::Base
 		return rtn
 	end
 
+	def self.get_category_map #Similar to label map but just the title
+		rtn = Hash.new
+		questions = Question.all.includes(:survey)
+		questions.each do |q|
+			title =  q.survey.title
+			rtn[title] = q.id
+		end
+		return rtn
+	end
 end

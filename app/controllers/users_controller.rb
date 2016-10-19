@@ -9,7 +9,7 @@ class UsersController < ApplicationController
 	def show
 		@user = User.find(params[:id])
 
-		@questions = Question.get_label_map
+		@questions = Question.get_category_map
 
 		if @user.has_role? :employee
 			@projects = @user.projects;

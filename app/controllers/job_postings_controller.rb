@@ -28,7 +28,7 @@ class JobPostingsController < ApplicationController
 		@job_posting = JobPosting.new
 		job_posting_skills = @job_posting.job_posting_skills.build
 		job_posting_skills.skill = Skill.new
-		@questions = Question.get_label_map
+		@questions = Question.get_category_map
 		@categories = JobCategory.all
 		@job_types = JobPosting.get_types_collection
 	end
@@ -48,7 +48,7 @@ class JobPostingsController < ApplicationController
 
 	def edit # Creates the form to edit a job posting
 		@job_posting_skills = JobPostingSkill.where(job_posting_id:params[:id]).order(:id)
-		@questions = Question.get_label_map
+		@questions = Question.get_category_map
 		@categories = JobCategory.all
 		@job_types = JobPosting.get_types_collection
 	end

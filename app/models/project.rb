@@ -26,7 +26,6 @@ class Project < ActiveRecord::Base
 	end
 
 	def process_skills(hash) # Creates and Updates project skills, creating new skills when needed.
-		
 		hash.each do |m|
 			id = m[1]["id"]
 			if m[1]["_destroy"] == "true"

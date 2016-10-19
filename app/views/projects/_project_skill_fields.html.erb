@@ -1,4 +1,4 @@
-<div class="col-md-12 project-skill" id="project_skill-<%= id.to_s %>">
+<div class="col-md-12 project-skill" id="project-skill-<%= id.to_s %>">
 
 	<%= f.input :id, as: :hidden, input_html: {name: "project[project_skills_attributes]["+id.to_s+"][id]", id: "project_project_skills_attributes_"+id.to_s+"_id" } %>
 	<%= f.simple_fields_for :skill do |builder| %>

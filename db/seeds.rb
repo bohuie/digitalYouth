@@ -105,6 +105,21 @@ begin
 	ProjectSkill.create(project_id: project1.id, skill_id: skill2.id)
 
 
+	#----------- Average survey values --------------------------------------------------
+	Response.create(scores:[0,0,0,0], question_ids:[1,2,3,4]	, survey_id: 1, user_id:-1)
+	Response.create(scores:[0,0,0,0], question_ids:[5,6,7,8]	, survey_id: 2, user_id:-1)
+	Response.create(scores:[0,0,0,0], question_ids:[9,10,11,12] , survey_id: 3, user_id:-1)
+	Response.create(scores:[0,0,0,0], question_ids:[13,14,15,16], survey_id: 4, user_id:-1)
+	Response.create(scores:[0,0,0,0], question_ids:[17,18,19,20], survey_id: 5, user_id:-1)
+	Response.create(scores:[0,0,0,0], question_ids:[21,22,23,24], survey_id: 6, user_id:-1)
+	Response.create(scores:[0,0,0]  , question_ids:[25,26,27]   , survey_id: 7, user_id:-1)
+	Response.create(scores:[0,0,0,0], question_ids:[28,29,30,31], survey_id: 8, user_id:-1)
+	Response.create(scores:[0,0,0,0], question_ids:[32,33,34,35], survey_id: 9, user_id:-1)
+	Response.create(scores:[0,0,0,0], question_ids:[36,37,38,39], survey_id: 10,user_id:-1)
+	Response.create(scores:[0,0,0,0], question_ids:[40,41,42,43], survey_id: 11,user_id:-1)
+	Response.create(scores:[0,0,0,0], question_ids:[44,45,46,47], survey_id: 12,user_id:-1)
+
+
 	#----------- Load Job Posting data from scraping and processing ---------------------
 	if !Rails.env.test?
 		Dir[File.join(Rails.root, 'db', 'scraping', '*.rb')].sort.each { |seed| load seed }

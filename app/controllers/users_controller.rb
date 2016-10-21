@@ -28,6 +28,8 @@ class UsersController < ApplicationController
 			if user_signed_in? && current_user.id == @user.id
 				@num_unconfirmed_references = Reference.where(user_id: current_user.id, confirmed: false).count
 				@project = current_user.projects.build
+				project_skills = @project.project_skills.build
+				project_skills.skill = Skill.new
 			end
 
 			@user_skills = @user.user_skills
@@ -74,8 +76,11 @@ class UsersController < ApplicationController
 		elsif params.include?(:media)
 			@user.update_attributes(media_params)
 			flash[:success] = "Social Media successfully updated."
+		elsif params.include?(:image)
+			@user.update_attributes(image_params)
+			flash[:success] = "Profile Image updated."
 		else
-			flash[:error] = "Something went wrong.  Please contact an administrator."
+			flash[:danger] = "Something went wrong.  Please contact an administrator."
 		end
 		redirect_back_or user_path
 	end
@@ -118,6 +123,10 @@ class UsersController < ApplicationController
 
 	def media_params
 		params.require(:user).permit(:github, :linkedin, :twitter, :facebook)
+	end
+
+	def image_params
+		params.require(:user).permit(:image, :delete_image)
 	end
 
 	# Checks current user is the profile owner

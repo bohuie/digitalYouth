@@ -1,2 +1,121 @@
-<h1>Edge Map</h1>
-<h4>A website that connects job seekers with employers</h4>
+<script type="text/javascript">
+  var verifyCallback = function(response) {
+    alert(response);
+  };
+  var widgetId1;
+  var widgetId2;
+  var onloadCallback = function() {
+    // Renders the HTML element with id 'example1' as a reCAPTCHA widget.
+    // The id of the reCAPTCHA widget is assigned to 'widgetId1'.
+    widgetId1 = grecaptcha.render('example1', {
+      'sitekey' : "<%= Recaptcha.configuration.public_key %>",
+      'theme' : 'light'
+    });
+    widgetId2 = grecaptcha.render(document.getElementById('example2'), {
+      'sitekey' : "<%= Recaptcha.configuration.public_key %>"
+    });
+  };
+</script>
+
+<div class="employee">
+	<h2>Sign up for Job Seekers</h2>
+	<div class=col-xs-6>
+		<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |employee| %>
+  		<%= devise_error_messages! %>
+
+  		<div class="form-group">
+    		<%= employee.input :first_name, autofocus: true, class: "form-control" %>
+  		</div>
+
+ 	 	<div class="form-group">
+    		<%= employee.input :last_name, autofocus: true, class: "form-control" %>
+  		</div>
+
+  		<div class="form-group">
+    		<%= employee.label :email %><br />
+    		<%= employee.email_field :email, autofocus: true, class: "form-control" %>
+  		</div>
+
+  		<div class="form-group">
+    		<%= employee.label :password %>
+    		<% if @minimum_password_length %>
+    			<em>(<%= @minimum_password_length %> characters minimum)</em>
+    		<% end %><br />
+    		<%= employee.password_field :password, autocomplete: "off", class: "form-control" %>
+  		</div>
+
+  		<div class="form-group">
+    		<%= employee.label :password_confirmation %><br />
+    		<%= employee.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
+  		</div>
+
+  		<%=	hidden_field_tag :role, "employee" %>
+  
+  		<div id="example1"></div>
+  
+  		<div class="submit">
+    		<%= employee.submit "Sign up", class: "btn btn-default" %>
+  		</div>
+		<% end %>
+		<br>
+	
+	</div>
+</div>
+
+<div class="employer">
+	<h2>Sign up for Employers</h2>
+	<div class=col-xs-6>
+		<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |employer| %>
+  		<%= devise_error_messages! %>
+
+  		<div class="form-group">
+    		<%= employer.input :first_name, autofocus: true, class: "form-control" %>
+  		</div>
+
+ 	 	<div class="form-group">
+    		<%= employer.input :last_name, autofocus: true, class: "form-control" %>
+  		</div>
+
+  		<div class="form-group">
+    		<%= employer.label :email %><br />
+    		<%= employer.email_field :email, autofocus: true, class: "form-control" %>
+  		</div>
+
+  		<div class="form-group">
+  			<%= employer.input :company_name, autofocus: true, class: "form-control" %>
+  		</div>
+
+  		<div class="form-group">
+    		<%= employer.label :password %>
+    		<% if @minimum_password_length %>
+    			<em>(<%= @minimum_password_length %> characters minimum)</em>
+    		<% end %><br />
+    		<%= employer.password_field :password, autocomplete: "off", class: "form-control" %>
+  		</div>
+
+  		<div class="form-group">
+    		<%= employer.label :password_confirmation %><br />
+    		<%= employer.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
+  		</div>
+
+  		<%=	hidden_field_tag :role, "employer" %>
+  
+  		<div id="example2"></div>
+  
+  		<div class="submit">
+    		<%= employer.submit "Sign up", class: "btn btn-default" %>
+  		</div>
+		<% end %>
+		<br>
+	
+	</div>
+</div>
+
+<div style="clear: both;">
+</div>
+
+<div class="shared_links">
+	<%= render "users/shared/links" %>
+</div>
+<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+	

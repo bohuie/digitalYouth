@@ -76,14 +76,15 @@
         </div>
 
         <div id="media" class="tab-pane fade">
-         <%= simple_form_for (@user) do |sm| %>
-          <p>Feel free to add your social media accounts below.  These will help showcase your social media skills, projects, or other items to potential employers.</p>
-          <%= sm.input :github %>
-          <%= sm.input :linkedin %>
-          <%= sm.input :twitter %>
-          <%= sm.input :facebook %>
-          <%= sm.submit 'Update', name: 'media' %>
-        <% end %>
+
+          <p>Feel free to add URL links to your social media accounts below.  These will help showcase your social media skills, projects, or other items to potential employers.</p>
+          <%= u.input :github %>
+          <%= u.input :linkedin %>
+          <%= u.input :twitter %>
+          <%= u.input :facebook %>
+          <%= u.submit 'Update', name: 'media' %>
+
+
           <div>
             <p>Connect Accounts.  Accounts connected are only used for logging in.  They are not shown on your profile page.  If you wish to do so, please fill out the information above.</p>
             <% ['facebook', 'twitter', 'github'].each do |provider| %>
@@ -99,4 +100,9 @@
           </div>
         </div>
     </div>
+<<<<<<< HEAD
 </div>
+<% end %>
+=======
+</div>
+>>>>>>> upstream/master

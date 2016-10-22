@@ -58,13 +58,14 @@
 					<div class="projects">
 					<!--<div class="container">-->
 					<div class="row">
-					<div class="col-xs-6">
+					<div class="col-xs-6" style="margin-left:auto; margin-right:auto; width:1000px; text-align:center;">
 						<% @projects.each do |p| %>
+							<br />
 							<%= image_tag p.image.url %>
 							<h2><%= p.title %></h2>
 							<p><%= p.description %></p>
 								<% if !@skills.empty? %>
-									<p>Skills associated with this project</p>
+									<p>Skills associated with this project:</p>
 									<% @skills[p.id].each do |s| %>
 										<p><%= s.name%> </p>
 									<% end %>

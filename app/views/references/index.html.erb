@@ -47,7 +47,11 @@
 							<div id="contact">
 								<h6 class="refLeft"><b>Contact:</b></h6>
 								<h6 class="refLeft contactElm">Email: <%= r.email %></h6>
+								<% if r.phone_number.empty? %>
+								<% puts %> 
+								<% else %>
 								<h6 class="refLeft contactElm">Phone: <%= r.phone_number %> </h6>
+								<% end %>
 							</div>
 						</div>
 			
@@ -94,7 +98,11 @@
 							<div id="contact2">
 								<h6 class="refLeft"><b>Contact:</b></h6>
 								<h6 class="refLeft contactElm">Email: <%= r.email %></h6>
+								<% if r.phone_number.empty? %>
+								<% puts %> 
+								<% else %>
 								<h6 class="refLeft contactElm">Phone: <%= r.phone_number %> </h6>
+								<% end %>
 							</div>
 						</div>
 			

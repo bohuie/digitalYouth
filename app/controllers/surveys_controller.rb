@@ -7,13 +7,7 @@ class SurveysController < ApplicationController
 	def show
 		# Fetch Survey data
 		@survey = Survey.find_by(title: params[:title])
-		raw_results = @survey.get_data(current_user)
-		@survey_results = Hash.new
-		@survey_results[0] = {'Basic', raw_results['Basic']}
-		@survey_results[1] = {'Intermediate', raw_results['Intermediate']}
-		@survey_results[2] = {'Advanced', raw_results['Advanced']}
-		@survey_results[3] = {'Expert', raw_results['Expert']}
-		byebug
+		@survey_results = @survey.get_data(current_user)
 		@average_results = @survey.get_average_data
 		@questions = @survey.questions
 		@question_count = @questions.count

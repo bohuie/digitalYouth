@@ -1,6 +1,12 @@
-<div class="col-md-8">	
+<div class="col-md-12">	
 <div class="row row-style-top">
-	<div class="col-lg-6 col-style"> <h2><%=@survey.category%></h2><h3><%=@survey.format_title.html_safe%></h3> </div>
+	<div class="col-lg-6 col-style"> <h2><%=@survey.category%></h2><h3><%=@survey.format_title.html_safe%></h3> 
+
+<%= column_chart [
+				{name: "My Results", data: @survey_results},
+				{name: "Average Job Seeker", data: @average_results}
+				], height: "200px", min: 0, max: 3, library: { legend: { position: 'top' }} %>
+	</div>
 	<% @score_meanings.each do |sm|%>
 		<div class="col-lg-2 col-style"><%=sm%></div>
 	<% end %>
@@ -36,12 +42,6 @@
 	<% end %>
 	<%= f.button :submit, 'Submit' %>
 <% end %>
-</div>
-<div class="col-md-4">
-	<%= column_chart [
-				{name: "My Results", data: @survey_results},
-				{name: "Average Job Seeker", data: @average_results}
-				], height: "100px", min: 0, max: 3, library: { legend: { position: 'bottom' }} %>
 </div>
 
 

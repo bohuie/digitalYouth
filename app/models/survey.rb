@@ -24,7 +24,12 @@ class Survey < ActiveRecord::Base
 	end
 
 	def get_data(user)
-		return Response.find_by(user_id: user.id, survey_id: self.id).get_data_map
+		data = Response.find_by(user_id: user.id, survey_id: self.id)
+		if(data)
+			return data.get_data_map
+		else
+			return nil
+		end
 	end
 
 	def get_average_data

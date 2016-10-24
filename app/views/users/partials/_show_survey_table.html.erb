@@ -4,7 +4,9 @@
 		<p>Click on one of the boxes below to fill out a survey to showcase some of your skills</p>
 	</div>
 </div>
-
+<div>
+, vAxis: {textPosition: 'none'}}
+</div>
 <div class ="row survey-box-row">
 	<% i=1 %>
 	<% onclick="" %>
@@ -17,7 +19,10 @@
 		<% end %>
 		<div class ="<%= css_class %>" onclick="<%=raw div_onclick %>">
 			<h5><%= s.format_title.html_safe %></h5>
-			<%= column_chart results[i], height: "100px", min: 0, max: 4, library: {hAxis: {textPosition: 'none'}, vAxis: {textPosition: 'none'}} %>
+			<%= column_chart [
+				{name: "My Results", data: results[i]},
+				{name: "Average Job Seeker", data: @average_results[i]}
+				], height: "100px", min: 0, max: 3, library: { legend: { position: 'none' }, vAxis: { textPosition: 'none' }, hAxis: {textPosition: 'none'}} %>
 			<% if user.answered_surveys[i - 1] && user_signed_in? && current_user==user%>
 				<%= link_to "Update", survey_path(s.title) %>
 			<% end %>

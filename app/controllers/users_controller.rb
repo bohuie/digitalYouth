@@ -16,6 +16,7 @@ class UsersController < ApplicationController
 			@references = Reference.where(user_id: @user.id, confirmed: true)
 			
 			@survey_results = Survey.get_table_data(@user)
+			@average_results = Survey.get_average_data
 
 			if !@projects.empty?
 				@skills = Hash.new

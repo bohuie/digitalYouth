@@ -23,6 +23,14 @@ class Survey < ActiveRecord::Base
 		return title_string
 	end
 
+	def get_data(user)
+		return Response.find_by(user_id: user.id, survey_id: self.id).get_data_map
+	end
+
+	def get_average_data
+		return Response.find_by(user_id: -1, survey_id: self.id).get_data_map
+	end
+
 	def self.get_table_data(user)
 		surveys = Survey.all
 		responses = user.responses

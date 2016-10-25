@@ -89,6 +89,8 @@ class SearchesController < ApplicationController
 			idxs=[JobPosting.searchkick_index.name]
 			@toggles = {l: @l, c: @c, dp: @dp, i: @i, jt: @jt, s:@s}
 			aggs = [:location, :company, :industry, :job_type, :skills]
+
+			where_clause[:close_date] = {gte: Date.today}
 			
 			# Postgres query finds the most popular company names joining between the two places the name can exist
 			@pgrec = ActiveRecord::Base.connection.execute("

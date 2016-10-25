@@ -10,7 +10,7 @@
 
 <% if !@toggles[:dp].nil? %>
 	<hr>
-	<h6 class="filter-title" onclick="$('#date-posted').slideToggle(100);">Date Posted <span class="caret"></span></h6>
+	<h6 class="filter-title" onclick="$('#date_posted').slideToggle(100);">Date Posted <span class="caret"></span></h6>
 	<% if @filters.include? "date_posted".downcase %>
 		<div id="date_posted">
 	<% else %>

@@ -27,6 +27,7 @@ class JobPosting < ActiveRecord::Base
 	  	data[:description] = description
 	  	data[:industry] = job_category_id
 	  	data[:created_at] = created_at
+	  	data[:close_date] = close_date
 	  	data[:skills] = self.skills.pluck(:name)
 	  	return data
 	end

@@ -11,7 +11,11 @@
 <% if !@toggles[:dp].nil? %>
 	<hr>
 	<h6 class="filter-title" onclick="$('#date-posted').slideToggle(100);">Date Posted <span class="caret"></span></h6>
-	<div id="date-posted" style="display: none;">
+	<% if @filters.include? "date_posted".downcase %>
+		<div id="date_posted">
+	<% else %>
+		<div id="date_posted" style="display: none;">
+	<% end %>
 		<%= link_to	"All", search_path(all_path_hash(@toggles,@query,@type,@filters,"date_posted", :dp)) %><br>
 		<% str = "day" %> 
 		<% cnt = 0 %>

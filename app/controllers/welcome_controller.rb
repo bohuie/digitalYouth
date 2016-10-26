@@ -2,6 +2,12 @@ class WelcomeController < ApplicationController
   def index
   end
 
+  def signup_jobseeker
+  end
+
+  def signup_employer
+  end
+
   def lost_email
 
   end

@@ -2,6 +2,10 @@ Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   mount Searchjoy::Engine, at: "/admin/searchjoy"
   get 'welcome/index'
+  get 'welcome/signup_jobseeker' => 'welcome#signup_jobseeker'
+  get 'welcome/signup_employer' => 'welcome#signup_employer'
+  get 'signup_jobseeker' => 'welcome#signup_jobseeker'
+  get 'signup_employer' => 'welcome#signup_employer'
 
   # Searches
   get 'search' => 'searches#index'

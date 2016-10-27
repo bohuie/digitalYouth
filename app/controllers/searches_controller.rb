@@ -11,20 +11,24 @@ class SearchesController < ApplicationController
 		@usr 	= current_user.id if user_signed_in?
 
 		#Values for where clause
-		@l = params[:l].nil?  ? "" : params[:l]  #location
-		@i = params[:i].nil?  ? "" : params[:i]  #industry
-		@c = params[:c].nil?  ? "" : params[:c]  #company
-		@cc= params[:cc].nil? ? "" : params[:cc] #current_company - not implemented
-		@pc= params[:pc].nil? ? "" : params[:pc] #past_company - not implemented
-		@r = params[:r].nil?  ? "" : params[:r]  #relationship - not implemented
-		@s = params[:s].nil?  ? "" : params[:s]  #skills
+		@l = params[:l].nil?  ? "" : params[:l].downcase  #location
+		@i = params[:i].nil?  ? "" : params[:i]  		  #industry
+		@c = params[:c].nil?  ? "" : params[:c].downcase  #company
+		@cc= params[:cc].nil? ? "" : params[:cc].downcase #current_company - not implemented
+		@pc= params[:pc].nil? ? "" : params[:pc].downcase #past_company - not implemented
+		@r = params[:r].nil?  ? "" : params[:r].downcase  #relationship - not implemented
+		@s = params[:s].nil?  ? "" : params[:s].downcase  #skills
 		@jt= params[:jt].nil? ? "" : params[:jt] #job_type
 		@dp= params[:dp].nil? ? "" : params[:dp] #date_posted
 
 		#Hashes for filtering
 		@toggles = Hash.new()
+		fields = Array.new
 		where_clause = Hash.new()
 		aggs = Array.new()
+		fields = [:company_name, :skills, :first_name, :last_name, :city, :province,
+			:title, :description, :owner_first, :owner_last,
+			:location]
 
 		case @type # Modifies the indexes to search with, i.e. selects the model(s) to search from, sets up extra data, and filters
 		when "All" # Searches all models, has no filters
@@ -89,8 +93,6 @@ class SearchesController < ApplicationController
 			idxs=[JobPosting.searchkick_index.name]
 			@toggles = {l: @l, c: @c, dp: @dp, i: @i, jt: @jt, s:@s}
 			aggs = [:location, :company, :industry, :job_type, :skills]
-
-			where_clause[:close_date] = {gte: Date.today}
 			
 			# Postgres query finds the most popular company names joining between the two places the name can exist
 			@pgrec = ActiveRecord::Base.connection.execute("
@@ -179,10 +181,11 @@ class SearchesController < ApplicationController
 			end
 		end
 		aggs = [] if where_clause == {}
-
 		# There is an N+1 query problem here with rolify
 		@results = User.search @query, 
 				 index_name: idxs,
+				 fields: fields,
+				 match: :word_start,
 				 operator: "or", 
 				 track: {user_id:@usr,search_type:@type},
 				 where: where_clause,
@@ -198,9 +201,9 @@ class SearchesController < ApplicationController
 				@locations= make_agg_array("location",@results.aggs,@locations,5)
 			end
 			#Add queried value to collection
-			@locations= add_to_if_not_in(@l, @locations)
-			@skills   = add_to_if_not_in(@s, @skills)
-			@companies= add_to_if_not_in(@c, @companies)
+			@locations= add_to_if_not_in(params[:l], @locations)
+			@skills   = add_to_if_not_in(params[:s], @skills)
+			@companies= add_to_if_not_in(params[:c], @companies)
 		end
 		
 	end

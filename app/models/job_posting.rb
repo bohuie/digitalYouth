@@ -1,5 +1,5 @@
 class JobPosting < ActiveRecord::Base
-	searchkick callbacks: :async
+	searchkick word_start: [:location, :company_name, :title, :skills, :description], callbacks: :async
 
 	has_many :job_posting_skills, dependent: :destroy
 	has_many :skills, through: :job_posting_skills
@@ -15,20 +15,22 @@ class JobPosting < ActiveRecord::Base
 
 	def search_data
 		data = Hash.new
-	  	data[:title] = title
+		if close_date > Date.today
+	  	data[:title] = title.downcase
 	  	if self.user_id.nil?
-	  		data[:company_name] = company_name
+	  		data[:company_name] = company_name.downcase
 	  	else
-	  		data[:company_name] = self.user.company_name
+	  		data[:company_name] = self.user.company_name.downcase
 	  	end
-	  	data[:location] = location
-	  	data[:pay_range] = pay_range
+	  	data[:location] = location.downcase
+	  	data[:pay_range] = pay_range.downcase ##?
 	  	data[:job_type] = job_type
-	  	data[:description] = description
+	  	data[:description] = description.downcase
 	  	data[:industry] = job_category_id
 	  	data[:created_at] = created_at
 	  	data[:close_date] = close_date
 	  	data[:skills] = self.skills.pluck(:name)
+	  	end
 	  	return data
 	end
 

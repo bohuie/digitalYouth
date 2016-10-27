@@ -23,7 +23,7 @@
 			<% str = "days" if cnt > 0 %>
 			<% path_hash = get_path_hash(@toggles,@query,@type,@filters,"date_posted") %>
 			<% path_hash[:dp] = dp %>
-			<%= link_to "#{dp} #{str} ago", search_path(path_hash), class: active_search(dp,params[:dp]) %><br>
+			<%= link_to "#{dp}", search_path(path_hash), class: active_search(dp,params[:dp]) %><br>
 			<% cnt += 1 %>
 		<% end %>
 	</div>

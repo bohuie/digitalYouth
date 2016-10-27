@@ -87,12 +87,12 @@ class SearchesController < ApplicationController
 			@skills = Array.new
 			@pgrec.each do |s| @skills.push(s["name"]) end
 
-			@dates_posted = ["1", "2-7", "8-14","15-30","30+"]
+			@dates_posted = ["Past day","Past Three days", "Past week","Past month"]
 
 		when "JobPostings" # Searches JobPosting, filters location, company, dateposted, industry, job type, skills.
 			idxs=[JobPosting.searchkick_index.name]
 			@toggles = {l: @l, c: @c, dp: @dp, i: @i, jt: @jt, s:@s}
-			aggs = [:location, :company, :industry, :job_type, :skills]
+			aggs = [:location, :company, :industry, :job_type, :skills, :created_at]
 			
 			# Postgres query finds the most popular company names joining between the two places the name can exist
 			@pgrec = ActiveRecord::Base.connection.execute("
@@ -125,7 +125,7 @@ class SearchesController < ApplicationController
 			@pgrec.each do |s| @skills.push(s["name"]) end
 
 			@locations = JobPosting.all.group(:location).order("COUNT(id) DESC").limit(5).pluck(:location)
-			@dates_posted = ["1", "2-7", "8-14","15-30","30+"]
+			@dates_posted = ["Past day","Past Three days", "Past week","Past month"]
 			@industries = JobCategory.all.pluck(:name)
 			@job_types = JobPosting.get_types_collection.keys
 		else # Search nothing
@@ -168,13 +168,15 @@ class SearchesController < ApplicationController
 					where_clause[:job_type]=JobPosting.get_types_collection[@jt] if !@jt.blank?
 				when "date_posted"
 					if !@dp.blank?
-						if @dp == "1"
+						["Past day","Three days ago", "One week ago","One month ago"]
+						if @dp == "Past day"
 							where_clause[:created_at]={gte:Date.today-1}
-						elsif @dp == "30+"
-							where_clause[:created_at]={lte:Date.today-30}
-						else
-							@parts = @dp.split('-')
-							where_clause[:created_at]={gte:Date.today-Integer(@parts[1]), lte:Date.today-Integer(@parts[0])}
+						elsif @dp == "Three days ago"
+							where_clause[:created_at]={gte:Date.today-3}
+						elsif @dp == "One week ago"
+							where_clause[:created_at]={gte:Date.today-7}
+						elsif @dp == "One month ago"
+							where_clause[:created_at]={gte:Date.today-30}
 						end
 					end
 				end
@@ -193,7 +195,7 @@ class SearchesController < ApplicationController
 				 page: params[:page], per_page: 15
 
 		@query = "" if @query == "*"
-		
+
 		if where_clause != {}
 			if where_clause != {:role=>"employer"}
 				# Aggregates for the filters when the where clause is specified change filter values to work with whats queried

@@ -21,8 +21,8 @@
 --> 
       <%= form_tag "/search", method: "get", class: "navbar-form navbar-left", role:"search" do %>
         <div class="input-group">
-            <%= text_field_tag 'q', params[:q], class: 'form-control', placeholder: "Search", autocomplete:"off", style:"width:75%;"%>
-            <select name="t" class="select form-control" style="width:10%;" id="type-select">
+            <%= text_field_tag 'q', params[:q], class: 'form-control', placeholder: "Search", autocomplete:"off"%>
+            <select name="t" class="select form-control" id="type-select">
               <option value="">All</option>
               <option value="People">People</option>
               <option value="Companies">Companies</option>

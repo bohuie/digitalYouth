@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Whenever for Cron Jobs
-gem 'whenever', require: false
+gem 'whenever'
 
 # SearchJoy gem for search analytics
 gem "searchjoy"

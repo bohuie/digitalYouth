@@ -1,4 +1,8 @@
 class ConsentController < ApplicationController
+
+	before_action :authenticate_user!, except: [:business_consent, :adult_consent, :create]
+	before_action :consent_owner, only: [:update]
+
 	def business_consent
 		@user = User.find(params[:id])
 		if @user.has_role? :employee
@@ -44,5 +48,13 @@ class ConsentController < ApplicationController
   	private
   	def consent_params
   		params.require(:consent).permit(:user_id, :name, :date_signed, :answer)
+  	end
+
+  	def consent_owner
+  		@consent = Consent.find(params[:id])
+		unless @consent.user_id == current_user.id
+			flash[:warning] = "You can only make changes to your consent."
+			redirect_back_or current_user
+		end
   	end
 end

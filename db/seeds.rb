@@ -24,17 +24,20 @@ begin
 	user1.add_role :employee
 	user1.skip_confirmation!
 	user1.save
+	user1.create_consent(answer: 1, name: "John Doe", date_signed: Date.today)
 
 	user2 = User.new(first_name: 'Jane', last_name: 'Doe', email: 'jane@doe.com', password: 'password', password_confirmation: 'password')
 	user2.add_role :employee
 	user2.skip_confirmation!
 	user2.save
+	user2.create_consent(answer: 0, name: "Jane Doe", date_signed: Date.today)
 
 	user3 = User.new(first_name: 'Foo', last_name: 'Bar', email: 'foo@bar.com', password: 'password', password_confirmation: 'password', 
 		company_name: 'Google', street_address: '123 Fake Street', city: 'Kelowna', province: 'BC', postal_code: 'V1V 1V1')
 	user3.add_role :employer
 	user3.skip_confirmation!
 	user3.save
+	user3.create_consent(answer: 1, name: "Foo Bar", date_signed: Date.today)
 
 	user4 = User.new(first_name: 'admin', last_name: 'admin', email: 'admin@admin.com', password: 'password', password_confirmation: 'password')
 	user4.add_role :admin
@@ -103,6 +106,21 @@ begin
 
 	ProjectSkill.create(project_id: project1.id, skill_id: skill1.id)
 	ProjectSkill.create(project_id: project1.id, skill_id: skill2.id)
+
+
+	#----------- Average survey values --------------------------------------------------
+	Response.create(scores:[0,0,0,0], question_ids:[1,2,3,4]	, survey_id: 1, user_id:-1)
+	Response.create(scores:[0,0,0,0], question_ids:[5,6,7,8]	, survey_id: 2, user_id:-1)
+	Response.create(scores:[0,0,0,0], question_ids:[9,10,11,12] , survey_id: 3, user_id:-1)
+	Response.create(scores:[0,0,0,0], question_ids:[13,14,15,16], survey_id: 4, user_id:-1)
+	Response.create(scores:[0,0,0,0], question_ids:[17,18,19,20], survey_id: 5, user_id:-1)
+	Response.create(scores:[0,0,0,0], question_ids:[21,22,23,24], survey_id: 6, user_id:-1)
+	Response.create(scores:[0,0,0]  , question_ids:[25,26,27]   , survey_id: 7, user_id:-1)
+	Response.create(scores:[0,0,0,0], question_ids:[28,29,30,31], survey_id: 8, user_id:-1)
+	Response.create(scores:[0,0,0,0], question_ids:[32,33,34,35], survey_id: 9, user_id:-1)
+	Response.create(scores:[0,0,0,0], question_ids:[36,37,38,39], survey_id: 10,user_id:-1)
+	Response.create(scores:[0,0,0,0], question_ids:[40,41,42,43], survey_id: 11,user_id:-1)
+	Response.create(scores:[0,0,0,0], question_ids:[44,45,46,47], survey_id: 12,user_id:-1)
 
 
 	#----------- Load Job Posting data from scraping and processing ---------------------

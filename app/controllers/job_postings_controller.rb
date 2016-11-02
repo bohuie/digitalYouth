@@ -35,6 +35,7 @@ class JobPostingsController < ApplicationController
 
 	def create # Creates a new job posting and skills
 		params[:job_posting][:user_id] = current_user.id
+		
 		@job_posting = JobPosting.new(job_posting_params)
 		if check_fields && @job_posting.save && @job_posting.process_skills(params[:job_posting]["job_posting_skills_attributes"])
 			redirect_to current_user, flash: {success: "Job Posting Created!"}

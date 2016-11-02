@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  	searchkick callbacks: :async
+  	searchkick word_start: [:company_name, :skills, :first_name, :last_name, :city, :province], callbacks: :async
   	scope :search_import, -> { includes(:roles,:users_roles) }
     after_save :user_reindex
 
@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
 	devise :database_authenticatable, :registerable,
 	       :recoverable, :trackable, :validatable, :confirmable, :omniauthable
 
-    has_attached_file :image, default_url: 'avatar-placeholder.svg'
+    has_attached_file :image, default_url: 'avatar-placeholder.svg', style: { medium: "300x150#" }
     include DeletableAttachment
     validates_attachment :image, content_type: { content_type: ["image/jpg", "image/jpeg", "image/png", "image/svg"] }
 
@@ -36,14 +36,16 @@ class User < ActiveRecord::Base
     has_many :user_skills, dependent: :destroy
     has_many :skills, through: :user_skills
 
+    has_one  :consent
+
     def search_data
         data = Hash.new
-        data[:first_name] = first_name
-        data[:last_name] = last_name
-        data[:company_name] = company_name
-        data[:city] = city
-        data[:province] = province
-        data[:bio] = bio
+        data[:first_name] = first_name.downcase
+        data[:last_name] = last_name.downcase
+        data[:company_name] = company_name.downcase if company_name
+        data[:city] = city.downcase if city
+        data[:province] = province.downcase if province
+        data[:bio] = bio.downcase if bio
         data[:role] = self.roles.first.name if !self.roles.first.nil?
         data[:skills] = self.skills.pluck(:name)
         return data

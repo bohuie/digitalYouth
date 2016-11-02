@@ -1,18 +1,20 @@
 
 <div class ="profileContainerImage" id="shadow-arch-edges">
   <div class ="profileFrame">
-    <%= simple_form_for @user do |img| %>
       <%= image_tag @user.image.url, alt:"User Icon" %> <!-- Should add a max size or auto scale pics that are uploaded -->
-      <%= img.input :image, as: :file %>
-      <%= img.check_box :delete_image %>Delete Image<br/>
-      <%= img.submit "Update Image", name: "image" %>
-    <% end %>
   </div>
+</div>
+<div class="editProfileImage">
+  <%= simple_form_for @user do |img| %>
+    <%= img.input :image, as: :file, label: "Profile Picture" %>
+    <%= img.check_box :delete_image %>Delete Image<br />
+    <%= img.submit "Update Image", name: "image" %>
+  <% end %>
 </div>
 
 <div class ="profileContainerContent">
   <h2> <%= @user.first_name %> <%= @user.last_name %> </h2>
-  <h5> <%= @user.street_address %><%= @user.city %> <%= @user.province %> <%= @user.postal_code %> </h5>
+  <h5> <%= @user.street_address %> <%= @user.city %> <%= @user.province %> <%= @user.postal_code %> </h5>
   <h5> <%= @user.email %> </h5>
   <% if !@user.github.nil? %>
     <%= link_to 'GitHub', @user.github, id: 'github', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
@@ -45,20 +47,25 @@
     <div class="tab-content profileButtonContent">
         <div id="personal" class="tab-pane fade in active">
         <%= simple_form_for (@user) do |info| %>
+	<br />
+	<p> Information added here will be publicly displayed on your profile. Click <a href='/' >here</a> to edit your privacy options.</p>
           <%= info.input :first_name, required: true %>
           <%= info.input :last_name, required: true %>
           <%= info.input :street_address %>
           <%= info.input :city %>
           <%= info.input :province %>
           <%= info.input :postal_code %>
+	  <br />
           <%= info.submit 'Update', name: 'personal' %>
         <% end %>
         </div>
 
         <div id="email" class="tab-pane fade">
          <%= simple_form_for (@user) do |email| %>
+	<br />
           <%= email.input :email, required: true, label:"Email.  You need to confirm your new email before we update to it." %>
           <%= email.input :email_password, label: "Please confirm the change with your current password." %>
+	  <br />
           <%= email.submit 'Change Email', name: 'email' %>
           <%= email.submit 'Update', name: 'personal' %>
         <% end %>
@@ -66,23 +73,29 @@
 
         <div id="password" class="tab-pane fade">
          <%= simple_form_for (@user) do |pwd| %>
+	<br />
           <%= pwd.input :current_password, label: "Old password." %>
           <%= pwd.input :password, label: "New password." %>
           <%= pwd.input :confirm_password, label: "Confirm new password." %>
+	  <br />
           <%= pwd.submit 'Change Password', name: 'password' %>
         <% end %>
         </div>
 
         <div id="media" class="tab-pane fade">
-         <%= simple_form_for (@user) do |sm| %>
-          <p>Feel free to add your social media accounts below.  These will help showcase your social media skills, projects, or other items to potential employers.</p>
+	  <%= simple_form_for (@user) do |sm| %>
+	  <br />
+          <p>Feel free to add URL links to your social media accounts below.  These will help showcase your social media skills, projects, or other items to potential employers.</p>
           <%= sm.input :github %>
           <%= sm.input :linkedin %>
           <%= sm.input :twitter %>
           <%= sm.input :facebook %>
+	  <br />
           <%= sm.submit 'Update', name: 'media' %>
-        <% end %>
+	<% end %>
+
           <div>
+	   <br />
             <p>Connect Accounts.  Accounts connected are only used for logging in.  They are not shown on your profile page.  If you wish to do so, please fill out the information above.</p>
             <% ['facebook', 'twitter', 'github'].each do |provider| %>
               <% if current_user.identities.pluck(:provider).include?(provider.to_s) %>

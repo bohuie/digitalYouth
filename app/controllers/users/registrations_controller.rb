@@ -26,9 +26,22 @@ before_action :configure_sign_up_params, only: [:create]
           sign_up(resource_name, resource)
           respond_with resource, location: after_sign_up_path_for(resource)
         else
-          set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}"
+          ## Original
+          #set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}."
+          ## Custom
+          flash[:success]= "An email has been sent for confirmation.  Please fill out the consent form below."
+          ## End
           expire_data_after_sign_in!
-          respond_with resource, location: after_inactive_sign_up_path_for(resource)
+          ## Original routing
+          #respond_with resource, location: after_inactive_sign_up_path_for(resource)
+          ## Custom
+          if params[:role] == 'employee'
+            redirect_to adult_consent_path id: @user.id
+          elsif params[:role] =='employer'
+            redirect_to business_consent_path id: @user.id
+          else
+          end
+          ## End
         end
       else
         clean_up_passwords resource

@@ -2,10 +2,15 @@ Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   mount Searchjoy::Engine, at: "/admin/searchjoy"
   get 'welcome/index'
-  get 'welcome/signup_jobseeker' => 'welcome#signup_jobseeker'
-  get 'welcome/signup_employer' => 'welcome#signup_employer'
   get 'signup_jobseeker' => 'welcome#signup_jobseeker'
   get 'signup_employer' => 'welcome#signup_employer'
+  get 'welcome/signup_jobseeker' => 'welcome#signup_jobseeker'
+  get 'welcome/signup_employer' => 'welcome#signup_employer'
+
+  # Consent
+  get 'consent/business_consent/:id' => 'consent#business_consent', as: :business_consent
+  get 'consent/adult_consent/:id' => 'consent#adult_consent', as: :adult_consent
+  post 'consent/create' => 'consent#create'
 
   # Searches
   get 'search' => 'searches#index'

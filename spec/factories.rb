@@ -1,6 +1,12 @@
 include ActionDispatch::TestProcess
 
 FactoryGirl.define do
+  factory :consent do
+    user nil
+    answer 1
+    name "MyString"
+    date_signed "2016-11-01"
+  end
   factory :identity do
     user nil
     provider "MyString"

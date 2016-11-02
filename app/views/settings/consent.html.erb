@@ -1,0 +1,5 @@
+<p>Update Consent </p>
+<%= simple_form_for @consent, url: url_for(action: 'update', controller: 'consent', id: @consent.id), method: 'patch' do |c| %>
+	<%= c.collection_radio_buttons :answer, [[1, 'Yes'], [0, 'No']], :first, :last, style: "display:inline" %>
+	<%= c.button :submit, 'Update Consent'%>
+<% end %>

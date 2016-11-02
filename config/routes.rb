@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'settings/consent'
+
+  get 'settings/privacy'
+
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   mount Searchjoy::Engine, at: "/admin/searchjoy"
   get 'welcome/index'

@@ -36,6 +36,8 @@ class User < ActiveRecord::Base
     has_many :user_skills, dependent: :destroy
     has_many :skills, through: :user_skills
 
+    has_one  :consent
+
     def search_data
         data = Hash.new
         data[:first_name] = first_name.downcase

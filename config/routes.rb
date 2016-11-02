@@ -15,6 +15,10 @@ Rails.application.routes.draw do
   get 'consent/business_consent/:id' => 'consent#business_consent', as: :business_consent
   get 'consent/adult_consent/:id' => 'consent#adult_consent', as: :adult_consent
   post 'consent/create' => 'consent#create'
+  patch 'consent/update/:id' => 'consent#update'
+
+  # Settings
+  get 'settings/consent' => 'settings#consent', as: :consent_settings
 
   # Searches
   get 'search' => 'searches#index'

@@ -29,8 +29,20 @@ class ConsentController < ApplicationController
   		end
   	end
 
+  	def update
+  		@consent = Consent.find(params[:id])
+  		
+  		if @consent.update_attributes(consent_params)
+  			flash[:success] = "Thank you for updating your consent settings."
+  			redirect_back_or consent_settings_path
+  		else
+  			flash.now[:danger] = "An error occured. Please contact an administrator."
+  			redirect_back_or
+  		end
+  	end
+
   	private
   	def consent_params
-  		params.require(:consent).permit(:user_id, :name, :date_signed)
+  		params.require(:consent).permit(:user_id, :name, :date_signed, :answer)
   	end
 end

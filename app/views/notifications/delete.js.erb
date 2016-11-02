@@ -1,0 +1,39 @@
+// Removes from the notification bar dropdown
+$('#notification-<%=@notification_id%>').remove();
+
+// Removes from the notification page
+$('#notification-<%=@notification_id%>').remove();
+$('#index-notif-counter').html("<%=@notifications_count%>");
+
+//Refetch the next one if it is possible
+<% if @notifications_count >= 6 %>
+	if($('#notif-list').children().length <= 6){
+		curr_notif_page--;
+		makeNotificationRequest();
+	}
+	<% if @notifications_count >= 7 %>
+		can_request_notif = true;
+	<% end %>
+<% end %>
+
+//If on the notifications page
+if(window.location.pathname == "<%=notifications_path%>"){
+	//Page count is reset when there is only one page to show
+	<% if @notifications_count <= 20 %>
+		curr_page=0;
+		can_request = false;
+	<% end %>
+
+	//Refetch the next one if it is possible
+	<% if @notifications_count > 0 %>		
+			if($('#index-notifs').children().length <= 1){
+				if (curr_page > 0)
+					curr_page--;
+				makeAjaxRequest('ajax-loading','/notifications');
+			}
+	<% end %>
+
+	if($('#index-notifs').children().length < 20 ){
+		$('#load-more').show();
+	}
+}

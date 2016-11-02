@@ -1,0 +1,113 @@
+
+<div class ="profileContainerImage" id="shadow-arch-edges">
+  <div class ="profileFrame">
+      <%= image_tag @user.image.url, alt:"User Icon" %> <!-- Should add a max size or auto scale pics that are uploaded -->
+  </div>
+</div>
+<div class="editProfileImage">
+  <%= simple_form_for @user do |img| %>
+    <%= img.input :image, as: :file, label: "Profile Picture" %>
+    <%= img.check_box :delete_image %>Delete Image<br />
+    <%= img.submit "Update Image", name: "image" %>
+  <% end %>
+</div>
+
+<div class ="profileContainerContent">
+  <h2> <%= @user.first_name %> <%= @user.last_name %> </h2>
+  <h5> <%= @user.street_address %> <%= @user.city %> <%= @user.province %> <%= @user.postal_code %> </h5>
+  <h5> <%= @user.email %> </h5>
+  <% if !@user.github.nil? %>
+    <%= link_to 'GitHub', @user.github, id: 'github', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+  <% end %>
+  <% if !@user.linkedin.nil? %>
+    <%= link_to 'Linkedin', @user.linkedin, id: 'linkedin', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+  <% end %>
+  <% if !@user.twitter.nil? %>
+    <%= link_to 'Twitter', @user.twitter, id: 'twitter', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+  <% end %>
+  <% if !@user.facebook.nil? %>
+    <%= link_to 'Facebook', @user.facebook, id: 'facebook', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+  <% end %>
+  <%= raw('<br>') if @user.github.nil? && @user.linkedin.nil? && @user.twitter.nil? && @user.facebook.nil? %>
+</div>
+
+<div class ="profileButtonResume">
+  <div class="resumeShadowBox bottom"> </div>
+  <div class="resumeShadowBox left"> </div>
+  <input type="button" value="RESUME"/>   
+</div>
+
+<div class="container" id="profileButtons">
+    <ul class="nav nav-tabs profileButtonContent">
+          <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#personal">User Info</a></li>
+          <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#email">Change Email</a></li>
+          <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#password">Change Password</a></li>
+          <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#media">Social Media</a></li>
+    </ul>
+    <div class="tab-content profileButtonContent">
+        <div id="personal" class="tab-pane fade in active">
+        <%= simple_form_for (@user) do |info| %>
+	<br />
+	<p> Information added here will be publicly displayed on your profile. Click <a href='/' >here</a> to edit your privacy options.</p>
+          <%= info.input :first_name, required: true %>
+          <%= info.input :last_name, required: true %>
+          <%= info.input :street_address %>
+          <%= info.input :city %>
+          <%= info.input :province %>
+          <%= info.input :postal_code %>
+	  <br />
+          <%= info.submit 'Update', name: 'personal' %>
+        <% end %>
+        </div>
+
+        <div id="email" class="tab-pane fade">
+         <%= simple_form_for (@user) do |email| %>
+	<br />
+          <%= email.input :email, required: true, label:"Email.  You need to confirm your new email before we update to it." %>
+          <%= email.input :email_password, label: "Please confirm the change with your current password." %>
+	  <br />
+          <%= email.submit 'Change Email', name: 'email' %>
+          <%= email.submit 'Update', name: 'personal' %>
+        <% end %>
+        </div>
+
+        <div id="password" class="tab-pane fade">
+         <%= simple_form_for (@user) do |pwd| %>
+	<br />
+          <%= pwd.input :current_password, label: "Old password." %>
+          <%= pwd.input :password, label: "New password." %>
+          <%= pwd.input :confirm_password, label: "Confirm new password." %>
+	  <br />
+          <%= pwd.submit 'Change Password', name: 'password' %>
+        <% end %>
+        </div>
+
+        <div id="media" class="tab-pane fade">
+	  <%= simple_form_for (@user) do |sm| %>
+	  <br />
+          <p>Feel free to add URL links to your social media accounts below.  These will help showcase your social media skills, projects, or other items to potential employers.</p>
+          <%= sm.input :github %>
+          <%= sm.input :linkedin %>
+          <%= sm.input :twitter %>
+          <%= sm.input :facebook %>
+	  <br />
+          <%= sm.submit 'Update', name: 'media' %>
+	<% end %>
+
+          <div>
+	   <br />
+            <p>Connect Accounts.  Accounts connected are only used for logging in.  They are not shown on your profile page.  If you wish to do so, please fill out the information above.</p>
+            <% ['facebook', 'twitter', 'github'].each do |provider| %>
+              <% if current_user.identities.pluck(:provider).include?(provider.to_s) %>
+                <%= provider.to_s.titleize %> Connected
+              <% else %>
+                <%= link_to omniauth_authorize_path('user', provider), class: "btn btn-block btn-social btn-#{provider}" do %>
+                  <span class="fa fa-<%= provider %>"></span> Connect with <%= OmniAuth::Utils.camelize(provider) %>
+                <% end %>
+              <% end %>
+              <br/>
+            <% end %>
+          </div>
+        </div>
+    </div>
+</div>

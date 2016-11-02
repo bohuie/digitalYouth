@@ -1,18 +1,66 @@
 Rails.application.routes.draw do
+  get 'settings/consent'
+
+  get 'settings/privacy'
+
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+  mount Searchjoy::Engine, at: "/admin/searchjoy"
   get 'welcome/index'
+  get 'signup_jobseeker' => 'welcome#signup_jobseeker'
+  get 'signup_employer' => 'welcome#signup_employer'
+  get 'welcome/signup_jobseeker' => 'welcome#signup_jobseeker'
+  get 'welcome/signup_employer' => 'welcome#signup_employer'
+
+  # Consent
+  get 'consent/business_consent/:id' => 'consent#business_consent', as: :business_consent
+  get 'consent/adult_consent/:id' => 'consent#adult_consent', as: :adult_consent
+  post 'consent/create' => 'consent#create'
+  patch 'consent/update/:id' => 'consent#update'
+
+  # Settings
+  get 'settings/consent' => 'settings#consent', as: :consent_settings
+
+  # Searches
+  get 'search' => 'searches#index'
+  get 'search/:id' => 'searches#navigate', as: :search_nav
+
+  # Notifications
+  # Analytics
+  get 'analytics' => 'analytics#index'
+  get 'analytics/:id' => 'analytics#show', as: :analytics_report
+
+  #Omniauth, different
+  #match '/auth/:provider/callback' to: 'users/sessions#create', via: [:get, :post]
+  #match '/logout', to: 'users/sessions#destroy', via: [:get, :post]
+
+  #notifications
+  get 'notifications' => 'notifications#index'
+  get 'notifications/show' => 'notifications#show', as: :show_notifications
+  get 'notifications/:id' => 'notifications#trackable', as: :show_trackable
+  patch 'notifications' => 'notifications#update'
+  patch 'notifications/all' => 'notifications#update_all', as: :update_all_notifications
+  delete 'notifications' => 'notifications#delete'
+  delete 'notifications/all' => 'notifications#delete_all', as: :delete_all_notifications
 
   # Devise_for :users
-  devise_for :users, controllers: { sessions: "users/sessions", registrations: "users/registrations" }
+  devise_for :users, controllers: { passwords: "users/passwords", sessions: "users/sessions", :registrations => "users/registrations", omniauth_callbacks: 'users/omniauth_callbacks' }
+  match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
+
  #devise_for :users
-  resources :users, only: :show, as: :user
+  #resources :users, only: :show, as: :user
+  get 'users' => 'users#index'
+  get '/users/:id' => 'users#show', as: :user
+  get '/users/:id/edit' => 'users#edit', as: :edit_user
+  patch '/users/:id' => 'users#update'
 
 
   # Skill routes
-  get '/skills/:id' => 'skills#show', as: :skill
-  get '/skills/:id/edit' => 'skills#edit', as: :edit_skill
+  #get '/skills/:id' => 'skills#show', as: :skill
+  #get '/skills/:id/edit' => 'skills#edit', as: :edit_skill
   patch 'skills/:id' => 'skills#update'
   post 'skills' => 'skills#create'
+  get 'skills/autocomplete' => 'skills#autocomplete'
+
 
   # User-skill routes
   get '/user_skills/:id' => 'user_skills#show', as: :user_skill
@@ -20,22 +68,65 @@ Rails.application.routes.draw do
   patch '/user_skills/:id' => 'user_skills#update'
   post '/user_skills' => 'user_skills#create'
 
-  # Job posting routes
-  get '/job_postings/:id' => 'job_postings#show', as: :job_posting
-  get '/job_postings/:id/edit' => 'job_postings#edit', as: :edit_job_posting
+  # Job Posting routes
+  get 'job_postings' => 'job_postings#index'
+  get 'job_postings/new' => 'job_postings#new', as: :new_job_posting
+  get 'job_postings/refresh' => 'job_postings#refresh', as: :refresh_job_posting
+  post 'job_postings/refresh' => 'job_postings#refresh_process', as: :refresh_job_posting_process
+  get 'job_postings/:id' => 'job_postings#show', as: :job_posting
+  get 'job_postings/:id/edit' => 'job_postings#edit', as: :edit_job_posting
   patch 'job_postings/:id' => 'job_postings#update'
+  delete 'job_postings/:id' => 'job_postings#destroy'
   post 'job_postings' => 'job_postings#create'
 
+  # Job Posting Application routes
+  get 'job_posting_applications' => 'job_posting_applications#index'
+  get 'job_posting_applications/new' => 'job_posting_applications#new', as: :new_job_posting_application
+  get 'job_posting_application/:id' => 'job_posting_applications#show', as: :job_posting_application
+  post 'job_posting_applications' => 'job_posting_applications#create'
+  patch 'job_posting_applications/:id' => 'job_posting_applications#update', as: :update_job_posting_application
+  delete 'job_posting_application/:id' => 'job_posting_applications#destroy'
+
   # Project routes
+  get 'projects' => 'projects#index'
+  get 'projects/new' => 'projects#new', as: :new_project
   get 'projects/:id' => 'projects#show', as: :project
   get 'projects/:id/edit' => 'projects#edit', as: :edit_project
   patch 'projects/:id' => 'projects#update'
   post 'projects' => 'projects#create'
+  delete 'projects/:id' => 'projects#destroy', as: :delete_project
+
+
+  # Project skill routes
+ # get 'project_skills/:id' => 'project_skills#show', as: :project_skill
+  #get 'project_skills/:id/edit' => 'project_skills#edit', as: :edit_project_skill
+  patch 'project_skills/:id' => 'project_skills#update'
+  post 'project_skills' => 'project_skills#create'
+
+  # Reference routes
+  get 'references' => 'references#index'
+  get 'reference/:id' => 'references#show', as: :reference
+  get 'references/refer' => 'references#email', as: :email_reference
+  get 'references/new/:id' => 'references#new', as: :new_reference
+  post 'references/refer' => 'references#send_mail', as: :reference_emails
+  post 'references' => 'references#create'
+  patch 'references/:id' => 'references#update', as: :update_reference
+  delete 'references/:id' => 'references#destroy', as: :delete_reference
+
+  # Survey routes
+  get 'surveys' => 'surveys#index'
+  get 'surveys/:title' => 'surveys#show', as: :survey
+  post 'responses' => 'responses#create'
+  patch 'responses' => 'responses#update'
+
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
+  get 'lost_email' => 'welcome#lost_email', as: :lost_email
+  post 'lost_email' => 'welcome#send_lost_email', as: :send_lost_email
   root 'welcome#index'
 
   # Example of regular route:

@@ -50,7 +50,30 @@
     			</div>
     			<div id="employment" class="tab-pane fade">
 				<% if user_signed_in? && @current_user==@user %>
-					<%= link_to "Job Applications", job_posting_applications_path %>
+						<% cnt = 0 %>
+						<h4>These are your current job applications.</h4>
+						<p> The status is displayed beside the posting title.<br>
+							The company which owns the job posting will update the status of the posting and it will be shown here.<br>
+							You have the option to delete your application but <b>you will not be able to reapply.</b><br>
+							Feel free to delete your application if you are rejected but keep in mind that it is possible for a 
+		company to change their mind and "unreject" your application.
+						</p>
+						<%@job_posting_applications.each do |j|%>
+							<% if j.status != -2 %>
+								<% cnt += 1 %>
+								<div class="row"> 
+									<div class="col-md-4">
+										<h4 class="job-application-content">
+											<%= link_to raw("#{j.job_posting.title} (<i>#{j.job_posting.user.company_name}</i>)"), job_posting_application_path(j) %>
+											<small><span class=" label label-<%=j.get_bootstrap_status%>"><%="#{j.get_status_string}"%></span></small>
+										</h4>
+									</div>
+									<div class="col-xs-1">
+										<%= link_to "Delete", job_posting_application_path(j.id), method: "delete", class: "btn btn-default"%>
+									</div>
+								</div>
+							<% end %>
+						<% end %>
 				<% end %>	
     			</div>
     			<div id="projects" class="tab-pane fade">

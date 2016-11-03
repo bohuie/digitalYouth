@@ -95,7 +95,7 @@
 							<% @user_skills.each do |us| %>
 								<div class="row">
 									<div class="col-xs-4">
-										<%= us.skill.name %> with a rating of <%= us.rating %> / <%= max_rating %>
+										<%= us.skill.name %> 
 									</div>
 								</div>
 							<% end %>
@@ -103,8 +103,10 @@
 					<% end %>
 					<% if user_signed_in? && @current_user==@user %>
 						<%= simple_form_for @user_skill do |g| %>
-							<%= g.input :name %>	
-							<%= g.input :rating, as: :radio_buttons, collection: 0..Integer(max_rating)%>
+							<div class="row">
+								<div class="col-md-4"><%= g.input :name %>	</div>
+								<div class="col-md-4"><%= g.input :question_id, required:true, collection: @questions, prompt: "Select Classification", label: "Associated Survey Skill and Level"%></div>
+							</div>
 							<%= g.button :submit %>
 						<% end %>
 					<% end %>

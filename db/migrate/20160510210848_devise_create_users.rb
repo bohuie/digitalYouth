@@ -17,8 +17,11 @@ class DeviseCreateUsers < ActiveRecord::Migration
       #company info
       t.string  :company_name
 
+      #encrypted info
+      t.string  :encrypted_street_address
+      t.string  :encrypted_street_address_iv
+
       #location info
-      t.string  :street_address
       t.string  :unit_number
       t.string  :city
       t.string  :province
@@ -54,10 +57,6 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.integer  :failed_attempts, default: 0, null: false # Only if lock strategy is :failed_attempts
       t.string   :unlock_token # Only if unlock strategy is :email or :both
       t.datetime :locked_at
-
-      ## Encryption
-      t.string :encrypted_ssn
-      t.string :encrypted_ssn_iv
 
 
       t.timestamps null: false

@@ -51,7 +51,7 @@
 	<p> Information added here will be publicly displayed on your profile. Click <a href='/' >here</a> to edit your privacy options.</p>
           <%= info.input :first_name, required: true %>
           <%= info.input :last_name, required: true %>
-          <%= info.input :street_address %>
+          <%= info.input :street_address, label: :encrypted_street_address %>
           <%= info.input :city %>
           <%= info.input :province %>
           <%= info.input :postal_code %>

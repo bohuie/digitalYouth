@@ -81,6 +81,9 @@ class UsersController < ApplicationController
 		elsif params.include?(:image)
 			@user.update_attributes(image_params)
 			flash[:success] = "Profile Image updated."
+		elsif params.include?(:bio)
+			@user.update_attributes(bio_params)
+			flash[:success] = "Bio updated."
 		else
 			flash[:danger] = "Something went wrong.  Please contact an administrator."
 		end
@@ -129,6 +132,10 @@ class UsersController < ApplicationController
 
 	def image_params
 		params.require(:user).permit(:image, :delete_image)
+	end
+
+	def bio_params
+		params.require(:user).permit(:bio)
 	end
 
 	# Checks current user is the profile owner

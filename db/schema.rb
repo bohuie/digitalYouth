@@ -272,6 +272,8 @@ ActiveRecord::Schema.define(version: 20160913164318) do
     t.integer  "failed_attempts",        default: 0,                                                                                    null: false
     t.string   "unlock_token"
     t.datetime "locked_at"
+    t.string   "encrypted_ssn"
+    t.string   "encrypted_ssn_iv"
     t.datetime "created_at",                                                                                                            null: false
     t.datetime "updated_at",                                                                                                            null: false
   end

@@ -3,6 +3,8 @@ class User < ActiveRecord::Base
   	scope :search_import, -> { includes(:roles,:users_roles) }
     after_save :user_reindex
 
+    attr_encrypted :ssn, key: ENV["ENCRYPT_KEY"]
+
   	
     include PublicActivity::Model
 

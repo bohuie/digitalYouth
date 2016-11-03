@@ -24,17 +24,20 @@ begin
 	user1.add_role :employee
 	user1.skip_confirmation!
 	user1.save
+	user1.create_consent(answer: 1, name: "John Doe", date_signed: Date.today)
 
 	user2 = User.new(first_name: 'Jane', last_name: 'Doe', email: 'jane@doe.com', password: 'password', password_confirmation: 'password')
 	user2.add_role :employee
 	user2.skip_confirmation!
 	user2.save
+	user2.create_consent(answer: 0, name: "Jane Doe", date_signed: Date.today)
 
 	user3 = User.new(first_name: 'Foo', last_name: 'Bar', email: 'foo@bar.com', password: 'password', password_confirmation: 'password', 
 		company_name: 'Google', street_address: '123 Fake Street', city: 'Kelowna', province: 'BC', postal_code: 'V1V 1V1')
 	user3.add_role :employer
 	user3.skip_confirmation!
 	user3.save
+	user3.create_consent(answer: 1, name: "Foo Bar", date_signed: Date.today)
 
 	user4 = User.new(first_name: 'admin', last_name: 'admin', email: 'admin@admin.com', password: 'password', password_confirmation: 'password')
 	user4.add_role :admin
@@ -91,8 +94,8 @@ begin
 	skill2 = Skill.create(name: 'twitter posting')
 	skill3 = Skill.create(name: 'content creator')
 
-	UserSkill.create(user_id: user1.id, skill_id: skill1.id, rating: "2")
-	UserSkill.create(user_id: user1.id, skill_id: skill2.id, rating: "3")
+	UserSkill.create(user_id: user1.id, skill_id: skill1.id, question_id:41)
+	UserSkill.create(user_id: user1.id, skill_id: skill2.id, question_id:42)
 
 	JobPostingSkill.create(job_posting_id: jobposting1.id, skill_id:skill1.id, importance:2, question_id:41)
 	JobPostingSkill.create(job_posting_id: jobposting1.id, skill_id:skill2.id, importance:2, question_id:42)

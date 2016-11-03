@@ -8,6 +8,8 @@ class CreateUserSkills < ActiveRecord::Migration
 			t.integer :rating
 
 			t.timestamps null: false
+			
+			t.belongs_to :question, index: true
 		end
 	end
 end

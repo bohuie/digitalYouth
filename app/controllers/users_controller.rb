@@ -27,6 +27,7 @@ class UsersController < ApplicationController
 
 			
 			if user_signed_in? && current_user.id == @user.id
+				@job_posting_applications = JobPostingApplication.where(applicant_id:current_user.id, status:-1..Float::INFINITY).order(status: :desc).includes(:job_posting)
 				@num_unconfirmed_references = Reference.where(user_id: current_user.id, confirmed: false).count
 				@project = current_user.projects.build
 				project_skills = @project.project_skills.build
@@ -80,6 +81,9 @@ class UsersController < ApplicationController
 		elsif params.include?(:image)
 			@user.update_attributes(image_params)
 			flash[:success] = "Profile Image updated."
+		elsif params.include?(:bio)
+			@user.update_attributes(bio_params)
+			flash[:success] = "Bio updated."
 		else
 			flash[:danger] = "Something went wrong.  Please contact an administrator."
 		end
@@ -128,6 +132,10 @@ class UsersController < ApplicationController
 
 	def image_params
 		params.require(:user).permit(:image, :delete_image)
+	end
+
+	def bio_params
+		params.require(:user).permit(:bio)
 	end
 
 	# Checks current user is the profile owner

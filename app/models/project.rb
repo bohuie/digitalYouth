@@ -1,5 +1,5 @@
 class Project < ActiveRecord::Base
-	searchkick callbacks: :async
+	searchkick word_start: [:title, :description, :owner_first, :owner_last, :skills], callbacks: :async
 
 	belongs_to :user
 
@@ -17,9 +17,11 @@ class Project < ActiveRecord::Base
 
 	def search_data
 		data = Hash.new
-	  	data[:title] = title
-	  	data[:description] = title
-	  	data[:user_id] = self.user_id
+	  	data[:title] = title.downcase
+	  	data[:description] = description.downcase
+	  	data[:user_id] = self.user_id #doesnt make sense?
+	  	data[:owner_first] = self.user.first_name.downcase
+	  	data[:owner_last] = self.user.last_name.downcase
 	  	data[:created_at] = created_at
 	  	data[:skills] = self.skills.pluck(:name)
 	  	return data

@@ -50,7 +50,30 @@
     			</div>
     			<div id="employment" class="tab-pane fade">
 				<% if user_signed_in? && @current_user==@user %>
-					<%= link_to "Job Applications", job_posting_applications_path %>
+						<% cnt = 0 %>
+						<h4>These are your current job applications.</h4>
+						<p> The status is displayed beside the posting title.<br>
+							The company which owns the job posting will update the status of the posting and it will be shown here.<br>
+							You have the option to delete your application but <b>you will not be able to reapply.</b><br>
+							Feel free to delete your application if you are rejected but keep in mind that it is possible for a 
+		company to change their mind and "unreject" your application.
+						</p>
+						<%@job_posting_applications.each do |j|%>
+							<% if j.status != -2 %>
+								<% cnt += 1 %>
+								<div class="row"> 
+									<div class="col-md-4">
+										<h4 class="job-application-content">
+											<%= link_to raw("#{j.job_posting.title} (<i>#{j.job_posting.user.company_name}</i>)"), job_posting_application_path(j) %>
+											<small><span class=" label label-<%=j.get_bootstrap_status%>"><%="#{j.get_status_string}"%></span></small>
+										</h4>
+									</div>
+									<div class="col-xs-1">
+										<%= link_to "Delete", job_posting_application_path(j.id), method: "delete", class: "btn btn-default"%>
+									</div>
+								</div>
+							<% end %>
+						<% end %>
 				<% end %>	
     			</div>
     			<div id="projects" class="tab-pane fade">
@@ -95,7 +118,7 @@
 							<% @user_skills.each do |us| %>
 								<div class="row">
 									<div class="col-xs-4">
-										<%= us.skill.name %> with a rating of <%= us.rating %> / <%= max_rating %>
+										<%= us.skill.name %> 
 									</div>
 								</div>
 							<% end %>
@@ -103,8 +126,10 @@
 					<% end %>
 					<% if user_signed_in? && @current_user==@user %>
 						<%= simple_form_for @user_skill do |g| %>
-							<%= g.input :name %>	
-							<%= g.input :rating, as: :radio_buttons, collection: 0..Integer(max_rating)%>
+							<div class="row">
+								<div class="col-md-4"><%= g.input :name %>	</div>
+								<div class="col-md-4"><%= g.input :question_id, required:true, collection: @questions, prompt: "Select Classification", label: "Associated Survey Skill and Level"%></div>
+							</div>
 							<%= g.button :submit %>
 						<% end %>
 					<% end %>
@@ -121,23 +146,60 @@
 
 
 <% elsif @user.has_role? :employer %>
+
+<div class ="profileContainer">
+	<div class ="profileContainerImage" id="shadow-arch-edges">
+		<div class ="profileFrame">
+			<%= image_tag @user.image.url, alt:"User Icon" %> <!-- Should add a max size or auto scale pics that are uploaded -->
+		</div>
+	</div>
+	<div class ="profileContainerContent">
+		<h2> <%= @user.first_name %> <%= @user.last_name %> </h2>
+		<h2> <%= @user.company_name %></h2>
+		<h5> <%= @user.street_address %> <%= @user.city %> <%= @user.province %> <%= @user.postal_code %> </h5>
+		<h5> <%= @user.email %> </h5>
+		<% if !@user.github.nil? %>
+			<%= link_to 'GitHub', @user.github, id: 'github', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+		<% end %>
+		<% if !@user.linkedin.nil? %>
+			<%= link_to 'Linkedin', @user.linkedin, id: 'linkedin', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+		<% end %>
+		<% if !@user.twitter.nil? %>
+			<%= link_to 'Twitter', @user.twitter, id: 'twitter', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+		<% end %>
+		<% if !@user.facebook.nil? %>
+			<%= link_to 'Facebook', @user.facebook, id: 'facebook', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+		<% end %>
+		<%= raw('<br>') if @user.github.nil? && @user.linkedin.nil? && @user.twitter.nil? && @user.facebook.nil? %>
+	</div>
+
 	<div class="container" id="profileButtons">
 		<ul class="nav nav-tabs profileButtonContent">
 			<li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#about">ABOUT US</a></li> 
+<!-- TO IMPLEMENT
    			<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#people">PEOPLE</a></li>
+   -->
    			<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#jobs">JOBS</a></li>
   		</ul>
   	
 		<div class="tab-content profileButtonContent">
 
 			<div id="about" class="tab-pane fade in active">
-				<p>About Us</p>
-				<%= @user.bio %>
+				<h4>About <%= @user.company_name %> </h4>
+				<% if user_signed_in? && current_user == @user %>
+					<%= simple_form_for @user do |u| %>
+						<%= u.input :bio, as: :text %>
+						<%= u.submit "Update Bio", name: 'bio'%>
+					<% end %>
+				<% else %>
+					<%= @user.bio %>
+				<% end %>
 			</div>
-
+<!-- TO IMPLEMENT
 			<div id="people" class="tab-pane fade">
 				<p>Section for employees of the company, to add once the ability to follow users is added.</p>
 			</div>
+-->
 			<div id="jobs" class="tab-pane fade">
 				<br>
 				<% if @job_postings.nil? %>
@@ -162,6 +224,7 @@
 			</div>
 		</div>
 	</div>
+</div>
 <% elsif @user.has_role? :admin%>
 	You are an admin!
 <% end %>

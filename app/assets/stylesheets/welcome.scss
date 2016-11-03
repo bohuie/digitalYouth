@@ -1,3 +1,59 @@
 // Place all the styles related to the Welcome controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.employee {
+	float: left; 
+	width: 50%;
+}
+
+.employer {
+	float: left;
+	width: 50%;
+}
+
+.all{
+	font-family: Broadway;
+}
+
+.description{
+	width: 40%;
+	float: left;
+	margin-left: 45px;
+}
+.signupbox{
+	margin-top: 65px;
+	margin-right: 60px;
+	border: none;
+	border-radius: 5px;
+	width: 35%;
+	float: right;
+	background-color: #F8F8F8 ; 
+	text-align: center;
+}
+
+.titlebox{
+	border:none;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	width: 100%;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	background-color: #52B4D9 ; 
+	text-align: center;
+	color: white;
+}
+
+.signuplink {
+    background-color: #52B4D9;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 5px;
+    cursor: pointer;
+}

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1><%= @name %> has forgotten their login</h1>
+    <p>Please check the records for an account with their name.  They can be contacted at <%= @contact_email %>.</p>
+    <% if @message.nil? || @message.empty? %>
+    	<p>No extra comments were given.</p>
+    <% else %>
+    	<p>They provided the following message:</p>
+    	<p><%= @message %></p>
+    <% end %>
+  </body>
+</html>

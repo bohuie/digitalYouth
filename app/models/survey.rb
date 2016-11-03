@@ -23,6 +23,19 @@ class Survey < ActiveRecord::Base
 		return title_string
 	end
 
+	def get_data(user)
+		data = Response.find_by(user_id: user.id, survey_id: self.id)
+		if(data)
+			return data.get_data_map
+		else
+			return nil
+		end
+	end
+
+	def get_average_data
+		return Response.find_by(user_id: -1, survey_id: self.id).get_data_map
+	end
+
 	def self.get_table_data(user)
 		surveys = Survey.all
 		responses = user.responses
@@ -31,6 +44,15 @@ class Survey < ActiveRecord::Base
 			responses.each do |r| #performs 12 queries
 				survey_results[r.survey_id] = r.get_data_map
 			end
+		end
+		return survey_results
+	end
+
+	def self.get_average_data
+		surveys = Survey.all
+		survey_results = Hash.new
+		Response.where("user_id = -1").find_each do |r|
+			survey_results[r.survey_id] = r.get_data_map
 		end
 		return survey_results
 	end

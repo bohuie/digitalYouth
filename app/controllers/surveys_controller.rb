@@ -7,6 +7,8 @@ class SurveysController < ApplicationController
 	def show
 		# Fetch Survey data
 		@survey = Survey.find_by(title: params[:title])
+		@survey_results = @survey.get_data(current_user)
+		@average_results = @survey.get_average_data
 		@questions = @survey.questions
 		@question_count = @questions.count
 		@method = "post"

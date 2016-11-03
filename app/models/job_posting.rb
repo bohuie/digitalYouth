@@ -1,4 +1,5 @@
 class JobPosting < ActiveRecord::Base
+	searchkick word_start: [:location, :company_name, :title, :skills, :description], callbacks: :async
 
 	has_many :job_posting_skills, dependent: :destroy
 	has_many :skills, through: :job_posting_skills
@@ -10,6 +11,28 @@ class JobPosting < ActiveRecord::Base
 	@@job_types = {"Full Time"=>0,"Part Time"=>1,"Contract"=>2,"Casual"=>3,
 			 "Summer Positions"=>4,"Graduate Year Recruitment Program"=>5,
 			 "Field Placement/Work Practicum"=>6,"Internship"=>7,"Volunteer"=>8}
+
+
+	def search_data
+		data = Hash.new
+		if close_date >= Date.today
+	  	data[:title] = title.downcase
+	  	if self.user_id.nil?
+	  		data[:company_name] = company_name.downcase
+	  	else
+	  		data[:company_name] = self.user.company_name.downcase
+	  	end
+	  	data[:location] = location.downcase
+	  	data[:pay_range] = pay_range.downcase ##?
+	  	data[:job_type] = job_type
+	  	data[:description] = description.downcase
+	  	data[:industry] = job_category_id
+	  	data[:created_at] = created_at
+	  	data[:close_date] = close_date
+	  	data[:skills] = self.skills.pluck(:name)
+	  	end
+	  	return data
+	end
 
 	def process_skills(hash) # Creates and Updates job posting skills, creating new skills when needed.
 		hash.each do |m|

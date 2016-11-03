@@ -3,7 +3,7 @@ class SkillsController < ApplicationController
 		@skills = Skill.order(:name).where("name LIKE ?", "%#{params[:term]}%")
 		@skills.each {|s| s.name.capitalize!}
 	    respond_to do |format|
-	      format.json {render json: @skills.map(&:name).to_json}
+	      format.json {render json: @skills.pluck(:name).to_json}
    		end
 	end
 end

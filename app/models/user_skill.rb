@@ -4,6 +4,7 @@ class UserSkill < ActiveRecord::Base
 
 	belongs_to :user
 	belongs_to :skill
+	belongs_to :question
 
-	validates :rating, presence: true, rating: true
+	#validates :rating, presence: true, rating: true
 end

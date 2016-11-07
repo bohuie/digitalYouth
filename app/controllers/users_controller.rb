@@ -12,7 +12,7 @@ class UsersController < ApplicationController
 		@questions = Question.get_label_map
 
 		if @user.has_role? :employee
-			@projects = @user.projects;
+			@projects = @user.projects.order('project_date DESC')
 			@references = Reference.where(user_id: @user.id, confirmed: true)
 			
 			@survey_results = Survey.get_table_data(@user)

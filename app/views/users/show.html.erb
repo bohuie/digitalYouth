@@ -25,14 +25,6 @@
 		<% end %>
 		<%= raw('<br>') if @user.github.nil? && @user.linkedin.nil? && @user.twitter.nil? && @user.facebook.nil? %>
 	</div>
-
-	<div class ="profileButtonResume">
-<!-- Placeholder: TODO implement Resume stuff
-		<div class="resumeShadowBox bottom"> </div>
-		<div class="resumeShadowBox left"> </div>
-		<input type="button" value="RESUME"/>	
--->	
-	</div>
 	<div class="container" id="profileButtons">
 		<ul class="nav nav-tabs profileButtonContent">
     			<li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#surveys">SURVEYS</a></li>
@@ -45,11 +37,11 @@
   		<div class="tab-content profileButtonContent">
     			<div id="surveys" class="tab-pane fade in active">
       				<div class = "survey-table" id= "survey-table">
-					<%= render '/users/partials/show_survey_table', user:@user, results:@survey_results %>
-				</div>
+						<%= render '/users/partials/show_survey_table', user:@user, results:@survey_results %>
+					</div>
     			</div>
     			<div id="employment" class="tab-pane fade">
-				<% if user_signed_in? && @current_user==@user %>
+					<% if user_signed_in? && @current_user==@user %>
 						<% cnt = 0 %>
 						<h4>These are your current job applications.</h4>
 						<p> The status is displayed beside the posting title.<br>
@@ -74,42 +66,52 @@
 								</div>
 							<% end %>
 						<% end %>
-				<% end %>	
+					<% end %>	
     			</div>
     			<div id="projects" class="tab-pane fade">
-				<% if !@projects.empty? %>
-					<div class="projects">
-					<!--<div class="container">-->
-					<div class="row">
-					<div class="col-xs-6" style="margin-left:auto; margin-right:auto; width:1000px; text-align:center;">
-						<% @projects.each do |p| %>
-							<br />
-							<%= image_tag p.image.url %>
-							<h2><%= p.title %></h2>
-							<p><%= p.description %></p>
-								<% if !@skills.empty? %>
-									<p>Skills associated with this project:</p>
-									<% @skills[p.id].each do |s| %>
-										<p><%= s.name%> </p>
+    				<% if user_signed_in? && @current_user==@user %>
+						<div class="row">
+							<%= link_to "New Project", new_project_path, class: "btn btn-default" %>
+						</div>
+					<% end %>
+					<% if !@projects.empty? %>
+						<div class="projects">
+							<% @projects.each do |p| %>
+								<div class="row">
+									<div class="col-md-1">
+										<%= p.project_date.strftime('%B')+", "+p.project_date.strftime('%Y') %>
+									</div>
+									<div class="col-md-2">
+										<%= image_tag p.image.url(:medium) %>
+									</div>
+									<div class="col-md-6">
+										<h2><%= p.title %></h2>
+										<p><%= p.description %></p>
+										<% index = 1 %>
+										<% if !@skills.empty? %>
+											<p>Skills associated with this project:</p>
+											<% @skills[p.id].each do |s| %>
+												<%=s.name%>
+												<% if index < @skills[p.id].length %>
+													<%=", " %>
+													<% index = index+1 %>
+												<% end %>
+											<% end %>
+										<% end %>
+									</div>
+									<% if user_signed_in? && @current_user==@user %>
+										<div class="col-md-3">
+											<%= link_to "Edit Project", edit_project_path(p), class: "btn btn-default" %>
+											<%= link_to "Delete Project", p, method: :delete, data: {confirm: 'Are you sure?'}, class: "btn btn-default" %>
+										</div>
 									<% end %>
-								<% end %>
-							<% if user_signed_in? && @current_user==@user %>
-								<%= link_to "Edit Project", edit_project_path(p) %><br/>
+								</div>
 							<% end %>
-						<% end %>
-					</div>
-					</div>
-					</div>
-				<% else %>
-					<h3>You have no posted projects.  Fill out the form below to create one!</h3>
-				<% end %>
-				<% if user_signed_in? && @current_user==@user %>
-					<div class="row">
-						<h3>Create a project below!</h3>
-					<%= render 'projects/project_form' %>
-					</div>
-				<% end %>
-			</div>
+						</div>
+					<% else %>
+						<h3>You have no posted projects.  Click the button above to create one!</h3>
+					<% end %>
+				</div>
     			<div id="skills" class="tab-pane fade">
 				<div id="skills">
 					<% if !@user_skills.empty? %>

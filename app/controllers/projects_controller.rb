@@ -22,7 +22,7 @@ class ProjectsController < ApplicationController
 		@project = Project.new
 		project_skills = @project.project_skills.build
 		project_skills.skill = Skill.new
-		@questions = Question.get_label_map
+		@surveys = Survey.get_title_map
 	end
 
 	def show
@@ -33,7 +33,7 @@ class ProjectsController < ApplicationController
 		@project = Project.find(params[:id])
 		@skills = @project.skills
 		@project_skills = ProjectSkill.where(project_id:params[:id]).order(:id)
-		@questions = Question.get_label_map
+		@surveys = Survey.get_title_map
 	end
 
 	def create
@@ -54,7 +54,6 @@ class ProjectsController < ApplicationController
 	def update
 		@project = Project.find(params[:id])
 		@skills = @project.skills
-		@project_skill = @project.project_skills.create
 		
 		if @project.update_attributes(project_params) && @project.process_skills(params[:project][:project_skills_attributes])
 			Project.reindex if !Rails.env.test?
@@ -79,7 +78,7 @@ class ProjectsController < ApplicationController
 
 	private
 	def project_params
-		params.require(:project).permit(:title, :description, :image, :delete_image)
+		params.require(:project).permit(:title, :description, :image, :delete_image, :project_date)
 	end
 
 	def project_skill_params

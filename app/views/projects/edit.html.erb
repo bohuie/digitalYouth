@@ -11,7 +11,7 @@
 				<%= builder.simple_fields_for :skill do |s| %>
 					<div class="col-md-3"><%= s.input :name, label: "Skill", input_html: {onclick:"skill_autocomplete('#{i}')", id: "skill-name-#{i}"} %></div>
 				<% end %>
-				<div class="col-md-6"><%= builder.input :question_id, required:true, collection: @questions, prompt: "Select Classification", label: "Associated Survey Skill and Level"%></div>
+				<div class="col-md-6"><%= builder.input :survey_id, required:true, collection: @surveys, prompt: "Select Classification", label: "Associated Survey Skill and Level"%></div>
 				<div class="col-md-1">
 					<%= builder.input :_destroy, as: :hidden, input_html: {id: "project-skill-destroy-#{i}"}%>
 					<span class="glyphicon glyphicon-remove" onclick="remove_project_skill('<%=i%>')"></span>

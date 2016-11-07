@@ -28,7 +28,6 @@ class Project < ActiveRecord::Base
 	end
 
 	def process_skills(hash) # Creates and Updates project skills, creating new skills when needed.
-		byebug
 		if hash.nil?
 			return true
 		else

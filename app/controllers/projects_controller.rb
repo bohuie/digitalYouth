@@ -78,7 +78,7 @@ class ProjectsController < ApplicationController
 
 	private
 	def project_params
-		params.require(:project).permit(:title, :description, :image, :delete_image)
+		params.require(:project).permit(:title, :description, :image, :delete_image, :project_date)
 	end
 
 	def project_skill_params

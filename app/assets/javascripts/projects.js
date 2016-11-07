@@ -2,7 +2,6 @@
 //# All this logic will automatically be available in application.js.
 //# You can use CoffeeScript in this file: http://coffeescript.org/
 
-
 function remove_project_skill(id){
   if ($('body').hasClass('users')){
 	 $('#project-skill-destroy-'+id).val(true);

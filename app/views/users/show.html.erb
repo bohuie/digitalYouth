@@ -82,7 +82,7 @@
 										<%= p.project_date.strftime('%B')+", "+p.project_date.strftime('%Y') %>
 									</div>
 									<div class="col-md-2">
-										<%= image_tag p.image.url %>
+										<%= image_tag p.image.url(:medium) %>
 									</div>
 									<div class="col-md-6">
 										<h2><%= p.title %></h2>

@@ -116,14 +116,14 @@ ActiveRecord::Schema.define(version: 20161101211017) do
   create_table "project_skills", force: :cascade do |t|
     t.integer  "project_id"
     t.integer  "skill_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.integer  "question_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "survey_id"
   end
 
   add_index "project_skills", ["project_id"], name: "index_project_skills_on_project_id", using: :btree
-  add_index "project_skills", ["question_id"], name: "index_project_skills_on_question_id", using: :btree
   add_index "project_skills", ["skill_id"], name: "index_project_skills_on_skill_id", using: :btree
+  add_index "project_skills", ["survey_id"], name: "index_project_skills_on_survey_id", using: :btree
 
   create_table "projects", force: :cascade do |t|
     t.string   "title"
@@ -132,6 +132,7 @@ ActiveRecord::Schema.define(version: 20161101211017) do
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
+    t.date     "project_date"
     t.integer  "user_id"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false

@@ -73,7 +73,8 @@ begin
 
 
 	#--- Projects for testing ---
-	project1 = user1.projects.create(title: 'No Image project', description: 'some description')
+	project1 = user1.projects.create(title: 'No Image project', description: 'some description', project_date: '2016-09-10')
+	project2 = user1.projects.create(title: 'Project closer to current date', description: 'Added second', project_date: '2016-11-10')
 
 	#--- Survey Responses for testing ---
 	response1 = Response.create(scores:[3,2,1,0], question_ids:[1,2,3,4]	, survey_id: 1, user_id:user1.id)
@@ -104,8 +105,8 @@ begin
 	JobPostingSkill.create(job_posting_id: jobposting2.id, skill_id:skill1.id, importance:2, question_id:41)
 	JobPostingSkill.create(job_posting_id: jobposting2.id, skill_id:skill2.id, importance:2, question_id:42)
 
-	ProjectSkill.create(project_id: project1.id, skill_id: skill1.id)
-	ProjectSkill.create(project_id: project1.id, skill_id: skill2.id)
+	ProjectSkill.create(project_id: project1.id, skill_id: skill1.id, survey_id: 5)
+	ProjectSkill.create(project_id: project1.id, skill_id: skill2.id, survey_id: 3)
 
 
 	#----------- Average survey values --------------------------------------------------

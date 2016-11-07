@@ -36,6 +36,15 @@ class Survey < ActiveRecord::Base
 		return Response.find_by(user_id: -1, survey_id: self.id).get_data_map
 	end
 
+	def self.get_title_map #Creates a hashmap of survey_id => "Survey title"
+		rtn = Hash.new
+		surveys = Survey.all
+		surveys.each do |s|
+			rtn[s.title ] = s.id
+		end
+		return rtn
+	end
+
 	def self.get_table_data(user)
 		surveys = Survey.all
 		responses = user.responses

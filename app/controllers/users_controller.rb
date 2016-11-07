@@ -63,8 +63,8 @@ class UsersController < ApplicationController
 				@user.update_attributes(email_params)
 				flash[:success] = "Email successfully updated. You will have to confirm your new email before we update to that email."
 			else
-				flash[:error] = "Incorrect password."
-				render 'edit'
+				flash[:danger] = "Incorrect password."
+				render 'edit' and return
 			end
 		elsif params.include?(:password)
 			if @user.valid_password?(params[:user][:current_password])
@@ -72,8 +72,8 @@ class UsersController < ApplicationController
 				sign_in :user, @user, bypass: true
 				flash[:success] = "Password successfully updated."
 			else
-				flash[:error] = "Incorrect password."
-				render 'edit'
+				flash[:danger] = "Incorrect password."
+				render 'edit' and return
 			end
 		elsif params.include?(:media)
 			@user.update_attributes(media_params)
@@ -115,7 +115,7 @@ class UsersController < ApplicationController
 	end
 
 	def personal_params
-		params.require(:user).permit(:first_name, :last_name, :street_address, :city, :province, :postal_code)
+		params.require(:user).permit(:first_name, :last_name, :street_address, :city, :province, :postal_code, :image, :delete_image)
 	end
 
 	def email_params

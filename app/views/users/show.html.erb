@@ -77,18 +77,18 @@
 					<% if !@projects.empty? %>
 						<div class="projects">
 							<% @projects.each do |p| %>
-								<div class="row">
+								<div class="row" style="padding-bottom: 5px">
 									<div class="col-md-1">
 										<%= p.project_date.strftime('%B')+", "+p.project_date.strftime('%Y') %>
 									</div>
-									<div class="col-md-2">
+									<div class="col-md-3">
 										<%= image_tag p.image.url(:medium) %>
 									</div>
-									<div class="col-md-6">
+									<div class="col-md-5">
 										<h2><%= p.title %></h2>
 										<p><%= p.description %></p>
 										<% index = 1 %>
-										<% if !@skills.empty? %>
+										<% if !@skills[p.id].empty? %>
 											<p>Skills associated with this project:</p>
 											<% @skills[p.id].each do |s| %>
 												<%=s.name%>

@@ -45,7 +45,7 @@ class JobPostingApplicationsController < ApplicationController
 		if @job_posting_application.save
 			#Create notification for company
 			@job_posting_application.create_activity :create,  owner: @job_posting_application.company
-			redirect_to job_posting_applications_path, flash: {success: "Application Sent!"}
+			redirect_to current_user, flash: {success: "Application Sent!"}
 		else
 			flash[:warning] = "Oops, there was an issue in sending your application."
 			redirect_back_or job_posting_path(params[:job_posting_id])
@@ -70,7 +70,7 @@ class JobPostingApplicationsController < ApplicationController
 			redirect_to job_posting_applications_path, flash: {success: "Deleted Application!"}
 		else
 			flash[:warning] = "Oops, there was an issue in deleting that application."
-			redirect_back_or job_posting_application_path(params[:id])
+			redirect_back_or 
 		end
 	end
 
@@ -120,7 +120,7 @@ private
 		posting_id = params[:job_posting].blank? ? params[:job_posting_application][:job_posting_id] : params[:job_posting]
 		if !JobPostingApplication.where(applicant_id: current_user.id, job_posting_id: posting_id).first.nil?
 			flash[:warning] = 'You have already applied for this position.'
-			redirect_back_or job_posting_path(posting_id)
+			redirect_back_or
 		end
 	end
 end

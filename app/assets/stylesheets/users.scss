@@ -10,6 +10,10 @@ label {
 	padding-right: 5px;
 }
 
+ul.nav-tabs > li.active > a {
+	font-weight: bold;
+}
+
 .survey-box{
 	padding: 10px 30px 30px 80px;
 	text-align:center;

@@ -25,7 +25,7 @@ class UsersController < ApplicationController
 				end
 			end
 
-			@confirmed_references = Reference.where(user_id: current_user.id, confirmed: true)
+			@confirmed_references = Reference.where(user_id: @user.id, confirmed: true)
 			
 			if user_signed_in? && current_user.id == @user.id
 				@job_posting_applications = JobPostingApplication.where(applicant_id:current_user.id, status:-1..Float::INFINITY).order(status: :desc).includes(:job_posting)
@@ -150,4 +150,6 @@ class UsersController < ApplicationController
 			redirect_back_or current_user
 		end
 	end
+end
+nd
 end

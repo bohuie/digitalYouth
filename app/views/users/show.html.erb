@@ -132,7 +132,7 @@
 						<%= simple_form_for @user_skill do |g| %>
 							<div class="row">
 								<div class="col-md-4"><%= g.input :name %>	</div>
-								<div class="col-md-4"><%= g.input :question_id, required:true, collection: @questions, prompt: "Select Classification", label: "Associated Survey Skill and Level"%></div>
+								<div class="col-md-4"><%= g.input :survey_id, required:true, collection: @surveys, prompt: "Select Classification", label: "Associated Survey Skill"%></div>
 							</div>
 							<%= g.button :submit %>
 						<% end %>

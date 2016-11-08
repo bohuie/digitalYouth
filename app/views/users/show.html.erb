@@ -110,14 +110,13 @@
 						<% end %>
 					</div>
 				<% else %>
-					<h3>You have no posted projects.  Click the button above to create one!</h3>
+					<h3>There are no posted projects yet!</h3>
 				<% end %>
 			</div>
     		<div id="skills" class="tab-pane fade">
 				<div id="skills">
 					<% if !@user_skills.empty? %>
 						<div class="container">
-							<h4>Here is a summary of your skill base</h4>
 							<div class ="row survey-box-row">
 								<div class="col-md-1"></div>
 									<% j=1 %>
@@ -216,7 +215,7 @@
 									<hr class="HR"/>
 								<% end %>
 							<% else %>
-								<h6> You have no confirmed references.</h6>
+								<h6> There are no confirmed references yet</h6>
 							<% end %>
 						</div>
 					</div>
@@ -366,6 +365,12 @@
 				<% end %>
 			</div>
 		</div>
+	</div>
+</div>
+<% elsif @user.has_role? :admin%>
+	You are an admin!
+<% end %>
+div>
 	</div>
 </div>
 <% elsif @user.has_role? :admin%>

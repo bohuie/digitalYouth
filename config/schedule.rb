@@ -18,5 +18,5 @@
 # end
 
 every 1.day at: '12:01 am' do
-	runner "Response.compute_averages", environment: 'development'
+	runner "Response.compute_averages"
 end

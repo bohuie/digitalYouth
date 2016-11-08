@@ -4,7 +4,7 @@ class JobPostingsController < ApplicationController
 	before_action :check_employer, except: [:show, :index,:refresh,:refresh_process]
 	before_action :check_admin	 , only: [:refresh,:refresh_process]
 	before_action :job_owner	 , only: [:edit, :update, :destroy]
-	before_action :check_fields	 , only: [:create, :update]
+	#before_action :check_fields	 , only: [:create, :update]
 
 	def index # Job Postings landing page
 		if params[:user].nil?
@@ -37,12 +37,14 @@ class JobPostingsController < ApplicationController
 		params[:job_posting][:user_id] = current_user.id
 		
 		@job_posting = JobPosting.new(job_posting_params)
-		if @job_posting.save && @job_posting.process_skills(params[:job_posting]["job_posting_skills_attributes"])
-			redirect_to job_postings_path, flash: {success: "Job Posting Created!"}
+		if check_fields && @job_posting.save && @job_posting.process_skills(params[:job_posting]["job_posting_skills_attributes"])
+			redirect_to current_user, flash: {success: "Job Posting Created!"}
 			JobPosting.reindex if !Rails.env.test?
 		else
-			flash[:warning] = "Oops, there was an issue in creating your Job Posting."
-			redirect_back_or job_postings_path
+			if flash[:warning].blank?
+				flash[:warning] = "Oops, there was an issue in creating your Job Posting."
+			end
+			redirect_back_or new_job_posting_path
 		end
 	end
 
@@ -54,22 +56,24 @@ class JobPostingsController < ApplicationController
 	end
 
 	def update # Updates the job posting
-		if @job_posting.update_attributes(job_posting_params) && @job_posting.process_skills(params[:job_posting]["job_posting_skills_attributes"])
-			redirect_to job_postings_path, flash: {success: "Job Posting Updated!"}
+		if check_fields && @job_posting.update_attributes(job_posting_params) && @job_posting.process_skills(params[:job_posting]["job_posting_skills_attributes"])
+			redirect_to current_user, flash: {success: "Job Posting Updated!"}
 			JobPosting.reindex if !Rails.env.test?
 		else
-			flash[:warning] = "Oops, there was an issue in editing your Job Posting."
-			redirect_back_or edit_job_posting_path
+			if flash[:warning].blank?
+				flash[:warning] = "Oops, there was an issue in editing your Job Posting."
+			end
+			redirect_back_or edit_job_posting_path(@job_posting)
 		end
 	end
 
 	def destroy # Deletes the job posting from the database
 		if @job_posting.destroy
 			JobPosting.reindex if !Rails.env.test?
-			redirect_to job_postings_path, flash: {success: "Job Posting Deleted!"}
+			redirect_to current_user, flash: {success: "Job Posting Deleted!"}
 		else
 			flash[:danger] = 'There was an error while deleting your Job Posting.'
-			redirect_back_or job_postings_path
+			redirect_back_or current_user
 		end
 	end
 
@@ -221,6 +225,12 @@ private
 			flash[:warning] = "You must enter all skill fields." if missing
 			flash[:warning] = "You must enter some skills associated with this job." if destroy
 		end
-		redirect_back_or job_postings_path if !flash[:warning].blank?
+		if !flash[:warning].blank?
+			return false 
+		else
+			return true
+		end
+
+		#redirect_back_or job_postings_path if !flash[:warning].blank?
 	end
 end

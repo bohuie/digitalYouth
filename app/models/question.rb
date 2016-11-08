@@ -15,4 +15,13 @@ class Question < ActiveRecord::Base
 		return rtn
 	end
 
+	def self.get_class_label #Creates a hashmap of question_id => "Survey category: Survey title: Question classification"
+		rtn = Hash.new
+		questions = Question.all.includes(:survey)
+		questions.each do |q|
+			title = q.survey.category + "- " + q.survey.title 
+			rtn[title] = q.id
+		end
+		return rtn
+	end
 end

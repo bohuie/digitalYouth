@@ -7,7 +7,7 @@ class CreateProjectSkills < ActiveRecord::Migration
 
 			t.timestamps null: false
 
-			t.belongs_to :question, index: true
+			t.belongs_to :survey, index: true
 		end
 	end
 end

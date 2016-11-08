@@ -52,8 +52,9 @@ ActiveRecord::Schema.define(version: 20161101211017) do
     t.integer  "answer"
     t.string   "name"
     t.date     "date_signed"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer  "consent_type"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   add_index "consents", ["user_id"], name: "index_consents_on_user_id", using: :btree

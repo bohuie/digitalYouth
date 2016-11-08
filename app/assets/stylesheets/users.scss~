@@ -1,0 +1,115 @@
+// Place all the styles related to the Users controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.survey-box-row{
+	display: -webkit-flex;
+}
+
+.survey-box{
+	padding: 10px 30px 30px 80px;
+	text-align:center;
+	border-style: solid;
+    border-width: 2px;
+    margin:-1px 0 0 -1px;
+}
+
+.unanswered{
+	position: fixed;
+	 left: 0;
+	 right: 0;
+	 top: 0;
+	 bottom: 0;
+	 background-color: Silver;
+	 -moz-opacity:.60;
+	 filter:alpha(opacity=60);
+	 opacity:.60;
+	 z-index: 10000000;
+}
+
+.survey-table{
+	margin: 5px 0px 5px 0px;
+
+}
+//References
+.HR
+{
+	border: 0;
+    	height: 1px;
+    	background: #333;
+    	background-image: linear-gradient(to right, #ccc, #333, #ccc);
+}
+#ref, #ref2
+{
+	//border: 2px solid red;
+	width: 100%;
+	overflow: hidden;
+}
+#refImage, #refImage2
+{
+	height: 150px;
+	width: 150px;
+	//border: 2px solid blue;
+}
+#refName, #refName2
+{
+	font-size: 32px;
+}
+//Aligns all items for left side of the displayed reference
+.refLeft
+{
+	margin-left: 2%;
+}
+//Aligns all items for Right side of the displayed reference
+.refRight
+{
+	margin-left: 70%;
+	margin-top: 4%;
+}
+//Aligns all items for centre of the displayed reference
+.refCentre
+{
+	margin-left: 35%;
+	margin-top: 4%;
+}
+.contactElm
+{
+	margin-left: 6%;
+}
+#contact, #contact2
+{
+	width: 60%;
+	height: 10%;
+	float: right;
+}
+#relEmployment, #relEmployment2
+{
+	float: right;
+	overflow: hidden;
+	width: 60%;
+}
+#relProjects, #relProjects
+{
+	float: right;
+	overflow: hidden;
+	width: 60%;
+}
+#left, #left2
+{
+	//border: 2px solid blue;
+	width: 25%;
+	float: left;
+}
+#centre, #centre2
+{
+	//border: 2px solid yellow;
+	width: 50%;
+	overflow: hidden;
+	float: left;
+}
+#right, #right2
+{
+	//border: 2px solid purple;
+	width: 25%;
+	overflow: hidden;
+}

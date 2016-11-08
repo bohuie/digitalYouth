@@ -1,0 +1,5 @@
+<% if result.has_role? :employee %>
+	<p><%="#{result.first_name} #{result.last_name}"%></p>
+<% elsif result.has_role? :employer %>
+	<p><%= result.company_name %></p>
+<% end %>

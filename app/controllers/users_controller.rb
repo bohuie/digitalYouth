@@ -34,7 +34,7 @@ class UsersController < ApplicationController
 				project_skills.skill = Skill.new
 			end
 
-			@user_skills = @user.user_skills
+			@user_skills = @user.user_skills.order(:survey_id)
 
 			if user_signed_in? && current_user.id == @user.id
 				@user_skill = current_user.user_skills.build

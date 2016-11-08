@@ -9,7 +9,7 @@ class UsersController < ApplicationController
 	def show
 		@user = User.find(params[:id])
 
-		@questions = Question.get_label_map
+		@surveys = Survey.get_title_map
 
 		if @user.has_role? :employee
 			@projects = @user.projects.order('project_date DESC')

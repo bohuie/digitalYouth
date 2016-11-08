@@ -27,7 +27,7 @@ class ConsentController < ApplicationController
   		else
   			params[:consent][:answer] = 1
   		end
-  		byebug
+  		
   		@consent = Consent.new(consent_params)
 
   		if @consent.save

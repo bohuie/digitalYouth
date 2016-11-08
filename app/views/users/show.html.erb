@@ -118,14 +118,35 @@
 				<div id="skills">
 					<% if !@user_skills.empty? %>
 						<div class="container">
-							<h2>Here is a summary of your skill base</h2>
-							<% @user_skills.each do |us| %>
-								<div class="row">
-									<div class="col-xs-4">
-										<%= us.skill.name %> 
-									</div>
+							<h4>Here is a summary of your skill base</h4>
+							<div class ="row survey-box-row">
+								<div class="col-md-1"></div>
+									<% j=1 %>
+									<% Survey.all.each do |s|%>
+										<div class="col-md-2" style="min-height: 150px">
+											<h5><u><%= s.title %></u></h5>
+											<% if  @user_skills.where(survey_id: s.id).empty? %>
+												<p>No skills for this category yet</p>
+											<% else%>
+												<ul>
+													<% @user_skills.where(survey_id: s.id).each do |sk| %>
+														<li class="skill">
+															<%= sk.skill.name %>
+														</li>
+													<% end %>
+												</ul>
+											<% end %>
+										</div>
+										<div class="col-md-1"></div>
+										<% if j % 3 == 0 && j < 12 %>
+											</div>
+											<div class ="row survey-box-row"> 
+												<div class="col-md-1"></div>
+										<% end %>
+										<% j += 1 %>
+									<% end %>
 								</div>
-							<% end %>
+							
 						</div>
 					<% end %>
 					<% if user_signed_in? && @current_user==@user %>

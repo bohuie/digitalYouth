@@ -5,6 +5,7 @@ class CreateConsents < ActiveRecord::Migration
       t.integer :answer
       t.string :name
       t.date :date_signed
+      t.integer :consent_type
 
       t.timestamps null: false
     end

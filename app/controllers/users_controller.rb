@@ -9,10 +9,10 @@ class UsersController < ApplicationController
 	def show
 		@user = User.find(params[:id])
 
-		@questions = Question.get_label_map
+		@surveys = Survey.get_title_map
 
 		if @user.has_role? :employee
-			@projects = @user.projects;
+			@projects = @user.projects.order('project_date DESC')
 			@references = Reference.where(user_id: @user.id, confirmed: true)
 			
 			@survey_results = Survey.get_table_data(@user)
@@ -25,6 +25,7 @@ class UsersController < ApplicationController
 				end
 			end
 
+			@confirmed_references = Reference.where(user_id: @user.id, confirmed: true)
 			
 			if user_signed_in? && current_user.id == @user.id
 				@job_posting_applications = JobPostingApplication.where(applicant_id:current_user.id, status:-1..Float::INFINITY).order(status: :desc).includes(:job_posting)
@@ -32,9 +33,12 @@ class UsersController < ApplicationController
 				@project = current_user.projects.build
 				project_skills = @project.project_skills.build
 				project_skills.skill = Skill.new
+
+				@unconfirmed_references = Reference.where(user_id: current_user.id, confirmed: false)
+				@reference_requests = ReferenceRedirection.where(email: current_user.email)
 			end
 
-			@user_skills = @user.user_skills
+			@user_skills = @user.user_skills.order(:survey_id)
 
 			if user_signed_in? && current_user.id == @user.id
 				@user_skill = current_user.user_skills.build
@@ -63,8 +67,8 @@ class UsersController < ApplicationController
 				@user.update_attributes(email_params)
 				flash[:success] = "Email successfully updated. You will have to confirm your new email before we update to that email."
 			else
-				flash[:error] = "Incorrect password."
-				render 'edit'
+				flash[:danger] = "Incorrect password."
+				render 'edit' and return
 			end
 		elsif params.include?(:password)
 			if @user.valid_password?(params[:user][:current_password])
@@ -72,8 +76,8 @@ class UsersController < ApplicationController
 				sign_in :user, @user, bypass: true
 				flash[:success] = "Password successfully updated."
 			else
-				flash[:error] = "Incorrect password."
-				render 'edit'
+				flash[:danger] = "Incorrect password."
+				render 'edit' and return
 			end
 		elsif params.include?(:media)
 			@user.update_attributes(media_params)
@@ -115,7 +119,7 @@ class UsersController < ApplicationController
 	end
 
 	def personal_params
-		params.require(:user).permit(:first_name, :last_name, :street_address, :city, :province, :postal_code)
+		params.require(:user).permit(:first_name, :last_name, :street_address, :city, :province, :postal_code, :image, :delete_image)
 	end
 
 	def email_params

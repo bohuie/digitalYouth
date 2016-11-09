@@ -15,8 +15,8 @@ class UserSkillsController < ApplicationController
 	end
 
 	def create
-		@skill = Skill.find_or_create_by(name: params[:user_skill][:name])
-		@user_skill = current_user.user_skills.create(skill_id: @skill.id, question_id: params[:user_skill][:question_id])
+		@skill = Skill.find_or_create_by(name: params[:user_skill][:name].downcase)
+		@user_skill = current_user.user_skills.create(skill_id: @skill.id, survey_id: params[:user_skill][:survey_id])
 		if @user_skill.save
 			#session.delete(:skill_id)
 			redirect_to current_user
@@ -28,6 +28,6 @@ class UserSkillsController < ApplicationController
 
 	private
 	def user_skill_params
-		params.require(:user_skill).permit(:question_id)
+		params.require(:user_skill).permit(:survey_id)
 	end
 end

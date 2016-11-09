@@ -34,18 +34,6 @@
     <div class="tab-content profileButtonContent">
         <div id="personal" class="tab-pane fade in active">
         <%= simple_form_for (@user) do |info| %>
-<<<<<<< HEAD
-	<br />
-	<p> Information added here will be publicly displayed on your profile. Click <a href='/' >here</a> to edit your privacy options.</p>
-          <%= info.input :first_name, required: true %>
-          <%= info.input :last_name, required: true %>
-          <%= info.input :street_address, label: :encrypted_street_address %>
-          <%= info.input :city %>
-          <%= info.input :province %>
-          <%= info.input :postal_code %>
-	  <br />
-          <%= info.submit 'Update', name: 'personal' %>
-=======
           <br />
           <p> Information added here will be publicly displayed on your profile. Click <a href='/' >here</a> to edit your privacy options.</p>
           <div class="row" style="padding-bottom: 10px">
@@ -101,7 +89,6 @@
             </div>
           </div>
           <%= info.submit 'Update', name: 'personal', class: 'btn btn-default' %>
->>>>>>> master
         <% end %>
         </div>
 

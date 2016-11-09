@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
   	scope :search_import, -> { includes(:roles,:users_roles) }
     after_save :user_reindex
 
-    attr_encrypted :street_address, key: ENV["ENCRYPT_KEY"]
+    attr_encrypted :street_address, key: ENV["ADDRESS_KEY"]
 
   	
     include PublicActivity::Model

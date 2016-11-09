@@ -33,7 +33,7 @@ begin
 	user2.create_consent(answer: 0, name: "Jane Doe", date_signed: Date.today, consent_type: 1)
 
 	user3 = User.new(first_name: 'Foo', last_name: 'Bar', email: 'foo@bar.com', password: 'password', password_confirmation: 'password', 
-		company_name: 'Google', street_address: '123 Fake Street', city: 'Kelowna', province: 'BC', postal_code: 'V1V 1V1')
+		company_name: 'Google')
 	user3.add_role :employer
 	user3.skip_confirmation!
 	user3.save

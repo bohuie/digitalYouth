@@ -4,7 +4,7 @@
 		<%= simple_form_for @reference_email do |r| %>
 			<%= r.input :first_name, required: true %>
 			<%= r.input :last_name, required: true %>
-			<%= r.input :email, required: true %>
+			<%= r.input :email, as: "email", required: true %>
 			<%= r.hidden_field :reference_url, :value => @url%>
 			<%= r.button :submit, 'Send' %>
 		<% end -%>

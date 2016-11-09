@@ -1,0 +1,25 @@
+<% formatted_name = name.downcase.tr(" ", "_") %>
+<hr>
+<h6 class="filter-title" onclick="$('#<%=formatted_name%>').slideToggle(100);"> <%=name%> <span class="caret"></span></h6>
+<% if @filters.include? name.downcase %>
+	<div id="<%=formatted_name%>">
+<% else %>
+	<div id="<%=formatted_name%>" style="display: none;"> 
+<% end %>
+	<%= link_to	"All", search_path(all_path_hash(@toggles,@query,@type,@filters,formatted_name,key))%><br>
+	<%filter_values.each do |v|%>
+		<% path_hash = get_path_hash(@toggles,@query,@type,@filters,formatted_name) %>
+		<% path_hash[key] = v %>
+		<%= link_to v, search_path(path_hash), class: active_search(v,params[key]) %><br>
+	<%end%>
+
+	<% if local_assigns[:input] == true %>
+		<button class="btn btn-default btn-xs" onclick="hideUnHide('btn-<%=formatted_name%>','input-<%=formatted_name%>')" id="btn-<%=formatted_name%>">
+			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
+		</button> 
+		<div class="input-group input-group-sm">
+			<%= text_field_tag key,'', class: 'form-control', placeholder: name, onchange: "filterInputChange('input-#{formatted_name}','#{key}','#{name.downcase}')", 
+				style:"display:none", id:"input-#{formatted_name}"%>
+		</div>
+	<% end %>
+</div>

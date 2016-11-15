@@ -6,7 +6,6 @@ class User < ActiveRecord::Base
     attr_encrypted :street_address, key: ENV["ADDRESS_KEY"]
     attr_encrypted :postal_code, key: ENV["PC_KEY"]
     attr_encrypted :unit_number, key: ENV["UNIT_KEY"]
-
   	
     include PublicActivity::Model
 
@@ -41,6 +40,8 @@ class User < ActiveRecord::Base
     has_many :skills, through: :user_skills
 
     has_one  :consent
+
+    accepts_nested_attributes_for :consent
 
     def search_data
         data = Hash.new

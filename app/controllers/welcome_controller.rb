@@ -3,9 +3,13 @@ class WelcomeController < ApplicationController
   end
 
   def signup_jobseeker
+    @job_seeker = User.new
+    @job_seeker.build_consent
   end
 
   def signup_employer
+    @employer = User.new
+    @employer.build_consent
   end
 
   def lost_email

@@ -4,6 +4,8 @@ class User < ActiveRecord::Base
     after_save :user_reindex
 
     attr_encrypted :street_address, key: ENV["ADDRESS_KEY"]
+    attr_encrypted :postal_code, key: ENV["PC_KEY"]
+    attr_encrypted :unit_number, key: ENV["UNIT_KEY"]
 
   	
     include PublicActivity::Model

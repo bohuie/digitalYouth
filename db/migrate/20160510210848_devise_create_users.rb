@@ -20,12 +20,14 @@ class DeviseCreateUsers < ActiveRecord::Migration
       #encrypted info
       t.string  :encrypted_street_address
       t.string  :encrypted_street_address_iv
+      t.string  :encrypted_unit_number
+      t.string  :encrypted_unit_number_iv
+      t.string  :encrypted_postal_code
+      t.string  :encrypted_postal_code_iv
 
       #location info
-      t.string  :unit_number
       t.string  :city
       t.string  :province
-      t.string  :postal_code
 
       #Bio info
       t.string  :bio

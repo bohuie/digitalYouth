@@ -53,6 +53,8 @@ GEM
     airbrussh (1.0.2)
       sshkit (>= 1.6.1, != 1.7.0)
     arel (6.0.3)
+    attr_encrypted (3.0.3)
+      encryptor (~> 3.0.0)
     authority (3.1.0)
       activesupport (>= 3.0.0)
       rake (>= 0.8.7)
@@ -115,6 +117,7 @@ GEM
     elasticsearch-transport (1.0.18)
       faraday
       multi_json
+    encryptor (3.0.0)
     errbase (0.0.3)
     erubis (2.7.0)
     execjs (2.7.0)
@@ -355,6 +358,7 @@ DEPENDENCIES
   actionmailer
   activejob_backport
   ahoy_matey
+  attr_encrypted (~> 3.0.0)
   authority
   autoprefixer-rails
   bootstrap-sass

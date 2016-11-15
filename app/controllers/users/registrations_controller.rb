@@ -18,30 +18,36 @@ before_action :configure_sign_up_params, only: [:create]
     else
     end
     if verify_recaptcha(model: User.new)
-      resource.save
-      yield resource if block_given?
-      if resource.persisted?
-        if resource.active_for_authentication?
-          set_flash_message! :notice, :signed_up
-          sign_up(resource_name, resource)
-          respond_with resource, location: after_sign_up_path_for(resource)
-        else
-          ## Original
-          #set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}."
-          ## Custom
-          flash[:success]= "An email has been sent for confirmation.  Please fill out the consent form below."
-          ## End
-          expire_data_after_sign_in!
-          ## Original routing
-          #respond_with resource, location: after_inactive_sign_up_path_for(resource)
-          ## Custom
-          if params[:role] == 'employee'
-            redirect_to adult_consent_path id: @user.id
-          elsif params[:role] =='employer'
-            redirect_to business_consent_path id: @user.id
+      ##Extra.  To remove once consent/study is done
+      if consent_name_match
+        resource.save
+        yield resource if block_given?
+        if resource.persisted?
+          if resource.active_for_authentication?
+            set_flash_message! :notice, :signed_up
+            sign_up(resource_name, resource)
+            respond_with resource, location: after_sign_up_path_for(resource)
           else
+            ## Original
+            set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}."
+            ## Custom
+            #flash[:success]= "An email has been sent for confirmation.  Please fill out the consent form below."
+            ## End
+            expire_data_after_sign_in!
+            ## Original routing
+            respond_with resource, location: after_inactive_sign_up_path_for(resource)
+            ## Custom
+            #if params[:role] == 'employee'
+            #  redirect_to adult_consent_path id: @user.id
+            #elsif params[:role] =='employer'
+            #  redirect_to business_consent_path id: @user.id
+            #else
+            #end
+            ## End
           end
-          ## End
+        else
+          flash[:warning] = "The name in the consent form must match the first and last name supplied."
+          redirect_back_or
         end
       else
         clean_up_passwords resource
@@ -96,9 +102,19 @@ before_action :configure_sign_up_params, only: [:create]
 
   protected
 
+  def consent_name_match
+    if params[:user].key?(:consent_attributes)
+      unless (params[:user][:first_name].downcase+ " " + params[:user][:last_name].downcase).eql? params[:user][:consent_attributes][:name].downcase 
+        flash[:warning] = "The name in the consent form must match the first and last name supplied."
+        return false 
+      end
+    end
+    return true
+  end
+
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:role, :first_name, :last_name])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:role, :first_name, :last_name, :company_name, :postal_code])
   end
 
   # If you have extra params to permit, append them to the sanitizer.

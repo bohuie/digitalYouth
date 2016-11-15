@@ -1,30 +1,6 @@
-
+<%= render "users/shared/profile" %>
 <% if @user.has_role? :employee %>
 <!-- Employee Profile -->
-<div class ="profileContainer">
-	<div class ="profileContainerImage" id="shadow-arch-edges">
-		<div class ="profileFrame">
-			<%= image_tag @user.image.url, alt:"User Icon" %> <!-- Should add a max size or auto scale pics that are uploaded -->
-		</div>
-	</div>
-	<div class ="profileContainerContent">
-		<h2> <%= @user.first_name %> <%= @user.last_name %> </h2>
-		<h5> <%= @user.street_address %> <%= @user.city %> <%= @user.province %> <%= @user.postal_code %> </h5>
-		<h5> <%= @user.email %> </h5>
-		<% if !@user.github.nil? %>
-			<%= link_to 'GitHub', @user.github, id: 'github', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
-		<% end %>
-		<% if !@user.linkedin.nil? %>
-			<%= link_to 'Linkedin', @user.linkedin, id: 'linkedin', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
-		<% end %>
-		<% if !@user.twitter.nil? %>
-			<%= link_to 'Twitter', @user.twitter, id: 'twitter', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
-		<% end %>
-		<% if !@user.facebook.nil? %>
-			<%= link_to 'Facebook', @user.facebook, id: 'facebook', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
-		<% end %>
-		<%= raw('<br>') if @user.github.nil? && @user.linkedin.nil? && @user.twitter.nil? && @user.facebook.nil? %>
-	</div>
 	<div class="container" id="profileButtons">
 		<ul class="nav nav-tabs profileButtonContent">
     			<li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#surveys">SURVEYS</a></li>
@@ -284,36 +260,12 @@
     		</div>
   		</div>
 	</div>
-</div>
+
 
 
 <% elsif @user.has_role? :employer %>
 
-<div class ="profileContainer">
-	<div class ="profileContainerImage" id="shadow-arch-edges">
-		<div class ="profileFrame">
-			<%= image_tag @user.image.url, alt:"User Icon" %> <!-- Should add a max size or auto scale pics that are uploaded -->
-		</div>
-	</div>
-	<div class ="profileContainerContent">
-		<h2> <%= @user.first_name %> <%= @user.last_name %> </h2>
-		<h2> <%= @user.company_name %></h2>
-		<h5> <%= @user.street_address %> <%= @user.city %> <%= @user.province %> <%= @user.postal_code %> </h5>
-		<h5> <%= @user.email %> </h5>
-		<% if !@user.github.nil? %>
-			<%= link_to 'GitHub', @user.github, id: 'github', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
-		<% end %>
-		<% if !@user.linkedin.nil? %>
-			<%= link_to 'Linkedin', @user.linkedin, id: 'linkedin', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
-		<% end %>
-		<% if !@user.twitter.nil? %>
-			<%= link_to 'Twitter', @user.twitter, id: 'twitter', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
-		<% end %>
-		<% if !@user.facebook.nil? %>
-			<%= link_to 'Facebook', @user.facebook, id: 'facebook', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
-		<% end %>
-		<%= raw('<br>') if @user.github.nil? && @user.linkedin.nil? && @user.twitter.nil? && @user.facebook.nil? %>
-	</div>
+
 
 	<div class="container" id="profileButtons">
 		<ul class="nav nav-tabs profileButtonContent">
@@ -366,7 +318,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+
 <% elsif @user.has_role? :admin%>
 	You are an admin!
 <% end %>

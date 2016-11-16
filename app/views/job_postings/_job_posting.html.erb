@@ -25,14 +25,14 @@
 <% if !@req_skills.empty? %>
 	<h4> Required Skills </h4>
 	<ul><%@req_skills.each do |r| %>
-		<li><%=r.skill.name.capitalize%></li><% end %>
+		<li><%=r.skill.name.titleize%></li><% end %>
 	</ul>
 <% end %>
 
 <% if !@pref_skills.empty? %>
 	<h4> Preferred Skills </h4>
 	<ul><%@pref_skills.each do |p| %>
-		<li><%=p.skill.name.capitalize%></li><% end %>
+		<li><%=p.skill.name.titleize%></li><% end %>
 	</ul>
 <% end %>
 

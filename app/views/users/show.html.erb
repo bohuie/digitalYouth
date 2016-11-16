@@ -68,7 +68,7 @@
 									<% if !@skills[p.id].empty? %>
 										<p>Skills associated with this project:</p>
 										<% @skills[p.id].each do |s| %>
-											<%=s.name%>
+											<%=s.name.titleize %>
 											<% if index < @skills[p.id].length %>
 												<%=", " %>
 												<% index = index+1 %>
@@ -105,7 +105,7 @@
 												<ul>
 													<% @user_skills.where(survey_id: s.id).each do |sk| %>
 														<li class="skill">
-															<%= sk.skill.name %>
+															<%= sk.skill.name.titleize %>
 														</li>
 													<% end %>
 												</ul>

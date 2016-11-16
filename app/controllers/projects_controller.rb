@@ -35,6 +35,7 @@ class ProjectsController < ApplicationController
 		@skills = @project.skills
 		@project_skills = ProjectSkill.where(project_id:params[:id]).order(:id)
 		@surveys = Survey.get_title_map
+		@user= @project.user
 	end
 
 	def create

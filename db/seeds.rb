@@ -158,12 +158,12 @@ begin
 				  job_category_id: 12, user_id: user11.id, created_at:Date.today-7)
 
 	#Skills attached to a job.  Important 2 is required, 1 is optional.  Ignore question ID for now, have to have some number
-	JobPostingSkill.create(job_posting_id: jobposting1.id, skill_id:skill1.id, importance:2, question_id:41)
-	JobPostingSkill.create(job_posting_id: jobposting1.id, skill_id:skill2.id, importance:2, question_id:42)
-	JobPostingSkill.create(job_posting_id: jobposting1.id, skill_id:skill3.id, importance:1, question_id:37)
+	JobPostingSkill.create(job_posting_id: jobposting1.id, skill_id:skill1.id, importance:2, survey_id:5)
+	JobPostingSkill.create(job_posting_id: jobposting1.id, skill_id:skill2.id, importance:2, survey_id:6)
+	JobPostingSkill.create(job_posting_id: jobposting1.id, skill_id:skill3.id, importance:1, survey_id:7)
 
-	JobPostingSkill.create(job_posting_id: jobposting2.id, skill_id:skill1.id, importance:2, question_id:41)
-	JobPostingSkill.create(job_posting_id: jobposting2.id, skill_id:skill2.id, importance:2, question_id:42)
+	JobPostingSkill.create(job_posting_id: jobposting2.id, skill_id:skill1.id, importance:2, survey_id:5)
+	JobPostingSkill.create(job_posting_id: jobposting2.id, skill_id:skill2.id, importance:2, survey_id:6)
 
 	user12 = User.new(first_name: 'Mikella', last_name: 'Sims', email: 'Mikella@Sims.com', password: 'password', password_confirmation: 'password', 
 		company_name: 'Dean Foods Company')
@@ -174,9 +174,9 @@ begin
 	jobposting3 = JobPosting.create(title: 'Website Developer', location: "Kelowna, BC", pay_range: "30¢/hr-40¢/hr", job_type: 1,
 				  description: 'Create a website for our company and maintain it', open_date: Date.today-4, close_date: Date.today+11,
 				  job_category_id: 12, user_id: user12.id, created_at:Date.today-7)
-	JobPostingSkill.create(job_posting_id: jobposting3.id, skill_id:skill4.id, importance:2, question_id:41)
-	JobPostingSkill.create(job_posting_id: jobposting3.id, skill_id:skill5.id, importance:1, question_id:41)
-	JobPostingSkill.create(job_posting_id: jobposting3.id, skill_id:skill1.id, importance:1, question_id:41)
+	JobPostingSkill.create(job_posting_id: jobposting3.id, skill_id:skill4.id, importance:2, survey_id:5)
+	JobPostingSkill.create(job_posting_id: jobposting3.id, skill_id:skill5.id, importance:1, survey_id:5)
+	JobPostingSkill.create(job_posting_id: jobposting3.id, skill_id:skill1.id, importance:1, survey_id:5)
 
 	user13 = User.new(first_name: 'Gomana', last_name: 'Reid', email: 'Gomana@Reid.com', password: 'password', password_confirmation: 'password', 
 		company_name: 'H&R Block Inc.')

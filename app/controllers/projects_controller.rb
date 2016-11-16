@@ -27,6 +27,7 @@ class ProjectsController < ApplicationController
 
 	def show
 		@project = Project.find(params[:id])
+		@user = @project.user
 	end
 
 	def edit
@@ -115,12 +116,6 @@ class ProjectsController < ApplicationController
 				else
 					return false
 				end
-			end
-		end
-		return true
-	end
-end
-d
 			end
 		end
 		return true

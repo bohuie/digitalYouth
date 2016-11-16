@@ -22,16 +22,11 @@ class ConsentController < ApplicationController
   	end
 
   	def create
-  		if params[:consent][:name].nil?
-  			params[:consent][:answer] = 0
-  		else
-  			params[:consent][:answer] = 1
-  		end
-  		byebug
+  		
   		@consent = Consent.new(consent_params)
 
   		if @consent.save
-  			flash[:success] = "Thank you for consenting to the study."
+  			flash[:success] = "Thank you for your time.  Changes to your consent can be updated in the profile settings."
   			redirect_to root_url
   		else
   			flash.now[:danger] = "Please fix the errors below."
@@ -53,7 +48,7 @@ class ConsentController < ApplicationController
 
   	private
   	def consent_params
-  		params.require(:consent).permit(:user_id, :name, :date_signed, :answer)
+  		params.require(:consent).permit(:user_id, :name, :date_signed, :answer, :consent_type)
   	end
 
   	def consent_owner

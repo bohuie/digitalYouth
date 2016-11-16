@@ -52,8 +52,9 @@ ActiveRecord::Schema.define(version: 20161101211017) do
     t.integer  "answer"
     t.string   "name"
     t.date     "date_signed"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer  "consent_type"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   add_index "consents", ["user_id"], name: "index_consents_on_user_id", using: :btree
@@ -242,18 +243,18 @@ ActiveRecord::Schema.define(version: 20161101211017) do
     t.integer  "user_id"
     t.integer  "skill_id"
     t.integer  "rating"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.integer  "question_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "survey_id"
   end
 
-  add_index "user_skills", ["question_id"], name: "index_user_skills_on_question_id", using: :btree
   add_index "user_skills", ["skill_id"], name: "index_user_skills_on_skill_id", using: :btree
+  add_index "user_skills", ["survey_id"], name: "index_user_skills_on_survey_id", using: :btree
   add_index "user_skills", ["user_id"], name: "index_user_skills_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  default: "",                                                                                   null: false
-    t.string   "encrypted_password",     default: "",                                                                                   null: false
+    t.string   "email",                       default: "",                                                                                   null: false
+    t.string   "encrypted_password",          default: "",                                                                                   null: false
     t.string   "first_name"
     t.string   "last_name"
     t.string   "image_file_name"
@@ -265,16 +266,19 @@ ActiveRecord::Schema.define(version: 20161101211017) do
     t.string   "twitter"
     t.string   "facebook"
     t.string   "company_name"
-    t.string   "street_address"
-    t.string   "unit_number"
+    t.string   "encrypted_street_address"
+    t.string   "encrypted_street_address_iv"
+    t.string   "encrypted_unit_number"
+    t.string   "encrypted_unit_number_iv"
+    t.string   "encrypted_postal_code"
+    t.string   "encrypted_postal_code_iv"
     t.string   "city"
     t.string   "province"
-    t.string   "postal_code"
     t.string   "bio"
-    t.boolean  "answered_surveys",       default: [false, false, false, false, false, false, false, false, false, false, false, false],              array: true
+    t.boolean  "answered_surveys",            default: [false, false, false, false, false, false, false, false, false, false, false, false],              array: true
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
-    t.integer  "sign_in_count",          default: 0,                                                                                    null: false
+    t.integer  "sign_in_count",               default: 0,                                                                                    null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
@@ -283,11 +287,11 @@ ActiveRecord::Schema.define(version: 20161101211017) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
-    t.integer  "failed_attempts",        default: 0,                                                                                    null: false
+    t.integer  "failed_attempts",             default: 0,                                                                                    null: false
     t.string   "unlock_token"
     t.datetime "locked_at"
-    t.datetime "created_at",                                                                                                            null: false
-    t.datetime "updated_at",                                                                                                            null: false
+    t.datetime "created_at",                                                                                                                 null: false
+    t.datetime "updated_at",                                                                                                                 null: false
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

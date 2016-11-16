@@ -1,41 +1,4 @@
-
-<div class ="profileContainerImage" id="shadow-arch-edges">
-  <div class ="profileFrame">
-      <%= image_tag @user.image.url, alt:"User Icon" %> <!-- Should add a max size or auto scale pics that are uploaded -->
-  </div>
-</div>
-<div class="editProfileImage">
-  <%= simple_form_for @user do |img| %>
-    <%= img.input :image, as: :file, label: "Profile Picture" %>
-    <%= img.check_box :delete_image %>Delete Image<br />
-    <%= img.submit "Update Image", name: "image" %>
-  <% end %>
-</div>
-
-<div class ="profileContainerContent">
-  <h2> <%= @user.first_name %> <%= @user.last_name %> </h2>
-  <h5> <%= @user.street_address %> <%= @user.city %> <%= @user.province %> <%= @user.postal_code %> </h5>
-  <h5> <%= @user.email %> </h5>
-  <% if !@user.github.nil? %>
-    <%= link_to 'GitHub', @user.github, id: 'github', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
-  <% end %>
-  <% if !@user.linkedin.nil? %>
-    <%= link_to 'Linkedin', @user.linkedin, id: 'linkedin', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
-  <% end %>
-  <% if !@user.twitter.nil? %>
-    <%= link_to 'Twitter', @user.twitter, id: 'twitter', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
-  <% end %>
-  <% if !@user.facebook.nil? %>
-    <%= link_to 'Facebook', @user.facebook, id: 'facebook', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
-  <% end %>
-  <%= raw('<br>') if @user.github.nil? && @user.linkedin.nil? && @user.twitter.nil? && @user.facebook.nil? %>
-</div>
-
-<div class ="profileButtonResume">
-  <div class="resumeShadowBox bottom"> </div>
-  <div class="resumeShadowBox left"> </div>
-  <input type="button" value="RESUME"/>   
-</div>
+<%= render "users/shared/profile" %>
 
 <div class="container" id="profileButtons">
     <ul class="nav nav-tabs profileButtonContent">
@@ -47,66 +10,139 @@
     <div class="tab-content profileButtonContent">
         <div id="personal" class="tab-pane fade in active">
         <%= simple_form_for (@user) do |info| %>
-	<br />
-	<p> Information added here will be publicly displayed on your profile. Click <a href='/' >here</a> to edit your privacy options.</p>
-          <%= info.input :first_name, required: true %>
-          <%= info.input :last_name, required: true %>
-          <%= info.input :street_address %>
-          <%= info.input :city %>
-          <%= info.input :province %>
-          <%= info.input :postal_code %>
-	  <br />
-          <%= info.submit 'Update', name: 'personal' %>
+          <br />
+          <p> Information added here will be publicly displayed on your profile. Click <a href='/' >here</a> to edit your privacy options.</p>
+          <div class="row" style="padding-bottom: 10px">
+            <div class="col-md-4">
+              <%= info.input :first_name, required: true, input_html: {style: 'display: inline-block; width: 75%'} %>
+            </div>
+            <div class="col-md-4">
+              <%= info.input :last_name, required: true, input_html: {style: 'display: inline-block; width: 74%'}  %>    
+            </div>
+          </div>
+          <div class="row" style="padding-bottom: 10px">
+            <div class="col-md-8">
+              <%= info.input :street_address, input_html: {style: 'display: inline-block; width: 85%'} %>
+            </div>
+          </div>
+          <div class="row" style="padding-bottom: 10px">
+            <div class="col-md-3">
+              <%= info.input :city, input_html: {style: 'display: inline-block; width: 87%'} %>
+            </div>
+            <div class="col-md-2">
+              <%= info.input :province, input_html: {style: 'display: inline-block; width: 60%'} %>
+            </div>
+            <div class="col-md-3">
+              <%= info.input :postal_code, input_html: {style: 'display: inline-block; width: 65%'} %>
+            </div>
+          </div>
+          <div class="row" style="padding-bottom: 10px">
+            <div class="col-md-6">
+              <%= info.input :image, as: :file, label: "Upload Profile Picture", input_html: {style: 'display: inline;'}  %>
+            </div>
+          </div>
+          <script type="text/javascript">
+            $(function() {
+              $('#user_image').on('change', function(event) {
+                var files = event.target.files;
+                var image = files[0]
+                var reader = new FileReader();
+                reader.onload = function(file) {
+                  var img = new Image();
+                  console.log(file);
+                  img.src = file.target.result;
+                  img.style.height = '150px';
+                  img.style.width = '300px';
+                  $('#target').html(img);
+                }
+                reader.readAsDataURL(image);
+                console.log(files);
+              });
+            });
+          </script>
+          <div class="row" style="padding-bottom: 10px">
+            <div class="cold-md-6" id="target">
+            </div>
+          </div>
+          <%= info.submit 'Update', name: 'personal', class: 'btn btn-default' %>
         <% end %>
         </div>
 
         <div id="email" class="tab-pane fade">
-         <%= simple_form_for (@user) do |email| %>
-	<br />
-          <%= email.input :email, required: true, label:"Email.  You need to confirm your new email before we update to it." %>
-          <%= email.input :email_password, label: "Please confirm the change with your current password." %>
-	  <br />
-          <%= email.submit 'Change Email', name: 'email' %>
-        <% end %>
+          <%= simple_form_for (@user) do |email| %>
+            <div class="row" style="padding-bottom: 10px">
+              <div class="col-md-6">
+                <%= email.input :email, required: true, label:"Email.  You need to confirm your new email before we update to it." , input_html: {style: 'display: inline-block; width: 85%'}%>
+              </div>
+            </div>
+            <div class="row" style="padding-bottom: 10px">
+              <div class="col-md-6">
+                <%= email.input :email_password, label: "Please confirm the change with your current password.", input_html: {style: 'display: inline-block; width: 85%'} %>
+              </div>
+            </div>
+            <%= email.submit 'Change Email', name: 'email', class: 'btn btn-default'  %>
+          <% end %>
         </div>
 
         <div id="password" class="tab-pane fade">
-         <%= simple_form_for (@user) do |pwd| %>
-	<br />
-          <%= pwd.input :current_password, label: "Old password." %>
-          <%= pwd.input :password, label: "New password." %>
-          <%= pwd.input :confirm_password, label: "Confirm new password." %>
-	  <br />
-          <%= pwd.submit 'Change Password', name: 'password' %>
-        <% end %>
+          <%= simple_form_for (@user) do |pwd| %>
+            <div class="row" style="padding-bottom: 10px">
+              <div class="col-md-5">
+                <%= pwd.input :current_password, label: "Old password", input_html: {style: 'display: inline-block; width: 72%'}%>
+              </div>
+            </div>
+            <div class="row" style="padding-bottom: 10px">
+              <div class="col-md-5">
+                <%= pwd.input :password, label: "New password", input_html: {style: 'display: inline-block; width: 71%'} %>
+              </div>
+            </div>
+            <div class="row" style="padding-bottom: 10px">
+              <div class="col-md-5">
+                <%= pwd.input :confirm_password, label: "Confirm new password", input_html: {style: 'display: inline-block; width: 58%'} %>
+              </div>
+            </div>
+            <%= pwd.submit 'Change Password', name: 'password', class: 'btn btn-default'  %>
+          <% end %>
         </div>
 
         <div id="media" class="tab-pane fade">
-	  <%= simple_form_for (@user) do |sm| %>
-	  <br />
-          <p>Feel free to add URL links to your social media accounts below.  These will help showcase your social media skills, projects, or other items to potential employers.</p>
-          <%= sm.input :github %>
-          <%= sm.input :linkedin %>
-          <%= sm.input :twitter %>
-          <%= sm.input :facebook %>
-	  <br />
-          <%= sm.submit 'Update', name: 'media' %>
-	<% end %>
-
-          <div>
-	   <br />
-            <p>Connect Accounts.  Accounts connected are only used for logging in.  They are not shown on your profile page.  If you wish to do so, please fill out the information above.</p>
-            <% ['facebook', 'twitter', 'github'].each do |provider| %>
-              <% if current_user.identities.pluck(:provider).include?(provider.to_s) %>
-                <%= provider.to_s.titleize %> Connected
-              <% else %>
-                <%= link_to omniauth_authorize_path('user', provider), class: "btn btn-block btn-social btn-#{provider}" do %>
-                  <span class="fa fa-<%= provider %>"></span> Connect with <%= OmniAuth::Utils.camelize(provider) %>
-                <% end %>
+          <div class="row">
+            <div class="col-md-6">
+              <%= simple_form_for (@user) do |sm| %>
+                <p>Feel free to add URL links to your social media accounts below.  These will help showcase your social media skills, projects, or other items to potential employers.</p>
+                <div class="row" style="padding-bottom: 10px">
+                  <%= sm.input :facebook, input_html: {style: 'display: inline-block; width: 86%'} %>
+                </div>
+                <div class="row" style="padding-bottom: 10px">
+                  <%= sm.input :twitter, input_html: {style: 'display: inline-block; width: 90%'} %>
+                </div>
+                <div class="row" style="padding-bottom: 10px">
+                  <%= sm.input :github, input_html: {style: 'display: inline-block; width: 90%'} %>
+                </div>
+                <div class="row" style="padding-bottom: 10px">
+                  <%= sm.input :linkedin, input_html: {style: 'display: inline-block; width: 88%'} %>
+                </div>
+                <%= sm.submit 'Update', name: 'media', class: 'btn btn-default'  %>
               <% end %>
-              <br/>
-            <% end %>
+            </div>
+            <div class="col-md-6">
+              <p>Connect Accounts.  Accounts connected are only used for logging in.  They are not shown on your profile page.  If you wish to do so, please fill out the information above.</p>
+              <% ['facebook', 'twitter', 'github', 'linkedin'].each do |provider| %>
+                  <% if current_user.identities.pluck(:provider).include?(provider.to_s) %>
+                  <div class="row" style="padding-bottom: 10px; padding-top: 10px; height: 44px">
+                    <%= provider.to_s.titleize %> Connected
+                    </div>
+                  <% else %>
+                  <div class="row" style="padding-bottom: 10px">
+                    <%= link_to omniauth_authorize_path('user', provider), class: "btn btn-block btn-social btn-#{provider}" do %>
+                      <span class="fa fa-<%= provider %>"></span> Connect with <%= OmniAuth::Utils.camelize(provider) %>
+                    <% end %>
+                    </div>
+                  <% end %>
+                
+              <% end %>
+            </div>
           </div>
         </div>
-    </div>
+      </div>
 </div>

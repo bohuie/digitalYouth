@@ -101,15 +101,8 @@ If you have questions or concerns about this research study before signing the c
 <div style="padding-left:3em">Dr. Bowen Hui, University of British Columbia</div>
 <div style="padding-left:3em">Tel: 250-807- 9353, Email: bowen.hui@ubc.ca</div><br />
 
+
 <b>Participant Certification</b>
-<%= simple_form_for @consent, url: url_for(action: 'create', controller: 'consent'), method: 'post' do |c| %>
-	<div class="col-md-3"><%= c.input :name, label: 'Please enter your full name', required: true %></div>
-	<%= c.input :date_signed %>
-	<%= c.hidden_field :user_id, value: @consent.user_id %>
-	<%= c.hidden_field :consent_type, value: 1 %>
-	<%= c.collection_radio_buttons :answer, [[1, 'Yes, I consent'], [0, 'No, I not consent']], :first, :last, style: "display:inline", checked: 1 %><br />
-	<%= c.button :submit, 'Submit'%>
-<% end %>
 
 <div style="padding-bottom: 20px">
 By filling in my name and date, I affirm that I have read this Consent form. I have had the

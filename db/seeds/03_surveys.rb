@@ -2,7 +2,7 @@
 puts "Seeding Surveys"
 
 #Surveys - title and category
-survey1 = Survey.create(title: 'General'				, category: 'Computer')
+survey1 = Survey.create(title: 'General Computing'		, category: 'Computer')
 survey2 = Survey.create(title: 'Internet and Networks'	, category: 'Computer')
 survey3 = Survey.create(title: 'Programming'			, category: 'Computer')
 survey4 = Survey.create(title: 'Word Processing'		, category: 'Productivity')

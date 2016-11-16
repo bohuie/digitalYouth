@@ -9,16 +9,7 @@
       </div>
     </div>
     <div class="collapse navbar-collapse" id="navbar">
-<!--
-      <ul class="nav navbar-nav">
-        <% if user_signed_in? %>
-          <li class="<%= 'active' if current_page?(user_path(current_user)) %>"><%= link_to 'My Profile', current_user %></li>
-          <li class="<%= 'active' if current_page?(surveys_path) %>"><%= link_to "Survey Skills", surveys_path %></li>
-          <li class="<%= 'active' if current_page?(references_path) %>"><%= link_to "References", references_path %></li>
-          <li class="<%= 'active' if current_page?(projects_path) %>"><%= link_to "Projects", projects_path %></li>
-        <% end %>
-      </ul>
---> 
+
       <%= form_tag "/search", method: "get", class: "navbar-form navbar-left", role:"search" do %>
         <div class="input-group">
             <%= text_field_tag 'q', params[:q], class: 'form-control', placeholder: "Search", autocomplete:"off"%>
@@ -27,7 +18,7 @@
               <option value="People">People</option>
               <option value="Companies">Companies</option>
               <option value="Projects">Projects</option>
-              <option value="JobPostings">JobPostings</option>
+              <option value="JobPostings">Job Postings</option>
             </select>
             <%= button_tag type: "submit", class: "btn btn-default", name: nil do %>
               <span class="glyphicon glyphicon-search"></span>

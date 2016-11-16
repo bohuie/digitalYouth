@@ -28,7 +28,7 @@ class JobPostingsController < ApplicationController
 		@job_posting = JobPosting.new
 		job_posting_skills = @job_posting.job_posting_skills.build
 		job_posting_skills.skill = Skill.new
-		@questions = Question.get_label_map
+		@surveys = Survey.get_title_map
 		@categories = JobCategory.all
 		@job_types = JobPosting.get_types_collection
 	end

@@ -46,6 +46,8 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { passwords: "users/passwords", sessions: "users/sessions", :registrations => "users/registrations", omniauth_callbacks: 'users/omniauth_callbacks' }
   match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
 
+  post 'users/userTab' => 'users#userTab'
+
  #devise_for :users
   #resources :users, only: :show, as: :user
   get 'users' => 'users#index'

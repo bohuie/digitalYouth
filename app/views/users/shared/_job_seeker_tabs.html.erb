@@ -1,0 +1,32 @@
+
+<% if session[:userTab] == "employment" && user_signed_in? && @current_user==@user %>
+    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("surveys");><a data-toggle="tab" href="#surveys">SURVEYS</a></li>
+    <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("employment");><a data-toggle="tab" href="#employment">EMPLOYMENT</a></li>
+    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("projects");><a data-toggle="tab" href="#projects">PROJECTS</a></li>
+    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("skills");><a data-toggle="tab" href="#skills">SKILLS</a></li>
+    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("references");><a data-toggle="tab" href="#references">REFERENCES</a></li>
+<% elsif session[:userTab] == "projects" %>
+    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("surveys");><a data-toggle="tab" href="#surveys">SURVEYS</a></li>
+    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("employment");><a data-toggle="tab" href="#employment">EMPLOYMENT</a></li>
+    <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("projects");><a data-toggle="tab" href="#projects">PROJECTS</a></li>
+    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("skills");><a data-toggle="tab" href="#skills">SKILLS</a></li>
+    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("references");><a data-toggle="tab" href="#references">REFERENCES</a></li>
+<% elsif session[:userTab] == "skills" %>
+    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("surveys");><a data-toggle="tab" href="#surveys">SURVEYS</a></li>
+    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("employment");><a data-toggle="tab" href="#employment">EMPLOYMENT</a></li>
+    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("projects");><a data-toggle="tab" href="#projects">PROJECTS</a></li>
+    <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("skills");><a data-toggle="tab" href="#skills">SKILLS</a></li>
+    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("references");><a data-toggle="tab" href="#references">REFERENCES</a></li>
+<% elsif session[:userTab] == "references" %>
+    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("surveys");><a data-toggle="tab" href="#surveys">SURVEYS</a></li>
+    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("employment");><a data-toggle="tab" href="#employment">EMPLOYMENT</a></li>
+    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("projects");><a data-toggle="tab" href="#projects">PROJECTS</a></li>
+    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("skills");><a data-toggle="tab" href="#skills">SKILLS</a></li>
+    <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("references");><a data-toggle="tab" href="#references">REFERENCES</a></li>
+<% else %>
+    <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("surveys");><a data-toggle="tab" href="#surveys">SURVEYS</a></li>
+    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("employment");><a data-toggle="tab" href="#employment">EMPLOYMENT</a></li>
+    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("projects");><a data-toggle="tab" href="#projects">PROJECTS</a></li>
+    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("skills");><a data-toggle="tab" href="#skills">SKILLS</a></li>
+    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("references");><a data-toggle="tab" href="#references">REFERENCES</a></li>
+<% end %>

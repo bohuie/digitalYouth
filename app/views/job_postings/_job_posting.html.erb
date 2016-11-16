@@ -4,7 +4,8 @@
 
 <h3><%= @job_posting.title %></h3>
 
-
+<div class="row">
+<div class="col-md-6">
 <h4><% if @job_posting.user.nil? %>
 		<%= @company_name %>
 	<% else %>
@@ -22,6 +23,11 @@
 
 <br><%= simple_format @job_posting.description %><br>
 
+<p><%= raw("Open date: #{@job_posting.open_date.strftime('%B %d, %Y')}<br>")   if !@job_posting.open_date.blank? %>
+   <%= raw("Close date: #{@job_posting.close_date.strftime('%B %d, %Y')}<br>") if !@job_posting.close_date.blank? %>
+</p>
+</div>
+<div class="col-md-6">
 <% if !@req_skills.empty? %>
 	<h4> Required Skills </h4>
 	<ul><%@req_skills.each do |r| %>
@@ -35,11 +41,8 @@
 		<li><%=p.skill.name.titleize%></li><% end %>
 	</ul>
 <% end %>
-
-<p><%= raw("Open date: #{@job_posting.open_date.strftime('%B %d, %Y')}<br>")   if !@job_posting.open_date.blank? %>
-   <%= raw("Close date: #{@job_posting.close_date.strftime('%B %d, %Y')}<br>") if !@job_posting.close_date.blank? %>
-</p>
-
+</div>
+</div>
 <% if !@job_posting.user.nil? %>
 	<% if (!user_signed_in?)||(user_signed_in? && current_user.has_role?(:employee)) %>
 		<%= link_to "Apply Now", new_job_posting_application_path(job_posting: @job_posting), class: "btn btn-success" %>

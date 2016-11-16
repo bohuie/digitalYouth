@@ -89,12 +89,12 @@ ActiveRecord::Schema.define(version: 20161101211017) do
     t.integer "importance"
     t.integer "job_posting_id"
     t.integer "skill_id"
-    t.integer "question_id"
+    t.integer "survey_id"
   end
 
   add_index "job_posting_skills", ["job_posting_id"], name: "index_job_posting_skills_on_job_posting_id", using: :btree
-  add_index "job_posting_skills", ["question_id"], name: "index_job_posting_skills_on_question_id", using: :btree
   add_index "job_posting_skills", ["skill_id"], name: "index_job_posting_skills_on_skill_id", using: :btree
+  add_index "job_posting_skills", ["survey_id"], name: "index_job_posting_skills_on_survey_id", using: :btree
 
   create_table "job_postings", force: :cascade do |t|
     t.string   "title"

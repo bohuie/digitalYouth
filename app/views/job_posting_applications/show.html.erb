@@ -1,3 +1,5 @@
+<%= render "users/shared/profile" %>
+
 <% if current_user.has_role? :employee %>
 	<h3 class="job-application-content"><%= link_to raw("#{@job_posting.title} (<i>#{@job_posting.user.company_name}</i>)"), job_posting_path(@job_posting) %>
 		<span class=" label label-<%=@job_posting_application.get_bootstrap_status%>"><%="#{@job_posting_application.get_status_string}"%></span>

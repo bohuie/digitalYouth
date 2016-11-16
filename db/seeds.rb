@@ -64,7 +64,7 @@ begin
 	user2.create_consent(answer: 0, name: "Jane Doe", date_signed: Date.today, consent_type: 1)
 
 	UserSkill.create(user_id: user2.id, skill_id: skill4.id, survey_id:3)
-	project3 = user1.projects.create(title: 'Website Development', description: 'Created a website for my employer', project_date: '2016-11-10')
+	project3 = user2.projects.create(title: 'Website Development', description: 'Created a website for my employer', project_date: '2016-11-10')
 	ProjectSkill.create(project_id: project3.id, skill_id: skill4.id, survey_id: 3)
 
 	user3 = User.new(first_name: 'Kaden', last_name: 'Buchanan', email: 'Kaden@Buchanan.com', password: 'password', password_confirmation: 'password')
@@ -75,7 +75,7 @@ begin
 
 	UserSkill.create(user_id: user3.id, skill_id: skill5.id, survey_id:7)
 	UserSkill.create(user_id: user3.id, skill_id: skill10.id, survey_id:3)
-	project4 = user1.projects.create(title: 'Java Project', description: 'Had a project with a tight deadline', project_date: '2016-08-06')
+	project4 = user3.projects.create(title: 'Java Project', description: 'Had a project with a tight deadline', project_date: '2016-08-06')
 	ProjectSkill.create(project_id: project4.id, skill_id: skill5.id, survey_id: 7)
 	ProjectSkill.create(project_id: project4.id, skill_id: skill10.id, survey_id: 3)
 
@@ -86,7 +86,7 @@ begin
 	user4.create_consent(answer: 0, name: "Mackena Finley", date_signed: Date.today, consent_type: 1)
 
 	UserSkill.create(user_id: user4.id, skill_id: skill9.id, survey_id:7)
-	project5 = user1.projects.create(title: 'Manager', description: 'Had to supervise a group of people', project_date: '2016-10-01')
+	project5 = user4.projects.create(title: 'Manager', description: 'Had to supervise a group of people', project_date: '2016-10-01')
 	ProjectSkill.create(project_id: project5.id, skill_id: skill9.id, survey_id: 7)
 
 	user5 = User.new(first_name: 'Lenzy', last_name: 'Bennett', email: 'Lenzy@doe.Bennett', password: 'password', password_confirmation: 'password')
@@ -96,7 +96,7 @@ begin
 	user5.create_consent(answer: 0, name: "Lenzy Bennett", date_signed: Date.today, consent_type: 1)
 
 	UserSkill.create(user_id: user5.id, skill_id: skill8.id, survey_id:4)
-	project6 = user1.projects.create(title: 'Document Writing', description: 'Wrote up lots of documents and policy for work', project_date: '2016-11-09')
+	project6 = user5.projects.create(title: 'Document Writing', description: 'Wrote up lots of documents and policy for work', project_date: '2016-11-09')
 	ProjectSkill.create(project_id: project6.id, skill_id: skill8.id, survey_id: 4)
 
 	user6 = User.new(first_name: 'Jordin', last_name: 'Carroll', email: 'Jordin@Carroll.com', password: 'password', password_confirmation: 'password')

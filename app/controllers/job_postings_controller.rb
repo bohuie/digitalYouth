@@ -22,6 +22,7 @@ class JobPostingsController < ApplicationController
 		@req_skills  = JobPostingSkill.where(job_posting_id:params[:id], importance: 2).includes(:skill).order(:id)
 		@pref_skills = JobPostingSkill.where(job_posting_id:params[:id], importance: 1).includes(:skill).order(:id)
 		add_view(@job_posting)
+		@user = @job_posting.user
 	end
 
 	def new # Creates the form to make a new job posting
@@ -31,6 +32,7 @@ class JobPostingsController < ApplicationController
 		@surveys = Survey.get_title_map
 		@categories = JobCategory.all
 		@job_types = JobPosting.get_types_collection
+		@user = current_user
 	end
 
 	def create # Creates a new job posting and skills

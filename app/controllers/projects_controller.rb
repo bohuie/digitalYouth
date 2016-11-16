@@ -23,6 +23,7 @@ class ProjectsController < ApplicationController
 		project_skills = @project.project_skills.build
 		project_skills.skill = Skill.new
 		@surveys = Survey.get_title_map
+		@user = current_user
 	end
 
 	def show

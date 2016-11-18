@@ -3,7 +3,7 @@
 	<%= f.simple_fields_for :skill do |builder| %>
 		<div class="col-md-3"><%= builder.input :name, label: "Skill", input_html: {onclick:"skill_autocomplete('#{id}')", id: "skill-name-#{id}"} %></div>
 	<% end %>
-	<div class="col-md-6"><%= f.input :question_id, required:true, collection: @surveys, prompt: "Select Classification", label: "Associated Survey Skill"%></div>
+	<div class="col-md-6"><%= f.input :survey_id, required:true, collection: @surveys, prompt: "Select Classification", label: "Associated Survey Skill"%></div>
 	<div class="col-md-2"><%= f.input :importance, required: true, collection: {'Preferred' => 1, 'Required' => 2}, prompt: "Select Importance"%></div>
 	<div class="col-md-1">
 		<%= f.input :_destroy, as: :hidden, input_html: {id: "job-skill-destroy-#{id}"}%>

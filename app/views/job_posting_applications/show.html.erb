@@ -1,3 +1,5 @@
+<%= render "users/shared/profile" %>
+
 <% if current_user.has_role? :employee %>
 	<h3 class="job-application-content"><%= link_to raw("#{@job_posting.title} (<i>#{@job_posting.user.company_name}</i>)"), job_posting_path(@job_posting) %>
 		<span class=" label label-<%=@job_posting_application.get_bootstrap_status%>"><%="#{@job_posting_application.get_status_string}"%></span>
@@ -29,12 +31,7 @@
 						<%= "(Preferred)" %>
 					<% end %>
 
-					<%="#{s[:user_skill].skill.name.titlecase}"%> 
-					<% if s[:user_skill].rating == Integer(ENV['MAX_RATING'])%> 
-						<%= raw("<b>with a rating of #{s[:user_skill].rating}</b>") %>
-					<% else %>
-						<%= "with a rating of #{s[:user_skill].rating}" %>
-					<% end %>
+					<%="#{s[:user_skill].skill.name.titleize}"%> 
 					
 					<br>
 				<% end %>
@@ -49,14 +46,8 @@
 						<%= "(Preferred)" %>
 					<% end %>
 
-					<%="#{s[:skill].name.titlecase}"%>
+					<%="#{s[:skill].name.titleize}"%>
 					<%="(#{s[:classification]})"%>
-
-					<% if s[:rating] == Integer(ENV['MAX_RATING'])%>
-						<%= raw("<b>rating of #{s[:rating]}</b>") %>
-					<% else %>
-						<%= "rating of #{s[:rating]}" %>
-					<% end %>
 					
 					<br>
 				<% end %>

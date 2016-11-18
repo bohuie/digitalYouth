@@ -22,15 +22,17 @@ class JobPostingsController < ApplicationController
 		@req_skills  = JobPostingSkill.where(job_posting_id:params[:id], importance: 2).includes(:skill).order(:id)
 		@pref_skills = JobPostingSkill.where(job_posting_id:params[:id], importance: 1).includes(:skill).order(:id)
 		add_view(@job_posting)
+		@user = @job_posting.user
 	end
 
 	def new # Creates the form to make a new job posting
 		@job_posting = JobPosting.new
 		job_posting_skills = @job_posting.job_posting_skills.build
 		job_posting_skills.skill = Skill.new
-		@questions = Question.get_label_map
+		@surveys = Survey.get_title_map
 		@categories = JobCategory.all
 		@job_types = JobPosting.get_types_collection
+		@user = current_user
 	end
 
 	def create # Creates a new job posting and skills
@@ -50,7 +52,7 @@ class JobPostingsController < ApplicationController
 
 	def edit # Creates the form to edit a job posting
 		@job_posting_skills = JobPostingSkill.where(job_posting_id:params[:id]).order(:id)
-		@questions = Question.get_label_map
+		@surveys = Survey.get_title_map
 		@categories = JobCategory.all
 		@job_types = JobPosting.get_types_collection
 	end
@@ -218,7 +220,7 @@ private
 			missing = false
 			args["job_posting_skills_attributes"].each do |m|
 				missing = true if m[1]["skill_attributes"]["name"].blank?
-				missing = true if m[1]["question_id"].blank?
+				missing = true if m[1]["survey_id"].blank?
 				missing = true if m[1]["importance"].blank?
 				destroy = false if m[1]["_destroy"] == "false"
 			end

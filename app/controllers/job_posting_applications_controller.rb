@@ -17,6 +17,7 @@ class JobPostingApplicationsController < ApplicationController
 				@job_posting_applications = JobPostingApplication.where(company_id:current_user.id, status:-1..Float::INFINITY,job_posting_id:params[:job_posting]).order(status: :desc).includes(:applicant,:job_posting)
 			end
 		end
+		@user = current_user
 	end
 
 	def show # Show the information of an application
@@ -27,9 +28,11 @@ class JobPostingApplicationsController < ApplicationController
 			@response_skill_matches = skills[:response_skill_matches]
 			@project_skill_matches = skills[:project_skill_matches]
 		end
+		@user = current_user
 	end
 
 	def new # Displays the forum to create an application
+		@user = current_user
 		@job_posting = JobPosting.find(params[:job_posting])
 		if !@job_posting.is_expired?
 			@job_posting_application = JobPostingApplication.new
@@ -45,7 +48,7 @@ class JobPostingApplicationsController < ApplicationController
 		if @job_posting_application.save
 			#Create notification for company
 			@job_posting_application.create_activity :create,  owner: @job_posting_application.company
-			redirect_to job_posting_applications_path, flash: {success: "Application Sent!"}
+			redirect_to current_user, flash: {success: "Application Sent!"}
 		else
 			flash[:warning] = "Oops, there was an issue in sending your application."
 			redirect_back_or job_posting_path(params[:job_posting_id])
@@ -70,7 +73,7 @@ class JobPostingApplicationsController < ApplicationController
 			redirect_to job_posting_applications_path, flash: {success: "Deleted Application!"}
 		else
 			flash[:warning] = "Oops, there was an issue in deleting that application."
-			redirect_back_or job_posting_application_path(params[:id])
+			redirect_back_or 
 		end
 	end
 
@@ -120,7 +123,7 @@ private
 		posting_id = params[:job_posting].blank? ? params[:job_posting_application][:job_posting_id] : params[:job_posting]
 		if !JobPostingApplication.where(applicant_id: current_user.id, job_posting_id: posting_id).first.nil?
 			flash[:warning] = 'You have already applied for this position.'
-			redirect_back_or job_posting_path(posting_id)
+			redirect_back_or
 		end
 	end
 end

@@ -1,7 +1,24 @@
 Rails.application.routes.draw do
+  get 'settings/consent'
+
+  get 'settings/privacy'
+
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   mount Searchjoy::Engine, at: "/admin/searchjoy"
   get 'welcome/index'
+  get 'signup_jobseeker' => 'welcome#signup_jobseeker'
+  get 'signup_employer' => 'welcome#signup_employer'
+  get 'welcome/signup_jobseeker' => 'welcome#signup_jobseeker'
+  get 'welcome/signup_employer' => 'welcome#signup_employer'
+
+  # Consent
+  get 'consent/business_consent/:id' => 'consent#business_consent', as: :business_consent
+  get 'consent/adult_consent/:id' => 'consent#adult_consent', as: :adult_consent
+  post 'consent/create' => 'consent#create'
+  patch 'consent/update/:id' => 'consent#update'
+
+  # Settings
+  get 'settings/consent' => 'settings#consent', as: :consent_settings
 
   # Searches
   get 'search' => 'searches#index'
@@ -26,8 +43,10 @@ Rails.application.routes.draw do
   delete 'notifications/all' => 'notifications#delete_all', as: :delete_all_notifications
 
   # Devise_for :users
-  devise_for :users, controllers: { sessions: "users/sessions", :registrations => "users/registrations", omniauth_callbacks: 'users/omniauth_callbacks' }
+  devise_for :users, controllers: { passwords: "users/passwords", sessions: "users/sessions", :registrations => "users/registrations", omniauth_callbacks: 'users/omniauth_callbacks' }
   match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
+
+  post 'users/userTab' => 'users#userTab'
 
  #devise_for :users
   #resources :users, only: :show, as: :user

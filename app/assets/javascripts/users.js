@@ -58,3 +58,23 @@ function rendering(toRender)
 		}
 	}
 }
+var data = ""
+function setUserTab(value="surveys")
+{
+	data = "user_tab="+value
+	$.ajax({
+	url: '/users/userTab',
+	data: data,
+	type: 'post',
+	beforeSend: function(jqXHR, settings) {
+        jqXHR.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+    }
+	})
+	.done(function(response) {
+  		// Do something with the response
+	})
+	.fail(function(error) {
+  		// Do something with the error
+	});
+}
+

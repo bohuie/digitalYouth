@@ -1,6 +1,12 @@
 include ActionDispatch::TestProcess
 
 FactoryGirl.define do
+  factory :consent do
+    user nil
+    answer 1
+    name "MyString"
+    date_signed "2016-11-01"
+  end
   factory :identity do
     user nil
     provider "MyString"
@@ -30,10 +36,10 @@ FactoryGirl.define do
     password  "password"
     password_confirmation "password"
     company_name "Yahoo"
-    company_address "123 Fake Street"
-    company_city "Kelowna"
-    company_province "BC"
-    company_postal_code "V1V 1V1"
+    street_address "123 Fake Street"
+    city "Kelowna"
+    province "BC"
+    postal_code "V1V 1V1"
   end
 
   factory :employer2, class: User do
@@ -43,10 +49,10 @@ FactoryGirl.define do
     password  "password"
     password_confirmation "password"
     company_name "Google"
-    company_address "321 Fake Street"
-    company_city "Penticton"
-    company_province "BC"
-    company_postal_code "V7V 7X7"
+    street_address "321 Fake Street"
+    city "Penticton"
+    province "BC"
+    postal_code "V7V 7X7"
   end
 
   factory :project do

@@ -1,3 +1,5 @@
+<%= render "users/shared/profile" %>
+
 <h3>Job Posting Application</h3>
 <p> You are Applying for the <strong><%=@job_posting.title%></strong> position at <strong><%=@job_posting.user.company_name %></strong></p>
 <p> Once you click send you can view the status of your application at<%=job_posting_applications_path%><br>

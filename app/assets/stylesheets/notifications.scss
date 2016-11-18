@@ -49,7 +49,7 @@
 
 .content{
 	float:left;
-	width:95%
+	width:95%;
 }
 
 .center-text{
@@ -78,4 +78,10 @@
   color: white;
   border-radius: 3px;
   padding: 0px 2px 0px 2px;
+}
+.notification-reference {
+   height: 50px;
+   width: 50px;
+   float: left;
+   padding-right: 5px;
 }

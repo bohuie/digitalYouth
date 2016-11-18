@@ -1,5 +1,11 @@
 source 'https://rubygems.org'
 
+# Whenever for Cron Jobs
+gem 'whenever'
+
+# Encryption for user data
+gem "attr_encrypted", "~> 3.0.0"
+
 # SearchJoy gem for search analytics
 gem "searchjoy"
 
@@ -67,6 +73,7 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 gem 'omniauth-github'
+gem 'omniauth-linkedin'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.6'

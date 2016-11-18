@@ -1,3 +1,4 @@
+<%= render "users/shared/profile" %>
 <% cnt = 0 %>
 <% if current_user.has_role? :employee %>
 	<h4>These are your current job applications.</h4>
@@ -24,7 +25,6 @@
 		<% end %>
 	<% end %>
 <% elsif current_user.has_role? :employer %>
-	<%= button_to 'Go Back', :back, method: :get %>
 	<% last_posting = -1 %>
 	<%@job_posting_applications.each do |j|%>
 		<% if j.status != -2 %>

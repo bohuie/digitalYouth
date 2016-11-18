@@ -17,6 +17,7 @@ class JobPostingApplicationsController < ApplicationController
 				@job_posting_applications = JobPostingApplication.where(company_id:current_user.id, status:-1..Float::INFINITY,job_posting_id:params[:job_posting]).order(status: :desc).includes(:applicant,:job_posting)
 			end
 		end
+		@user = current_user
 	end
 
 	def show # Show the information of an application
@@ -27,9 +28,11 @@ class JobPostingApplicationsController < ApplicationController
 			@response_skill_matches = skills[:response_skill_matches]
 			@project_skill_matches = skills[:project_skill_matches]
 		end
+		@user = current_user
 	end
 
 	def new # Displays the forum to create an application
+		@user = current_user
 		@job_posting = JobPosting.find(params[:job_posting])
 		if !@job_posting.is_expired?
 			@job_posting_application = JobPostingApplication.new

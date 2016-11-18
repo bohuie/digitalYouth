@@ -3,23 +3,32 @@
 <!-- Employee Profile -->
 	<div class="container" id="profileButtons">
 		<ul class="nav nav-tabs profileButtonContent">
-    			<li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#surveys">SURVEYS</a></li>
-    			<% if user_signed_in? && @current_user==@user %>
-    				<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#employment">EMPLOYMENT</a></li>
-    			<% end %>
-    			<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#projects">PROJECTS</a></li>
-    			<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#skills">SKILLS</a></li>
-   			<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#references">REFERENCES</a></li>
+			<%= render "users/shared/job_seeker_tabs" %>			
   		</ul>
-  
+ 		<% suclass = "tab-pane fade" %>
+    	<% emclass = "tab-pane fade" %>
+    	<% prclass = "tab-pane fade" %>
+    	<% skclass = "tab-pane fade" %>
+    	<% reclass = "tab-pane fade" %>
+  		<% if session[:userTab] == "employment" && user_signed_in? && @current_user==@user %>
+  			<% emclass = emclass + " in active" %>
+  		<% elsif session[:userTab] == "projects" %>
+  			<% prclass = prclass + " in active" %>
+  		<% elsif session[:userTab] == "skills" %>
+  			<% skclass = skclass + " in active" %>
+  		<% elsif session[:userTab] == "references" %>
+  			<% reclass = reclass + " in active" %>
+  		<% else %>
+  			<% suclass = suclass + " in active" %>
+  		<% end %>
   		<div class="tab-content profileButtonContent">
-    		<div id="surveys" class="tab-pane fade in active">
+    		<div id="surveys" class= "<%= suclass %>">
       			<div class = "survey-table" id= "survey-table">
 					<%= render '/users/partials/show_survey_table', user:@user, results:@survey_results %>
 				</div>
 			</div>
     		<% if user_signed_in? && @current_user==@user %>
-    			<div id="employment" class="tab-pane fade">
+    			<div id="employment" class="<%= emclass %>">
 					<% cnt = 0 %>
 					<h4>These are your current job applications.</h4>
 					<p> The status is displayed beside the posting title.<br>
@@ -33,7 +42,7 @@
 							<div class="row"> 
 								<div class="col-md-4">
 									<h4 class="job-application-content">
-										<%= link_to raw("#{j.job_posting.title} (<i>#{j.job_posting.user.company_name}</i>)"), job_posting_application_path(j) %>
+										<%= link_to raw("#{j.job_posting.title} (<i>#{j.job_posting.user.company_name}</i>)"), job_posting_path(j) %>
 										<small><span class=" label label-<%=j.get_bootstrap_status%>"><%="#{j.get_status_string}"%></span></small>
 									</h4>
 								</div>
@@ -45,7 +54,7 @@
 					<% end %>
 				</div>
     		<% end %>
-    		<div id="projects" class="tab-pane fade">
+    		<div id="projects" class="<%= prclass %>">
     			<% if user_signed_in? && @current_user==@user %>
 					<div class="row">
 						<%= link_to "New Project", new_project_path, class: "btn btn-default" %>
@@ -89,7 +98,7 @@
 					<h3>There are no posted projects yet!</h3>
 				<% end %>
 			</div>
-    		<div id="skills" class="tab-pane fade">
+    		<div id="skills" class="<%= skclass %>">
 				<div id="skills">
 					<% if !@user_skills.empty? %>
 						<div class="container">
@@ -134,7 +143,7 @@
 					<% end %>
 				</div>
     		</div>
-			<div id="references" class="tab-pane fade">
+			<div id="references" class="<%= reclass %>">
 				<div class = "references" id = "references">
 					<div class="row">
 						<% if user_signed_in? && @current_user==@user %>
@@ -198,7 +207,7 @@
 					<% if user_signed_in? && @current_user==@user %>
 						<div class="row">
 							<div class="col-md-12">
-								<h3> Unconfirmed References </h3>&nbsp;
+								<h3> Unconfirmed References </h3>
 								<% if !@unconfirmed_references.empty? %>
 									<% @unconfirmed_references.each do |r| %>
 										<div class ="row" id="ref2">

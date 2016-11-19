@@ -12,9 +12,18 @@
 		<%= link_to @company_name, user_path(@job_posting.user) %>
 	<% end %>
 </h4>
-<p> <%= @job_posting.location %><br>
+<p> <%= @job_posting.city+", "+@job_posting.province %><br>
 	<%= @job_posting.job_category.name %><br>
-	<%= raw("Pay Range: #{@job_posting.pay_range}<br>") if !@job_posting.pay_range.blank? %>
+	<% if @job_posting.pay_rate == "Salary" %>
+		Pay rate: Salary
+		<% unless @job_posting.lower_pay_range.nil? %>
+			, Starting at <%=number_to_currency(@job_posting.lower_pay_range)%>
+		<% end %>
+		<% unless @job_posting.upper_pay_range.nil? %>
+			and capping at <%=number_to_currency(@job_posting.upper_pay_range)%>
+		<% end %>
+		<br />
+	<% end %>
 	<%= raw("<a href=\"http://#{@job_posting.link}\">#{@job_posting.link}</a><br>") if !@job_posting.link.blank? %>
 	<%= raw("Posted By: #{@job_posting.posted_by}<br>") if !@job_posting.posted_by.blank? %>
 	Posted On: <%= local_date(@job_posting.created_at)%>

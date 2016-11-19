@@ -99,19 +99,22 @@ ActiveRecord::Schema.define(version: 20161101211017) do
   create_table "job_postings", force: :cascade do |t|
     t.string   "title"
     t.string   "company_name"
-    t.string   "location"
-    t.string   "pay_range"
+    t.string   "city"
+    t.string   "province"
+    t.string   "pay_rate"
+    t.decimal  "lower_pay_range", precision: 10, scale: 2
+    t.decimal  "upper_pay_range", precision: 10, scale: 2
     t.string   "link"
     t.string   "posted_by"
     t.integer  "job_type"
     t.text     "description"
     t.date     "open_date"
     t.date     "close_date"
-    t.integer  "views",           default: 0, null: false
+    t.integer  "views",                                    default: 0, null: false
     t.integer  "user_id"
     t.integer  "job_category_id"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
   end
 
   create_table "project_skills", force: :cascade do |t|

@@ -149,11 +149,11 @@ begin
 	user11.create_consent(answer: 1, name: "Foo Bar", date_signed: Date.today, consent_type: 2)
 
 	#How to post jobs
-	jobposting1 = JobPosting.create(title: 'Social Media Manager', location: "Kelowna, BC", pay_range: "30¢/hr-40¢/hr", link:"www.google.ca", posted_by:"Seed File", job_type: 1,
+	jobposting1 = JobPosting.create(title: 'Social Media Manager', city: "Kelowna", province: "BC", pay_rate: 'salary', lower_pay_range: 40000.00, upper_pay_range: 45000.00, link:"www.google.ca", posted_by:"Seed File", job_type: 1,
 				  description: 'Handling our Facebook and Twitter account, posting messages, and responding to clients.', open_date: Date.today-7, close_date: Date.today+7,
 				  job_category_id: 12, user_id: user11.id, created_at:Date.today-7)
 
-	jobposting2 = JobPosting.create(title: 'Social Media Expert', location: "Kelowna, BC", pay_range: "#$30-$40/hr", link:"www.google.ca", posted_by:"Seed File", job_type: 0,
+	jobposting2 = JobPosting.create(title: 'Social Media Expert', city: "Vernon", province: "BC", pay_rate: "hourly", lower_pay_range: 13.81, upper_pay_range: 15.60, link:"www.google.ca", posted_by:"Seed File", job_type: 0,
 				  description: 'Handling our Facebook and Twitter account, posting messages, and responding to clients.', open_date: Date.today-7, close_date: Date.today,
 				  job_category_id: 12, user_id: user11.id, created_at:Date.today-7)
 
@@ -171,7 +171,7 @@ begin
 	user12.skip_confirmation!
 	user12.save
 	user12.create_consent(answer: 1, name: "Mikella Sims", date_signed: Date.today, consent_type: 2)
-	jobposting3 = JobPosting.create(title: 'Website Developer', location: "Kelowna, BC", pay_range: "30¢/hr-40¢/hr", job_type: 1,
+	jobposting3 = JobPosting.create(title: 'Website Developer', city: "Kelowna", province: "BC", pay_rate: "hourly", lower_pay_range: 12.50, job_type: 1,
 				  description: 'Create a website for our company and maintain it', open_date: Date.today-4, close_date: Date.today+11,
 				  job_category_id: 12, user_id: user12.id, created_at:Date.today-7)
 	JobPostingSkill.create(job_posting_id: jobposting3.id, skill_id:skill4.id, importance:2, survey_id:5)

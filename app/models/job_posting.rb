@@ -6,7 +6,7 @@ class JobPosting < ActiveRecord::Base
 	has_many :job_posting_applications, dependent: :destroy
 	belongs_to :job_category
 	belongs_to :user
-	accepts_nested_attributes_for :job_posting_skills, reject_if: lambda {|a| a[:question_id].blank?}, allow_destroy: true
+	accepts_nested_attributes_for :job_posting_skills, reject_if: lambda {|a| a[:survey_id].blank?}, allow_destroy: true
 
 	@@job_types = {"Full Time"=>0,"Part Time"=>1,"Contract"=>2,"Casual"=>3,
 			 "Summer Positions"=>4,"Graduate Year Recruitment Program"=>5,
@@ -47,15 +47,15 @@ class JobPosting < ActiveRecord::Base
 					return false if !skill.save
 				end
 				skill_id = skill.id
-				question_id = m[1]["question_id"]
+				survey_id = m[1]["survey_id"]
 				importance = m[1]["importance"]
 
 				if id.blank?
-					job_posting_skill = JobPostingSkill.new(skill_id: skill_id, question_id: question_id, importance: importance, job_posting_id: self.id)
+					job_posting_skill = JobPostingSkill.new(skill_id: skill_id, survey_id: survey_id, importance: importance, job_posting_id: self.id)
 					return false if !job_posting_skill.save
 				else
 					job_posting_skill = JobPostingSkill.find(id)
-					return false if !job_posting_skill.update(skill_id: skill_id, question_id: question_id, importance: importance, job_posting_id: self.id)
+					return false if !job_posting_skill.update(skill_id: skill_id, survey_id: survey_id, importance: importance, job_posting_id: self.id)
 				end
 			end
 		end

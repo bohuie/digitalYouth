@@ -11,6 +11,10 @@ class JobPosting < ActiveRecord::Base
 	@@job_types = {"Full Time"=>0,"Part Time"=>1,"Contract"=>2,"Casual"=>3,
 			 "Summer Positions"=>4,"Graduate Year Recruitment Program"=>5,
 			 "Field Placement/Work Practicum"=>6,"Internship"=>7,"Volunteer"=>8}
+	@@pay_rates = {"Salary" => "salary", "Hourly" => "hourly"}
+
+	@@provinces = {"AB" => "AB", "BC" => "BC", "MB" => "MB", "NB" => "NB", "NL" => "NL", "NS" => "NS", 
+			"NT" => "NT", "NU" => "NU", "ON" => "ON", "PE" => "PE", "QC" => "QC", "SK" => "SK", "YT" =>"YT"}
 
 
 	def search_data
@@ -22,8 +26,7 @@ class JobPosting < ActiveRecord::Base
 	  	else
 	  		data[:company_name] = self.user.company_name.downcase
 	  	end
-	  	data[:location] = location.downcase
-	  	data[:pay_range] = pay_range.downcase ##?
+	  	data[:city] = city.downcase
 	  	data[:job_type] = job_type
 	  	data[:description] = description.downcase
 	  	data[:industry] = job_category_id
@@ -77,6 +80,14 @@ class JobPosting < ActiveRecord::Base
 		return @@job_types
 	end
 
+	def self.get_pay_rates
+		return @@pay_rates
+	end
+
+	def self.get_provinces
+		return @@provinces
+	end
+
 	def compare_skills(user)
 		user_skills = user.user_skills
 		#project_skills = user.project_skills
@@ -93,28 +104,21 @@ class JobPosting < ActiveRecord::Base
 				end
 			end
 		end
-		
-		#if !project_skills.empty? # Compare to User Project Skills
-		#	job_skills.each do |j|
-		#		project_skills.each do |p|
-		#			project_skill_matches.push(p) if p.skill_id == j.skill.id
-		#		end
-		#	end
-		#end
 
-		classifications = Question.get_label_map
+		classifications = Survey.get_title_map
 		if !responses.empty? # Compare to Survey Response
 			job_skills.each do |j|
 				responses.each do |r|
 					i = 0
-					r.question_ids.each do |q|
-						if q == j.question_id
+					s = r.survey_id
+					#r.survey_id.each do |s|
+						if s == j.survey_id
 							if r.scores[i] > 0
-								response_skill_matches.push({skill: j.skill, rating: r.scores[i], importance: j.importance, classification: classifications.key(j.question_id)})
+								response_skill_matches.push({skill: j.skill, rating: r.scores[i], importance: j.importance, classification: classifications.key(j.survey_id)})
 							end
 						end
 						i+=1
-					end
+					#end
 				end
 			end
 		end

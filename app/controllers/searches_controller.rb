@@ -54,7 +54,7 @@ class SearchesController < ApplicationController
 					ORDER BY COUNT(user_skills.id) DESC 
 					LIMIT 5")
 			@skills = Array.new
-			@pgrec.each do |s| @skills.push(s["name"]) end
+			@pgrec.each do |s| @skills.push(s["name"].titleize) end
 
 		when "Companies" # Searches User model, just employers, filters location (and should have industry)
 			idxs=[User.searchkick_index.name]
@@ -65,7 +65,7 @@ class SearchesController < ApplicationController
 			@locations = Array.new
 			locs = User.where.not(province: nil).group(:province,:city).order("COUNT(id)").limit(5).pluck(:city, :province)
 			locs.each do |l| 
-				@locations.push(l[0]+', '+l[1])
+				@locations.push(l[0].titleize+', '+l[1].upcase)
 			end
 
 			@relationships = ["1st","2nd", "Group Members", "3rd + Everyone"]
@@ -85,7 +85,7 @@ class SearchesController < ApplicationController
 					ORDER BY COUNT(project_skills.id) DESC 
 					LIMIT 5")
 			@skills = Array.new
-			@pgrec.each do |s| @skills.push(s["name"]) end
+			@pgrec.each do |s| @skills.push(s["name"].titleize) end
 
 			@dates_posted = ["Past day","Past Three days", "Past week","Past month"]
 
@@ -110,7 +110,7 @@ class SearchesController < ApplicationController
 							ORDER BY cnt DESC
 							LIMIT 5) As tbl")
 			@companies = Array.new
-			@pgrec.each do |p| @companies.push(p["company_name"]) end
+			@pgrec.each do |p| @companies.push(p["company_name"].titleize) end
 
 			# Postgres query finds the most popular skill names (restricting length)
 			@pgrec = ActiveRecord::Base.connection.execute("
@@ -122,9 +122,15 @@ class SearchesController < ApplicationController
 					ORDER BY COUNT(job_posting_skills.id) DESC 
 					LIMIT 5")
 			@skills = Array.new
-			@pgrec.each do |s| @skills.push(s["name"]) end
+			@pgrec.each do |s| @skills.push(s["name"].titleize) end
 
-			@locations = JobPosting.all.group(:location).order("COUNT(id) DESC").limit(5).pluck(:location)
+
+			@locations = Array.new
+			locs = JobPosting.all.group(:city, :province).order("COUNT(id) DESC").limit(5).pluck(:city, :province)
+			locs.each do |l| 
+				@locations.push(l[0].titleize+', '+l[1].upcase)
+			end
+
 			@dates_posted = ["Past day","Past Three days", "Past week","Past month"]
 			@industries = JobCategory.all.pluck(:name)
 			@job_types = JobPosting.get_types_collection.keys
@@ -137,12 +143,12 @@ class SearchesController < ApplicationController
 			@filters.split(',').each do |f|
 				case f
 				when "location"
-					if @type == "Companies"
+					#if @type == "Companies"
 						where_clause[:city] = @l.split(',')[0].strip
 						where_clause[:province] = @l.split(',')[1].strip
-					else
-						where_clause[:location] = @l if !@l.blank?
-					end
+				#	else
+				#		where_clause[:location] = @l if !@l.blank?
+				#	end
 				when "industry"
 					where_clause[:industry]=JobCategory.find_by(name:@i).id
 				when "company"

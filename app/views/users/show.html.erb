@@ -278,16 +278,18 @@
 
 	<div class="container" id="profileButtons">
 		<ul class="nav nav-tabs profileButtonContent">
-			<li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#about">ABOUT US</a></li> 
-<!-- TO IMPLEMENT
-   			<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#people">PEOPLE</a></li>
-   -->
-   			<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#jobs">JOBS</a></li>
+			<%= render "users/shared/employer_tabs" %>
   		</ul>
-  	
+  		<% aclass = "tab-pane fade" %>
+    	<% jclass = "tab-pane fade" %>
+  		<% if session[:userTab] == "jobs" %>
+  			<% jclass = jclass + " in active" %>
+  		<% else %>
+  			<% aclass = aclass + " in active" %>
+  		<% end %>
 		<div class="tab-content profileButtonContent">
 
-			<div id="about" class="tab-pane fade in active">
+			<div id="about" class="<%= aclass %>">
 				<h4>About <%= @user.company_name %> </h4>
 				<% if user_signed_in? && current_user == @user %>
 					<%= simple_form_for @user do |u| %>
@@ -298,12 +300,7 @@
 					<%= @user.bio %>
 				<% end %>
 			</div>
-<!-- TO IMPLEMENT
-			<div id="people" class="tab-pane fade">
-				<p>Section for employees of the company, to add once the ability to follow users is added.</p>
-			</div>
--->
-			<div id="jobs" class="tab-pane fade">
+			<div id="jobs" class="<%= jclass %>">
 				<br>
 				<% if @job_postings.nil? %>
 					<% if user_signed_in? && current_user == @user %>

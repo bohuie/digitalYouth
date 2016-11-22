@@ -112,6 +112,11 @@ class UsersController < ApplicationController
   		session[:userTab] = params[:user_tab]
   	end
 
+  	def reference_tab
+  		session[:userTab] = "references"
+  		redirect_to current_user
+  	end
+
 	private
 	def user_params
 		@user = User.find(params[:id])

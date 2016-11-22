@@ -35,4 +35,32 @@ class Response < ActiveRecord::Base
 		self.scores = scores_array
 		self.question_ids = question_ids_array
 	end
+
+	# Computes the average of all users for each survey
+	def self.compute_averages
+		surveys = Survey.uniq.pluck(:id)
+
+		surveys.each do |survey|
+			avg_data = Response.find_by(survey_id: survey, user_id: -1)
+			count = 0
+			sum = 0
+			# Reset data to 0
+			avg_data.scores.each_with_index do |data, index|
+				avg_data.scores[index] = 0
+			end
+			Response.where("survey_id = ? AND user_id > 0", survey).find_each do |user|
+				user.scores.each_with_index do |score, index|
+					avg_data.scores[index] = avg_data.scores[index] + score
+				end
+				count += 1
+			end
+
+			if count != 0 
+				avg_data.scores.each_with_index do |score, index|
+					avg_data.scores[index] = avg_data.scores[index]/count
+				end
+			end
+			avg_data.save
+		end
+	end
 end

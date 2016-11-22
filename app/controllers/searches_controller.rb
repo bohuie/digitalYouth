@@ -11,20 +11,24 @@ class SearchesController < ApplicationController
 		@usr 	= current_user.id if user_signed_in?
 
 		#Values for where clause
-		@l = params[:l].nil?  ? "" : params[:l]  #location
-		@i = params[:i].nil?  ? "" : params[:i]  #industry
-		@c = params[:c].nil?  ? "" : params[:c]  #company
-		@cc= params[:cc].nil? ? "" : params[:cc] #current_company - not implemented
-		@pc= params[:pc].nil? ? "" : params[:pc] #past_company - not implemented
-		@r = params[:r].nil?  ? "" : params[:r]  #relationship - not implemented
-		@s = params[:s].nil?  ? "" : params[:s]  #skills
+		@l = params[:l].nil?  ? "" : params[:l].downcase  #location
+		@i = params[:i].nil?  ? "" : params[:i]  		  #industry
+		@c = params[:c].nil?  ? "" : params[:c].downcase  #company
+		@cc= params[:cc].nil? ? "" : params[:cc].downcase #current_company - not implemented
+		@pc= params[:pc].nil? ? "" : params[:pc].downcase #past_company - not implemented
+		@r = params[:r].nil?  ? "" : params[:r].downcase  #relationship - not implemented
+		@s = params[:s].nil?  ? "" : params[:s].downcase  #skills
 		@jt= params[:jt].nil? ? "" : params[:jt] #job_type
 		@dp= params[:dp].nil? ? "" : params[:dp] #date_posted
 
 		#Hashes for filtering
 		@toggles = Hash.new()
+		fields = Array.new
 		where_clause = Hash.new()
 		aggs = Array.new()
+		fields = [:company_name, :skills, :first_name, :last_name, :city, :province,
+			:title, :description, :owner_first, :owner_last,
+			:location]
 
 		case @type # Modifies the indexes to search with, i.e. selects the model(s) to search from, sets up extra data, and filters
 		when "All" # Searches all models, has no filters
@@ -50,7 +54,7 @@ class SearchesController < ApplicationController
 					ORDER BY COUNT(user_skills.id) DESC 
 					LIMIT 5")
 			@skills = Array.new
-			@pgrec.each do |s| @skills.push(s["name"]) end
+			@pgrec.each do |s| @skills.push(s["name"].titleize) end
 
 		when "Companies" # Searches User model, just employers, filters location (and should have industry)
 			idxs=[User.searchkick_index.name]
@@ -61,7 +65,7 @@ class SearchesController < ApplicationController
 			@locations = Array.new
 			locs = User.where.not(province: nil).group(:province,:city).order("COUNT(id)").limit(5).pluck(:city, :province)
 			locs.each do |l| 
-				@locations.push(l[0]+', '+l[1])
+				@locations.push(l[0].titleize+', '+l[1].upcase)
 			end
 
 			@relationships = ["1st","2nd", "Group Members", "3rd + Everyone"]
@@ -81,14 +85,14 @@ class SearchesController < ApplicationController
 					ORDER BY COUNT(project_skills.id) DESC 
 					LIMIT 5")
 			@skills = Array.new
-			@pgrec.each do |s| @skills.push(s["name"]) end
+			@pgrec.each do |s| @skills.push(s["name"].titleize) end
 
-			@dates_posted = ["1", "2-7", "8-14","15-30","30+"]
+			@dates_posted = ["Past day","Past Three days", "Past week","Past month"]
 
 		when "JobPostings" # Searches JobPosting, filters location, company, dateposted, industry, job type, skills.
 			idxs=[JobPosting.searchkick_index.name]
 			@toggles = {l: @l, c: @c, dp: @dp, i: @i, jt: @jt, s:@s}
-			aggs = [:location, :company, :industry, :job_type, :skills]
+			aggs = [:location, :company, :industry, :job_type, :skills, :created_at]
 			
 			# Postgres query finds the most popular company names joining between the two places the name can exist
 			@pgrec = ActiveRecord::Base.connection.execute("
@@ -106,7 +110,7 @@ class SearchesController < ApplicationController
 							ORDER BY cnt DESC
 							LIMIT 5) As tbl")
 			@companies = Array.new
-			@pgrec.each do |p| @companies.push(p["company_name"]) end
+			@pgrec.each do |p| @companies.push(p["company_name"].titleize) end
 
 			# Postgres query finds the most popular skill names (restricting length)
 			@pgrec = ActiveRecord::Base.connection.execute("
@@ -118,10 +122,16 @@ class SearchesController < ApplicationController
 					ORDER BY COUNT(job_posting_skills.id) DESC 
 					LIMIT 5")
 			@skills = Array.new
-			@pgrec.each do |s| @skills.push(s["name"]) end
+			@pgrec.each do |s| @skills.push(s["name"].titleize) end
 
-			@locations = JobPosting.all.group(:location).order("COUNT(id) DESC").limit(5).pluck(:location)
-			@dates_posted = ["1", "2-7", "8-14","15-30","30+"]
+
+			@locations = Array.new
+			locs = JobPosting.all.group(:city, :province).order("COUNT(id) DESC").limit(5).pluck(:city, :province)
+			locs.each do |l| 
+				@locations.push(l[0].titleize+', '+l[1].upcase)
+			end
+
+			@dates_posted = ["Past day","Past Three days", "Past week","Past month"]
 			@industries = JobCategory.all.pluck(:name)
 			@job_types = JobPosting.get_types_collection.keys
 		else # Search nothing
@@ -133,12 +143,12 @@ class SearchesController < ApplicationController
 			@filters.split(',').each do |f|
 				case f
 				when "location"
-					if @type == "Companies"
+					#if @type == "Companies"
 						where_clause[:city] = @l.split(',')[0].strip
 						where_clause[:province] = @l.split(',')[1].strip
-					else
-						where_clause[:location] = @l if !@l.blank?
-					end
+				#	else
+				#		where_clause[:location] = @l if !@l.blank?
+				#	end
 				when "industry"
 					where_clause[:industry]=JobCategory.find_by(name:@i).id
 				when "company"
@@ -164,23 +174,26 @@ class SearchesController < ApplicationController
 					where_clause[:job_type]=JobPosting.get_types_collection[@jt] if !@jt.blank?
 				when "date_posted"
 					if !@dp.blank?
-						if @dp == "1"
+						["Past day","Three days ago", "One week ago","One month ago"]
+						if @dp == "Past day"
 							where_clause[:created_at]={gte:Date.today-1}
-						elsif @dp == "30+"
-							where_clause[:created_at]={lte:Date.today-30}
-						else
-							@parts = @dp.split('-')
-							where_clause[:created_at]={gte:Date.today-Integer(@parts[1]), lte:Date.today-Integer(@parts[0])}
+						elsif @dp == "Three days ago"
+							where_clause[:created_at]={gte:Date.today-3}
+						elsif @dp == "One week ago"
+							where_clause[:created_at]={gte:Date.today-7}
+						elsif @dp == "One month ago"
+							where_clause[:created_at]={gte:Date.today-30}
 						end
 					end
 				end
 			end
 		end
 		aggs = [] if where_clause == {}
-
 		# There is an N+1 query problem here with rolify
 		@results = User.search @query, 
 				 index_name: idxs,
+				 fields: fields,
+				 match: :word_start,
 				 operator: "or", 
 				 track: {user_id:@usr,search_type:@type},
 				 where: where_clause,
@@ -188,7 +201,7 @@ class SearchesController < ApplicationController
 				 page: params[:page], per_page: 15
 
 		@query = "" if @query == "*"
-		
+
 		if where_clause != {}
 			if where_clause != {:role=>"employer"}
 				# Aggregates for the filters when the where clause is specified change filter values to work with whats queried
@@ -196,9 +209,9 @@ class SearchesController < ApplicationController
 				@locations= make_agg_array("location",@results.aggs,@locations,5)
 			end
 			#Add queried value to collection
-			@locations= add_to_if_not_in(@l, @locations)
-			@skills   = add_to_if_not_in(@s, @skills)
-			@companies= add_to_if_not_in(@c, @companies)
+			@locations= add_to_if_not_in(params[:l], @locations)
+			@skills   = add_to_if_not_in(params[:s], @skills)
+			@companies= add_to_if_not_in(params[:c], @companies)
 		end
 		
 	end

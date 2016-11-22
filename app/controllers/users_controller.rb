@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 	before_action :authenticate_user!, except: [:show, :index]
 	before_action :profile_owner, only: [:edit, :update, :destroy]
+	skip_before_action :verify_authenticity_token, only: [:userTab]
 
 	def index
 		@users = User.all
@@ -9,13 +10,14 @@ class UsersController < ApplicationController
 	def show
 		@user = User.find(params[:id])
 
-		@questions = Question.get_label_map
+		@surveys = Survey.get_title_map
 
 		if @user.has_role? :employee
-			@projects = @user.projects;
+			@projects = @user.projects.order('project_date DESC')
 			@references = Reference.where(user_id: @user.id, confirmed: true)
 			
 			@survey_results = Survey.get_table_data(@user)
+			@average_results = Survey.get_average_data
 
 			if !@projects.empty?
 				@skills = Hash.new
@@ -24,13 +26,20 @@ class UsersController < ApplicationController
 				end
 			end
 
+			@confirmed_references = Reference.where(user_id: @user.id, confirmed: true)
 			
 			if user_signed_in? && current_user.id == @user.id
+				@job_posting_applications = JobPostingApplication.where(applicant_id:current_user.id, status:-1..Float::INFINITY).order(status: :desc).includes(:job_posting)
 				@num_unconfirmed_references = Reference.where(user_id: current_user.id, confirmed: false).count
 				@project = current_user.projects.build
+				project_skills = @project.project_skills.build
+				project_skills.skill = Skill.new
+
+				@unconfirmed_references = Reference.where(user_id: current_user.id, confirmed: false)
+				@reference_requests = ReferenceRedirection.where(email: current_user.email)
 			end
 
-			@user_skills = @user.user_skills
+			@user_skills = @user.user_skills.order(:survey_id)
 
 			if user_signed_in? && current_user.id == @user.id
 				@user_skill = current_user.user_skills.build
@@ -59,8 +68,8 @@ class UsersController < ApplicationController
 				@user.update_attributes(email_params)
 				flash[:success] = "Email successfully updated. You will have to confirm your new email before we update to that email."
 			else
-				flash[:error] = "Incorrect password."
-				render 'edit'
+				flash[:danger] = "Incorrect password."
+				render 'edit' and return
 			end
 		elsif params.include?(:password)
 			if @user.valid_password?(params[:user][:current_password])
@@ -68,14 +77,20 @@ class UsersController < ApplicationController
 				sign_in :user, @user, bypass: true
 				flash[:success] = "Password successfully updated."
 			else
-				flash[:error] = "Incorrect password."
-				render 'edit'
+				flash[:danger] = "Incorrect password."
+				render 'edit' and return
 			end
 		elsif params.include?(:media)
 			@user.update_attributes(media_params)
 			flash[:success] = "Social Media successfully updated."
+		elsif params.include?(:image)
+			@user.update_attributes(image_params)
+			flash[:success] = "Profile Image updated."
+		elsif params.include?(:bio)
+			@user.update_attributes(bio_params)
+			flash[:success] = "Bio updated."
 		else
-			flash[:error] = "Something went wrong.  Please contact an administrator."
+			flash[:danger] = "Something went wrong.  Please contact an administrator."
 		end
 		redirect_back_or user_path
 	end
@@ -93,6 +108,15 @@ class UsersController < ApplicationController
     	end
   	end
 
+  	def userTab
+  		session[:userTab] = params[:user_tab]
+  	end
+
+  	def reference_tab
+  		session[:userTab] = "references"
+  		redirect_to current_user
+  	end
+
 	private
 	def user_params
 		@user = User.find(params[:id])
@@ -105,7 +129,7 @@ class UsersController < ApplicationController
 	end
 
 	def personal_params
-		params.require(:user).permit(:first_name, :last_name, :street_address, :city, :province, :postal_code)
+		params.require(:user).permit(:first_name, :last_name, :street_address, :city, :province, :postal_code, :image, :delete_image)
 	end
 
 	def email_params
@@ -118,6 +142,14 @@ class UsersController < ApplicationController
 
 	def media_params
 		params.require(:user).permit(:github, :linkedin, :twitter, :facebook)
+	end
+
+	def image_params
+		params.require(:user).permit(:image, :delete_image)
+	end
+
+	def bio_params
+		params.require(:user).permit(:bio)
 	end
 
 	# Checks current user is the profile owner

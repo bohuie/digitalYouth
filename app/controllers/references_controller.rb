@@ -18,15 +18,15 @@ class ReferencesController < ApplicationController
 	def update # Confirms or Unconfirms a reference
 		@reference.update(confirmed: !@reference.confirmed)
 		msg = "Reference Confirmed!"
-		if @reference.confirmed
+		unless @reference.confirmed
 			msg = "Reference Unconfirmed!"
 		end
-		redirect_to references_path, flash: {info: msg}
+		redirect_to current_user, flash: {info: msg}
 	end
 
 	def destroy # Deletes a reference
 		@reference.destroy
-		redirect_to references_path, flash: {info: "Reference deleted!"}
+		redirect_to current_user, flash: {info: "Reference deleted!"}
 	end
 
 	def email # Page for form to send an email
@@ -41,10 +41,14 @@ class ReferencesController < ApplicationController
 	def send_mail # Sends the email
 		@reference_email = ReferenceEmail.new(reference_email_params)
 		params[:reference_email][:user_id] = current_user.id
-		ReferenceRedirection.create(reference_email_params)
+		reference_redirection = ReferenceRedirection.create(reference_email_params)
+		referer = User.find_by(email: params[:reference_email][:email])
+		unless referer.nil?
+			reference_redirection.create_activity :request, owner: referer
+		end
 
 		ReferenceMailer.reference_email(@reference_email, current_user).deliver_now
-		redirect_to references_path , flash: {success: "Reference request sent!"}
+		redirect_to current_user , flash: {success: "Reference request sent!"}
 	end
 
 

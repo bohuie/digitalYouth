@@ -1,32 +1,39 @@
-	<div class = "row" style="text-align:center;">
-		<div class = "col-lg-6">
-			<h4> Surveys </h4>
-		</div>
+<div class = "row">
+	<div class = "col-md-8">
+		<p>Click on one of the boxes below to fill out a survey to showcase some of your skills.  Each graph shows the skills that an average person has (in red) and the skills you've indicated (in blue).
+		</p>
 	</div>
-
-	<div class ="row survey-box-row">
-		<% i = 1 %>
-		<% @onclick = "" %>
-		<% @surveys.each do |s|%>
-			<% @class = "col-lg-2 survey-box" %>
-			<% if !@user.answered_surveys[i - 1] %>
-				<% @class += " unanswered" %>
-			<% end %>
-			<% @div_onclick = "" %>
-			<% if user_signed_in? && @current_user==@user && !@user.answered_surveys[i - 1] %>
-				<% @div_onclick = "window.location = '#{survey_path(s.title)}'" %>
-			<% end %>
-				<div class ="<%= @class %>" onclick="<%=raw @div_onclick %>">
-					<h5><%= s.format_title.html_safe %></h5>
-					<%= column_chart @survey_results[i], height: "100px", min: 0, max: 5, library: {hAxis: {textPosition: 'none'}, vAxis: {textPosition: 'none'}} %>
-					<% if @user.answered_surveys[i - 1] && user_signed_in? && @current_user==@user%>
-						<%= link_to "Update", survey_path(s.title) %>
-					<% end %>
-				</div>
-			<% if i % 3 == 0 && i < 12 %>
-			</div>
-			<div class ="row survey-box-row"> 
-			<% end %>
-			<% i = i + 1 %>
+</div>
+<div>
+</div>
+<div class ="row survey-box-row">
+	<div class="col-md-1"></div>
+	<% i=1 %>
+	<% onclick="" %>
+	<% Survey.all.each do |s|%>
+		<% css_class = "col-md-2 survey-box" %>
+		<% css_class += " unanswered" if !user.answered_surveys[i - 1] %>
+		<% div_onclick="" %>
+		<% if user_signed_in? && current_user==user && !user.answered_surveys[i - 1] %>
+			<% div_onclick = "window.location = '#{survey_path(s.title)}'" %>
 		<% end %>
-	</div>
+		<div class ="<%= css_class %>" onclick="<%=raw div_onclick %>">
+			<h5><%= s.format_title.html_safe %></h5>
+			<%= column_chart [
+				{name: "My Results", data: results[i]},
+				{name: "Average Job Seeker", data: @average_results[i]}
+				], height: "100px", min: 0, max: 3, library: { legend: { position: 'none' }, vAxis: { textPosition: 'none' }, hAxis: {textPosition: 'none'}} %>
+			<% if user.answered_surveys[i - 1] && user_signed_in? && current_user==user%>
+				<%= link_to "Update", survey_path(s.title) %>
+			<% end %>
+		</div>
+		<div class="col-md-1"></div>
+		<% if i % 3 == 0 && i < 12 %>
+			</div>
+
+			<div class ="row survey-box-row"> 
+			<div class="col-md-1"></div>
+		<% end %>
+		<% i += 1 %>
+	<% end %>
+</div>

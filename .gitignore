@@ -23,8 +23,12 @@
 # Ignore Byebug command history file.
 .byebug_history
 
+#Ignore duplicate files that end with ~
+*~
+
 # TODO Comment out these rules if you are OK with secrets being uploaded to the repo
 config/initializers/secret_token.rb
 config/secrets.yml
+
 
 .rspec

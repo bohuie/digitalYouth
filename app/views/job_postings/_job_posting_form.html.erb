@@ -1,0 +1,79 @@
+<%= simple_form_for @job_posting do |f| %>
+	<div class="row">
+		<div class="col-md-6">
+			<%= f.input :title, required: true %>
+		</div>
+		<div class="col-md-3">
+			<%= f.input :city, required: true %>
+		</div>
+		<div class="col-md-3">
+			<% if @job_posting.province.nil? %>
+				<%= f.input :province, required: true, collection: @provinces, prompt: "Select Province" %>
+			<% else %>
+				<%= f.input :province, required: true, collection: @provinces, selected: @job_posting.province %>
+			<% end %>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<% if !@job_posting.job_category.nil? %>
+				<%= f.input :job_category_id, required: true, label: "Category", collection: @categories, selected: @job_posting.job_category.id %>
+			<% else %>
+				<%= f.input :job_category_id, required: true, label: "Category", collection: @categories, prompt: "Select Category" %>
+			<% end %>
+		</div>
+
+		<div class="col-md-6">
+			<% if !@job_posting.job_type.nil? %>
+				<%= f.input :job_type, required: true, label: "Type", collection: @job_types, selected: @job_posting.job_type %>
+			<% else %>
+				<%= f.input :job_type, required: true, label: "Type", collection: @job_types, prompt: "Select Type" %>
+			<% end %>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-3">
+			<% if @job_posting.pay_rate.nil? %>
+				<%= f.input :pay_rate, collection: @pay_rates, prompt: "Select Pay Rate" %>
+			<% else %>
+				<%= f.input :pay_rate, collection: @pay_rates, selected: @job_posting.pay_rate %>
+			<% end %>
+		</div>
+		<div class="col-md-3">
+			<%= f.input :lower_pay_range, input_html: {value: number_with_precision(f.object.lower_pay_range, precision: 2)} %>
+		</div>
+		<div class="col-md-3">
+			<%= f.input :upper_pay_range, input_html: {value: number_with_precision(f.object.upper_pay_range, precision: 2)} %>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-3">
+			<%= f.input :link %>
+		</div>
+		<div class="col-md-3">
+			<%= f.input :posted_by %>
+		</div>
+		<div class="col-md-3">
+			<%= f.input :open_date, as: :string, required: true, input_html: {type: :date, id: "open-date"} %>
+		</div>
+		<div class="col-md-3">
+			<%= f.input :close_date, as: :string, required: true, input_html: {type: :date, id: "close-date"} %>
+		</div>
+	</div>
+	<div class="row">
+	<div class="col-md-6">
+	<%= f.input :description, required: true, as: :text, input_html: {rows: "4"}%>
+	</div>
+	</div>
+
+	<%i=0%>
+	<div id="job-skills">
+		<%= f.simple_fields_for :job_posting_skills do |builder| %>
+			<%= render 'job_postings/job_posting_skill_fields', id: i, f: builder %>
+			<%i=i+1%>
+		<% end%>
+	</div>
+	<p><%= link_to_add_job_posting_skill_fields "Add Skill", f, "btn btn-default" %></p>
+
+	<%= f.button :submit %>
+<% end %>

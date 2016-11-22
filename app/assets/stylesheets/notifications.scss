@@ -2,6 +2,14 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.notif-image{
+	height: 50px;
+	width: 50px;
+	float: left;
+	padding-right: 5px;
+	padding-top: 5px;
+}
+
 .notif-bar{
 	width:350px;
 	padding-top: 1px;
@@ -18,7 +26,7 @@
 .notification{
 	border: 1px solid lightgrey;
 	padding: 2px 5px 2px 5px;
-	height: 60px;
+	height: 65px;
 	min-width: 310px;
 }
 
@@ -41,7 +49,7 @@
 
 .content{
 	float:left;
-	width:95%
+	width:95%;
 }
 
 .center-text{
@@ -70,4 +78,10 @@
   color: white;
   border-radius: 3px;
   padding: 0px 2px 0px 2px;
+}
+.notification-reference {
+   height: 50px;
+   width: 50px;
+   float: left;
+   padding-right: 5px;
 }

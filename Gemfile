@@ -1,5 +1,35 @@
 source 'https://rubygems.org'
 
+# Whenever for Cron Jobs
+gem 'whenever'
+
+# Encryption for user data
+gem "attr_encrypted", "~> 3.0.0"
+
+# SearchJoy gem for search analytics
+gem "searchjoy"
+
+# Searchkick gem for searching
+gem 'searchkick'
+
+# groupdate for grouping data by dates easily
+gem 'groupdate'
+
+# geocoder for distance and geo location functions
+gem 'geocoder'
+
+# activejob backport makes Active Job usable. Used for background jobs
+gem 'activejob_backport'
+
+# ahoy for analytics
+gem 'ahoy_matey'
+
+# Make '' -> nil when saving records to the DB
+gem "nilify_blanks"
+
+# recaptcha for captcha authentication
+gem 'recaptcha', require: "recaptcha/rails"
+
 # pagination for any results that need pagination
 gem 'will_paginate'
 
@@ -24,6 +54,8 @@ gem 'figaro'
 # Bootstrap
 gem 'bootstrap-sass'
 gem 'autoprefixer-rails'
+gem 'font-awesome-rails'
+gem 'bootstrap-social-rails'
 
 # Paperclip gem for images
 gem 'paperclip'
@@ -35,6 +67,13 @@ gem 'simple_form'
 gem 'devise'
 gem 'authority'
 gem 'rolify'
+
+# Omniauth
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-twitter'
+gem 'omniauth-github'
+gem 'omniauth-linkedin'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.6'
@@ -77,6 +116,11 @@ end
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
+
+  gem 'capistrano'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rails'
+  gem 'capistrano-rvm'
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'

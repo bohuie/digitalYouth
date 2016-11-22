@@ -1,0 +1,54 @@
+<div class="row">
+		<div class="col-md-3">
+			<%= render 'shared/user_summary', user: applicant%>
+		</div>
+		<div class="col-md-5">
+			<% if !@user_skill_matches.empty? %>
+				This user self reported these skills that match with this job posting: <br>
+
+				<% unless @req_skills.empty? %> 
+					<h4> Required Skills </h4>
+					<% unless @user_required_matches.empty? %>
+						<ul><%@user_required_matches.each do |r| %>
+							<li><%=r[:user_skill].skill.name.titleize%></li><% end %>
+						</ul>
+					<% else %>
+						<ul>
+							<li>You have no matching required skills.</li>
+						</ul>
+					<% end %>
+				<% end %>
+
+				<% unless @pref_skills.empty? %>
+					<h4> Preferred Skills </h4>
+					<% unless @user_preferred_matches.empty? %>
+						<ul><%@user_preferred_matches.each do |p| %>
+							<li><%=p[:user_skill].skill.name.titleize%></li><% end %>
+						</ul>
+					<% else %>
+						<ul>
+							<li>You have no matching preferrred skills.</li>
+						</ul>
+					<% end %>
+				<% end %>
+			<% else %>
+				The user currently has no matching skills for this job.
+			<% end %>
+		</div>
+		<div class="col-md-4">
+			These are the skills associated with this job posting:
+			<% if !@req_skills.empty? %>
+				<h4> Required Skills </h4>
+				<ul><%@req_skills.each do |r| %>
+					<li><%=r.skill.name.titleize%></li><% end %>
+				</ul>
+			<% end %>
+
+			<% if !@pref_skills.empty? %>
+				<h4> Preferred Skills </h4>
+					<ul><%@pref_skills.each do |p| %>
+						<li><%=p.skill.name.titleize%></li><% end %>
+					</ul>
+			<% end %>
+		</div>
+	</div>

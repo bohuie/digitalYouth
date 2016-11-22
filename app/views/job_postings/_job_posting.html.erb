@@ -14,10 +14,19 @@
 </h4>
 <p> <%= @job_posting.city+", "+@job_posting.province %><br>
 	<%= @job_posting.job_category.name %><br>
-	<% if @job_posting.pay_rate == "Salary" %>
+	<% if @job_posting.pay_rate == "salary" %>
 		Pay rate: Salary
 		<% unless @job_posting.lower_pay_range.nil? %>
-			, Starting at <%=number_to_currency(@job_posting.lower_pay_range)%>
+			, starting at <%=number_to_currency(@job_posting.lower_pay_range)%>
+		<% end %>
+		<% unless @job_posting.upper_pay_range.nil? %>
+			and capping at <%=number_to_currency(@job_posting.upper_pay_range)%>
+		<% end %>
+		<br />
+	<% elsif @job_posting.pay_rate == "hourly" %>
+		Pay rate: Hourly
+		<% unless @job_posting.lower_pay_range.nil? %>
+			, starting at <%=number_to_currency(@job_posting.lower_pay_range)%>
 		<% end %>
 		<% unless @job_posting.upper_pay_range.nil? %>
 			and capping at <%=number_to_currency(@job_posting.upper_pay_range)%>

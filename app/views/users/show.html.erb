@@ -3,28 +3,37 @@
 <!-- Employee Profile -->
 	<div class="container" id="profileButtons">
 		<ul class="nav nav-tabs profileButtonContent">
-    			<li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#surveys">SURVEYS</a></li>
-    			<% if user_signed_in? && @current_user==@user %>
-    				<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#employment">EMPLOYMENT</a></li>
-    			<% end %>
-    			<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#projects">PROJECTS</a></li>
-    			<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#skills">SKILLS</a></li>
-   			<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#references">REFERENCES</a></li>
+			<%= render "users/shared/job_seeker_tabs" %>			
   		</ul>
-  
+ 		<% suclass = "tab-pane fade" %>
+    	<% emclass = "tab-pane fade" %>
+    	<% prclass = "tab-pane fade" %>
+    	<% skclass = "tab-pane fade" %>
+    	<% reclass = "tab-pane fade" %>
+  		<% if session[:userTab] == "employment" && user_signed_in? && @current_user==@user %>
+  			<% emclass = emclass + " in active" %>
+  		<% elsif session[:userTab] == "projects" %>
+  			<% prclass = prclass + " in active" %>
+  		<% elsif session[:userTab] == "skills" %>
+  			<% skclass = skclass + " in active" %>
+  		<% elsif session[:userTab] == "references" %>
+  			<% reclass = reclass + " in active" %>
+  		<% else %>
+  			<% suclass = suclass + " in active" %>
+  		<% end %>
   		<div class="tab-content profileButtonContent">
-    		<div id="surveys" class="tab-pane fade in active">
+    		<div id="surveys" class= "<%= suclass %>">
       			<div class = "survey-table" id= "survey-table">
 					<%= render '/users/partials/show_survey_table', user:@user, results:@survey_results %>
 				</div>
 			</div>
     		<% if user_signed_in? && @current_user==@user %>
-    			<div id="employment" class="tab-pane fade">
+    			<div id="employment" class="<%= emclass %>">
 					<% cnt = 0 %>
 					<h4>These are your current job applications.</h4>
 					<p> The status is displayed beside the posting title.<br>
 						The company which owns the job posting will update the status of the posting and it will be shown here.<br>
-						You have the option to delete your application but <b>you will not be able to reapply.</b><br>
+						You have the option to delete your application but <b>you will not be able to reapply if the application has been looked at.</b><br>
 						Feel free to delete your application if you are rejected but keep in mind that it is possible for a company to change their mind and "unreject" your application.
 					</p>
 					<%@job_posting_applications.each do |j|%>
@@ -45,7 +54,7 @@
 					<% end %>
 				</div>
     		<% end %>
-    		<div id="projects" class="tab-pane fade">
+    		<div id="projects" class="<%= prclass %>">
     			<% if user_signed_in? && @current_user==@user %>
 					<div class="row">
 						<%= link_to "New Project", new_project_path, class: "btn btn-default" %>
@@ -68,7 +77,7 @@
 									<% if !@skills[p.id].empty? %>
 										<p>Skills associated with this project:</p>
 										<% @skills[p.id].each do |s| %>
-											<%=s.name%>
+											<%=s.name.titleize %>
 											<% if index < @skills[p.id].length %>
 												<%=", " %>
 												<% index = index+1 %>
@@ -89,7 +98,7 @@
 					<h3>There are no posted projects yet!</h3>
 				<% end %>
 			</div>
-    		<div id="skills" class="tab-pane fade">
+    		<div id="skills" class="<%= skclass %>">
 				<div id="skills">
 					<% if !@user_skills.empty? %>
 						<div class="container">
@@ -105,7 +114,7 @@
 												<ul>
 													<% @user_skills.where(survey_id: s.id).each do |sk| %>
 														<li class="skill">
-															<%= sk.skill.name %>
+															<%= sk.skill.name.titleize %>
 														</li>
 													<% end %>
 												</ul>
@@ -134,7 +143,7 @@
 					<% end %>
 				</div>
     		</div>
-			<div id="references" class="tab-pane fade">
+			<div id="references" class="<%= reclass %>">
 				<div class = "references" id = "references">
 					<div class="row">
 						<% if user_signed_in? && @current_user==@user %>
@@ -198,7 +207,7 @@
 					<% if user_signed_in? && @current_user==@user %>
 						<div class="row">
 							<div class="col-md-12">
-								<h3> Unconfirmed References </h3>&nbsp;
+								<h3> Unconfirmed References </h3>
 								<% if !@unconfirmed_references.empty? %>
 									<% @unconfirmed_references.each do |r| %>
 										<div class ="row" id="ref2">
@@ -269,32 +278,29 @@
 
 	<div class="container" id="profileButtons">
 		<ul class="nav nav-tabs profileButtonContent">
-			<li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#about">ABOUT US</a></li> 
-<!-- TO IMPLEMENT
-   			<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#people">PEOPLE</a></li>
-   -->
-   			<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#jobs">JOBS</a></li>
+			<%= render "users/shared/employer_tabs" %>
   		</ul>
-  	
+  		<% aclass = "tab-pane fade" %>
+    	<% jclass = "tab-pane fade" %>
+  		<% if session[:userTab] == "jobs" %>
+  			<% jclass = jclass + " in active" %>
+  		<% else %>
+  			<% aclass = aclass + " in active" %>
+  		<% end %>
 		<div class="tab-content profileButtonContent">
 
-			<div id="about" class="tab-pane fade in active">
+			<div id="about" class="<%= aclass %>">
 				<h4>About <%= @user.company_name %> </h4>
 				<% if user_signed_in? && current_user == @user %>
 					<%= simple_form_for @user do |u| %>
 						<%= u.input :bio, as: :text %>
-						<%= u.submit "Update Bio", name: 'bio'%>
+						<%= u.submit "Update Bio", name: 'bio', class: "btn btn-default"%>
 					<% end %>
 				<% else %>
 					<%= @user.bio %>
 				<% end %>
 			</div>
-<!-- TO IMPLEMENT
-			<div id="people" class="tab-pane fade">
-				<p>Section for employees of the company, to add once the ability to follow users is added.</p>
-			</div>
--->
-			<div id="jobs" class="tab-pane fade">
+			<div id="jobs" class="<%= jclass %>">
 				<br>
 				<% if @job_postings.nil? %>
 					<% if user_signed_in? && current_user == @user %>
@@ -304,16 +310,32 @@
 					<% end %>
 				<% else %>
 					<% @job_postings.each do |j| %>
-						<%= link_to "#{j.title}\n", job_posting_path(j) %>
-						<% if user_signed_in? && current_user == @user %>
-							<% application_count = j.job_posting_applications.where(status:-1..Float::INFINITY).count %>
-							<%= link_to raw("Applications <span class=\"badge\">#{application_count.to_s}</span>"), job_posting_applications_path(job_posting:j), class: "btn btn-success"%>
-						<% end %>
+						<div class="row">
+							<div class="col-md-2">
+								<%= link_to "#{j.title}\n", job_posting_path(j) %><br />
+								<%= raw(j.get_type_string+"<br />") if !j.job_type.nil? %>
+								<p><%= j.city %>, <%=j.province %></p>
+							</div>
+							<div class="col-md-4">
+								<%= j.job_category.name %><br />
+								<%= raw("Open date: #{j.open_date.strftime('%B %d, %Y')}<br>")   if !j.open_date.blank? %>
+								<%= raw("Close date: #{j.close_date.strftime('%B %d, %Y')}<br>") if !j.close_date.blank? %>
+							</div>
+							<div class="col-md-6">
+								<%= link_to "View", job_posting_path(j), class: "btn btn-default" %>
+								<% if user_signed_in? && current_user == @user %>
+									<%= link_to "Edit Posting", edit_job_posting_path(j), class: "btn btn-default"%>
+									<% application_count = j.job_posting_applications.where(status:-1..Float::INFINITY).count %>
+									<%= link_to raw("Applications <span class=\"badge\">#{application_count.to_s}</span>"), job_posting_applications_path(job_posting:j), class: "btn btn-success"%>						
+									<%= link_to "Delete Posting", job_posting_path(j), method: "delete", class: "btn btn-danger"%>
+								<% end %>
+							</div>
+						</div>
 						<br>
 					<% end %>
 				<% end %>
 				<% if user_signed_in? && current_user == @user %>
-					<%= link_to "Create a New Posting", new_job_posting_path %><br>
+					<%= link_to "Create a New Posting", new_job_posting_path, class: "btn btn-default" %><br>
 				<% end %>
 			</div>
 		</div>

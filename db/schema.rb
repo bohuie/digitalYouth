@@ -89,29 +89,32 @@ ActiveRecord::Schema.define(version: 20161101211017) do
     t.integer "importance"
     t.integer "job_posting_id"
     t.integer "skill_id"
-    t.integer "question_id"
+    t.integer "survey_id"
   end
 
   add_index "job_posting_skills", ["job_posting_id"], name: "index_job_posting_skills_on_job_posting_id", using: :btree
-  add_index "job_posting_skills", ["question_id"], name: "index_job_posting_skills_on_question_id", using: :btree
   add_index "job_posting_skills", ["skill_id"], name: "index_job_posting_skills_on_skill_id", using: :btree
+  add_index "job_posting_skills", ["survey_id"], name: "index_job_posting_skills_on_survey_id", using: :btree
 
   create_table "job_postings", force: :cascade do |t|
     t.string   "title"
     t.string   "company_name"
-    t.string   "location"
-    t.string   "pay_range"
+    t.string   "city"
+    t.string   "province"
+    t.string   "pay_rate"
+    t.decimal  "lower_pay_range", precision: 10, scale: 2
+    t.decimal  "upper_pay_range", precision: 10, scale: 2
     t.string   "link"
     t.string   "posted_by"
     t.integer  "job_type"
     t.text     "description"
     t.date     "open_date"
     t.date     "close_date"
-    t.integer  "views",           default: 0, null: false
+    t.integer  "views",                                    default: 0, null: false
     t.integer  "user_id"
     t.integer  "job_category_id"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
   end
 
   create_table "project_skills", force: :cascade do |t|

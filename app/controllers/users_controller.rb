@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 	before_action :authenticate_user!, except: [:show, :index]
 	before_action :profile_owner, only: [:edit, :update, :destroy]
+	skip_before_action :verify_authenticity_token, only: [:userTab]
 
 	def index
 		@users = User.all
@@ -105,6 +106,15 @@ class UsersController < ApplicationController
         		@show_errors = true
       		end
     	end
+  	end
+
+  	def userTab
+  		session[:userTab] = params[:user_tab]
+  	end
+
+  	def reference_tab
+  		session[:userTab] = "references"
+  		redirect_to current_user
   	end
 
 	private

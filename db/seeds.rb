@@ -64,7 +64,7 @@ begin
 	user2.create_consent(answer: 0, name: "Jane Doe", date_signed: Date.today, consent_type: 1)
 
 	UserSkill.create(user_id: user2.id, skill_id: skill4.id, survey_id:3)
-	project3 = user1.projects.create(title: 'Website Development', description: 'Created a website for my employer', project_date: '2016-11-10')
+	project3 = user2.projects.create(title: 'Website Development', description: 'Created a website for my employer', project_date: '2016-11-10')
 	ProjectSkill.create(project_id: project3.id, skill_id: skill4.id, survey_id: 3)
 
 	user3 = User.new(first_name: 'Kaden', last_name: 'Buchanan', email: 'Kaden@Buchanan.com', password: 'password', password_confirmation: 'password')
@@ -75,7 +75,7 @@ begin
 
 	UserSkill.create(user_id: user3.id, skill_id: skill5.id, survey_id:7)
 	UserSkill.create(user_id: user3.id, skill_id: skill10.id, survey_id:3)
-	project4 = user1.projects.create(title: 'Java Project', description: 'Had a project with a tight deadline', project_date: '2016-08-06')
+	project4 = user3.projects.create(title: 'Java Project', description: 'Had a project with a tight deadline', project_date: '2016-08-06')
 	ProjectSkill.create(project_id: project4.id, skill_id: skill5.id, survey_id: 7)
 	ProjectSkill.create(project_id: project4.id, skill_id: skill10.id, survey_id: 3)
 
@@ -86,7 +86,7 @@ begin
 	user4.create_consent(answer: 0, name: "Mackena Finley", date_signed: Date.today, consent_type: 1)
 
 	UserSkill.create(user_id: user4.id, skill_id: skill9.id, survey_id:7)
-	project5 = user1.projects.create(title: 'Manager', description: 'Had to supervise a group of people', project_date: '2016-10-01')
+	project5 = user4.projects.create(title: 'Manager', description: 'Had to supervise a group of people', project_date: '2016-10-01')
 	ProjectSkill.create(project_id: project5.id, skill_id: skill9.id, survey_id: 7)
 
 	user5 = User.new(first_name: 'Lenzy', last_name: 'Bennett', email: 'Lenzy@doe.Bennett', password: 'password', password_confirmation: 'password')
@@ -96,7 +96,7 @@ begin
 	user5.create_consent(answer: 0, name: "Lenzy Bennett", date_signed: Date.today, consent_type: 1)
 
 	UserSkill.create(user_id: user5.id, skill_id: skill8.id, survey_id:4)
-	project6 = user1.projects.create(title: 'Document Writing', description: 'Wrote up lots of documents and policy for work', project_date: '2016-11-09')
+	project6 = user5.projects.create(title: 'Document Writing', description: 'Wrote up lots of documents and policy for work', project_date: '2016-11-09')
 	ProjectSkill.create(project_id: project6.id, skill_id: skill8.id, survey_id: 4)
 
 	user6 = User.new(first_name: 'Jordin', last_name: 'Carroll', email: 'Jordin@Carroll.com', password: 'password', password_confirmation: 'password')
@@ -149,21 +149,21 @@ begin
 	user11.create_consent(answer: 1, name: "Foo Bar", date_signed: Date.today, consent_type: 2)
 
 	#How to post jobs
-	jobposting1 = JobPosting.create(title: 'Social Media Manager', location: "Kelowna, BC", pay_range: "30¢/hr-40¢/hr", link:"www.google.ca", posted_by:"Seed File", job_type: 1,
+	jobposting1 = JobPosting.create(title: 'Social Media Manager', city: "Kelowna", province: "BC", pay_rate: 'salary', lower_pay_range: 40000.00, upper_pay_range: 45000.00, link:"www.google.ca", posted_by:"Seed File", job_type: 1,
 				  description: 'Handling our Facebook and Twitter account, posting messages, and responding to clients.', open_date: Date.today-7, close_date: Date.today+7,
 				  job_category_id: 12, user_id: user11.id, created_at:Date.today-7)
 
-	jobposting2 = JobPosting.create(title: 'Social Media Expert', location: "Kelowna, BC", pay_range: "#$30-$40/hr", link:"www.google.ca", posted_by:"Seed File", job_type: 0,
+	jobposting2 = JobPosting.create(title: 'Social Media Expert', city: "Vernon", province: "BC", pay_rate: "hourly", lower_pay_range: 13.81, upper_pay_range: 15.60, link:"www.google.ca", posted_by:"Seed File", job_type: 0,
 				  description: 'Handling our Facebook and Twitter account, posting messages, and responding to clients.', open_date: Date.today-7, close_date: Date.today,
 				  job_category_id: 12, user_id: user11.id, created_at:Date.today-7)
 
 	#Skills attached to a job.  Important 2 is required, 1 is optional.  Ignore question ID for now, have to have some number
-	JobPostingSkill.create(job_posting_id: jobposting1.id, skill_id:skill1.id, importance:2, question_id:41)
-	JobPostingSkill.create(job_posting_id: jobposting1.id, skill_id:skill2.id, importance:2, question_id:42)
-	JobPostingSkill.create(job_posting_id: jobposting1.id, skill_id:skill3.id, importance:1, question_id:37)
+	JobPostingSkill.create(job_posting_id: jobposting1.id, skill_id:skill1.id, importance:2, survey_id:5)
+	JobPostingSkill.create(job_posting_id: jobposting1.id, skill_id:skill2.id, importance:2, survey_id:6)
+	JobPostingSkill.create(job_posting_id: jobposting1.id, skill_id:skill3.id, importance:1, survey_id:7)
 
-	JobPostingSkill.create(job_posting_id: jobposting2.id, skill_id:skill1.id, importance:2, question_id:41)
-	JobPostingSkill.create(job_posting_id: jobposting2.id, skill_id:skill2.id, importance:2, question_id:42)
+	JobPostingSkill.create(job_posting_id: jobposting2.id, skill_id:skill1.id, importance:2, survey_id:5)
+	JobPostingSkill.create(job_posting_id: jobposting2.id, skill_id:skill2.id, importance:2, survey_id:6)
 
 	user12 = User.new(first_name: 'Mikella', last_name: 'Sims', email: 'Mikella@Sims.com', password: 'password', password_confirmation: 'password', 
 		company_name: 'Dean Foods Company')
@@ -171,12 +171,12 @@ begin
 	user12.skip_confirmation!
 	user12.save
 	user12.create_consent(answer: 1, name: "Mikella Sims", date_signed: Date.today, consent_type: 2)
-	jobposting3 = JobPosting.create(title: 'Website Developer', location: "Kelowna, BC", pay_range: "30¢/hr-40¢/hr", job_type: 1,
+	jobposting3 = JobPosting.create(title: 'Website Developer', city: "Kelowna", province: "BC", pay_rate: "hourly", lower_pay_range: 12.50, job_type: 1,
 				  description: 'Create a website for our company and maintain it', open_date: Date.today-4, close_date: Date.today+11,
 				  job_category_id: 12, user_id: user12.id, created_at:Date.today-7)
-	JobPostingSkill.create(job_posting_id: jobposting3.id, skill_id:skill4.id, importance:2, question_id:41)
-	JobPostingSkill.create(job_posting_id: jobposting3.id, skill_id:skill5.id, importance:1, question_id:41)
-	JobPostingSkill.create(job_posting_id: jobposting3.id, skill_id:skill1.id, importance:1, question_id:41)
+	JobPostingSkill.create(job_posting_id: jobposting3.id, skill_id:skill4.id, importance:2, survey_id:5)
+	JobPostingSkill.create(job_posting_id: jobposting3.id, skill_id:skill5.id, importance:1, survey_id:5)
+	JobPostingSkill.create(job_posting_id: jobposting3.id, skill_id:skill1.id, importance:1, survey_id:5)
 
 	user13 = User.new(first_name: 'Gomana', last_name: 'Reid', email: 'Gomana@Reid.com', password: 'password', password_confirmation: 'password', 
 		company_name: 'H&R Block Inc.')

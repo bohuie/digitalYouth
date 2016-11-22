@@ -33,7 +33,7 @@
 					<h4>These are your current job applications.</h4>
 					<p> The status is displayed beside the posting title.<br>
 						The company which owns the job posting will update the status of the posting and it will be shown here.<br>
-						You have the option to delete your application but <b>you will not be able to reapply.</b><br>
+						You have the option to delete your application but <b>you will not be able to reapply if the application has been looked at.</b><br>
 						Feel free to delete your application if you are rejected but keep in mind that it is possible for a company to change their mind and "unreject" your application.
 					</p>
 					<%@job_posting_applications.each do |j|%>
@@ -42,7 +42,7 @@
 							<div class="row"> 
 								<div class="col-md-4">
 									<h4 class="job-application-content">
-										<%= link_to raw("#{j.job_posting.title} (<i>#{j.job_posting.user.company_name}</i>)"), job_posting_path(j) %>
+										<%= link_to raw("#{j.job_posting.title} (<i>#{j.job_posting.user.company_name}</i>)"), job_posting_application_path(j) %>
 										<small><span class=" label label-<%=j.get_bootstrap_status%>"><%="#{j.get_status_string}"%></span></small>
 									</h4>
 								</div>
@@ -294,7 +294,7 @@
 				<% if user_signed_in? && current_user == @user %>
 					<%= simple_form_for @user do |u| %>
 						<%= u.input :bio, as: :text %>
-						<%= u.submit "Update Bio", name: 'bio'%>
+						<%= u.submit "Update Bio", name: 'bio', class: "btn btn-default"%>
 					<% end %>
 				<% else %>
 					<%= @user.bio %>
@@ -310,16 +310,32 @@
 					<% end %>
 				<% else %>
 					<% @job_postings.each do |j| %>
-						<%= link_to "#{j.title}\n", job_posting_path(j) %>
-						<% if user_signed_in? && current_user == @user %>
-							<% application_count = j.job_posting_applications.where(status:-1..Float::INFINITY).count %>
-							<%= link_to raw("Applications <span class=\"badge\">#{application_count.to_s}</span>"), job_posting_applications_path(job_posting:j), class: "btn btn-success"%>
-						<% end %>
+						<div class="row">
+							<div class="col-md-2">
+								<%= link_to "#{j.title}\n", job_posting_path(j) %><br />
+								<%= raw(j.get_type_string+"<br />") if !j.job_type.nil? %>
+								<p><%= j.city %>, <%=j.province %></p>
+							</div>
+							<div class="col-md-4">
+								<%= j.job_category.name %><br />
+								<%= raw("Open date: #{j.open_date.strftime('%B %d, %Y')}<br>")   if !j.open_date.blank? %>
+								<%= raw("Close date: #{j.close_date.strftime('%B %d, %Y')}<br>") if !j.close_date.blank? %>
+							</div>
+							<div class="col-md-6">
+								<%= link_to "View", job_posting_path(j), class: "btn btn-default" %>
+								<% if user_signed_in? && current_user == @user %>
+									<%= link_to "Edit Posting", edit_job_posting_path(j), class: "btn btn-default"%>
+									<% application_count = j.job_posting_applications.where(status:-1..Float::INFINITY).count %>
+									<%= link_to raw("Applications <span class=\"badge\">#{application_count.to_s}</span>"), job_posting_applications_path(job_posting:j), class: "btn btn-success"%>						
+									<%= link_to "Delete Posting", job_posting_path(j), method: "delete", class: "btn btn-danger"%>
+								<% end %>
+							</div>
+						</div>
 						<br>
 					<% end %>
 				<% end %>
 				<% if user_signed_in? && current_user == @user %>
-					<%= link_to "Create a New Posting", new_job_posting_path %><br>
+					<%= link_to "Create a New Posting", new_job_posting_path, class: "btn btn-default" %><br>
 				<% end %>
 			</div>
 		</div>

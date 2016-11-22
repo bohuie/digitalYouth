@@ -41,7 +41,11 @@ class ReferencesController < ApplicationController
 	def send_mail # Sends the email
 		@reference_email = ReferenceEmail.new(reference_email_params)
 		params[:reference_email][:user_id] = current_user.id
-		ReferenceRedirection.create(reference_email_params)
+		reference_redirection = ReferenceRedirection.create(reference_email_params)
+		referer = User.find_by(email: params[:reference_email][:email])
+		unless referer.nil?
+			reference_redirection.create_activity :request, owner: referer
+		end
 
 		ReferenceMailer.reference_email(@reference_email, current_user).deliver_now
 		redirect_to current_user , flash: {success: "Reference request sent!"}

@@ -12,7 +12,7 @@ class JobPostingApplicationsController < ApplicationController
 			@job_posting_applications = JobPostingApplication.where(applicant_id:current_user.id, status:-1..Float::INFINITY).order(status: :desc).includes(:job_posting)
 		elsif current_user.has_role? :employer
 			if params[:job_posting].blank?
-				@job_posting_applications = JobPostingApplication.where(company_id:current_user.id, status:-1..Float::INFINITY).order(status: :desc).includes(:applicant,:job_posting)
+				@job_posting_applications = JobPostingApplication.where(company_id:current_user.id, status:-1..Float::INFINITY).order(job_posting_id: :desc, status: :desc).includes(:applicant,:job_posting)
 			else
 				@job_posting_applications = JobPostingApplication.where(company_id:current_user.id, status:-1..Float::INFINITY,job_posting_id:params[:job_posting]).order(status: :desc).includes(:applicant,:job_posting)
 			end
@@ -22,18 +22,26 @@ class JobPostingApplicationsController < ApplicationController
 
 	def show # Show the information of an application
 		@job_posting = @job_posting_application.job_posting
-		if current_user.has_role? :employer 
-			skills = @job_posting.compare_skills(@job_posting_application.applicant)
-			@user_skill_matches = skills[:user_skill_matches]
-			@response_skill_matches = skills[:response_skill_matches]
-			@project_skill_matches = skills[:project_skill_matches]
-		end
+		skills = @job_posting.compare_skills(@job_posting_application.applicant)
+		@user_skill_matches = skills[:user_skill_matches]
+		@response_skill_matches = skills[:response_skill_matches]
+		@project_skill_matches = skills[:project_skill_matches]
+		@req_skills  = JobPostingSkill.where(job_posting_id:@job_posting.id, importance: 2).includes(:skill).order(:id)
+		@pref_skills = JobPostingSkill.where(job_posting_id:@job_posting.id, importance: 1).includes(:skill).order(:id)
+		@user_required_matches = @user_skill_matches.select{ |a| a[:importance]==2 }
+		@user_preferred_matches = @user_skill_matches.select{ |a| a[:importance]==1 }
 		@user = current_user
 	end
 
 	def new # Displays the forum to create an application
 		@user = current_user
 		@job_posting = JobPosting.find(params[:job_posting])
+		@req_skills  = JobPostingSkill.where(job_posting_id:@job_posting.id, importance: 2).includes(:skill).order(:id)
+		@pref_skills = JobPostingSkill.where(job_posting_id:@job_posting.id, importance: 1).includes(:skill).order(:id)
+		skills = @job_posting.compare_skills(@user)
+		@user_skill_matches = skills[:user_skill_matches]
+		@user_required_matches = @user_skill_matches.select{ |a| a[:importance]==2 }
+		@user_preferred_matches = @user_skill_matches.select{ |a| a[:importance]==1 }
 		if !@job_posting.is_expired?
 			@job_posting_application = JobPostingApplication.new
 		else
@@ -67,8 +75,16 @@ class JobPostingApplicationsController < ApplicationController
 	end
 
 	def destroy
-		save = @job_posting_application.update(status: -2)
-		if save # Destroy notifications
+		#save = @job_posting_application.update(status: -2)
+		if @job_posting_application.status == 0 #Job application hasn't been seen/considered by employer
+			if @job_posting_application.destroy
+				PublicActivity::Activity.where(trackable_id:(params[:id]),trackable_type:controller_path.classify).each {|a| a.destroy}
+				redirect_to job_posting_applications_path, flash: {success: "Deleted Application!"}
+			else
+				flash[:warning] = "Oops, there was an issue in deleting that application."
+				redirect_back_or 
+			end
+		elsif @job_posting_application.update(status: -2) # "delete" an application that has been considered/looked at destroy notifications
 			PublicActivity::Activity.where(trackable_id:(params[:id]),trackable_type:controller_path.classify).each {|a| a.destroy}
 			redirect_to job_posting_applications_path, flash: {success: "Deleted Application!"}
 		else

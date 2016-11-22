@@ -42,7 +42,12 @@ class NotificationsController < ApplicationController
 
 	def trackable # Mark read, redirect to trackable page
 		@notification.update(is_read: true)
-		redirect_to polymorphic_path(@notification.trackable)
+		
+		if @notification.trackable_type == "ReferenceRedirection"
+			redirect_to controller: 'users', action: 'reference_tab'
+		else
+			redirect_to polymorphic_path(@notification.trackable)
+		end
 	end
 
 private

@@ -1,13 +1,17 @@
 # config valid only for current version of Capistrano
 lock '3.5.0'
 
+set :whenever_environment, defer { stage }
+set :whenever_identifier, defer { "#{application}_#{stage}" }
+require "whenever/capistrano"
+
 set :application, 'digitalYouth'
 set :repo_url, 'https://github.com/bohuie/digitalYouth'
 set :deploy_to, '/srv/www/vhosts/ubc.ca/ok/jobcannon/html/public'
 #set :tmp_dir, '/srv/www/vhosts/ubc.ca/ok/jobcannon/html/public/tmp'
 #set :tmp_dir, '~/tmp'
 set :scm, :git
-set :branch, "search"
+set :branch, "user-averages"
 
 set :linked_files, %w(config/application.yml)
 

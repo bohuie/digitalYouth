@@ -58,10 +58,11 @@ function rendering(toRender)
 		}
 	}
 }
-var data = ""
-function setUserTab(value="surveys")
+var data = "";
+function setUserTab(value)
 {
-	data = "user_tab="+value
+	if (typeof(value)==='undefined') a = "surveys";
+	data = "user_tab="+value;
 	$.ajax({
 	url: '/users/userTab',
 	data: data,

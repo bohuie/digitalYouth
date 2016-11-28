@@ -17,6 +17,6 @@
 #   runner "AnotherModel.prune_old_records"
 # end
 
-every 1.day at: '1:10 pm', :roles => [:db] do
+every 1.day at: '12:01 am', :roles => [:db] do
 	runner "Response.compute_averages"
 end

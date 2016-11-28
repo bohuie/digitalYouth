@@ -1,0 +1,43 @@
+
+
+<%= simple_form_for @employer, url: registration_path(@employer) do |employer| %>
+  <%= devise_error_messages! %>
+
+<div class="employer">
+	<div class=col-md-4>
+    <h2>Sign up for Employers</h2>
+    <br />
+
+    <%= employer.input :first_name, autofocus: true, required: true %>
+    <%= employer.input :last_name, required: true %>
+    <%= employer.input :email, required: true %>
+    <%= employer.input :company_name, required: true %>
+    <%= employer.input :password, required: true %>
+    <%= employer.input :password_confirmation, required: true %>
+    <%= employer.input :postal_code, required: true %>
+    <%= hidden_field_tag :role, "employer" %>
+  
+    <%= recaptcha_tags %>
+  		
+    <%= employer.button :submit, class: 'btn btn-default' %>
+		<br>
+    <div class="shared_links">
+      <%= render "users/shared/links" %>
+    </div>
+	</div>
+
+  <div class="col-md-1"></div>
+  <div class="col-md-7">
+    <h2>Please read the following consent form and fill out the information in the bottom</h2><br />
+    <div style="height:400px; overflow:auto;">
+      <%= render "consent/shared/adult_consent" %>
+      <%= employer.simple_fields_for :consent do |c| %>
+        <%= c.input :name, label: 'Please enter your full name.  It must match the info you have to the left.', required: true, input_html: { style: 'width: 50%;' } %>
+        <%= c.input :date_signed %>
+        <%= c.hidden_field :consent_type, value: 1 %>
+        <%= c.collection_radio_buttons :answer, [[1, 'Yes, I consent'], [0, 'No, I do not consent']], :first, :last, style: "display:inline", checked: 1 %><br />
+      <% end %>
+  </div>
+</div>
+<% end %>
+<div style="clear: both;"></div>

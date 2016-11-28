@@ -5,6 +5,7 @@ class CreateProjects < ActiveRecord::Migration
 			t.string :title
 			t.text :description
 			t.attachment :image
+			t.date :project_date
 
 			t.references :user
 

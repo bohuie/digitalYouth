@@ -1,5 +1,17 @@
 class WelcomeController < ApplicationController
+
+  before_filter :logged_in, only: [:signup_jobseeker, :signup_employer]
   def index
+  end
+
+  def signup_jobseeker
+    @job_seeker = User.new
+    @job_seeker.build_consent
+  end
+
+  def signup_employer
+    @employer = User.new
+    @employer.build_consent
   end
 
   def lost_email
@@ -27,5 +39,12 @@ class WelcomeController < ApplicationController
  
   def devise_mapping
     @devise_mapping ||= Devise.mappings[:user]
+  end
+
+  private
+  def logged_in
+    if user_signed_in?
+      redirect_to current_user
+    end
   end
 end

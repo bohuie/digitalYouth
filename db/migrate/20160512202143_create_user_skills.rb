@@ -9,6 +9,8 @@ class CreateUserSkills < ActiveRecord::Migration
 			t.integer :rating
 
 			t.timestamps null: false
+			
+			t.belongs_to :survey, index: true
 		end
 	end
 end

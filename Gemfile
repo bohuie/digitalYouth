@@ -11,8 +11,6 @@ gem "searchjoy"
 
 # Searchkick gem for searching
 gem 'searchkick'
-gem 'elasticsearch-model'
-gem 'elasticsearch-rails'
 
 # groupdate for grouping data by dates easily
 gem 'groupdate'

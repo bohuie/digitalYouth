@@ -1,7 +1,10 @@
 source 'https://rubygems.org'
 
 # Whenever for Cron Jobs
-gem 'whenever', require: false
+gem 'whenever'
+
+# Encryption for user data
+gem "attr_encrypted", "~> 3.0.0"
 
 # SearchJoy gem for search analytics
 gem "searchjoy"

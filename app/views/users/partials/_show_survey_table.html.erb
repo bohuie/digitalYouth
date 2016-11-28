@@ -1,17 +1,17 @@
-<div class = "row" style="text-align:center;">
-	<div class = "col-lg-6">
-		<h4> Surveys </h4>
-		<p>Click on one of the boxes below to fill out a survey to showcase some of your skills</p>
+<div class = "row">
+	<div class = "col-md-8">
+		<p>Click on one of the boxes below to fill out a survey to showcase some of your skills.  Each graph shows the skills that an average person has (in red) and the skills you've indicated (in blue).
+		</p>
 	</div>
 </div>
 <div>
-, vAxis: {textPosition: 'none'}}
 </div>
 <div class ="row survey-box-row">
+	<div class="col-md-1"></div>
 	<% i=1 %>
 	<% onclick="" %>
 	<% Survey.all.each do |s|%>
-		<% css_class = "col-lg-2 survey-box" %>
+		<% css_class = "col-md-2 survey-box" %>
 		<% css_class += " unanswered" if !user.answered_surveys[i - 1] %>
 		<% div_onclick="" %>
 		<% if user_signed_in? && current_user==user && !user.answered_surveys[i - 1] %>
@@ -27,9 +27,12 @@
 				<%= link_to "Update", survey_path(s.title) %>
 			<% end %>
 		</div>
+		<div class="col-md-1"></div>
 		<% if i % 3 == 0 && i < 12 %>
 			</div>
+
 			<div class ="row survey-box-row"> 
+			<div class="col-md-1"></div>
 		<% end %>
 		<% i += 1 %>
 	<% end %>

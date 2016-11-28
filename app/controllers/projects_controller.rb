@@ -22,24 +22,27 @@ class ProjectsController < ApplicationController
 		@project = Project.new
 		project_skills = @project.project_skills.build
 		project_skills.skill = Skill.new
-		@questions = Question.get_label_map
+		@surveys = Survey.get_title_map
+		@user = current_user
 	end
 
 	def show
 		@project = Project.find(params[:id])
+		@user = @project.user
 	end
 
 	def edit
 		@project = Project.find(params[:id])
 		@skills = @project.skills
 		@project_skills = ProjectSkill.where(project_id:params[:id]).order(:id)
-		@questions = Question.get_label_map
+		@surveys = Survey.get_title_map
+		@user= @project.user
 	end
 
 	def create
 		#@project = Project.new(project_params)
 		@project = current_user.projects.build(project_params)
-		if @project.save && @project.process_skills(params[:project][:project_skills_attributes])
+		if @project.save && @project.process_skills(params[:project][:project_skills_attributes]) && process_project_skills
 			#current_user.projects << @project
 			Project.reindex if !Rails.env.test?
 			flash[:success] = "Project successfully created."
@@ -47,16 +50,15 @@ class ProjectsController < ApplicationController
 			redirect_back_or current_user
 		else
 			flash[:danger] = "Please fix the errors below."
-			render 'users/show'
+			render 'projects/new'
 		end
 	end
 
 	def update
 		@project = Project.find(params[:id])
 		@skills = @project.skills
-		@project_skill = @project.project_skills.create
 		
-		if @project.update_attributes(project_params) && @project.process_skills(params[:project][:project_skills_attributes])
+		if @project.update_attributes(project_params) && process_project_skills
 			Project.reindex if !Rails.env.test?
 			flash[:success] = "Project successfully updated."
 			redirect_to current_user
@@ -79,7 +81,7 @@ class ProjectsController < ApplicationController
 
 	private
 	def project_params
-		params.require(:project).permit(:title, :description, :image, :delete_image)
+		params.require(:project).permit(:title, :description, :image, :delete_image, :project_date)
 	end
 
 	def project_skill_params
@@ -94,5 +96,30 @@ class ProjectsController < ApplicationController
 			@user = User.find(@project.user_id)
 			redirect_back_or current_user
 		end
+	end
+
+	def process_project_skills
+
+		if params[:project][:project_skills_attributes].nil?
+			return true
+		else
+			params[:project][:project_skills_attributes].each do |h|
+				if h[1]["_destroy"] == "false"
+					if h[1]["skill"].nil?
+						skill_name = h[1]["skill_attributes"]["name"].downcase
+					else
+						skill_name = h[1]["skill"].downcase
+					end
+					skill = Skill.find_by(name: skill_name)	
+					user_skill = current_user.user_skills.where(skill_id: skill.id, survey_id: h[1]["survey_id"])
+					if user_skill.empty?
+						current_user.user_skills.create(skill_id: skill.id, survey_id: h[1]["survey_id"])
+					end
+				else
+					return false
+				end
+			end
+		end
+		return true
 	end
 end

@@ -1,19 +1,22 @@
+<%= render "users/shared/profile" %>
+
 <h3>Job Posting Application</h3>
 <p> You are Applying for the <strong><%=@job_posting.title%></strong> position at <strong><%=@job_posting.user.company_name %></strong></p>
-<p> Once you click send you can view the status of your application at<%=job_posting_applications_path%><br>
-	Feel free to include a message but remember to be professional as this application will be viewed by <%=@job_posting.user.company_name %>.<br>
+<p> Feel free to include a message but remember to be professional as this application will be viewed by <%=@job_posting.user.company_name %>.<br>
 	Good Luck!
 <p>
 <%= simple_form_for @job_posting_application do |f| %>
-	<%= f.input :message, input_html: {id: "msg-inpt", onchange:"show_message(\"msg-inpt\")"} %>
+	
 	<%= f.input :job_posting_id, as: :hidden, input_html: {value: @job_posting.id}%>
 	<%= f.input :company_id, as: :hidden, input_html: {value: @job_posting.user.id}%>
 
 	<div> <h4> Summary of what the Company will see.</h4>
-		<div>
-			<%= render 'shared/user_summary', user: current_user%>
-			<p id="msg"> <br></p>
+	<%= render partial: "job_posting_applications/user_app_skills", locals: {applicant: current_user} %>
+	<div class="row">
+		<div class="col-md-6">
+			<%= f.input :message %>
 		</div>
 	</div>
 	<%= f.button :submit, "Send" %>
 <% end %>
+</div>

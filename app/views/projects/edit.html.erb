@@ -1,28 +1,4 @@
-<div class ="profileContainer", style="height: 250px">
-	<div class ="profileContainerImage" id="shadow-arch-edges">
-		<div class ="profileFrame">
-			<%= image_tag current_user.image.url, alt:"User Icon" %> <!-- Should add a max size or auto scale pics that are uploaded -->
-		</div>
-	</div>
-	<div class ="profileContainerContent">
-		<h2> <%= current_user.first_name %> <%= current_user.last_name %> </h2>
-		<h5> <%= current_user.street_address %> <%= current_user.city %> <%= current_user.province %> <%= current_user.postal_code %> </h5>
-		<h5> <%= current_user.email %> </h5>
-		<% if !current_user.github.nil? %>
-			<%= link_to 'GitHub', current_user.github, id: 'github', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
-		<% end %>
-		<% if !current_user.linkedin.nil? %>
-			<%= link_to 'Linkedin', current_user.linkedin, id: 'linkedin', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
-		<% end %>
-		<% if !current_user.twitter.nil? %>
-			<%= link_to 'Twitter', current_user.twitter, id: 'twitter', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
-		<% end %>
-		<% if !current_user.facebook.nil? %>
-			<%= link_to 'Facebook', current_user.facebook, id: 'facebook', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
-		<% end %>
-		<%= raw('<br>') if current_user.github.nil? && current_user.linkedin.nil? && current_user.twitter.nil? && current_user.facebook.nil? %>
-	</div>
-</div>
+<%= render "users/shared/profile" %>
 
 <%= simple_form_for @project do |f| %>
 <div class="row">

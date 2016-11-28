@@ -1,7 +1,19 @@
 <%= simple_form_for @job_posting do |f| %>
-	<%= f.input :title, required: true %>
-	<%= f.input :location, required: true, label: "Location (City, Province Code)"%>
-
+	<div class="row">
+		<div class="col-md-6">
+			<%= f.input :title, required: true %>
+		</div>
+		<div class="col-md-3">
+			<%= f.input :city, required: true %>
+		</div>
+		<div class="col-md-3">
+			<% if @job_posting.province.nil? %>
+				<%= f.input :province, required: true, collection: @provinces, prompt: "Select Province" %>
+			<% else %>
+				<%= f.input :province, required: true, collection: @provinces, selected: @job_posting.province %>
+			<% end %>
+		</div>
+	</div>
 	<div class="row">
 		<div class="col-md-6">
 			<% if !@job_posting.job_category.nil? %>
@@ -19,14 +31,39 @@
 			<% end %>
 		</div>
 	</div>
-
-	<%= f.input :pay_range %>
-	<%= f.input :link %>
-	<%= f.input :posted_by %>
-	<%= f.input :description, required: true, as: :text, input_html: {rows: "4"}%>
 	<div class="row">
-		<div class="col-md-6"><%= f.input :open_date, as: :string, required: true, input_html: {type: :date, id: "open-date"} %></div>
-		<div class="col-md-6"><%= f.input :close_date, as: :string, required: true, input_html: {type: :date, id: "close-date"} %></div>
+		<div class="col-md-3">
+			<% if @job_posting.pay_rate.nil? %>
+				<%= f.input :pay_rate, collection: @pay_rates, prompt: "Select Pay Rate" %>
+			<% else %>
+				<%= f.input :pay_rate, collection: @pay_rates, selected: @job_posting.pay_rate %>
+			<% end %>
+		</div>
+		<div class="col-md-3">
+			<%= f.input :lower_pay_range, input_html: {value: number_with_precision(f.object.lower_pay_range, precision: 2)} %>
+		</div>
+		<div class="col-md-3">
+			<%= f.input :upper_pay_range, input_html: {value: number_with_precision(f.object.upper_pay_range, precision: 2)} %>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-3">
+			<%= f.input :link %>
+		</div>
+		<div class="col-md-3">
+			<%= f.input :posted_by %>
+		</div>
+		<div class="col-md-3">
+			<%= f.input :open_date, as: :string, required: true, input_html: {type: :date, id: "open-date"} %>
+		</div>
+		<div class="col-md-3">
+			<%= f.input :close_date, as: :string, required: true, input_html: {type: :date, id: "close-date"} %>
+		</div>
+	</div>
+	<div class="row">
+	<div class="col-md-6">
+	<%= f.input :description, required: true, as: :text, input_html: {rows: "4"}%>
+	</div>
 	</div>
 
 	<%i=0%>

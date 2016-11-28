@@ -23,10 +23,12 @@ class ProjectsController < ApplicationController
 		project_skills = @project.project_skills.build
 		project_skills.skill = Skill.new
 		@surveys = Survey.get_title_map
+		@user = current_user
 	end
 
 	def show
 		@project = Project.find(params[:id])
+		@user = @project.user
 	end
 
 	def edit
@@ -34,10 +36,10 @@ class ProjectsController < ApplicationController
 		@skills = @project.skills
 		@project_skills = ProjectSkill.where(project_id:params[:id]).order(:id)
 		@surveys = Survey.get_title_map
+		@user= @project.user
 	end
 
 	def create
-		byebug
 		#@project = Project.new(project_params)
 		@project = current_user.projects.build(project_params)
 		if @project.save && @project.process_skills(params[:project][:project_skills_attributes]) && process_project_skills
@@ -56,7 +58,7 @@ class ProjectsController < ApplicationController
 		@project = Project.find(params[:id])
 		@skills = @project.skills
 		
-		if @project.update_attributes(project_params) && @project.process_skills(params[:project][:project_skills_attributes])
+		if @project.update_attributes(project_params) && process_project_skills
 			Project.reindex if !Rails.env.test?
 			flash[:success] = "Project successfully updated."
 			redirect_to current_user
@@ -109,8 +111,7 @@ class ProjectsController < ApplicationController
 						skill_name = h[1]["skill"].downcase
 					end
 					skill = Skill.find_by(name: skill_name)	
-					user_skill = current_user.user_skills.where(skill_id: skill.id)
-					byebug
+					user_skill = current_user.user_skills.where(skill_id: skill.id, survey_id: h[1]["survey_id"])
 					if user_skill.empty?
 						current_user.user_skills.create(skill_id: skill.id, survey_id: h[1]["survey_id"])
 					end

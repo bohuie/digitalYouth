@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 	before_action :authenticate_user!, except: [:show, :index]
 	before_action :profile_owner, only: [:edit, :update, :destroy]
+	skip_before_action :verify_authenticity_token, only: [:userTab]
 
 	def index
 		@users = User.all
@@ -25,6 +26,7 @@ class UsersController < ApplicationController
 				end
 			end
 
+			@confirmed_references = Reference.where(user_id: @user.id, confirmed: true)
 			
 			if user_signed_in? && current_user.id == @user.id
 				@job_posting_applications = JobPostingApplication.where(applicant_id:current_user.id, status:-1..Float::INFINITY).order(status: :desc).includes(:job_posting)
@@ -32,6 +34,9 @@ class UsersController < ApplicationController
 				@project = current_user.projects.build
 				project_skills = @project.project_skills.build
 				project_skills.skill = Skill.new
+
+				@unconfirmed_references = Reference.where(user_id: current_user.id, confirmed: false)
+				@reference_requests = ReferenceRedirection.where(email: current_user.email)
 			end
 
 			@user_skills = @user.user_skills.order(:survey_id)
@@ -101,6 +106,15 @@ class UsersController < ApplicationController
         		@show_errors = true
       		end
     	end
+  	end
+
+  	def userTab
+  		session[:userTab] = params[:user_tab]
+  	end
+
+  	def reference_tab
+  		session[:userTab] = "references"
+  		redirect_to current_user
   	end
 
 	private

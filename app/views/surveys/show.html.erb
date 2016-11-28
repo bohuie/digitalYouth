@@ -1,6 +1,6 @@
 <div class="col-md-12">	
 <div class="row row-style-top">
-	<div class="col-lg-6 col-style"> <h2><%=@survey.category%></h2><h3><%=@survey.format_title.html_safe%></h3> 
+	<div class="col-lg-4 col-style"> <h2><%=@survey.format_title.html_safe%></h2> 
 
 <%= column_chart [
 				{name: "My Results", data: @survey_results},
@@ -17,7 +17,7 @@
 	<% @initial_id = @questions.first.id %>
 	<% for i in 0..@question_count-1 %>
 		<div class="row row-style" >
-			<div class="col-lg-6 col-style">
+			<div class="col-lg-4 col-style">
 				<% @question = @questions.find_by(id: @initial_id + i) %>
 				<h3> <%= @question.classification %> </h3>
 				<ul>

@@ -1,10 +1,6 @@
 # config valid only for current version of Capistrano
 lock '3.5.0'
 
-set :whenever_environment, defer { stage }
-set :whenever_identifier, defer { "#{application}_#{stage}" }
-require "whenever/capistrano"
-
 set :application, 'digitalYouth'
 set :repo_url, 'https://github.com/bohuie/digitalYouth'
 set :deploy_to, '/srv/www/vhosts/ubc.ca/ok/jobcannon/html/public'
@@ -39,6 +35,12 @@ set :keep_releases, 5
 set :assets_roles, [:web, :app] 
 
 server "edgemap.ok.ubc.ca", :roles => [:app, :web, :db], :primary => true, user: 'edgemap'
+
+
+set :whenever_environment, defer { stage }
+set :whenever_identifier, defer { "#{application}_#{stage}" }
+require "whenever/capistrano"
+
 
 namespace :deploy do
 

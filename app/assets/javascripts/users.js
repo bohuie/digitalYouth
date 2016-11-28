@@ -61,7 +61,7 @@ function rendering(toRender)
 var data = "";
 function setUserTab(value)
 {
-	if (typeof(value)==='undefined') a = "surveys";
+	if (typeof(value)==='undefined') value = "surveys";
 	data = "user_tab="+value;
 	$.ajax({
 	url: '/users/userTab',

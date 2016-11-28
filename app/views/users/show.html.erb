@@ -10,7 +10,11 @@
     	<% prclass = "tab-pane fade" %>
     	<% skclass = "tab-pane fade" %>
     	<% reclass = "tab-pane fade" %>
+<<<<<<< HEAD
   		<% if session[:userTab] == "applications" && user_signed_in? && @current_user==@user %>
+=======
+  		<% if session[:userTab] == "employment" && user_signed_in? && @current_user==@user %>
+>>>>>>> master
   			<% emclass = emclass + " in active" %>
   		<% elsif session[:userTab] == "projects" %>
   			<% prclass = prclass + " in active" %>
@@ -28,7 +32,11 @@
 				</div>
 			</div>
     		<% if user_signed_in? && @current_user==@user %>
+<<<<<<< HEAD
     			<div id="applications" class="<%= emclass %>">
+=======
+    			<div id="employment" class="<%= emclass %>">
+>>>>>>> master
 					<% cnt = 0 %>
 					<h4>These are your current job applications.</h4>
 					<p> The status is displayed beside the posting title.<br>

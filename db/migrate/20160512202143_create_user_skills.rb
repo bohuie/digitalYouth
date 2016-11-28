@@ -7,6 +7,8 @@ class CreateUserSkills < ActiveRecord::Migration
 			t.belongs_to :survey, index: true
 
 			t.timestamps null: false
+			
+			t.belongs_to :survey, index: true
 		end
 	end
 end

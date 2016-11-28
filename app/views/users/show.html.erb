@@ -6,12 +6,12 @@
 			<%= render "users/shared/job_seeker_tabs" %>			
   		</ul>
  		<% suclass = "tab-pane fade" %>
-    	<% emclass = "tab-pane fade" %>
+    	<% apclass = "tab-pane fade" %>
     	<% prclass = "tab-pane fade" %>
     	<% skclass = "tab-pane fade" %>
     	<% reclass = "tab-pane fade" %>
-  		<% if session[:userTab] == "employment" && user_signed_in? && @current_user==@user %>
-  			<% emclass = emclass + " in active" %>
+  		<% if session[:userTab] == "applications" && user_signed_in? && @current_user==@user %>
+  			<% apclass = apclass + " in active" %>
   		<% elsif session[:userTab] == "projects" %>
   			<% prclass = prclass + " in active" %>
   		<% elsif session[:userTab] == "skills" %>
@@ -28,7 +28,7 @@
 				</div>
 			</div>
     		<% if user_signed_in? && @current_user==@user %>
-    			<div id="employment" class="<%= emclass %>">
+    			<div id="applications" class="<%= apclass %>">
 					<% cnt = 0 %>
 					<h4>These are your current job applications.</h4>
 					<p> The status is displayed beside the posting title.<br>
@@ -133,6 +133,7 @@
 						</div>
 					<% end %>
 					<% if user_signed_in? && @current_user==@user %>
+
 						<%= simple_form_for @user_skill do |g| %>
 							<div class="row">
 								<div class="col-md-4"><%= g.input :name %>	</div>

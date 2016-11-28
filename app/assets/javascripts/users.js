@@ -59,8 +59,9 @@ function rendering(toRender)
 	}
 }
 var data = "";
-function setUserTab(value="surveys")
+function setUserTab(value)
 {
+	if (typeof(value)==='undefined') a = "surveys";
 	data = "user_tab="+value;
 	$.ajax({
 	url: '/users/userTab',

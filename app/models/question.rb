@@ -15,19 +15,11 @@ class Question < ActiveRecord::Base
 		return rtn
 	end
 
-<<<<<<< HEAD
-	def self.get_category_map #Similar to label map but just the title
-		rtn = Hash.new
-		questions = Question.all.includes(:survey)
-		questions.each do |q|
-			title =  q.survey.title
-=======
 	def self.get_class_label #Creates a hashmap of question_id => "Survey category: Survey title: Question classification"
 		rtn = Hash.new
 		questions = Question.all.includes(:survey)
 		questions.each do |q|
 			title = q.survey.category + "- " + q.survey.title 
->>>>>>> master
 			rtn[title] = q.id
 		end
 		return rtn

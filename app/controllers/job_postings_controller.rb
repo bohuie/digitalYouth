@@ -32,11 +32,7 @@ class JobPostingsController < ApplicationController
 		@job_posting = JobPosting.new
 		job_posting_skills = @job_posting.job_posting_skills.build
 		job_posting_skills.skill = Skill.new
-<<<<<<< HEAD
-		@questions = Question.get_category_map
-=======
 		@surveys = Survey.get_title_map
->>>>>>> master
 		@categories = JobCategory.all
 		@job_types = JobPosting.get_types_collection
 		@pay_rates = JobPosting.get_pay_rates
@@ -67,11 +63,7 @@ class JobPostingsController < ApplicationController
 
 	def edit # Creates the form to edit a job posting
 		@job_posting_skills = JobPostingSkill.where(job_posting_id:params[:id]).order(:id)
-<<<<<<< HEAD
-		@questions = Question.get_category_map
-=======
 		@surveys = Survey.get_title_map
->>>>>>> master
 		@categories = JobCategory.all
 		@job_types = JobPosting.get_types_collection
 		@pay_rates = JobPosting.get_pay_rates

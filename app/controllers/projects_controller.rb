@@ -22,12 +22,8 @@ class ProjectsController < ApplicationController
 		@project = Project.new
 		project_skills = @project.project_skills.build
 		project_skills.skill = Skill.new
-<<<<<<< HEAD
-		@questions = Question.get_category_map
-=======
 		@surveys = Survey.get_title_map
 		@user = current_user
->>>>>>> master
 	end
 
 	def show
@@ -39,12 +35,8 @@ class ProjectsController < ApplicationController
 		@project = Project.find(params[:id])
 		@skills = @project.skills
 		@project_skills = ProjectSkill.where(project_id:params[:id]).order(:id)
-<<<<<<< HEAD
-		@questions = Question.get_category_map
-=======
 		@surveys = Survey.get_title_map
 		@user= @project.user
->>>>>>> master
 	end
 
 	def create

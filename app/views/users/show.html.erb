@@ -10,7 +10,7 @@
     	<% prclass = "tab-pane fade" %>
     	<% skclass = "tab-pane fade" %>
     	<% reclass = "tab-pane fade" %>
-  		<% if session[:userTab] == "employment" && user_signed_in? && @current_user==@user %>
+  		<% if session[:userTab] == "applications" && user_signed_in? && @current_user==@user %>
   			<% emclass = emclass + " in active" %>
   		<% elsif session[:userTab] == "projects" %>
   			<% prclass = prclass + " in active" %>
@@ -28,7 +28,7 @@
 				</div>
 			</div>
     		<% if user_signed_in? && @current_user==@user %>
-    			<div id="employment" class="<%= emclass %>">
+    			<div id="applications" class="<%= emclass %>">
 					<% cnt = 0 %>
 					<h4>These are your current job applications.</h4>
 					<p> The status is displayed beside the posting title.<br>
@@ -102,14 +102,6 @@
 				<div id="skills">
 					<% if !@user_skills.empty? %>
 						<div class="container">
-<<<<<<< HEAD
-							<h2>Here is a summary of your skill base</h2>
-							<% @user_skills.each do |us| %>
-								<div class="row">
-									<div class="col-xs-4">
-										<%= us.skill.name %> 
-									</div>
-=======
 							<div class ="row survey-box-row">
 								<div class="col-md-1"></div>
 									<% j=1 %>
@@ -136,15 +128,12 @@
 										<% end %>
 										<% j += 1 %>
 									<% end %>
->>>>>>> master
 								</div>
 							
 						</div>
 					<% end %>
 					<% if user_signed_in? && @current_user==@user %>
-<<<<<<< HEAD
-						<%= render 'user_skills/user_skill_form' %>
-=======
+
 						<%= simple_form_for @user_skill do |g| %>
 							<div class="row">
 								<div class="col-md-4"><%= g.input :name %>	</div>
@@ -152,7 +141,6 @@
 							</div>
 							<%= g.button :submit %>
 						<% end %>
->>>>>>> master
 					<% end %>
 				</div>
     		</div>

@@ -275,25 +275,6 @@ begin
 	response11= Response.create(scores:[3,2,3,2], question_ids:[44,45,46,47], survey_id: 12,user_id:user1.id)
 
 
-<<<<<<< HEAD
-	#--- Skills for Testing ---
-	skill1 = Skill.create(name: 'facebook posting')
-	skill2 = Skill.create(name: 'twitter posting')
-	skill3 = Skill.create(name: 'content creator')
-
-	UserSkill.create(user_id: user1.id, skill_id: skill1.id, question_id: 41)
-	UserSkill.create(user_id: user1.id, skill_id: skill2.id, question_id: 41)
-
-	JobPostingSkill.create(job_posting_id: jobposting1.id, skill_id:skill1.id, importance:2, question_id:41)
-	JobPostingSkill.create(job_posting_id: jobposting1.id, skill_id:skill2.id, importance:2, question_id:42)
-	JobPostingSkill.create(job_posting_id: jobposting1.id, skill_id:skill3.id, importance:1, question_id:37)
-
-	JobPostingSkill.create(job_posting_id: jobposting2.id, skill_id:skill1.id, importance:2, question_id:41)
-	JobPostingSkill.create(job_posting_id: jobposting2.id, skill_id:skill2.id, importance:2, question_id:42)
-
-	ProjectSkill.create(project_id: project1.id, skill_id: skill1.id)
-	ProjectSkill.create(project_id: project1.id, skill_id: skill2.id)
-=======
 	#----------- Average survey values --------------------------------------------------
 	Response.create(scores:[0,0,0,0], question_ids:[1,2,3,4]	, survey_id: 1, user_id:-1)
 	Response.create(scores:[0,0,0,0], question_ids:[5,6,7,8]	, survey_id: 2, user_id:-1)
@@ -306,8 +287,6 @@ begin
 	Response.create(scores:[0,0,0,0], question_ids:[32,33,34,35], survey_id: 9, user_id:-1)
 	Response.create(scores:[0,0,0,0], question_ids:[36,37,38,39], survey_id: 10,user_id:-1)
 	Response.create(scores:[0,0,0,0], question_ids:[40,41,42,43], survey_id: 11,user_id:-1)
-	Response.create(scores:[0,0,0,0], question_ids:[44,45,46,47], survey_id: 12,user_id:-1)
->>>>>>> master
 
 
 	#----------- Load Job Posting data from scraping and processing ---------------------

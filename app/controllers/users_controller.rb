@@ -10,18 +10,10 @@ class UsersController < ApplicationController
 	def show
 		@user = User.find(params[:id])
 
-<<<<<<< HEAD
-		@questions = Question.get_category_map
-
-		if @user.has_role? :employee
-			@projects = @user.projects;
-			@user_skills = @user.user_skills;
-=======
 		@surveys = Survey.get_title_map
 
 		if @user.has_role? :employee
 			@projects = @user.projects.order('project_date DESC')
->>>>>>> master
 			@references = Reference.where(user_id: @user.id, confirmed: true)
 			
 			@survey_results = Survey.get_table_data(@user)

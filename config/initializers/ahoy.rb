@@ -1,3 +1,4 @@
-#class Ahoy::Store < Ahoy::Stores::ActiveRecordTokenStore
+class Ahoy::Store < Ahoy::Stores::ActiveRecordTokenStore
+	Ahoy.throttle = false
   # customize here
-#end
+end

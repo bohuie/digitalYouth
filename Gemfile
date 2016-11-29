@@ -22,7 +22,7 @@ gem 'geocoder'
 gem 'activejob_backport'
 
 # ahoy for analytics
-#gem 'ahoy_matey'
+gem 'ahoy_matey'
 
 # Make '' -> nil when saving records to the DB
 gem "nilify_blanks"

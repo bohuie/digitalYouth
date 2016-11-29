@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   before_action :notification_bar
   after_action :store_location
   around_filter :catch_not_found
-  #after_filter :ahoy_track
+  after_filter :ahoy_track
 
   def notification_bar
     if user_signed_in?
@@ -50,7 +50,7 @@ class ApplicationController < ActionController::Base
   end
 
 protected
-#  def ahoy_track
-#      ahoy.track_visit if current_visit == nil
-#  end
+  def ahoy_track
+      ahoy.track_visit if current_visit == nil
+  end
 end

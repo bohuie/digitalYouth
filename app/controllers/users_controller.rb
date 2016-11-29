@@ -2,7 +2,7 @@ class UsersController < ApplicationController
 	before_action :authenticate_user!, except: [:show, :index]
 	before_action :profile_owner, only: [:edit, :update, :destroy]
 	skip_before_action :verify_authenticity_token, only: [:userTab]
-
+	
 	def index
 		@users = User.all
 	end

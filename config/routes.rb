@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   get 'settings/privacy'
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
-  mount Searchjoy::Engine, at: "/admin/searchjoy"
+  #mount Searchjoy::Engine, at: "/admin/searchjoy"
   get 'welcome/index'
   get 'signup_jobseeker' => 'welcome#signup_jobseeker'
   get 'signup_employer' => 'welcome#signup_employer'

@@ -17,6 +17,5 @@
 //= require bootstrap-sprockets 
 //= require chartkick 
 //= require local_time
-//= require ahoy
 //= require_tree ./lib
 //= require_tree .

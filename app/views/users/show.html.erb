@@ -1,99 +1,348 @@
+<%= render "users/shared/profile" %>
 <% if @user.has_role? :employee %>
-	<div class ="container">
-		<p> User Information </p>
-		<p> <%= @user.first_name %> </p>
-		<p> <%= @user.last_name %> </p>
-		<p> <%= @user.email %> </p>
-	</div>
-
-	<% if user_signed_in? && @current_user==@user %>
-		<%= link_to "Job Applications", job_posting_applications_path %>
-	<% end %>
-
- 	<div class = "survey-table">
-		<%= render '/users/partials/show_survey_table', results: @survey_results, user:@user %>
-	</div>
-
-	<div class = "references">
-		<%= render '/users/partials/show_references' %>
-	</div>
-
-	<% if !@projects.empty? %>
-		<div class="projects">
-			<div class="container">
-				<div class="row">
-					<div class="col-xs-6">
-						<% @projects.each do |p| %>
-							<%= image_tag p.image.url %>
-							<h2><%= p.title %></h2>
-							<p><%= p.description %></p>
-							<% if !@skills.empty? %>
-								<p>Skills associated with this project</p>
-								<% @skills[p.id].each do |s| %>
-									<p><%= s.name%> </p>
-								<% end %>
-							<% end %>
-							<% if user_signed_in? && @current_user==@user %>
-								<%= link_to "Edit Project", edit_project_path(p) %><br />
-							<% end %>
-						<% end %>
-					</div>
+<!-- Employee Profile -->
+	<div class="container" id="profileButtons">
+		<ul class="nav nav-tabs profileButtonContent">
+			<%= render "users/shared/job_seeker_tabs" %>			
+  		</ul>
+ 		<% suclass = "tab-pane fade" %>
+    	<% apclass = "tab-pane fade" %>
+    	<% prclass = "tab-pane fade" %>
+    	<% skclass = "tab-pane fade" %>
+    	<% reclass = "tab-pane fade" %>
+  		<% if session[:userTab] == "applications" && user_signed_in? && @current_user==@user %>
+  			<% apclass = apclass + " in active" %>
+  		<% elsif session[:userTab] == "projects" %>
+  			<% prclass = prclass + " in active" %>
+  		<% elsif session[:userTab] == "skills" %>
+  			<% skclass = skclass + " in active" %>
+  		<% elsif session[:userTab] == "references" %>
+  			<% reclass = reclass + " in active" %>
+  		<% else %>
+  			<% suclass = suclass + " in active" %>
+  		<% end %>
+  		<div class="tab-content profileButtonContent">
+    		<div id="surveys" class= "<%= suclass %>">
+      			<div class = "survey-table" id= "survey-table">
+					<%= render '/users/partials/show_survey_table', user:@user, results:@survey_results %>
 				</div>
 			</div>
-		</div>
-	<% else %>
-		<h3>You have no posted projects.  Fill out the form below to create one!</h3>
-	<% end %>
-	<% if user_signed_in? && @current_user==@user %>
-		<div class="row">
-			<h3>Create another project below!</h3>
-		</div>
-		<div class ="container">
-			<div class ="row">
-				<div class="col-xs-6">
-					<%= simple_form_for @project do |f| %>
-						<%= f.input :title, required: true %>
-						<%= f.input :description, required: true, as: :text %>
-						<%= f.input :image, as: :file %>
-						<%= f.button :submit %>
+    		<% if user_signed_in? && @current_user==@user %>
+    			<div id="applications" class="<%= apclass %>">
+					<% cnt = 0 %>
+					<h4>These are your current job applications.</h4>
+					<p> The status is displayed beside the posting title.<br>
+						The company which owns the job posting will update the status of the posting and it will be shown here.<br>
+						You have the option to delete your application but <b>you will not be able to reapply if the application has been looked at.</b><br>
+						Feel free to delete your application if you are rejected but keep in mind that it is possible for a company to change their mind and "unreject" your application.
+					</p>
+					<%@job_posting_applications.each do |j|%>
+						<% if j.status != -2 %>
+							<% cnt += 1 %>
+							<div class="row"> 
+								<div class="col-md-4">
+									<h4 class="job-application-content">
+										<%= link_to raw("#{j.job_posting.title} (<i>#{j.job_posting.user.company_name}</i>)"), job_posting_application_path(j) %>
+										<small><span class=" label label-<%=j.get_bootstrap_status%>"><%="#{j.get_status_string}"%></span></small>
+									</h4>
+								</div>
+								<div class="col-xs-1">
+									<%= link_to "Delete", job_posting_application_path(j.id), method: "delete", class: "btn btn-default"%>
+								</div>
+							</div>
+						<% end %>
 					<% end %>
 				</div>
+    		<% end %>
+    		<div id="projects" class="<%= prclass %>">
+    			<% if user_signed_in? && @current_user==@user %>
+					<div class="row">
+						<%= link_to "New Project", new_project_path, class: "btn btn-default" %>
+					</div>
+				<% end %>
+				<% if !@projects.empty? %>
+					<div class="projects">
+						<% @projects.each do |p| %>
+							<div class="row" style="padding-bottom: 5px">
+								<div class="col-md-1">
+									<%= p.project_date.strftime('%B')+", "+p.project_date.strftime('%Y') %>
+								</div>
+								<div class="col-md-3">
+									<%= image_tag p.image.url(:medium) %>
+								</div>
+								<div class="col-md-5">
+									<h2><%= p.title %></h2>
+									<p><%= p.description %></p>
+									<% index = 1 %>
+									<% if !@skills[p.id].empty? %>
+										<p>Skills associated with this project:</p>
+										<% @skills[p.id].each do |s| %>
+											<%=s.name.titleize %>
+											<% if index < @skills[p.id].length %>
+												<%=", " %>
+												<% index = index+1 %>
+											<% end %>
+										<% end %>
+									<% end %>
+								</div>
+								<% if user_signed_in? && @current_user==@user %>
+									<div class="col-md-3">
+										<%= link_to "Edit Project", edit_project_path(p), class: "btn btn-default" %>
+										<%= link_to "Delete Project", p, method: :delete, data: {confirm: 'Are you sure?'}, class: "btn btn-default" %>
+									</div>
+								<% end %>
+							</div>
+						<% end %>
+					</div>
+				<% else %>
+					<h3>There are no posted projects yet!</h3>
+				<% end %>
+			</div>
+    		<div id="skills" class="<%= skclass %>">
+				<div id="skills">
+					<% if !@user_skills.empty? %>
+						<div class="container">
+							<div class ="row survey-box-row">
+								<div class="col-md-1"></div>
+									<% j=1 %>
+									<% Survey.all.each do |s|%>
+										<div class="col-md-2" style="min-height: 150px">
+											<h5><u><%= s.title %></u></h5>
+											<% if  @user_skills.where(survey_id: s.id).empty? %>
+												<p>No skills for this category yet</p>
+											<% else%>
+												<ul>
+													<% @user_skills.where(survey_id: s.id).each do |sk| %>
+														<li class="skill">
+															<%= sk.skill.name.titleize %>
+														</li>
+													<% end %>
+												</ul>
+											<% end %>
+										</div>
+										<div class="col-md-1"></div>
+										<% if j % 3 == 0 && j < 12 %>
+											</div>
+											<div class ="row survey-box-row"> 
+												<div class="col-md-1"></div>
+										<% end %>
+										<% j += 1 %>
+									<% end %>
+								</div>
+							
+						</div>
+					<% end %>
+					<% if user_signed_in? && @current_user==@user %>
+
+						<%= simple_form_for @user_skill do |g| %>
+							<div class="row">
+								<div class="col-md-4"><%= g.input :name %>	</div>
+								<div class="col-md-4"><%= g.input :survey_id, required:true, collection: @surveys, prompt: "Select Classification", label: "Associated Survey Skill"%></div>
+							</div>
+							<%= g.button :submit %>
+						<% end %>
+					<% end %>
+				</div>
+    		</div>
+			<div id="references" class="<%= reclass %>">
+				<div class = "references" id = "references">
+					<div class="row">
+						<% if user_signed_in? && @current_user==@user %>
+							<% if @unconfirmed_references.empty? && @confirmed_references.empty? %>
+								<h3>You have no references. <%= link_to "Click here to send a reference request!", email_reference_path %></h3>
+							<% else %>
+								<h3>Need more references? <%= link_to "Click here to send a reference request!", email_reference_path %></h3>
+							<% end %>
+							<br>
+						<% end %>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<h3> Confirmed References </h3>
+							<% if !@confirmed_references.empty? %>
+								<% @confirmed_references.each do |r| %>
+									<div class ="row" id="ref">
+										<div class="col-md-3">
+											<img src="https://image.freepik.com/free-icon/user-male-silhouette_318-55563.png" class="refLeft" id="refImage"/>
+										</div>
+										<div class="col-md-2">
+											<div class="row">
+												<h3><%= r.first_name%> <%= r.last_name %></h3>
+											</div>
+											<div class="row">
+												<h4><%= r.position %></h4>
+											</div>
+											<div class="row">
+												<h4><%= r.company%></h4>
+											</div>
+											<div class="row">
+												<h6 class="refLeft"><b>Contact:</b></h6>
+												<h6 class="refLeft contactElm">Email: <%= r.email %></h6>
+												<% if r.phone_number.empty? %>
+													<% puts %> 
+												<% else %>
+													<h6 class="refLeft contactElm">Phone: <%= r.phone_number %> </h6>
+												<% end %>
+											</div>
+										</div>
+										<div class="col-md-4">
+											<div class="row">
+												<h4>Reference:</h4>
+												<p><%= r.reference_body %></p>
+											</div>
+										</div>
+										<% if user_signed_in? && @current_user==@user %>
+											<div class="col-md-3">
+												<%= link_to "Unconfirm", update_reference_path(r), method: "patch", class: "btn btn-default" %>
+												<%= link_to "Delete", delete_reference_path(r), method: "delete", class: "btn btn-default" %>
+											</div>
+										<% end %>
+									</div>
+									<hr class="HR"/>
+								<% end %>
+							<% else %>
+								<h6> There are no confirmed references yet</h6>
+							<% end %>
+						</div>
+					</div>
+					<% if user_signed_in? && @current_user==@user %>
+						<div class="row">
+							<div class="col-md-12">
+								<h3> Unconfirmed References </h3>
+								<% if !@unconfirmed_references.empty? %>
+									<% @unconfirmed_references.each do |r| %>
+										<div class ="row" id="ref2">
+											<div class="col-md-3">
+												<img src="https://image.freepik.com/free-icon/user-male-silhouette_318-55563.png" class="refLeft" id="refImage"/>
+											</div>
+											<div class="col-md-2">
+												<div class="row">
+													<h3><%= r.first_name%> <%= r.last_name %></h3>
+												</div>
+												<div class="row">
+													<h4><%= r.position %></h4>
+												</div>
+												<div class="row">
+													<h4><%= r.company%></h4>
+												</div>
+												<div class="row">
+													<h6 class="refLeft"><b>Contact:</b></h6>
+													<h6 class="refLeft contactElm">Email: <%= r.email %></h6>
+													<% if r.phone_number.empty? %>
+														<% puts %> 
+													<% else %>
+														<h6 class="refLeft contactElm">Phone: <%= r.phone_number %> </h6>
+													<% end %>
+												</div>
+											</div>
+											<div class="col-md-4">
+												<div class="row">
+													<h4>Reference:</h4>
+													<p><%= r.reference_body %></p>
+												</div>
+											</div>
+											<div class="col-md-3">
+												<%= link_to "Confirm", update_reference_path(r), method: "patch", class: "btn btn-default" %>
+												<%= link_to "Delete", delete_reference_path(r), method: "delete", class: "btn btn-default" %>
+											</div>
+										</div>
+										<hr class="HR"/>
+									<% end %>
+								<% else %>
+									<h6> You have no unconfirmed references. </h6>
+								<% end %>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<h3> References Requests </h3>
+								<% if !@reference_requests.empty? %>
+									<% @reference_requests.each do |r| %>
+										<h4><%= link_to "#{r.user.first_name} #{r.user.last_name}", user_path(r.user_id) %> <%= link_to "Refer", new_reference_path(r.reference_url)%></h4>
+									<% end %>
+								<% else %>
+									<h6> You have no reference requests. </h6>
+								<% end %>
+							</div>
+						</div>
+					<% end %>
+				</div>
+    		</div>
+  		</div>
+	</div>
+
+
+
+<% elsif @user.has_role? :employer %>
+
+
+
+	<div class="container" id="profileButtons">
+		<ul class="nav nav-tabs profileButtonContent">
+			<%= render "users/shared/employer_tabs" %>
+  		</ul>
+  		<% aclass = "tab-pane fade" %>
+    	<% jclass = "tab-pane fade" %>
+  		<% if session[:userTab] == "jobs" %>
+  			<% jclass = jclass + " in active" %>
+  		<% else %>
+  			<% aclass = aclass + " in active" %>
+  		<% end %>
+		<div class="tab-content profileButtonContent">
+
+			<div id="about" class="<%= aclass %>">
+				<h4>About <%= @user.company_name %> </h4>
+				<% if user_signed_in? && current_user == @user %>
+					<%= simple_form_for @user do |u| %>
+						<%= u.input :bio, as: :text %>
+						<%= u.submit "Update Bio", name: 'bio', class: "btn btn-default"%>
+					<% end %>
+				<% else %>
+					<%= @user.bio %>
+				<% end %>
+			</div>
+			<div id="jobs" class="<%= jclass %>">
+				<br>
+				<% if @job_postings.nil? %>
+					<% if user_signed_in? && current_user == @user %>
+						<p>You have no job postings.  Please create one below</p>
+					<% else %>
+						<p><%= @user.company_name %> has no job postings right now.  Check back leter.</p>
+					<% end %>
+				<% else %>
+					<% @job_postings.each do |j| %>
+						<div class="row">
+							<div class="col-md-2">
+								<%= link_to "#{j.title}\n", job_posting_path(j) %><br />
+								<%= raw(j.get_type_string+"<br />") if !j.job_type.nil? %>
+								<p><%= j.city %>, <%=j.province %></p>
+							</div>
+							<div class="col-md-4">
+								<%= j.job_category.name %><br />
+								<%= raw("Open date: #{j.open_date.strftime('%B %d, %Y')}<br>")   if !j.open_date.blank? %>
+								<%= raw("Close date: #{j.close_date.strftime('%B %d, %Y')}<br>") if !j.close_date.blank? %>
+							</div>
+							<div class="col-md-6">
+								<%= link_to "View", job_posting_path(j), class: "btn btn-default" %>
+								<% if user_signed_in? && current_user == @user %>
+									<%= link_to "Edit Posting", edit_job_posting_path(j), class: "btn btn-default"%>
+									<% application_count = j.job_posting_applications.where(status:-1..Float::INFINITY).count %>
+									<%= link_to raw("Applications <span class=\"badge\">#{application_count.to_s}</span>"), job_posting_applications_path(job_posting:j), class: "btn btn-success"%>						
+									<%= link_to "Delete Posting", job_posting_path(j), method: "delete", class: "btn btn-danger"%>
+								<% end %>
+							</div>
+						</div>
+						<br>
+					<% end %>
+				<% end %>
+				<% if user_signed_in? && current_user == @user %>
+					<%= link_to "Create a New Posting", new_job_posting_path, class: "btn btn-default" %><br>
+				<% end %>
 			</div>
 		</div>
-	<% end %>
-	<% if !@user_skills.empty? %>
-		<div class="container">
-			<h2>Here is a summary of your skill base</h2>
-			<% @user_skills.each do |us| %>
-				<div class="row">
-					<div class="col-xs-4">
-						<%= us.skill.name %> with a rating of <%= us.rating %> / <%= max_rating %>
-					</div>
-				</div>
-			<% end %>
-		</div>
-	<% end %>
-	<% if user_signed_in? && @current_user==@user %>
-		<%= simple_form_for @user_skill do |g| %>
-			<%= g.input :name %>	
-			<%= g.input :rating, as: :radio_buttons, collection: 0..Integer(max_rating)%>
-			<%= g.button :submit %>
-		<% end %>
-	<% end %>
 	</div>
-<% elsif @user.has_role? :employer %>
-	<p> Company Information: <br>
-		<%= @user.company_name %><br>
-		<%= @user.company_address %>, <%= @user.company_province %><br>
-		<%= @user.company_postal_code %> 
-	</p>
-	
-	<%= link_to "Job Postings", job_postings_path(user: @user) %>
-	<% if user_signed_in? && @current_user==@user %>
-		<br><%= link_to "Job Applications", job_posting_applications_path %>
-	<% end %>
 
 <% elsif @user.has_role? :admin%>
 	You are an admin!
-	<%= %> 
 <% end %>
+

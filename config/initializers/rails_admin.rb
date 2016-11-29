@@ -11,7 +11,11 @@ RailsAdmin.config do |config|
    ## == Rolify ==
    config.authenticate_with do
      config.authorize_with do |controller|
-        redirect_to main_app.root_path if !user_signed_in?||(user_signed_in? && !current_user.has_role?(:admin))
+      if current_user.nil?
+        redirect_to main_app.root_path
+      else
+        redirect_to main_app.root_path unless current_user.has_role? :admin
+      end
      end
    end
 

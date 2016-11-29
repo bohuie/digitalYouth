@@ -1,0 +1,10 @@
+<% byebug %>
+<%= simple_form_for @user_skill do |f| %>
+	<div class="col-md-12 user-skill">
+		<%= f.input :id, as: :hidden %>
+		<%= f.input :name, label: "Skill", input_html: {onclick:"skill_autocomplete('#{1}')", id: "skill-name-#{1}"} %>
+		<div class="col-md-6"><%= f.input :question_id, required:true, collection: @questions, prompt: "Select Classification", label: "Associated Survey Skill and Level"%></div>
+	</div>
+	
+	<%= f.button :submit %>
+<% end %>

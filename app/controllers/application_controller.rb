@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :notification_bar
   after_action :store_location
+  around_filter :catch_not_found
   after_filter :ahoy_track
 
   def notification_bar
@@ -37,6 +38,15 @@ class ApplicationController < ActionController::Base
   # Stores the last URL visited.
   def store_location
     session[:forwarding_url] = request.url if request.get?
+  end
+
+  private
+
+  def catch_not_found
+    yield
+    rescue ActiveRecord::RecordNotFound
+      flash[:alert] = "There was an error with your search.  Please try again later, or contact an administrator."
+      redirect_back_or root_url
   end
 
 protected

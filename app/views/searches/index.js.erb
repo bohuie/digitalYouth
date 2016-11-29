@@ -1,0 +1,19 @@
+<% if @results.current_page <= @results.total_pages %>
+	//Hide loading image and render results above it
+	$('#ajax-loading').css("visibility","hidden");
+	$('#ajax-loading').before("<%= j (render 'searches/partials/results', results: @results, query: @query) %>");
+
+	//Hide all the results added
+	<% first_id = "search-result-#{@results.first.class.name}-#{@results.first.id}"%>
+	$('#ajax-loading').before().prevUntil($('#<%=first_id%>')).hide();
+	$('#<%=first_id%>').hide();
+
+	//Fade in all the results added
+	$('#ajax-loading').before().prevUntil($('#<%=first_id%>')).fadeIn(500);
+	$('#<%=first_id%>').fadeIn(500);
+	can_request = true;
+<% else %>
+	can_request = false;
+	$('#ajax-loading').css("display","none");
+	$('#load-more').hide();
+<% end %>

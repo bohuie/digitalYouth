@@ -1,3 +1,5 @@
+<%= render "users/shared/profile" %>
+
 <% if current_user.has_role? :employee %>
 	<h3 class="job-application-content"><%= link_to raw("#{@job_posting.title} (<i>#{@job_posting.user.company_name}</i>)"), job_posting_path(@job_posting) %>
 		<span class=" label label-<%=@job_posting_application.get_bootstrap_status%>"><%="#{@job_posting_application.get_status_string}"%></span>
@@ -13,61 +15,19 @@
 			You will be contacted by <%=@job_posting_application.company.company_name%> soon.
 		</p>
 	<% end %>
-
+	<%= render partial: "job_posting_applications/user_app_skills", locals: {applicant: @job_posting_application.applicant} %>
+	<%= @job_posting_application.message %>
 <% elsif current_user.has_role? :employer %>
 	<div class="user-information">
-		<%= render 'shared/user_summary', user: @job_posting_application.applicant %>
+		<%= render partial: "job_posting_applications/user_app_skills", locals: {applicant: @job_posting_application.applicant} %>
 		<%= raw("<p>#{@job_posting_application.message}</p>") if !@job_posting_application.message.blank? %>
-
-		<p> 
-			<% if !@user_skill_matches.empty? %>
-				This user self reported these skills that match with this job posting: <br>
-				<%@user_skill_matches.each do |s|%>
-					<% if s[:importance] == 2%>
-						<%= raw("<b>(Required)</b>")%>
-					<% else %>
-						<%= "(Preferred)" %>
-					<% end %>
-
-					<%="#{s[:user_skill].skill.name.titlecase}"%> 
-					<% if s[:user_skill].rating == Integer(ENV['MAX_RATING'])%> 
-						<%= raw("<b>with a rating of #{s[:user_skill].rating}</b>") %>
-					<% else %>
-						<%= "with a rating of #{s[:user_skill].rating}" %>
-					<% end %>
-					
-					<br>
-				<% end %>
-			<% end %>
-			<br>
-			<% if !@response_skill_matches.empty? %>
-				This user answered a survey that matches the classification of these skills with this job posting: <br>
-				<%@response_skill_matches.each do |s|%>
-					<% if s[:importance] == 2%>
-						<%= raw("<b>(Required)</b>")%>
-					<% else %>
-						<%= "(Preferred)" %>
-					<% end %>
-
-					<%="#{s[:skill].name.titlecase}"%>
-					<%="(#{s[:classification]})"%>
-
-					<% if s[:rating] == Integer(ENV['MAX_RATING'])%>
-						<%= raw("<b>rating of #{s[:rating]}</b>") %>
-					<% else %>
-						<%= "rating of #{s[:rating]}" %>
-					<% end %>
-					
-					<br>
-				<% end %>
-			<% end %>
-		</p>
 	</div>
 
 	<div>		
 		<h3 class="job-application-content"><span class=" label label-<%=@job_posting_application.get_bootstrap_status%>"><%="#{@job_posting_application.get_status_string}"%></span></h3>
 		<%= raw("<i>You should contact this applicant and continue the hiring process.</i><br>") if @job_posting_application.status == 2%>
 		<br>
+		<%= link_to "View Posting", job_posting_path(@job_posting_application.job_posting), class: "btn btn-default" %>
 		<%= link_to "Reject", update_job_posting_application_path(@job_posting_application,status:"Rejected"), class: "btn btn-danger", method: "patch" %>
 		<%= link_to "Consider", update_job_posting_application_path(@job_posting_application, status:"Considering"), class: "btn btn-info", method: "patch" %>
 		<%= link_to "Accept", update_job_posting_application_path(@job_posting_application, status:"Accepted"), class: "btn btn-success", method: "patch" %>

@@ -113,10 +113,10 @@ respond_to :html, :json
   	def userTab
   		
   		session[:userTab] = params[:user_tab]
-
+  		
   		if params.key?(:redirect)
   			respond_to do |format|
-  				format.js { render js: "window.location = '/users/1'" }
+  				format.js { render js: "window.location = '#{params[:redirect]}'" }
   			end
   		end
   	end

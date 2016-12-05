@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+respond_to :html, :json
+
 	before_action :authenticate_user!, except: [:show, :index]
 	before_action :profile_owner, only: [:edit, :update, :destroy]
 	skip_before_action :verify_authenticity_token, only: [:userTab]
@@ -109,7 +111,14 @@ class UsersController < ApplicationController
   	end
 
   	def userTab
+  		
   		session[:userTab] = params[:user_tab]
+  		
+  		if params.key?(:redirect)
+  			respond_to do |format|
+  				format.js { render js: "window.location = '#{params[:redirect]}'" }
+  			end
+  		end
   	end
 
   	def reference_tab

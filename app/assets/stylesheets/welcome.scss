@@ -19,21 +19,42 @@
 	float: left;
 	margin-left: 45px;
 }
+
+.landing {
+	width: 100vw;
+	background-color: rgb(19, 151, 206);
+	margin-left: calc(-50vw + 50%);
+	margin-top: -20px;
+}
 .signupbox{
 	margin-top: 65px;
 	margin-right: 60px;
 	border: none;
 	border-radius: 5px;
-	width: 35%;
+	width: 50%;
 	float: right;
-	background-color: #F8F8F8 ; 
+	background-color: rgb(23, 102, 136) ; 
 	text-align: center;
+	position: relative;
+	height: 120%;
+	top: 41px
 }
 
 .titlebox{
 	border:none;
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
+	width: 100%;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	background-color: #52B4D9 ; 
+	text-align: center;
+	color: white;
+}
+.footerbox{
+	border:none;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
 	width: 100%;
 	padding-top: 3px;
 	padding-bottom: 3px;

@@ -139,7 +139,7 @@
 								<div class="col-md-4"><%= g.input :name %>	</div>
 								<div class="col-md-4"><%= g.input :survey_id, required:true, collection: @surveys, prompt: "Select Classification", label: "Associated Survey Skill"%></div>
 							</div>
-							<%= g.button :submit, class:"btn btn-primary" %>
+							<%= g.button :submit, class: "btn btn-primary" %>
 						<% end %>
 					<% end %>
 				</div>
@@ -295,7 +295,7 @@
 				<% if user_signed_in? && current_user == @user %>
 					<%= simple_form_for @user do |u| %>
 						<%= u.input :bio, as: :text %>
-						<%= u.submit "Update Bio", name: 'bio', class: "btn btn-default"%>
+						<%= u.submit "Update Bio", name: 'bio', class: "btn btn-primary"%>
 					<% end %>
 				<% else %>
 					<%= @user.bio %>
@@ -323,9 +323,9 @@
 								<%= raw("Close date: #{j.close_date.strftime('%B %d, %Y')}<br>") if !j.close_date.blank? %>
 							</div>
 							<div class="col-md-6">
-								<%= link_to "View", job_posting_path(j), class: "btn btn-default" %>
+								<%= link_to "View", job_posting_path(j), class: "btn btn-primary" %>
 								<% if user_signed_in? && current_user == @user %>
-									<%= link_to "Edit Posting", edit_job_posting_path(j), class: "btn btn-default"%>
+									<%= link_to "Edit Posting", edit_job_posting_path(j), class: "btn btn-warning"%>
 									<% application_count = j.job_posting_applications.where(status:-1..Float::INFINITY).count %>
 									<%= link_to raw("Applications <span class=\"badge\">#{application_count.to_s}</span>"), job_posting_applications_path(job_posting:j), class: "btn btn-success"%>						
 									<%= link_to "Delete Posting", job_posting_path(j), method: "delete", class: "btn btn-danger"%>
@@ -336,7 +336,7 @@
 					<% end %>
 				<% end %>
 				<% if user_signed_in? && current_user == @user %>
-					<%= link_to "Create a New Posting", new_job_posting_path, class: "btn btn-default" %><br>
+					<%= link_to "Create a New Posting", new_job_posting_path, class: "btn btn-primary" %><br>
 				<% end %>
 			</div>
 		</div>

@@ -39,7 +39,7 @@
 					<%@job_posting_applications.each do |j|%>
 						<% if j.status != -2 %>
 							<% cnt += 1 %>
-							<div class="row"> 
+							<div class="row alternate"> 
 								<div class="col-md-4">
 									<h4 class="job-application-content">
 										<%= link_to raw("#{j.job_posting.title} (<i>#{j.job_posting.user.company_name}</i>)"), job_posting_application_path(j) %>
@@ -63,7 +63,7 @@
 				<% if !@projects.empty? %>
 					<div class="projects">
 						<% @projects.each do |p| %>
-							<div class="row" style="padding-bottom: 5px">
+							<div class="row alternate" style="padding-bottom: 5px">
 								<div class="col-md-1">
 									<%= p.project_date.strftime('%B')+", "+p.project_date.strftime('%Y') %>
 								</div>
@@ -113,7 +113,7 @@
 											<% else%>
 												<ul>
 													<% @user_skills.where(survey_id: s.id).each do |sk| %>
-														<li class="skill">
+														<li class="skill alternate">
 															<%= sk.skill.name.titleize %>
 														</li>
 													<% end %>
@@ -161,7 +161,7 @@
 							<h3> Confirmed References </h3>
 							<% if !@confirmed_references.empty? %>
 								<% @confirmed_references.each do |r| %>
-									<div class ="row" id="ref">
+									<div class ="row alternate" id="ref">
 										<div class="col-md-3">
 											<img src="https://image.freepik.com/free-icon/user-male-silhouette_318-55563.png" class="refLeft" id="refImage"/>
 										</div>
@@ -211,7 +211,7 @@
 								<h3> Unconfirmed References </h3>
 								<% if !@unconfirmed_references.empty? %>
 									<% @unconfirmed_references.each do |r| %>
-										<div class ="row" id="ref2">
+										<div class ="row alternate" id="ref2">
 											<div class="col-md-3">
 												<img src="https://image.freepik.com/free-icon/user-male-silhouette_318-55563.png" class="refLeft" id="refImage"/>
 											</div>
@@ -311,7 +311,7 @@
 					<% end %>
 				<% else %>
 					<% @job_postings.each do |j| %>
-						<div class="row">
+						<div id="postings" class="row alternate">
 							<div class="col-md-2">
 								<%= link_to "#{j.title}\n", job_posting_path(j) %><br />
 								<%= raw(j.get_type_string+"<br />") if !j.job_type.nil? %>

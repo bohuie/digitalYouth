@@ -70,7 +70,7 @@
 <% end %>
 
 <% if user_signed_in? && @current_user.id == @job_posting.user_id %>
-	<%= link_to "Edit Posting", edit_job_posting_path(@job_posting), class: "btn btn-default"%>
+	<%= link_to "Edit Posting", edit_job_posting_path(@job_posting), class: "btn btn-warning"%>
 	<%= link_to "Delete Posting", job_posting_path(@job_posting), method: "delete", class: "btn btn-danger"%>
 	<% application_count = @job_posting.job_posting_applications.where(status:-1..Float::INFINITY).count %>
 	<% application_count = "" if application_count == 0 %>

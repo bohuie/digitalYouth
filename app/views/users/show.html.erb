@@ -47,7 +47,7 @@
 									</h4>
 								</div>
 								<div class="col-xs-1">
-									<%= link_to "Delete", job_posting_application_path(j.id), method: "delete", class: "btn btn-default"%>
+									<%= link_to "Delete", job_posting_application_path(j.id), method: "delete", class: "btn btn-danger"%>
 								</div>
 							</div>
 						<% end %>
@@ -57,7 +57,7 @@
     		<div id="projects" class="<%= prclass %>">
     			<% if user_signed_in? && @current_user==@user %>
 					<div class="row">
-						<%= link_to "New Project", new_project_path, class: "btn btn-default" %>
+						<%= link_to "New Project", new_project_path, class: "btn btn-primary" %>
 					</div>
 				<% end %>
 				<% if !@projects.empty? %>
@@ -87,8 +87,8 @@
 								</div>
 								<% if user_signed_in? && @current_user==@user %>
 									<div class="col-md-3">
-										<%= link_to "Edit Project", edit_project_path(p), class: "btn btn-default" %>
-										<%= link_to "Delete Project", p, method: :delete, data: {confirm: 'Are you sure?'}, class: "btn btn-default" %>
+										<%= link_to "Edit Project", edit_project_path(p), class: "btn btn-warning" %>
+										<%= link_to "Delete Project", p, method: :delete, data: {confirm: 'Are you sure?'}, class: "btn btn-danger" %>
 									</div>
 								<% end %>
 							</div>
@@ -139,7 +139,7 @@
 								<div class="col-md-4"><%= g.input :name %>	</div>
 								<div class="col-md-4"><%= g.input :survey_id, required:true, collection: @surveys, prompt: "Select Classification", label: "Associated Survey Skill"%></div>
 							</div>
-							<%= g.button :submit %>
+							<%= g.button :submit, class:"btn btn-primary" %>
 						<% end %>
 					<% end %>
 				</div>
@@ -149,7 +149,7 @@
 					<div class="row">
 						<% if user_signed_in? && @current_user==@user %>
 							<% if @unconfirmed_references.empty? && @confirmed_references.empty? %>
-								<h3>You have no references. <%= link_to "Click here to send a reference request!", email_reference_path %></h3>
+								<h3>You have no references. <%= link_to "Click here to send a reference request!", email_reference_path, b %></h3>
 							<% else %>
 								<h3>Need more references? <%= link_to "Click here to send a reference request!", email_reference_path %></h3>
 							<% end %>
@@ -193,8 +193,8 @@
 										</div>
 										<% if user_signed_in? && @current_user==@user %>
 											<div class="col-md-3">
-												<%= link_to "Unconfirm", update_reference_path(r), method: "patch", class: "btn btn-default" %>
-												<%= link_to "Delete", delete_reference_path(r), method: "delete", class: "btn btn-default" %>
+												<%= link_to "Unconfirm", update_reference_path(r), method: "patch", class: "btn btn-warning" %>
+												<%= link_to "Delete", delete_reference_path(r), method: "delete", class: "btn btn-danger" %>
 											</div>
 										<% end %>
 									</div>
@@ -242,8 +242,8 @@
 												</div>
 											</div>
 											<div class="col-md-3">
-												<%= link_to "Confirm", update_reference_path(r), method: "patch", class: "btn btn-default" %>
-												<%= link_to "Delete", delete_reference_path(r), method: "delete", class: "btn btn-default" %>
+												<%= link_to "Confirm", update_reference_path(r), method: "patch", class: "btn btn-success" %>
+												<%= link_to "Delete", delete_reference_path(r), method: "delete", class: "btn btn-danger" %>
 											</div>
 										</div>
 										<hr class="HR"/>

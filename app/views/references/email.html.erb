@@ -18,7 +18,7 @@
 			<%= r.input :last_name, required: true %>
 			<%= r.input :email, as: "email", required: true %>
 			<%= r.hidden_field :reference_url, :value => @url%>
-			<%= r.button :submit, 'Send' %>
+			<%= r.button :submit, 'Send', class: "btn btn-primary" %>
 		<% end -%>
 		
 </div>

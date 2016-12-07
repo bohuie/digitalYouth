@@ -31,6 +31,6 @@
 		<%= r.input :phone_number, :input_html => { :type => "tel", :pattern => "[\+]\d{1}[\(]\d{3}[\)]\d{3}[\-]\d{4}", :placeholder => "+9(999)999-9999" }%>
 		<%= r.input :reference_body, required: true%>
 		<%= recaptcha_tags %><br>
-		<%= r.button :submit %>
+		<%= r.button :submit, class: "btn btn-primary" %>
 	<% end -%>
 </div>

@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 respond_to :html, :json
 
-	before_action :authenticate_user!, except: [:show, :index]
+	before_action :authenticate_user!, except: [:show, :index, :userTab]
 	before_action :profile_owner, only: [:edit, :update, :destroy]
 	skip_before_action :verify_authenticity_token, only: [:userTab]
 	

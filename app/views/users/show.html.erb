@@ -3,20 +3,20 @@
 <!-- Employee Profile -->
 	<div class="container" id="profileButtons">
 		<ul class="nav nav-tabs profileButtonContent">
-			<%= render "users/shared/job_seeker_tabs" %>			
+			<%= render "users/shared/job_seeker_home_tabs" %>			
   		</ul>
  		<% suclass = "tab-pane fade" %>
     	<% apclass = "tab-pane fade" %>
     	<% prclass = "tab-pane fade" %>
     	<% skclass = "tab-pane fade" %>
     	<% reclass = "tab-pane fade" %>
-  		<% if session[:userTab] == "applications" && user_signed_in? && @current_user==@user %>
+  		<% if session[:home_tab] == "applications" && user_signed_in? && current_user==@user %>
   			<% apclass = apclass + " in active" %>
-  		<% elsif session[:userTab] == "projects" %>
+  		<% elsif session[:home_tab] == "projects" && current_user==@user %>
   			<% prclass = prclass + " in active" %>
-  		<% elsif session[:userTab] == "skills" %>
+  		<% elsif session[:home_tab] == "skills" && current_user==@user %>
   			<% skclass = skclass + " in active" %>
-  		<% elsif session[:userTab] == "references" %>
+  		<% elsif session[:home_tab] == "references" && current_user==@user %>
   			<% reclass = reclass + " in active" %>
   		<% else %>
   			<% suclass = suclass + " in active" %>

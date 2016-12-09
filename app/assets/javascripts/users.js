@@ -58,15 +58,15 @@ function rendering(toRender)
 		}
 	}
 }
-var data = "";
-function setUserTab(value, url)
+
+function setHomeTab(value, url)
 {
 	if (typeof(value)==='undefined') value = "surveys";
-	data = "user_tab="+value;
+debugger
 	if (typeof(url)==='undefined'){
 		$.ajax({
-		url: '/users/userTab',
-		data: {user_tab: value},
+		url: '/users/home_tab',
+		data: {home_tab: value},
 		type: 'post',
 		beforeSend: function(jqXHR, settings) {
         	jqXHR.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
@@ -81,9 +81,9 @@ function setUserTab(value, url)
 	}
 	else {
 		$.ajax({
-		url: '/users/userTab',
+		url: '/users/home_tab',
 		data: {
-			user_tab: value,
+			home_tab: value,
 			redirect: url
 		},
 		dataType: "script",

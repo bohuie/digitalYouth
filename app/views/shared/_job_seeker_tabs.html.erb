@@ -1,24 +1,24 @@
 
-<% if user_signed_in? && @current_user==@user %>
-    <% if session[:userTab] == "applications" %>
+<% if user_signed_in? && current_user==@user %>
+    <% if active == "applications" %>
         <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("surveys","<%=user_path(current_user)%>");><a data-toggle="tab" href="#surveys">SURVEYS</a></li>
         <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("applications");><a data-toggle="tab" href="#applications">APPLICATIONS</a></li>
         <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("projects");><a data-toggle="tab" href="#projects">PROJECTS</a></li>
         <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("skills");><a data-toggle="tab" href="#skills">SKILLS</a></li>
         <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("references");><a data-toggle="tab" href="#references">REFERENCES</a></li>
-    <% elsif session[:userTab] == "projects" %>
+    <% elsif active == "projects" %>
         <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("surveys","<%=user_path(current_user)%>");><a data-toggle="tab" href="#surveys">SURVEYS</a></li>
         <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("applications");><a data-toggle="tab" href="#applications">APPLICATIONS</a></li>
         <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("projects");><a data-toggle="tab" href="#projects">PROJECTS</a></li>
         <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("skills");><a data-toggle="tab" href="#skills">SKILLS</a></li>
         <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("references");><a data-toggle="tab" href="#references">REFERENCES</a></li>
-    <% elsif session[:userTab] == "skills" %>
+    <% elsif active == "skills" %>
         <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("surveys","<%=user_path(current_user)%>");><a data-toggle="tab" href="#surveys">SURVEYS</a></li>
         <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("applications");><a data-toggle="tab" href="#applications">APPLICATIONS</a></li>
         <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("projects");><a data-toggle="tab" href="#projects">PROJECTS</a></li>
         <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("skills");><a data-toggle="tab" href="#skills">SKILLS</a></li>
         <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("references");><a data-toggle="tab" href="#references">REFERENCES</a></li>
-    <% elsif session[:userTab] == "references" %>
+    <% elsif active == "references" %>
         <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("surveys","<%=user_path(current_user)%>");><a data-toggle="tab" href="#surveys">SURVEYS</a></li>
         <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("applications");><a data-toggle="tab" href="#applications">APPLICATIONS</a></li>
         <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("projects");><a data-toggle="tab" href="#projects">PROJECTS</a></li>
@@ -32,8 +32,9 @@
         <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("references");><a data-toggle="tab" href="#references">REFERENCES</a></li>
     <% end %>
 <% else %>
-    <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#surveys">SURVEYS</a></li>
-    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#projects">PROJECTS</a></li>
-    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#skills">SKILLS</a></li>
-    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#references">REFERENCES</a></li>
+    <% if active == "projects" %>
+        <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#surveys">SURVEYS</a></li>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#projects">PROJECTS</a></li>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#skills">SKILLS</a></li>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#references">REFERENCES</a></li>
 <%end %>

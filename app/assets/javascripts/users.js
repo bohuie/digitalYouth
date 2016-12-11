@@ -104,7 +104,7 @@ function setHomeTab(value, url)
 function setNavTab(value, url)
 {
 	if (typeof(value)==='undefined') value = "surveys";
-debugger
+
 	if (typeof(url)==='undefined'){
 		$.ajax({
 		url: '/users/nav_tab',

@@ -1,11 +1,9 @@
 <%= render "users/shared/profile" %>
 
+
 <div class="container" id="profileButtons">
 	<ul class="nav nav-tabs profileButtonContent">
-		<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("surveys","<%=user_path(@user)%>");><a data-toggle="tab" href="<%=user_path(@user)%>">SURVEYS</a></li>
-        <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("projects","<%=user_path(@user)%>");><a data-toggle="tab" href="#projects">PROJECTS</a></li>
-        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("skills","<%=user_path(@user)%>");><a data-toggle="tab" href="#skills">SKILLS</a></li>
-        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("references","<%=user_path(@user)%>");><a data-toggle="tab" href="#references">REFERENCES</a></li>
+	<%= render partial: '/shared/job_seeker_tabs', locals: {active: 'projects'} %>
     </ul>
 </div>
 

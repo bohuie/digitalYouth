@@ -2,14 +2,15 @@
 <% if @user.has_role? :employee %>
 <!-- Employee Profile -->
 	<div class="container" id="profileButtons">
-		<ul class="nav nav-tabs profileButtonContent">
-			<%= render "users/shared/job_seeker_home_tabs" %>			
-  		</ul>
  		<% suclass = "tab-pane fade" %>
     	<% apclass = "tab-pane fade" %>
     	<% prclass = "tab-pane fade" %>
     	<% skclass = "tab-pane fade" %>
     	<% reclass = "tab-pane fade" %>
+    <% if user_signed_in? && current_user==@user %>
+		<ul class="nav nav-tabs profileButtonContent">
+			<%= render "users/shared/job_seeker_home_tabs" %>			
+  		</ul>
   		<% if session[:home_tab] == "applications" && user_signed_in? && current_user==@user %>
   			<% apclass = apclass + " in active" %>
   		<% elsif session[:home_tab] == "projects" && current_user==@user %>
@@ -21,6 +22,20 @@
   		<% else %>
   			<% suclass = suclass + " in active" %>
   		<% end %>
+  	<% else %>
+  		<ul class="nav nav-tabs profileButtonContent">
+			<%= render partial: "users/shared/job_seeker_home_tabs", locals: {active: session[:nav_tab]} %>			
+  		</ul>
+  		<% if session[:nav_tab] == "projects" %>
+  			<% prclass = prclass + " in active" %>
+  		<% elsif session[:nav_tab] == "skills"  %>
+  			<% skclass = skclass + " in active" %>
+  		<% elsif session[:nav_tab] == "references" %>
+  			<% reclass = reclass + " in active" %>
+  		<% else %>
+  			<% suclass = suclass + " in active" %>
+  		<% end %>
+  	<% end %>
   		<div class="tab-content profileButtonContent">
     		<div id="surveys" class= "<%= suclass %>">
       			<div class = "survey-table" id= "survey-table">

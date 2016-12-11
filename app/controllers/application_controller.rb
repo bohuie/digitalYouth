@@ -40,6 +40,12 @@ class ApplicationController < ActionController::Base
     session[:forwarding_url] = request.url if request.get?
   end
 
+  def clear_nav_tab
+    if session[:nav_tab]
+      session.delete(:nav_tab)
+    end
+  end
+
   private
 
   def catch_not_found

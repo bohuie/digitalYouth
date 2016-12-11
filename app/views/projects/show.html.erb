@@ -1,11 +1,6 @@
 <%= render "users/shared/profile" %>
 
-
-<div class="container" id="profileButtons">
-	<ul class="nav nav-tabs profileButtonContent">
-	<%= render partial: '/shared/job_seeker_tabs', locals: {active: 'projects'} %>
-    </ul>
-</div>
+<%= render partial: "shared/job_seeker_tabs", locals: {active: "projects" } %>
 
 <div class="col-md-1">
 	<%= @project.project_date.strftime('%B')+", "+@project.project_date.strftime('%Y') %>

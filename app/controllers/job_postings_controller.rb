@@ -25,7 +25,6 @@ class JobPostingsController < ApplicationController
 		@user = @job_posting.user
 		@pay_rates = JobPosting.get_pay_rates
 		@provinces = JobPosting.get_provinces
-		@user = current_user
 	end
 
 	def new # Creates the form to make a new job posting

@@ -1,5 +1,6 @@
+<div class="container" id="profileButtons">
+<ul class="nav nav-tabs profileButtonContent">
 <% if user_signed_in? && current_user==@user %>
-
     <% if active == "applications" %>
         <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("surveys","<%=user_path(current_user)%>");><a data-toggle="tab" href="#surveys">SURVEYS</a></li>
         <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("applications","<%=user_path(current_user)%>");><a data-toggle="tab" href="#applications">APPLICATIONS</a></li>
@@ -62,3 +63,5 @@
         <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("references","<%=user_path(@user)%>");><a data-toggle="tab" href="#references">REFERENCES</a></li>
     <% end %>
 <% end %>
+</ul>
+</div>

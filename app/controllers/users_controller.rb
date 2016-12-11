@@ -5,6 +5,7 @@ respond_to :html, :json
 	before_action :profile_owner, only: [:edit, :update, :destroy]
 	skip_before_action :verify_authenticity_token, only: [:nav_tab] #ignore home_tab, only done when it is the current user and logged in
 
+
 	
 	def index
 		@users = User.all
@@ -54,6 +55,13 @@ respond_to :html, :json
 				@job_posting = current_user.job_postings.build
 			end
 		end
+
+		render
+		Thread.new do
+    	if session.key?(:nav_tab)
+      		session.delete(:nav_tab)
+    	end
+    end
 	end
 
 	def edit

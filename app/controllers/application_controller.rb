@@ -41,7 +41,7 @@ class ApplicationController < ActionController::Base
   end
 
   def clear_nav_tab
-    if session[:nav_tab]
+    if session.key?(:nav_tab)
       session.delete(:nav_tab)
     end
   end

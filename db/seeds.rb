@@ -40,8 +40,8 @@ begin
 
 	#--- Job Seekers for testing ---#
 	#Creating a user with some info
-	user1 = User.new(first_name: 'John', last_name: 'Doe', email: 'john@doe.com', password: 'password', password_confirmation: 'password',
-					 github: 'https://github.com/bohuie/digitalYouth', twitter: 'https://twitter.com/ShawnMendes?lang=en',
+	user1 = User.new(first_name: 'Rodney', last_name: 'Earl', email: 'rsearl.90@gmail.com', password: 'password', password_confirmation: 'password',
+					 github: 'https://github.com/RodneyEarl', twitter: 'https://twitter.com/ShawnMendes?lang=en', facebook: 'https://www.facebook.com/rodney.earl.9',
 					 answered_surveys:[true,true,true,true,true,true,true,true,false,true,true,true]) #how to display answered surveys
 	user1.add_role :employee
 	user1.skip_confirmation!
@@ -175,12 +175,12 @@ begin
 
 	#--- Companies for testing ---
 	#Creatinga  company
-	user11 = User.new(first_name: 'Foo', last_name: 'Bar', email: 'foo@bar.com', password: 'password', password_confirmation: 'password', 
+	user11 = User.new(first_name: 'Hugh', last_name: 'Mcguire', email: 'Hugh@Mcguire.com', password: 'password', password_confirmation: 'password', 
 		company_name: 'Google')
 	user11.add_role :employer
 	user11.skip_confirmation!
 	user11.save
-	user11.create_consent(answer: 1, name: "Foo Bar", date_signed: Date.today, consent_type: 2)
+	user11.create_consent(answer: 1, name: "Hugh Mcguire", date_signed: Date.today, consent_type: 2)
 
 	#How to post jobs
 	jobposting1 = JobPosting.create(title: 'Social Media Manager', city: "Kelowna", province: "BC", pay_rate: 'salary', lower_pay_range: 40000.00, upper_pay_range: 45000.00, link:"www.google.ca", posted_by:"Seed File", job_type: 1,
@@ -226,8 +226,8 @@ begin
 	user14.save
 	user14.create_consent(answer: 1, name: "Daisy Fitzpatrick", date_signed: Date.today, consent_type: 2)
 
-	user15 = User.new(first_name: 'Hugh', last_name: 'Mcguire', email: 'Hugh@Mcguire.com', password: 'password', password_confirmation: 'password', 
-		company_name: 'PETsMART Inc')
+	user15 = User.new(first_name: 'Foo', last_name: 'Bar', email: 'foo@bar.com', password: 'password', password_confirmation: 'password', 
+		company_name: 'Google')
 	user15.add_role :employer
 	user15.skip_confirmation!
 	user15.save
@@ -283,10 +283,10 @@ begin
 
 	#--- References for testing ---
 	reference1 = Reference.create(first_name: 'Bernie', last_name: 'Smith', email: 'Andrew@gmail.com', company: 'Apple Picking Co.',
-				 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "They were the best Apple Picker.", user_id: user1.id)
+				 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "He was the best Apple Picker.", user_id: user1.id)
 
 	reference2 = Reference.create(first_name: 'Bernie', last_name: 'Smith', email: 'Greg@gmail.com', company: 'Apple Pickers United LTD',
-				 position: "Apple QC Specialist", phone_number:"(250)555-5050", reference_body: "They were the best.", user_id: user2.id)
+				 position: "Apple QC Specialist", phone_number:"(250)555-5050", reference_body: "He was the best.", user_id: user2.id)
 
 
 	# --- JobPostingApplications for testing ---
@@ -307,6 +307,32 @@ begin
 	response9 = Response.create(scores:[2,3,2,1], question_ids:[36,37,38,39], survey_id: 10,user_id:user1.id)
 	response10= Response.create(scores:[3,2,3,1], question_ids:[40,41,42,43], survey_id: 11,user_id:user1.id)
 	response11= Response.create(scores:[3,2,3,2], question_ids:[44,45,46,47], survey_id: 12,user_id:user1.id)
+
+
+	response1 = Response.create(scores:[2,2,1,0], question_ids:[1,2,3,4]	, survey_id: 1, user_id:user2.id)
+	response2 = Response.create(scores:[2,1,1,0], question_ids:[5,6,7,8]	, survey_id: 2, user_id:user2.id)
+	response3 = Response.create(scores:[3,3,3,3], question_ids:[9,10,11,12] , survey_id: 3, user_id:user2.id)
+	response4 = Response.create(scores:[3,3,2,1], question_ids:[13,14,15,16], survey_id: 4, user_id:user2.id)
+	response5 = Response.create(scores:[2,3,2,0], question_ids:[17,18,19,20], survey_id: 5, user_id:user2.id)
+	response6 = Response.create(scores:[3,3,3,3], question_ids:[21,22,23,24], survey_id: 6, user_id:user2.id)
+	response7 = Response.create(scores:[2,3,1]  , question_ids:[25,26,27]   , survey_id: 7, user_id:user2.id)
+	response8 = Response.create(scores:[2,1,0,0], question_ids:[28,29,30,31], survey_id: 8, user_id:user2.id)
+	response9 = Response.create(scores:[1,1,0,0], question_ids:[36,37,38,39], survey_id: 10,user_id:user2.id)
+	response10= Response.create(scores:[3,2,1,1], question_ids:[40,41,42,43], survey_id: 11,user_id:user2.id)
+	response11= Response.create(scores:[3,2,2,2], question_ids:[44,45,46,47], survey_id: 12,user_id:user2.id)
+
+
+	response1 = Response.create(scores:[3,3,3,3], question_ids:[1,2,3,4]	, survey_id: 1, user_id:user3.id)
+	response2 = Response.create(scores:[2,2,1,1], question_ids:[5,6,7,8]	, survey_id: 2, user_id:user3.id)
+	response3 = Response.create(scores:[3,2,1,1], question_ids:[9,10,11,12] , survey_id: 3, user_id:user3.id)
+	response4 = Response.create(scores:[3,3,3,2], question_ids:[13,14,15,16], survey_id: 4, user_id:user3.id)
+	response5 = Response.create(scores:[2,2,2,1], question_ids:[17,18,19,20], survey_id: 5, user_id:user3.id)
+	response6 = Response.create(scores:[2,2,1,1], question_ids:[21,22,23,24], survey_id: 6, user_id:user3.id)
+	response7 = Response.create(scores:[1,1,3]  , question_ids:[25,26,27]   , survey_id: 7, user_id:user3.id)
+	response8 = Response.create(scores:[2,1,0,1], question_ids:[28,29,30,31], survey_id: 8, user_id:user3.id)
+	response9 = Response.create(scores:[3,1,0,0], question_ids:[36,37,38,39], survey_id: 10,user_id:user3.id)
+	response10= Response.create(scores:[1,2,1,1], question_ids:[40,41,42,43], survey_id: 11,user_id:user3.id)
+	response11= Response.create(scores:[2,2,2,2], question_ids:[44,45,46,47], survey_id: 12,user_id:user3.id)
 
 
 	#----------- Average survey values --------------------------------------------------

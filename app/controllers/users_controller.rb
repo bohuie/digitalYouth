@@ -55,13 +55,6 @@ respond_to :html, :json
 				@job_posting = current_user.job_postings.build
 			end
 		end
-
-		render
-		Thread.new do
-    	if session.key?(:nav_tab)
-      		session.delete(:nav_tab)
-    	end
-    end
 	end
 
 	def edit

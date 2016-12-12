@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
 	devise :database_authenticatable, :registerable,
 	       :recoverable, :trackable, :validatable, :confirmable, :omniauthable
 
-    has_attached_file :image, default_url: 'avatar-placeholder.svg', style: { medium: "300x150#" }
+    has_attached_file :image, styles: { medium: "300x150#" }, default_url: ':style/avatar-placeholder.svg'
     include DeletableAttachment
     validates_attachment :image, content_type: { content_type: ["image/jpg", "image/jpeg", "image/png", "image/svg"] }
 

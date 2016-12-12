@@ -176,7 +176,7 @@ begin
 	#--- Companies for testing ---
 	#Creatinga  company
 	user11 = User.new(first_name: 'Hugh', last_name: 'Mcguire', email: 'Hugh@Mcguire.com', password: 'password', password_confirmation: 'password', 
-		company_name: 'Google')
+		company_name: 'PetSmart Inc.')
 	user11.add_role :employer
 	user11.skip_confirmation!
 	user11.save

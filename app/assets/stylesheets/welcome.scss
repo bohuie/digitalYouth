@@ -19,6 +19,7 @@
 .landing {
 	background-color: rgb(19, 151, 206);
 	margin-top: -20px;
+	height: 500px;
 }
 .signupbox{
 	margin-top: 65px;
@@ -30,7 +31,7 @@
 	background-color: rgb(23, 102, 136) ; 
 	text-align: center;
 	position: relative;
-	height: 120%;
+	height: calc(100% - 65px);
 	top: 41px;
 	color: white;
 }

@@ -1,7 +1,6 @@
 <%= render "users/shared/profile" %>
 <% if @user.has_role? :employee %>
 <!-- Employee Profile -->
-	<div class="container" id="profileButtons">
  		<% suclass = "tab-pane fade" %>
     	<% apclass = "tab-pane fade" %>
     	<% prclass = "tab-pane fade" %>
@@ -21,9 +20,7 @@
   			<% suclass = suclass + " in active" %>
   		<% end %>
   	<% else %>
-  		<ul class="nav nav-tabs profileButtonContent">
 			<%= render partial: "users/shared/job_seeker_home_tabs", locals: {active: session[:nav_tab]} %>			
-  		</ul>
   		<% if session[:nav_tab] == "projects" %>
   			<% prclass = prclass + " in active" %>
   		<% elsif session[:nav_tab] == "skills"  %>
@@ -319,17 +316,23 @@
   		</div>
 	</div>
 <% elsif @user.has_role? :employer %>
-	<div class="container" id="profileButtons">
-		<ul class="nav nav-tabs profileButtonContent">
-			<%= render "users/shared/employer_tabs" %>
-  		</ul>
   		<% aclass = "tab-pane fade" %>
     	<% jclass = "tab-pane fade" %>
-  		<% if session[:userTab] == "jobs" %>
-  			<% jclass = jclass + " in active" %>
-  		<% else %>
-  			<% aclass = aclass + " in active" %>
-  		<% end %>
+		<% if user_signed_in? && current_user==@user %>
+			<%= render "users/shared/employer_tabs" %>
+  			<% if session[:home_tab] == "jobs" %>
+  				<% jclass = jclass + " in active" %>
+  			<% else %>
+  				<% aclass = aclass + " in active" %>
+  			<% end %>
+		<% else %>
+			<%= render "shared/employer_tabs" %>
+  			<% if session[:nav_tab] == "jobs" %>
+  				<% jclass = jclass + " in active" %>
+  			<% else %>
+  				<% aclass = aclass + " in active" %>
+  			<% end %>
+		<% end %>
 		<div class="tab-content profileButtonContent">
 
 			<div id="about" class="<%= aclass %>">
@@ -345,6 +348,9 @@
 			</div>
 			<div id="jobs" class="<%= jclass %>">
 				<br>
+				<% if user_signed_in? && current_user == @user %>
+					<%= link_to "Create a New Posting", new_job_posting_path, class: "btn btn-primary" %><br>
+				<% end %>
 				<% if @job_postings.nil? %>
 					<% if user_signed_in? && current_user == @user %>
 						<p>You have no job postings.  Please create one below</p>
@@ -376,9 +382,6 @@
 						</div>
 						<br>
 					<% end %>
-				<% end %>
-				<% if user_signed_in? && current_user == @user %>
-					<%= link_to "Create a New Posting", new_job_posting_path, class: "btn btn-primary" %><br>
 				<% end %>
 			</div>
 		</div>

@@ -20,7 +20,7 @@
   			<% suclass = suclass + " in active" %>
   		<% end %>
   	<% else %>
-			<%= render partial: "users/shared/job_seeker_home_tabs", locals: {active: session[:nav_tab]} %>			
+			<%= render partial: "shared/job_seeker_tabs", locals: {active: session[:nav_tab]} %>			
   		<% if session[:nav_tab] == "projects" %>
   			<% prclass = prclass + " in active" %>
   		<% elsif session[:nav_tab] == "skills"  %>
@@ -319,14 +319,14 @@
   		<% aclass = "tab-pane fade" %>
     	<% jclass = "tab-pane fade" %>
 		<% if user_signed_in? && current_user==@user %>
-			<%= render "users/shared/employer_tabs" %>
+			<%= render "users/shared/employer_home_tabs" %>
   			<% if session[:home_tab] == "jobs" %>
   				<% jclass = jclass + " in active" %>
   			<% else %>
   				<% aclass = aclass + " in active" %>
   			<% end %>
 		<% else %>
-			<%= render "shared/employer_tabs" %>
+			<%= render partial: "shared/employer_tabs", locals: {active: session[:nav_tab]} %>
   			<% if session[:nav_tab] == "jobs" %>
   				<% jclass = jclass + " in active" %>
   			<% else %>

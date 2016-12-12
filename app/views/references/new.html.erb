@@ -1,14 +1,6 @@
 <%= render "users/shared/profile" %>
 
-<div class="container" id="profileButtons">
-	<ul class="nav nav-tabs profileButtonContent">
-		<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("surveys","<%=user_path(current_user)%>");><a data-toggle="tab" href="<%=user_path(current_user)%>">SURVEYS</a></li>
-        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("applications","<%=user_path(current_user)%>");><a data-toggle="tab" href="<%=user_path(current_user)%>">APPLICATIONS</a></li>
-        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("projects","<%=user_path(current_user)%>");><a data-toggle="tab" href="#projects">PROJECTS</a></li>
-        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("skills","<%=user_path(current_user)%>");><a data-toggle="tab" href="#skills">SKILLS</a></li>
-        <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("references","<%=user_path(current_user)%>");><a data-toggle="tab" href="#references">REFERENCES</a></li>
-    </ul>
-</div>
+<%= render partial: "shared/job_seeker_tabs", locals: {active: "projects" } %>
 
 <div class ="container">
 	<p>Refer: <%= @referUser.first_name %> <%= @referUser.last_name %></p>

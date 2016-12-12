@@ -1,9 +1,11 @@
 class UsersController < ApplicationController
 respond_to :html, :json
 
-	before_action :authenticate_user!, except: [:show, :index]
+	before_action :authenticate_user!, except: [:show, :index, :nav_tab] #ignore home_tab, only done when it is the current user and logged in
 	before_action :profile_owner, only: [:edit, :update, :destroy]
-	skip_before_action :verify_authenticity_token, only: [:userTab]
+	skip_before_action :verify_authenticity_token, only: [:nav_tab] #ignore home_tab, only done when it is the current user and logged in
+
+
 	
 	def index
 		@users = User.all
@@ -53,6 +55,13 @@ respond_to :html, :json
 				@job_posting = current_user.job_postings.build
 			end
 		end
+
+		render
+		Thread.new do
+    	if session.key?(:nav_tab)
+      		session.delete(:nav_tab)
+    	end
+    end
 	end
 
 	def edit
@@ -110,9 +119,8 @@ respond_to :html, :json
     	end
   	end
 
-  	def userTab
-  		
-  		session[:userTab] = params[:user_tab]
+  	def home_tab
+  		session[:home_tab] = params[:home_tab]
   		
   		if params.key?(:redirect)
   			respond_to do |format|
@@ -121,9 +129,14 @@ respond_to :html, :json
   		end
   	end
 
-  	def reference_tab
-  		session[:userTab] = "references"
-  		redirect_to current_user
+  	def nav_tab
+  		session[:nav_tab] = params[:nav_tab]
+  		
+  		if params.key?(:redirect)
+  			respond_to do |format|
+  				format.js { render js: "window.location = '#{params[:redirect]}'" }
+  			end
+  		end
   	end
 
 	private

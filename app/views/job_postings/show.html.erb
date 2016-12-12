@@ -1,11 +1,6 @@
 <%= render "users/shared/profile" %>
 
-<div class="container" id="profileButtons">
-	<ul class="nav nav-tabs profileButtonContent">
-		<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("about","<%=user_path(current_user)%>");><a data-toggle="tab" href="<%=user_path(current_user)%>">ABOUT US</a></li>
-        <li class= "active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("jobs","<%=user_path(current_user)%>");><a data-toggle="tab" href="<%=user_path(current_user)%>">JOBS</a></li>
-    </ul>
-</div>
+<%= render partial: "shared/employer_tabs", locals: { active: "jobs" } %>
 
 <% if @job_posting.is_expired? %>
 	<% if (user_signed_in? && current_user.id == @job_posting.user_id) || (user_signed_in? && current_user.has_role?(:admin))%>
@@ -15,16 +10,5 @@
 		<%= render 'shared/dismissable_alert', msg:"This job posting is expired.", type: "warning" %>
 	<% end %>
 <% else %>
-	<% if current_user.has_role?(:employee) %>
-		<div class="container" id="profileButtons">
-	<ul class="nav nav-tabs profileButtonContent">
-		<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("surveys","<%=user_path(current_user)%>");><a data-toggle="tab" href="<%=user_path(current_user)%>">SURVEYS</a></li>
-        <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("applications","<%=user_path(current_user)%>");><a data-toggle="tab" href="<%=user_path(current_user)%>">APPLICATIONS</a></li>
-        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("projects","<%=user_path(current_user)%>");><a data-toggle="tab" href="#projects">PROJECTS</a></li>
-        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("skills","<%=user_path(current_user)%>");><a data-toggle="tab" href="#skills">SKILLS</a></li>
-        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("references","<%=user_path(current_user)%>");><a data-toggle="tab" href="#references">REFERENCES</a></li>
-       </ul>
-       </div>
-	<% end %>
 	<%= render 'job_postings/job_posting' %>
 <% end %>

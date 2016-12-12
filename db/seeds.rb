@@ -28,6 +28,14 @@ begin
 	skill8 = Skill.create(name: 'microsoft office')
 	skill9 = Skill.create(name: 'supervision')
 	skill10= Skill.create(name: 'java')
+	skill11= Skill.create(name: 'mobile app development')
+	skill12= Skill.create(name: 'corona sdk')
+	skill13= Skill.create(name: 'lua')
+	skill14= Skill.create(name: 'storyboarding')
+	skill15= Skill.create(name: 'analytics')
+	skill16= Skill.create(name: 'online forum posting')
+	skill17= Skill.create(name: 'ruby')
+	skill18= Skill.create(name: 'presentation')
 
 
 	#--- Job Seekers for testing ---#
@@ -41,21 +49,25 @@ begin
 	user1.create_consent(answer: 1, name: "John Doe", date_signed: Date.today, consent_type: 1)
 
 	#How to do user skills
-	UserSkill.create(user_id: user1.id, skill_id: skill1.id, survey_id:11)
-	UserSkill.create(user_id: user1.id, skill_id: skill2.id, survey_id:11)
-	UserSkill.create(user_id: user1.id, skill_id: skill10.id, survey_id:3)
 	UserSkill.create(user_id: user1.id, skill_id: skill5.id, survey_id:7)
-	UserSkill.create(user_id: user1.id, skill_id: skill7.id, survey_id:8)
+	UserSkill.create(user_id: user1.id, skill_id: skill11.id, survey_id:3)
+	UserSkill.create(user_id: user1.id, skill_id: skill12.id, survey_id:3)
+	UserSkill.create(user_id: user1.id, skill_id: skill13.id, survey_id:3)
+	UserSkill.create(user_id: user1.id, skill_id: skill14.id, survey_id:3)
+	UserSkill.create(user_id: user1.id, skill_id: skill15.id, survey_id:12)
+	UserSkill.create(user_id: user1.id, skill_id: skill10.id, survey_id:3)
 
 	#Creating projects
-	project1 = user1.projects.create(title: 'Java Games', description: 'Created some games', project_date: '2016-09-10')
-	project2 = user1.projects.create(title: 'Created a Facebook page', description: 'Created, then managed, a facebook page for a business', project_date: '2016-11-10')
+	project1 = user1.projects.create(title: 'Mobile Dev game', description: 'Created a game using Corona and Lua.  Also collected data for analytics', project_date: '2016-09-10', image: File.new("#{Rails.root}/app/assets/images/mobigame.png"))
+	project2 = user1.projects.create(title: 'Java GUI Game', description: 'Introduction to java, for personal learning.', project_date: '2016-11-10', image: File.new("#{Rails.root}/app/assets/images/puzzle.png"))
 
-	#Linking projects and skills.  In order to have skills match the user, you must add them to the above list
-	ProjectSkill.create(project_id: project1.id, skill_id: skill10.id, survey_id: 3)
-	ProjectSkill.create(project_id: project1.id, skill_id: skill5.id, survey_id: 7)
-	ProjectSkill.create(project_id: project2.id, skill_id: skill1.id, survey_id: 11)
-	ProjectSkill.create(project_id: project2.id, skill_id: skill7.id, survey_id: 8)
+	#Linking projects and skills.  If they are not in the user's list, they will be automatically added
+	ProjectSkill.create(project_id: project1.id, skill_id: skill11.id, survey_id: 3)
+	ProjectSkill.create(project_id: project1.id, skill_id: skill12.id, survey_id: 3)
+	ProjectSkill.create(project_id: project1.id, skill_id: skill13.id, survey_id: 3)
+	ProjectSkill.create(project_id: project1.id, skill_id: skill14.id, survey_id: 3)
+	ProjectSkill.create(project_id: project1.id, skill_id: skill15.id, survey_id: 12)
+	ProjectSkill.create(project_id: project2.id, skill_id: skill10.id, survey_id: 3)
 
 	user2 = User.new(first_name: 'Jane', last_name: 'Doe', email: 'jane@doe.com', password: 'password', password_confirmation: 'password')
 	user2.add_role :employee
@@ -63,9 +75,13 @@ begin
 	user2.save
 	user2.create_consent(answer: 0, name: "Jane Doe", date_signed: Date.today, consent_type: 1)
 
+	
 	UserSkill.create(user_id: user2.id, skill_id: skill4.id, survey_id:3)
-	project3 = user2.projects.create(title: 'Website Development', description: 'Created a website for my employer', project_date: '2016-11-10')
+	UserSkill.create(user_id: user2.id, skill_id: skill16.id, survey_id:6)
+
+	project3 = user2.projects.create(title: 'Concept Navigation', description: 'Online course management that helps users self-regulate their learning, by providing individualized paths.', project_date: '2016-11-10', image: File.new("#{Rails.root}/app/assets/images/ER.png"))
 	ProjectSkill.create(project_id: project3.id, skill_id: skill4.id, survey_id: 3)
+	ProjectSkill.create(project_id: project3.id, skill_id: skill16.id, survey_id: 6)
 
 	user3 = User.new(first_name: 'Kaden', last_name: 'Buchanan', email: 'Kaden@Buchanan.com', password: 'password', password_confirmation: 'password')
 	user3.add_role :employee
@@ -75,9 +91,12 @@ begin
 
 	UserSkill.create(user_id: user3.id, skill_id: skill5.id, survey_id:7)
 	UserSkill.create(user_id: user3.id, skill_id: skill10.id, survey_id:3)
-	project4 = user3.projects.create(title: 'Java Project', description: 'Had a project with a tight deadline', project_date: '2016-08-06')
-	ProjectSkill.create(project_id: project4.id, skill_id: skill5.id, survey_id: 7)
-	ProjectSkill.create(project_id: project4.id, skill_id: skill10.id, survey_id: 3)
+	UserSkill.create(user_id: user3.id, skill_id: skill16.id, survey_id:3)
+	UserSkill.create(user_id: user3.id, skill_id: skill9.id, survey_id:7)
+
+	project4 = user3.projects.create(title: 'Digital Citizenship', description: 'Developed class to engage students in community, digital citizenship.  Used flipped classroom technique.', project_date: '2016-08-06', image: File.new("#{Rails.root}/app/assets/images/dc.png"))
+	ProjectSkill.create(project_id: project4.id, skill_id: skill16.id, survey_id: 3)
+	ProjectSkill.create(project_id: project4.id, skill_id: skill9.id, survey_id: 7)
 
 	user4 = User.new(first_name: 'Mackena', last_name: 'Finley', email: 'Mackena@Finley.com', password: 'password', password_confirmation: 'password')
 	user4.add_role :employee
@@ -86,32 +105,44 @@ begin
 	user4.create_consent(answer: 0, name: "Mackena Finley", date_signed: Date.today, consent_type: 1)
 
 	UserSkill.create(user_id: user4.id, skill_id: skill9.id, survey_id:7)
-	project5 = user4.projects.create(title: 'Manager', description: 'Had to supervise a group of people', project_date: '2016-10-01')
-	ProjectSkill.create(project_id: project5.id, skill_id: skill9.id, survey_id: 7)
+	UserSkill.create(user_id: user4.id, skill_id: skill17.id, survey_id:3)
+	UserSkill.create(user_id: user4.id, skill_id: skill18.id, survey_id:7)
 
-	user5 = User.new(first_name: 'Lenzy', last_name: 'Bennett', email: 'Lenzy@doe.Bennett', password: 'password', password_confirmation: 'password')
+	project5 = user4.projects.create(title: 'KRIT Physics Tutor', description: 'Implementation of a physics tutoring software that uses AI to help plan a learning path.', project_date: '2016-10-01', image: File.new("#{Rails.root}/app/assets/images/menu.png"))
+	ProjectSkill.create(project_id: project5.id, skill_id: skill17.id, survey_id: 3)
+	ProjectSkill.create(project_id: project5.id, skill_id: skill18.id, survey_id: 7)
+
+	user5 = User.new(first_name: 'Lenzy', last_name: 'Bennett', email: 'Lenzy@Bennett.com', password: 'password', password_confirmation: 'password')
 	user5.add_role :employee
 	user5.skip_confirmation!
 	user5.save
 	user5.create_consent(answer: 0, name: "Lenzy Bennett", date_signed: Date.today, consent_type: 1)
 
 	UserSkill.create(user_id: user5.id, skill_id: skill8.id, survey_id:4)
-	project6 = user5.projects.create(title: 'Document Writing', description: 'Wrote up lots of documents and policy for work', project_date: '2016-11-09')
-	ProjectSkill.create(project_id: project6.id, skill_id: skill8.id, survey_id: 4)
+	UserSkill.create(user_id: user5.id, skill_id: skill12.id, survey_id:3)
+	UserSkill.create(user_id: user5.id, skill_id: skill13.id, survey_id:3)
+
+	project6 = user5.projects.create(title: 'Educational Games', description: 'Create games that are to assist in teaching, by engaging the students.', project_date: '2016-11-09', image: File.new("#{Rails.root}/app/assets/images/gameMods.jpg"))
+	ProjectSkill.create(project_id: project6.id, skill_id: skill12.id, survey_id: 3)
+	ProjectSkill.create(project_id: project6.id, skill_id: skill13.id, survey_id: 3)
 
 	user6 = User.new(first_name: 'Jordin', last_name: 'Carroll', email: 'Jordin@Carroll.com', password: 'password', password_confirmation: 'password')
 	user6.add_role :employee
 	user6.skip_confirmation!
 	user6.save
 	user6.create_consent(answer: 0, name: "Jordin Carroll", date_signed: Date.today, consent_type: 1)
+
 	UserSkill.create(user_id: user6.id, skill_id: skill1.id, survey_id:11)
 	UserSkill.create(user_id: user6.id, skill_id: skill2.id, survey_id:11)
+	UserSkill.create(user_id: user6.id, skill_id: skill5.id, survey_id:7)
+	UserSkill.create(user_id: user6.id, skill_id: skill7.id, survey_id:8)
 
 	user7 = User.new(first_name: 'Derryne', last_name: 'Keith', email: 'Derryne@Keith.com', password: 'password', password_confirmation: 'password')
 	user7.add_role :employee
 	user7.skip_confirmation!
 	user7.save
 	user7.create_consent(answer: 0, name: "Derryne Keith", date_signed: Date.today, consent_type: 1)
+
 	UserSkill.create(user_id: user7.id, skill_id: skill5.id, survey_id:7)
 	UserSkill.create(user_id: user7.id, skill_id: skill7.id, survey_id:8)
 
@@ -120,6 +151,7 @@ begin
 	user8.skip_confirmation!
 	user8.save
 	user8.create_consent(answer: 0, name: "Edwyn Walter", date_signed: Date.today, consent_type: 1)
+
 	UserSkill.create(user_id: user8.id, skill_id: skill6.id, survey_id:9)
 	UserSkill.create(user_id: user8.id, skill_id: skill9.id, survey_id:7)
 
@@ -128,6 +160,7 @@ begin
 	user9.skip_confirmation!
 	user9.save
 	user9.create_consent(answer: 0, name: "Kingston Fletcher", date_signed: Date.today, consent_type: 1)
+
 	UserSkill.create(user_id: user9.id, skill_id: skill8.id, survey_id:4)
 	UserSkill.create(user_id: user9.id, skill_id: skill5.id, survey_id:7)
 
@@ -136,6 +169,7 @@ begin
 	user10.skip_confirmation!
 	user10.save
 	user10.create_consent(answer: 0, name: "Tyler Weiss", date_signed: Date.today, consent_type: 1)
+	
 	UserSkill.create(user_id: user10.id, skill_id: skill1.id, survey_id:11)
 	UserSkill.create(user_id: user10.id, skill_id: skill10.id, survey_id:3)
 

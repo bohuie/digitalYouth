@@ -1,5 +1,7 @@
 <%= render "users/shared/profile" %>
 
+<%= render partial: "shared/job_seeker_tabs", locals: { active: "applications" } %>
+
 <h3>Job Posting Application</h3>
 <p> You are Applying for the <strong><%=@job_posting.title%></strong> position at <strong><%=@job_posting.user.company_name %></strong></p>
 <p> Feel free to include a message but remember to be professional as this application will be viewed by <%=@job_posting.user.company_name %>.<br>

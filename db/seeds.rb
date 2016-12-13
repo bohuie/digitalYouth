@@ -284,13 +284,30 @@ begin
 	#--- References for testing ---
 	reference1 = Reference.create(first_name: 'Bernie', last_name: 'Smith', email: 'Andrew@gmail.com', company: 'Apple Picking Co.',
 				 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "He was the best Apple Picker.", user_id: user1.id)
+	reference1 = Reference.create(first_name: user11.first_name, last_name: user11.last_name, email: user11.first_name+"@"+user11.last_name+'.com', company: user11.company_name,
+				 position: "Developer", phone_number:"(250)555-5555", reference_body: "Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar ", user_id: user1.id)
 
 	reference2 = Reference.create(first_name: 'Bernie', last_name: 'Smith', email: 'Greg@gmail.com', company: 'Apple Pickers United LTD',
 				 position: "Apple QC Specialist", phone_number:"(250)555-5050", reference_body: "He was the best.", user_id: user2.id)
 
 
 	# --- JobPostingApplications for testing ---
-	jobpostingapplication = JobPostingApplication.create(message: "This is a message", job_posting_id: jobposting1.id, applicant_id: user1.id, company_id: user11.id, status: 0)
+	jobpostingapplication = JobPostingApplication.create(message: "Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar ", 
+		job_posting_id: jobposting1.id, applicant_id: user1.id, company_id: user11.id, status: 0)
+	jobpostingapplication = JobPostingApplication.create(message: "Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar ", 
+		job_posting_id: jobposting1.id, applicant_id: user2.id, company_id: user11.id, status: 0)
+	jobpostingapplication = JobPostingApplication.create(message: "Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar ", 
+		job_posting_id: jobposting1.id, applicant_id: user3.id, company_id: user11.id, status: 0)
+	jobpostingapplication = JobPostingApplication.create(message: "Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar ", 
+		job_posting_id: jobposting1.id, applicant_id: user4.id, company_id: user11.id, status: 0)
+	jobpostingapplication = JobPostingApplication.create(message: "Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar ", 
+		job_posting_id: jobposting1.id, applicant_id: user5.id, company_id: user11.id, status: 0)
+	jobpostingapplication = JobPostingApplication.create(message: "Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar ", 
+		job_posting_id: jobposting1.id, applicant_id: user6.id, company_id: user11.id, status: 0)
+	jobpostingapplication = JobPostingApplication.create(message: "Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar ", 
+		job_posting_id: jobposting1.id, applicant_id: user7.id, company_id: user11.id, status: 0)
+	jobpostingapplication = JobPostingApplication.create(message: "Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar ", 
+		job_posting_id: jobposting1.id, applicant_id: user8.id, company_id: user11.id, status: 0)
 	jobpostingapplication = JobPostingApplication.create(message: "This be a message", job_posting_id: jobposting1.id, applicant_id: user2.id, company_id: user11.id, status:-2)
 	
 

@@ -2,6 +2,27 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.jcrop-holder div{
+    -webkit-border-radius: 50% !important;
+    -moz-border-radius: 50% !important;
+    border-radius: 50% !important;
+    margin: -1px;
+}
+
+.image-display {
+	width: 150px;
+	height: 150px;
+	overflow: hidden;
+	border-radius: 50%;
+}
+
+.profile-image {
+	display: block;
+	border-radius: 50%;
+	margin-left: auto;
+	margin-right :auto;
+}
+
 .survey-box-row{
 	display: -webkit-flex;
 }

@@ -62,10 +62,12 @@ respond_to :html, :json
 
 	def update
 		@user = User.find(params[:id])
-		
 		if params.include?(:personal)
 			@user.update_attributes(personal_params)
 			flash[:success] = "Personal Info successfully updated."
+			unless params[:user][:image].blank?
+				render action: 'crop' and return
+			end
 		elsif params.include?(:email)
 			if @user.valid_password?(params[:user][:email_password])
 				@user.update_attributes(email_params)
@@ -92,6 +94,10 @@ respond_to :html, :json
 		elsif params.include?(:bio)
 			@user.update_attributes(bio_params)
 			flash[:success] = "Bio updated."
+		elsif params.include?(:crop)
+			@user.update_attributes(crop_params)
+			@user.reprocess_image
+			flash[:success] = "Profile Image updated."
 		else
 			flash[:danger] = "Something went wrong.  Please contact an administrator."
 		end
@@ -140,6 +146,10 @@ respond_to :html, :json
 			params.require(:user).permit(:email, :first_name, :last_name, :linkedin, :twitter, :facebook, :company_name, :street_address, :city, :province, :postal_code, :password, :password_confirmation, :current_password)
 		else
 		end
+	end
+
+	def crop_params
+		params.require(:user).permit(:crop_x, :crop_y, :crop_w, :crop_h)
 	end
 
 	def personal_params

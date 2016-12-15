@@ -1,16 +1,16 @@
 <%= render "users/shared/profile" %>
 
-<<%= render partial: "shared/job_seeker_tabs", locals: {active: "references" } %>
+<%= render partial: "shared/job_seeker_tabs", locals: {active: "references" } %>
 
 <div class ="container">
-		<p> Fill out this form to ask your contact to give you a reference</p>
+	<h4>Request a Reference</h4>
+	<p> Fill out this form to ask your contact to give you a reference.</p>
 		
-		<%= simple_form_for @reference_email do |r| %>
-			<%= r.input :first_name, required: true %>
-			<%= r.input :last_name, required: true %>
-			<%= r.input :email, as: "email", required: true %>
-			<%= r.hidden_field :reference_url, :value => @url%>
-			<%= r.button :submit, 'Send', class: "btn btn-primary" %>
-		<% end -%>
-		
+	<%= simple_form_for @reference_email do |r| %>
+		<%= r.input :first_name, required: true %>
+		<%= r.input :last_name, required: true %>
+		<%= r.input :email, as: "email", required: true %>
+		<%= r.hidden_field :reference_url, :value => @url%>
+		<%= r.button :submit, 'Send', class: "btn btn-primary" %>
+	<% end %>
 </div>

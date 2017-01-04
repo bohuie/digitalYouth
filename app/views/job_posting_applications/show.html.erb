@@ -4,22 +4,26 @@
 	<%= render partial: "shared/job_seeker_tabs", locals: { active: "applications" } %>
 
     <div class="tab-content">
-	<h3 class="job-application-content"><%= link_to raw("#{@job_posting.title} (<i>#{@job_posting.user.company_name}</i>)"), job_posting_path(@job_posting) %>
-		<span class=" label label-<%=@job_posting_application.get_bootstrap_status%>"><%="#{@job_posting_application.get_status_string}"%></span>
-	</h3>
-	<% if @job_posting_application.status == -1 %>
-		<p> Sorry, your application has been rejected by <%=@job_posting_application.company.company_name%>.</p>
-	<% elsif @job_posting_application.status == 0 %>
-		<p> Your application has yet to be reviewed by <%=@job_posting_application.company.company_name%>.</p>
-	<% elsif @job_posting_application.status == 1 %>
-		<p> Your application is being considered by <%=@job_posting_application.company.company_name%>.</p>
-	<% elsif @job_posting_application.status == 2 %>
-		<p> Your application has been accepted!<br>
+		<h4 class="job-application-content"><%= link_to raw("#{@job_posting.title} (<i>#{@job_posting.user.company_name}</i>)"), job_posting_path(@job_posting) %>
+			<span class=" label label-<%=@job_posting_application.get_bootstrap_status%>"><%="#{@job_posting_application.get_status_string}"%></span>
+		</h4>
+		<% if @job_posting_application.status == -1 %>
+			<p> Sorry, your application has been rejected by <%=@job_posting_application.company.company_name%>.</p>
+		<% elsif @job_posting_application.status == 0 %>
+			<p> Your application has yet to be reviewed by <%=@job_posting_application.company.company_name%>.</p>
+		<% elsif @job_posting_application.status == 1 %>
+			<p> Your application is being considered by <%=@job_posting_application.company.company_name%>.</p>
+		<% elsif @job_posting_application.status == 2 %>
+			<p> Your application has been accepted!<br>
 			You will be contacted by <%=@job_posting_application.company.company_name%> soon.
-		</p>
-	<% end %>
-	<%= render partial: "job_posting_applications/user_app_skills", locals: {applicant: @job_posting_application.applicant} %>
-	<%= @job_posting_application.message %>
+			</p>
+		<% end %>
+		<%= render partial: "job_posting_applications/user_app_skills", locals: {applicant: @job_posting_application.applicant} %>
+		<div class="row">
+			<div class="col-md-3">
+				<%= @job_posting_application.message %>
+			</div>
+		</div>
 	</div>
 <% elsif current_user.has_role? :employer %>
 	<%= render partial: "shared/employer_tabs", locals: { active: "jobs" } %>

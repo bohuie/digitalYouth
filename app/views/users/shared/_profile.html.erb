@@ -2,8 +2,8 @@
 <!-- Employee Profile -->
 <div class ="profileContainer">
 	<div class ="profileContainerImage" id="shadow-arch-edges">
-		<div class ="profileFrame">
-			<%= image_tag @user.image.url, alt:"User Icon" %> <!-- Should add a max size or auto scale pics that are uploaded -->
+		<div >
+			<%= image_tag @user.image.url(:medium), alt:"User Icon", class: "profile-image" %> <!-- Should add a max size or auto scale pics that are uploaded -->
 		</div>
 	</div>
 	<div class ="profileContainerContent">

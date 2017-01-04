@@ -22,9 +22,17 @@ class User < ActiveRecord::Base
 	devise :database_authenticatable, :registerable,
 	       :recoverable, :trackable, :validatable, :confirmable, :omniauthable
 
-    has_attached_file :image, styles: { medium: "300x150#", thumb: "100x50#" }, default_url: 'avatar-placeholder.svg'
+    has_attached_file :image,
+        default_url: 'avatar-placeholder-:style.png',
+        styles: { 
+            medium: { geometry: "150x150#", :processors => [:cropper] },
+            thumb: { geometry: "75x75#", :processors => [:cropper] }, 
+            large: { geometry: "400x400>" }
+        }
     include DeletableAttachment
     validates_attachment :image, content_type: { content_type: ["image/jpg", "image/jpeg", "image/png", "image/svg"] }
+    attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
+    #after_update :reprocess_image, :if => :cropping?
 
     validates_format_of :email, :without => TEMP_EMAIL_REGEX, on: :update
 
@@ -123,5 +131,18 @@ class User < ActiveRecord::Base
             end
         end
         return true
+    end
+
+    def cropping?
+        !crop_x.blank? && !crop_y.blank? && !crop_w.blank? && !crop_h.blank?
+    end
+
+    def image_geometry(style = :original)
+        @geometry ||= {}
+        @geometry[style] ||= Paperclip::Geometry.from_file(image.path(style))
+    end
+
+    def reprocess_image
+        image.reprocess!
     end
 end

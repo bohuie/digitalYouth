@@ -38,14 +38,15 @@ class Project < ActiveRecord::Base
 
 				#Delete the skill
 				if m[1]["_destroy"] == "true"
-					#Two different methods of items being added to the hash
-					if m[1]["skill"].nil?
-						skill_name = m[1]["skill_attributes"]["name"].downcase
-					else
-						skill_name = m[1]["skill"].downcase
-					end
-
+					#If there is no blank id, attempt to find the skill through other means and delete if it exists
 					if id.blank?
+						#Two different methods of items being added to the hash
+						if m[1]["skill"].nil?
+							skill_name = m[1]["skill_attributes"]["name"].downcase
+						else
+							skill_name = m[1]["skill"].downcase
+						end
+
 						skill = Skill.find_by(name: skill_name)
 						unless skill.nil? #dont add skill, since user is deleting it from the list
 							project_skill = self.project_skills.find_by(skill_id: skill.id, survey_id: survey_id)

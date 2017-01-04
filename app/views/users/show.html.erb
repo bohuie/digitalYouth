@@ -84,6 +84,7 @@
 					<div class="row">
 						<%= link_to "New Project", new_project_path, class: "btn btn-primary" %>
 					</div>
+					<br />
 				<% end %>
 				<% if !@projects.empty? %>
 					<div class="projects">
@@ -143,6 +144,7 @@
 								<div class="col-md-4"><%= g.input :name %>	</div>
 								<div class="col-md-4"><%= g.input :survey_id, required:true, collection: @surveys, prompt: "Select Classification", label: "Associated Survey Skill"%></div>
 							</div>
+							<br />
 							<%= g.button :submit, class: "btn btn-primary" %>
 						<% end %>
 					<% end %>

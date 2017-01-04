@@ -32,28 +32,60 @@ class Project < ActiveRecord::Base
 			return true
 		else
 			hash.each do |m|
+				#Pull out common items and store into variable for easier reading
 				id = m[1]["id"]
+				survey_id = m[1]["survey_id"]
+
+				#Delete the skill
 				if m[1]["_destroy"] == "true"
-					ProjectSkill.find(id).destroy if !id.blank?
-				elsif m[1]["_destroy"] == "false" || m[1]["_destroy"].empty?
+					#Two different methods of items being added to the hash
 					if m[1]["skill"].nil?
 						skill_name = m[1]["skill_attributes"]["name"].downcase
 					else
 						skill_name = m[1]["skill"].downcase
 					end
+
+					if id.blank?
+						skill = Skill.find_by(name: skill_name)
+						unless skill.nil? #dont add skill, since user is deleting it from the list
+							project_skill = self.project_skills.find_by(skill_id: skill.id, survey_id: survey_id)
+							unless project_skill.nil?
+								project_skill.destroy
+							end
+						end
+					else
+						ProjectSkill.find(id).destroy
+					end
+
+				#The skill is to be added
+				elsif m[1]["_destroy"] == "false" || m[1]["_destroy"].empty?
+					#Two different methods of items being added to the hash
+					if m[1]["skill"].nil?
+						skill_name = m[1]["skill_attributes"]["name"].downcase
+					else
+						skill_name = m[1]["skill"].downcase
+					end
+					#Create the skill if it is not found
 					skill = Skill.find_by(name: skill_name)
 					if skill.nil?
 						skill = Skill.new(name: skill_name)
 						return false if !skill.save
 					end
-					skill_id = skill.id
-					survey_id = m[1]["survey_id"]
+
+					#Add it to the user's skills if they don't have it
+					user_skill = UserSkill.find_by(user_id: self.user_id, skill_id: skill.id)
+					if user_skill.nil?
+						user_skill = UserSkill.new(user_id: self.user_id, skill_id: skill.id, survey_id: survey_id)
+						return false if !user_skill.save
+					end
+
+					#Add the skill to project's skills
 					if id.blank?
-						project_skill = ProjectSkill.new(skill_id: skill_id, survey_id: survey_id, project_id: self.id)
+						project_skill = self.project_skills.new(skill_id: skill.id, survey_id: survey_id)
 						return false if !project_skill.save
 					else
 						project_skill = ProjectSkill.find(id)
-						return false if !project_skill.update(id: project_skill.id, skill_id: skill_id, survey_id: survey_id, project_id: self.id)
+						return false if !project_skill.update(id: project_skill.id, skill_id: skill.id, survey_id: survey_id, project_id: self.id)
 					end
 				end
 			end

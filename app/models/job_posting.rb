@@ -38,31 +38,62 @@ class JobPosting < ActiveRecord::Base
 	end
 
 	def process_skills(hash) # Creates and Updates job posting skills, creating new skills when needed.
-		hash.each do |m|
-			id = m[1]["id"]
-			if m[1]["_destroy"] == "true"
-				JobPostingSkill.find(id).destroy if !id.blank?
-			elsif m[1]["_destroy"] == "false"
-				skill_name = m[1]["skill_attributes"]["name"].downcase
-				skill = Skill.find_by(name: skill_name)
-				if skill.nil?
-					skill = Skill.new(name: skill_name)
-					return false if !skill.save
-				end
-				skill_id = skill.id
+		if hash.nil?
+			return true
+		else
+			hash.each do |m|
+				id = m[1]["id"]
 				survey_id = m[1]["survey_id"]
-				importance = m[1]["importance"]
 
-				if id.blank?
-					job_posting_skill = JobPostingSkill.new(skill_id: skill_id, survey_id: survey_id, importance: importance, job_posting_id: self.id)
-					return false if !job_posting_skill.save
-				else
-					job_posting_skill = JobPostingSkill.find(id)
-					return false if !job_posting_skill.update(skill_id: skill_id, survey_id: survey_id, importance: importance, job_posting_id: self.id)
+				if m[1]["_destroy"] == "true"
+					#If there is no blank id, attempt to find the skill through other means and delete if it exists
+					if id.blank?
+						#Two different methods of items being added to the hash
+						if m[1]["skill"].nil?
+							skill_name = m[1]["skill_attributes"]["name"].downcase
+						else
+							skill_name = m[1]["skill"].downcase
+						end
+
+						skill = Skill.find_by(name: skill_name)
+						unless skill.nil? #dont add skill, since user is deleting it from the list
+							job_posting_skill = self.job_posting_skills.find_by(skill_id: skill.id, survey_id: survey_id)
+							unless job_posting_skill.nil?
+								job_posting_skill.destroy
+							end
+						end
+					else
+						JobPostingSkill.find(id).destroy
+					end
+				elsif m[1]["_destroy"] == "false"
+					#Fringe case for catching different method of passing the skill
+					if m[1]["skill"].nil?
+						skill_name = m[1]["skill_attributes"]["name"].downcase
+					else
+						skill_name = m[1]["skill"].downcase
+					end
+
+					skill = Skill.find_by(name: skill_name)
+					#Create the skill if it is not found
+					if skill.nil?
+						skill = Skill.new(name: skill_name)
+						return false if !skill.save
+					end
+
+					importance = m[1]["importance"]
+
+					#Add the skill to job posting's skills
+					if id.blank?
+						job_posting_skill = self.job_posting_skills.new(skill_id: skill.id, survey_id: survey_id, importance: importance)
+						return false if !job_posting_skill.save
+					else
+						job_posting_skill = JobPostingSkill.find(id)
+						return false if !job_posting_skill.update(skill_id: skill.id, survey_id: survey_id, importance: importance, job_posting_id: self.id)
+					end
 				end
 			end
+			return true
 		end
-		return true
 	end
 
 	def is_expired? # checks to see if a job posting is expired

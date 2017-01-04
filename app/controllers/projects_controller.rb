@@ -40,9 +40,10 @@ class ProjectsController < ApplicationController
 	end
 
 	def create
+		@user = current_user
 		#@project = Project.new(project_params)
 		@project = current_user.projects.build(project_params)
-		if @project.save && @project.process_skills(params[:project][:project_skills_attributes]) && process_project_skills
+		if @project.save && @project.process_skills(params[:project][:project_skills_attributes]) && process_project_skills(@project)
 			#current_user.projects << @project
 			Project.reindex if !Rails.env.test?
 			flash[:success] = "Project successfully created."
@@ -55,10 +56,11 @@ class ProjectsController < ApplicationController
 	end
 
 	def update
+		byebug
 		@project = Project.find(params[:id])
 		@skills = @project.skills
 		
-		if @project.update_attributes(project_params) && process_project_skills
+		if @project.update_attributes(project_params) && process_project_skills(@project)
 			Project.reindex if !Rails.env.test?
 			flash[:success] = "Project successfully updated."
 			redirect_to current_user
@@ -98,7 +100,7 @@ class ProjectsController < ApplicationController
 		end
 	end
 
-	def process_project_skills
+	def process_project_skills(project)
 
 		if params[:project][:project_skills_attributes].nil?
 			return true
@@ -115,8 +117,24 @@ class ProjectsController < ApplicationController
 					if user_skill.empty?
 						current_user.user_skills.create(skill_id: skill.id, survey_id: h[1]["survey_id"])
 					end
+					project_skill = project.project_skills.where(skill_id: skill.id, survey_id: h[1]["survey_id"])
+					if project_skill.empty?
+						project.project_skills.create(skill_id: skill.id, survey_id: h[1]["survey_id"])
+					end
 				else
-					return false
+					byebug
+					if h[1]["skill"].nil?
+						skill_name = h[1]["skill_attributes"]["name"].downcase
+					else
+						skill_name = h[1]["skill"].downcase
+					end
+					skill = Skill.find_by(name: skill_name)
+					unless skill.nil?
+						project_skill = project.project_skills.where(skill_id: skill.id, survey_id: h[1]["survey_id"])
+						unless project_skill.empty?
+							project_skill.destroy_all
+						end
+					end
 				end
 			end
 		end

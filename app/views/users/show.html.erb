@@ -204,7 +204,7 @@
 								<% @confirmed_references.each do |r| %>
 									<div class ="row alternate" id="ref">
 										<div class="col-md-3">
-											<img src="https://image.freepik.com/free-icon/user-male-silhouette_318-55563.png" class="refLeft" id="refImage"/>
+											<img src="app/assets/images/avatar-placeholder.png" class="refLeft" id="refImage"/>
 										</div>
 										<div class="col-md-2">
 											<div class="row">
@@ -256,9 +256,9 @@
 								<h4> Unconfirmed References </h4>
 								<% if !@unconfirmed_references.empty? %>
 									<% @unconfirmed_references.each do |r| %>
-										<div class ="row alternate" id="ref2">
+										<div class ="row alternate" id="ref2" style="padding-top:10px;">
 											<div class="col-md-3">
-												<img src="https://image.freepik.com/free-icon/user-male-silhouette_318-55563.png" class="refLeft" id="refImage"/>
+												<%= image_tag("avatar-placeholder-medium.png", class: "profile-image") %>
 											</div>
 											<div class="col-md-2">
 												<div class="row">

@@ -36,12 +36,12 @@ class User < ActiveRecord::Base
 
     validates_format_of :email, :without => TEMP_EMAIL_REGEX, on: :update
 
-    has_many :job_postings
-    has_many :projects
-    has_many :references
-    has_many :reference_redirections
+    has_many :job_postings, dependent: :destroy
+    has_many :projects, dependent: :destroy
+    has_many :references, dependent: :destroy
+    has_many :reference_redirections, dependent: :destroy
     has_many :responses
-    has_many :job_posting_applications
+    has_many :job_posting_applications, dependent: :destroy
     has_many :identities
       
     has_many :user_skills, dependent: :destroy

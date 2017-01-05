@@ -10,9 +10,9 @@
 			<%i=i+1%>
 		<% end%>
 	</div>
-	<p><%= link_to_add_project_skill_fields "Add Skill", f, "btn btn-default" %></p>
+	<p><%= link_to_add_project_skill_fields "Add Skill", f, "btn btn-primary" %></p>
 
 	<%= f.input :image, as: :file %>
 	
-	<%= f.button :submit %>
+	<%= f.button :submit, class: "btn btn-primary" %>
 <% end %>

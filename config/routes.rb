@@ -41,12 +41,14 @@ Rails.application.routes.draw do
   patch 'notifications/all' => 'notifications#update_all', as: :update_all_notifications
   delete 'notifications' => 'notifications#delete'
   delete 'notifications/all' => 'notifications#delete_all', as: :delete_all_notifications
+  get 'users/referenceTab' => 'users#reference_tab'
 
   # Devise_for :users
   devise_for :users, controllers: { passwords: "users/passwords", sessions: "users/sessions", :registrations => "users/registrations", omniauth_callbacks: 'users/omniauth_callbacks' }
   match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
 
-  post 'users/userTab' => 'users#userTab'
+  post 'users/home_tab' => 'users#home_tab'
+  post 'users/nav_tab' => 'users#nav_tab'
 
  #devise_for :users
   #resources :users, only: :show, as: :user

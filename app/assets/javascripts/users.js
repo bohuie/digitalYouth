@@ -58,23 +58,88 @@ function rendering(toRender)
 		}
 	}
 }
-var data = ""
-function setUserTab(value="surveys")
+
+function setHomeTab(value, url)
 {
-	data = "user_tab="+value
-	$.ajax({
-	url: '/users/userTab',
-	data: data,
-	type: 'post',
-	beforeSend: function(jqXHR, settings) {
-        jqXHR.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
-    }
-	})
-	.done(function(response) {
-  		// Do something with the response
-	})
-	.fail(function(error) {
-  		// Do something with the error
-	});
+	if (typeof(value)==='undefined') value = "surveys";
+
+	if (typeof(url)==='undefined'){
+		$.ajax({
+		url: '/users/home_tab',
+		data: {home_tab: value},
+		type: 'post',
+		beforeSend: function(jqXHR, settings) {
+        	jqXHR.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+    	}
+		})
+		.done(function(response) {
+  			// Do something with the response
+		})
+		.fail(function(error) {
+  			// Do something with the error
+		});
+	}
+	else {
+		$.ajax({
+		url: '/users/home_tab',
+		data: {
+			home_tab: value,
+			redirect: url
+		},
+		dataType: "script",
+		type: 'post',
+		beforeSend: function(jqXHR, settings) {
+        	jqXHR.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+    	}
+		})
+		.done(function(response) {
+  			// Do something with the response
+		})
+		.fail(function(error) {
+  			// Do something with the error
+		});
+	}
+}
+
+function setNavTab(value, url)
+{
+	if (typeof(value)==='undefined') value = "surveys";
+
+	if (typeof(url)==='undefined'){
+		$.ajax({
+		url: '/users/nav_tab',
+		data: {nav_tab: value},
+		type: 'post',
+		beforeSend: function(jqXHR, settings) {
+        	jqXHR.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+    	}
+		})
+		.done(function(response) {
+  			// Do something with the response
+		})
+		.fail(function(error) {
+  			// Do something with the error
+		});
+	}
+	else {
+		$.ajax({
+		url: '/users/nav_tab',
+		data: {
+			nav_tab: value,
+			redirect: url
+		},
+		dataType: "script",
+		type: 'post',
+		beforeSend: function(jqXHR, settings) {
+        	jqXHR.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+    	}
+		})
+		.done(function(response) {
+  			// Do something with the response
+		})
+		.fail(function(error) {
+  			// Do something with the error
+		});
+	}
 }
 

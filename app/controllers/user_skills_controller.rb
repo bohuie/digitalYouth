@@ -19,9 +19,11 @@ class UserSkillsController < ApplicationController
 		@user_skill = current_user.user_skills.create(skill_id: @skill.id, survey_id: params[:user_skill][:survey_id])
 		if @user_skill.save
 			#session.delete(:skill_id)
+			flash[:success] = "New skill added."
 			redirect_to current_user
 		else
 			#session.delete(:skill_id)
+			flash[:error] = "There was a problem adding your skill.  Please try again later or contact an administrator."
 			redirect_to current_user
 		end
 	end

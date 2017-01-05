@@ -1,0 +1,70 @@
+<div class="row">
+		<div class="col-md-3">
+			<%= render 'shared/user_summary', user: applicant%>
+		</div>
+		<div class="col-md-5">
+			<% if !@user_skill_matches.empty? %>
+				<% if applicant.id == current_user.id %>
+					You are reporting these skills that match with this job posting: <br/>
+				<% else %>
+					<% applicant.first_name.titleize+" "+applicant.last_name.titleize%> reported these skills that match with this job posting: <br/>
+				<% end %>
+
+				<% unless @req_skills.empty? %> 
+					<h4> Required Skills </h4>
+					<% unless @user_required_matches.empty? %>
+						<ul><%@user_required_matches.each do |r| %>
+							<li><%=r[:user_skill].skill.name.titleize%></li><% end %>
+						</ul>
+					<% else %>
+						<ul>
+							<% if applicant.id == current_user.id %>
+								<li>You have no matching required skills.</li>
+							<% else %>
+								<li><%= applicant.first_name.titleize+" "+applicant.last_name.titleize%> does not have any matching required skills.</li>
+							<% end %>
+						</ul>
+					<% end %>
+				<% end %>
+
+				<% unless @pref_skills.empty? %>
+					<h4> Preferred Skills </h4>
+					<% unless @user_preferred_matches.empty? %>
+						<ul><%@user_preferred_matches.each do |p| %>
+							<li><%=p[:user_skill].skill.name.titleize%></li><% end %>
+						</ul>
+					<% else %>
+						<ul>
+							<% if applicant.id == current_user.id %>
+								<li>You have no matching preferred skills.</li>
+							<% else %>
+								<li><%= applicant.first_name.titleize+" "+applicant.last_name.titleize%> does not have any matching preferred skills.</li>
+							<% end %>
+						</ul>
+					<% end %>
+				<% end %>
+			<% else %>
+				<% if applicant.id == current_user.id %>
+					None of your skills match the required and preferred skills for this posting.<br />
+				<% else %>
+					<%= applicant.first_name.titleize+" "+applicant.last_name.titleize+"'s" %> skills do not match the required and preferred skills for this posting. <br>
+				<% end %>
+			<% end %>
+		</div>
+		<div class="col-md-4">
+			These are the skills associated with this job posting:
+			<% if !@req_skills.empty? %>
+				<h4> Required Skills </h4>
+				<ul><%@req_skills.each do |r| %>
+					<li><%=r.skill.name.titleize%></li><% end %>
+				</ul>
+			<% end %>
+
+			<% if !@pref_skills.empty? %>
+				<h4> Preferred Skills </h4>
+					<ul><%@pref_skills.each do |p| %>
+						<li><%=p.skill.name.titleize%></li><% end %>
+					</ul>
+			<% end %>
+		</div>
+	</div>

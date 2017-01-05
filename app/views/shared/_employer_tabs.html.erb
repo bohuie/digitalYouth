@@ -1,0 +1,21 @@
+<div class="container" id="profileButtons">
+<ul class="nav nav-tabs profileButtonContent">
+<% if user_signed_in? && @current_user==@user %>
+	<% if active == "jobs" %>
+		<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("about","<%=user_path(current_user)%>");><a data-toggle="tab" href="#about">ABOUT US</a></li> 
+   		<li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("jobs","<%=user_path(current_user)%>");><a data-toggle="tab" href="#jobs">JOBS</a></li>
+   	<% else %>
+   		<li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("about","<%=user_path(current_user)%>");><a data-toggle="tab" href="#about">ABOUT US</a></li> 
+   		<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("jobs","<%=user_path(current_user)%>");><a data-toggle="tab" href="#jobs">JOBS</a></li>
+   	<% end %>
+<% else %>
+	<% if active == "jobs" %>
+		<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("about","<%=user_path(@user)%>");><a data-toggle="tab" href="#about">ABOUT US</a></li> 
+   		<li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("jobs","<%=user_path(@user)%>");><a data-toggle="tab" href="#jobs">JOBS</a></li>
+	<% else %>
+   		<li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("about","<%=user_path(@user)%>");><a data-toggle="tab" href="#about">ABOUT US</a></li> 
+   		<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("jobs","<%=user_path(@user)%>");><a data-toggle="tab" href="#jobs">JOBS</a></li>
+   	<% end %>
+<% end %>
+</ul>
+</div>

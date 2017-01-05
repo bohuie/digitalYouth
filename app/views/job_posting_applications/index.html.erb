@@ -19,12 +19,13 @@
 					</h4>
 				</div>
 				<div class="col-md-1">
-					<%= link_to "Delete", job_posting_application_path(j.id), method: "delete", class: "btn btn-default"%>
+					<%= link_to "Delete", job_posting_application_path(j.id), method: "delete", class: "btn btn-danger"%>
 				</div>
 			</div>
 		<% end %>
 	<% end %>
 <% elsif current_user.has_role? :employer %>
+	<%= render partial: "shared/employer_tabs", locals: { active: "jobs" } %>
 	<% last_posting = -1 %>
 	<%@job_posting_applications.each do |j|%>
 		<% if j.status != -2 %>

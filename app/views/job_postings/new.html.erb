@@ -1,3 +1,5 @@
 <%= render "users/shared/profile" %>
 
+<%= render partial: "shared/employer_tabs", locals: { active: "jobs" } %>
+
 <%= render 'job_postings/job_posting_form' %>

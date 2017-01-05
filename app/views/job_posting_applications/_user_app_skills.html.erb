@@ -4,7 +4,11 @@
 		</div>
 		<div class="col-md-5">
 			<% if !@user_skill_matches.empty? %>
-				This user self reported these skills that match with this job posting: <br>
+				<% if applicant.id == current_user.id %>
+					You are reporting these skills that match with this job posting: <br/>
+				<% else %>
+					<% applicant.first_name.titleize+" "+applicant.last_name.titleize%> reported these skills that match with this job posting: <br/>
+				<% end %>
 
 				<% unless @req_skills.empty? %> 
 					<h4> Required Skills </h4>
@@ -14,7 +18,11 @@
 						</ul>
 					<% else %>
 						<ul>
-							<li>You have no matching required skills.</li>
+							<% if applicant.id == current_user.id %>
+								<li>You have no matching required skills.</li>
+							<% else %>
+								<li><%= applicant.first_name.titleize+" "+applicant.last_name.titleize%> does not have any matching required skills.</li>
+							<% end %>
 						</ul>
 					<% end %>
 				<% end %>
@@ -27,12 +35,20 @@
 						</ul>
 					<% else %>
 						<ul>
-							<li>You have no matching preferrred skills.</li>
+							<% if applicant.id == current_user.id %>
+								<li>You have no matching preferred skills.</li>
+							<% else %>
+								<li><%= applicant.first_name.titleize+" "+applicant.last_name.titleize%> does not have any matching preferred skills.</li>
+							<% end %>
 						</ul>
 					<% end %>
 				<% end %>
 			<% else %>
-				The user currently has no matching skills for this job.
+				<% if applicant.id == current_user.id %>
+					None of your skills match the required and preferred skills for this posting.<br />
+				<% else %>
+					<%= applicant.first_name.titleize+" "+applicant.last_name.titleize+"'s" %> skills do not match the required and preferred skills for this posting. <br>
+				<% end %>
 			<% end %>
 		</div>
 		<div class="col-md-4">

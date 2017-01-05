@@ -1,3 +1,10 @@
+<%= render "users/shared/profile" %>
+<% if current_user.has_role?(:employee) %>
+	<%= render "shared/job_seeker_home_tabs", locals: {active: session[:home_tab]} %>
+<% elsif current_user.has_role?(:employer) %>
+	<%= render partial: "shared/employer_tabs", locals: {active: session[:home_tab]} %>
+<% end %>
+
 <div class="col-lg-6">
 	<ul id="index-notifs" style="list-style-type: none;">
 	  	<%= render 'shared/notifications', :local_activities => @notifications %>

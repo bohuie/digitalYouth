@@ -1,5 +1,7 @@
 <%= render "users/shared/profile" %>
 
+<%= render partial: "shared/job_seeker_tabs", locals: {active: "projects" } %>
+
 <div class="col-md-1">
 	<%= @project.project_date.strftime('%B')+", "+@project.project_date.strftime('%Y') %>
 </div>

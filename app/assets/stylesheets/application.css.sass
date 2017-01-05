@@ -13,8 +13,23 @@
  *= require_tree .
  *= require_self
  */
+
+.alternate:nth-of-type(even)
+	background-color: #f8f8f8
+
+
+.alternate:nth-of-type(odd)
+	background-color: #ffffff
+
 @import "bootstrap-sprockets"
 @import "bootstrap"
 @import "notifications.scss"
 @import font-awesome
 @import bootstrap-social
+
+body
+	font-family: Geneva
+
+.nav-tabs
+	border-bottom: none
+	padding-bottom: 10px

@@ -3,38 +3,25 @@
 <%= render partial: "shared/job_seeker_tabs", locals: {active: "references" } %>
 
 <div class ="container">
-<<<<<<< HEAD
-		<h3> Fill out this form to ask your contact to give you a reference</h3><br />
-		
-		<%= simple_form_for @reference_email do |r| %>
-			<div class="row">
-			<div class="col-md-3">
-			<%= r.input :first_name, required: true %>
-			</div>
-			</div>
-			<div class="row">
-			<div class="col-md-3">
-			<%= r.input :last_name, required: true %>
-			</div>
-			</div>
-			<div class="row">
-			<div class="col-md-3">
-			<%= r.input :email, as: "email", required: true %>
-			</div>
-			</div>
-			<%= r.hidden_field :reference_url, :value => @url%>
-			<%= r.button :submit, 'Send' %>
-		<% end -%>
-=======
-	<h4>Request a Reference</h4>
-	<p> Fill out this form to ask your contact to give you a reference.</p>
->>>>>>> master
+	<h3> Fill out this form to ask your contact to give you a reference</h3><br />
 		
 	<%= simple_form_for @reference_email do |r| %>
-		<%= r.input :first_name, required: true %>
-		<%= r.input :last_name, required: true %>
-		<%= r.input :email, as: "email", required: true %>
+		<div class="row">
+			<div class="col-md-3">
+				<%= r.input :first_name, required: true %>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-3">
+				<%= r.input :last_name, required: true %>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-3">
+				<%= r.input :email, as: "email", required: true %>
+			</div>
+		</div>
 		<%= r.hidden_field :reference_url, :value => @url%>
-		<%= r.button :submit, 'Send', class: "btn btn-primary" %>
+		<%= r.button :submit, 'Send' %>
 	<% end %>
 </div>

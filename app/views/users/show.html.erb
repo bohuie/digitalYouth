@@ -305,15 +305,9 @@
 								<h4> Reference Requests </h4>
 								<% if !@reference_requests.empty? %>
 									<% @reference_requests.each do |r| %>
-<<<<<<< HEAD
-										<%= image_tag r.user.image.url(:thumb) %>
-										<h4><%= link_to "View #{r.user.first_name} #{r.user.last_name}'s profile", user_path(r.user_id) %></h4>
-										<h4><%= link_to "Refer", new_reference_path(r.reference_url)%> or <%= link_to "Remove request", delete_reference_path(r), method: :delete %></h4>
-=======
 										<%= image_tag r.user.image.url(:thumb), alt:"User Icon", style: "border-radius: 50%" %>
-										<p><%= link_to "Refer", new_reference_path(r.reference_url), class: "btn btn-primary btn-xs"%>
-										<%= link_to "#{r.user.first_name} #{r.user.last_name}", user_path(r.user_id) %></p>		
->>>>>>> master
+										<h4><%= link_to "View #{r.user.first_name} #{r.user.last_name}'s profile", user_path(r.user_id) %></h4>
+										<h4><%= link_to "Refer", new_reference_path(r.reference_url), class: "btn btn-primary btn-xs"%> or <%= link_to "Remove request", delete_reference_path(r), method: :delete %></h4>
 									<% end %>
 								<% else %>
 									<p> You have no reference requests. </p>

@@ -3,7 +3,8 @@
 <%= render partial: "shared/job_seeker_tabs", locals: {active: "references" } %>
 
 <div class ="container">
-	<h3> Fill out this form to ask your contact to give you a reference</h3><br />
+	<h4>Request a Reference.</h4>
+	<p> Fill out this form to ask your contact to give you a reference.</p><br />
 		
 	<%= simple_form_for @reference_email do |r| %>
 		<div class="row">
@@ -22,6 +23,6 @@
 			</div>
 		</div>
 		<%= r.hidden_field :reference_url, :value => @url%>
-		<%= r.button :submit, 'Send' %>
+		<%= r.button :submit, 'Send', class: "btn btn-primary" %>
 	<% end %>
 </div>

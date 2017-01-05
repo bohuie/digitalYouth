@@ -6,6 +6,6 @@ module JobPostingsHelper
     	fields = f.fields_for(association, new_object, child_index: "new_#{association}") do |builder|
       		render("/job_postings/" + association.to_s.singularize + "_fields", id: "new_#{association}", f: builder)
     	end
-    	link_to name, '#job_skills', onclick: "add_job_posting_skill_fields(\"#{association}\", \"#{escape_javascript(fields)}\")", class: css_class
+    	link_to name, 'javascript:;', onclick: "add_job_posting_skill_fields(\"#{association}\", \"#{escape_javascript(fields)}\")", class: css_class
   	end
 end

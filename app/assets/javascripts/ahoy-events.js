@@ -32,7 +32,7 @@ function timer(){
 
 function unload(){
 	recordViewEnd();
-    for (var i=0;i<2000;i++){
-      console.log('buying some time to finish saving data'); 
-    };
+//    for (var i=0;i<2000;i++){
+//      console.log('buying some time to finish saving data'); 
+//    };
 }

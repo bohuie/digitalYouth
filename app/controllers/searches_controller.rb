@@ -1,5 +1,7 @@
 class SearchesController < ApplicationController
 
+	before_action :clear_nav_tab, only: [:index]
+
 	respond_to :js, only: :index # Formating for the AJAX requests
 	respond_to :html
 

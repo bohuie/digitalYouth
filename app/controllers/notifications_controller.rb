@@ -9,6 +9,7 @@ class NotificationsController < ApplicationController
 	def index # Get all notifications, paginates to 20
 		@notifications = get_notifications.paginate(page: params[:page], per_page: 20)
 		@notifications_count = @notifications.count
+		@user = current_user
 	end
 
 	def show # Get 5 notifications first, then get one and offset the page
@@ -42,7 +43,12 @@ class NotificationsController < ApplicationController
 
 	def trackable # Mark read, redirect to trackable page
 		@notification.update(is_read: true)
-		redirect_to polymorphic_path(@notification.trackable)
+		
+		if @notification.trackable_type == "ReferenceRedirection"
+			redirect_to controller: 'users', action: 'reference_tab'
+		else
+			redirect_to polymorphic_path(@notification.trackable)
+		end
 	end
 
 private

@@ -306,7 +306,7 @@
 								<% if !@reference_requests.empty? %>
 									<% @reference_requests.each do |r| %>
 										<%= image_tag r.user.image.url(:thumb), alt:"User Icon", style: "border-radius: 50%" %>
-										<h4><%= link_to "View", user_path(r.user_id), class: "btn btn-primary btn-xs"%> <%= link_to "Refer", new_reference_path(r.reference_url), class: "btn btn-success btn-xs"%> <%= link_to "Remove", delete_reference_redirection_path(r), method: :delete, class: "btn btn-danger btn-xs" %></h4>
+										<h4><%= link_to "View", user_path(r.user_id), class: "btn btn-primary btn-xs"%> <%= link_to "Refer", new_reference_path(r.reference_url), class: "btn btn-success btn-xs"%> <%= link_to "Remove", delete_reference_redirection_path(r), method: :delete, data: {confirm: "Are you sure you want to delete this request?"}, class: "btn btn-danger btn-xs" %></h4>
 										<h4><%= link_to "View #{r.user.first_name} #{r.user.last_name}'s profile", user_path(r.user_id) %></h4>
 										<h4><%= link_to "Refer", new_reference_path(r.reference_url), class: "btn btn-primary btn-xs"%> or <%= link_to "Remove request", delete_reference_redirection_path(r), method: :delete %></h4>
 									<% end %>

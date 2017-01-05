@@ -17,10 +17,18 @@
 }
 
 .landing {
-	background-color: rgb(19, 151, 206);
+	
 	margin-top: -20px;
 	height: 500px;
 }
+body.welcome.index> div.container{
+	background-color: rgb(19, 151, 206);
+}
+
+body.welcome > nav.navbar {
+	margin-bottom: 0px;
+}
+
 .signupbox{
 	margin-top: 65px;
 	margin-right: 60px;

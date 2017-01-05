@@ -1,8 +1,11 @@
 class UsersController < ApplicationController
-	before_action :authenticate_user!, except: [:show, :index]
-	before_action :profile_owner, only: [:edit, :update, :destroy]
-	skip_before_action :verify_authenticity_token, only: [:userTab]
+respond_to :html, :json
 
+	before_action :authenticate_user!, except: [:show, :index, :nav_tab] #ignore home_tab, only done when it is the current user and logged in
+	before_action :profile_owner, only: [:edit, :update, :destroy]
+	skip_before_action :verify_authenticity_token, only: [:nav_tab] #ignore home_tab, only done when it is the current user and logged in
+
+	
 	def index
 		@users = User.all
 	end
@@ -59,10 +62,12 @@ class UsersController < ApplicationController
 
 	def update
 		@user = User.find(params[:id])
-		
 		if params.include?(:personal)
 			@user.update_attributes(personal_params)
 			flash[:success] = "Personal Info successfully updated."
+			unless params[:user][:image].blank?
+				render action: 'crop' and return
+			end
 		elsif params.include?(:email)
 			if @user.valid_password?(params[:user][:email_password])
 				@user.update_attributes(email_params)
@@ -89,6 +94,10 @@ class UsersController < ApplicationController
 		elsif params.include?(:bio)
 			@user.update_attributes(bio_params)
 			flash[:success] = "Bio updated."
+		elsif params.include?(:crop)
+			@user.update_attributes(crop_params)
+			@user.reprocess_image
+			flash[:success] = "Profile Image updated."
 		else
 			flash[:danger] = "Something went wrong.  Please contact an administrator."
 		end
@@ -108,13 +117,24 @@ class UsersController < ApplicationController
     	end
   	end
 
-  	def userTab
-  		session[:userTab] = params[:user_tab]
+  	def home_tab
+  		session[:home_tab] = params[:home_tab]
+  		
+  		if params.key?(:redirect)
+  			respond_to do |format|
+  				format.js { render js: "window.location = '#{params[:redirect]}'" }
+  			end
+  		end
   	end
 
-  	def reference_tab
-  		session[:userTab] = "references"
-  		redirect_to current_user
+  	def nav_tab
+  		session[:nav_tab] = params[:nav_tab]
+  		
+  		if params.key?(:redirect)
+  			respond_to do |format|
+  				format.js { render js: "window.location = '#{params[:redirect]}'" }
+  			end
+  		end
   	end
 
 	private
@@ -126,6 +146,10 @@ class UsersController < ApplicationController
 			params.require(:user).permit(:email, :first_name, :last_name, :linkedin, :twitter, :facebook, :company_name, :street_address, :city, :province, :postal_code, :password, :password_confirmation, :current_password)
 		else
 		end
+	end
+
+	def crop_params
+		params.require(:user).permit(:crop_x, :crop_y, :crop_w, :crop_h)
 	end
 
 	def personal_params

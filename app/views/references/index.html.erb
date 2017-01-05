@@ -25,7 +25,7 @@
 							<p class="refLeft" id="refName"><%= r.first_name%> <%= r.last_name %></p>
 							<h4 class="refLeft"><%= r.position %></h4>
 							<h4 class="refLeft"><%= r.company%></h4>
-							<h5 class="refLeft"><%= link_to "Confirm", update_reference_path(r), method: "patch" %> <%= link_to "Delete", delete_reference_path(r), method: "delete" %></h5>
+							<h5 class="refLeft"><%= link_to "Unconfirm", update_reference_path(r), method: "patch", class: "btn btn-warning" %> <%= link_to "Delete", delete_reference_path(r), method: "delete", class: "btn btn-danger" %></h5>
 						</div>
 						<div id="centre">
 							<p class="refCentre" id="refContent"><%= r.reference_body %></p>
@@ -72,7 +72,7 @@
 							<p class="refLeft" id="refName2"><%= r.first_name%> <%= r.last_name %></p>
 							<h4 class="refLeft"><%= r.position %></h4>
 							<h4 class="refLeft"><%= r.company%></h4>
-							<h5 class="refLeft"><%= link_to "Confirm", update_reference_path(r), method: "patch" %> <%= link_to "Delete", delete_reference_path(r), method: "delete" %></h5>
+							<h5 class="refLeft"><%= link_to "Confirm", update_reference_path(r), method: "patch", class: "btn btn-success" %> <%= link_to "Delete", delete_reference_path(r), method: "delete", class: "btn btn-danger" %></h5>
 						</div>
 						<div id="centre2">
 							<p class="refCentre" id="refContent"><%= r.reference_body %></p>

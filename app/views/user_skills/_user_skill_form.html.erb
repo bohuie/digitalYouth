@@ -6,5 +6,5 @@
 		<div class="col-md-6"><%= f.input :question_id, required:true, collection: @questions, prompt: "Select Classification", label: "Associated Survey Skill and Level"%></div>
 	</div>
 	
-	<%= f.button :submit %>
+	<%= f.button :submit, class: "btn btn-primary" %>
 <% end %>

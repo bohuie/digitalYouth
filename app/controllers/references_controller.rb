@@ -31,6 +31,7 @@ class ReferencesController < ApplicationController
 	end
 
 	def email # Page for form to send an email
+		@user = current_user
 		@url = ""
 		loop do
 			@url = SecureRandom.urlsafe_base64(10)
@@ -54,10 +55,11 @@ class ReferencesController < ApplicationController
 
 
 	def new # Form to create a new reference
+		@user = current_user
 		@reference_link = ReferenceRedirection.where(reference_url: params[:id])
 		if !@reference_link.empty?
 			@reference_link = @reference_link.first
-			@user = User.find(@reference_link.user_id)
+			@referUser = User.find(@reference_link.user_id)
 			@reference = Reference.new
 		else
 			redirect_to root_path , flash: {danger: "Invalid reference link"}
@@ -78,7 +80,11 @@ class ReferencesController < ApplicationController
 			@verified = verify_recaptcha(model: @reference)
 			if @verified && !@owner && @reference.save
 				ReferenceRedirection.find_by(reference_url: @url_string).destroy # Removes the redirection url
-				redirect_to root_path , flash: {success: "Thank you for making a reference!"}
+				if user_signed_in?
+					redirect_to current_user, flash: {success: "Thank you for making a reference!"}
+				else
+					redirect_to root_path , flash: {success: "Thank you for making a reference!"}
+				end
 			else
 				if !@verified
 					flash[:warning] = "Please redo the Captcha"

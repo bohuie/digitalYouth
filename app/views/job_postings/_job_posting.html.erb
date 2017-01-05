@@ -74,6 +74,6 @@
 	<% application_count = @job_posting.job_posting_applications.where(status:-1..Float::INFINITY).count %>
 	<% application_count = "" if application_count == 0 %>
 	<%= link_to raw("Applications <span class=\"badge\">#{application_count.to_s}</span>"), job_posting_applications_path(job_posting:@job_posting), class: "btn btn-success"%>
-	<%= link_to "Delete Posting", job_posting_path(@job_posting), method: "delete", class: "btn btn-danger"%>
+	<%= link_to "Delete Posting", job_posting_path(@job_posting), method: "delete", data: {confirm: "Are you sure you want to delete this posting?"}, class: "btn btn-danger"%>
 	<p><span class="label label-default"><%=@job_posting.views%> Views</span></p>
 <% end %>

@@ -64,7 +64,7 @@
 									</h4>
 								</div>
 								<div class="col-md-1">
-									<%= link_to "Delete", job_posting_application_path(j.id), data: {confirm: "Are you sure you want to delete this posting?"}, method: "delete", class: "btn btn-danger"%>
+									<%= link_to "Delete", job_posting_application_path(j.id), data: {confirm: "Are you sure you want to delete this application?"}, method: "delete", class: "btn btn-danger"%>
 								</div>
 							</div>
 						<% end %>
@@ -119,7 +119,7 @@
 								<% if user_signed_in? && @current_user==@user %>
 									<div class="col-md-3">
 										<%= link_to "Edit Project", edit_project_path(p), class: "btn btn-warning" %>
-										<%= link_to "Delete Project", p, method: :delete, data: {confirm: 'Are you sure?'}, class: "btn btn-danger" %>
+										<%= link_to "Delete Project", p, method: :delete, data: {confirm: 'Are you sure you want to delete this project?'}, class: "btn btn-danger" %>
 									</div>
 								<% end %>
 							</div>
@@ -237,7 +237,7 @@
 										<% if user_signed_in? && @current_user==@user %>
 											<div class="col-md-3">
 												<%= link_to "Unconfirm", update_reference_path(r), method: "patch", class: "btn btn-warning" %>
-												<%= link_to "Delete", delete_reference_path(r), method: "delete", class: "btn btn-danger" %>
+												<%= link_to "Delete", delete_reference_path(r), method: "delete", data: {confirm: "Are you sure you want to delete this reference?"}, class: "btn btn-danger" %>
 											</div>
 										<% end %>
 									</div>
@@ -290,7 +290,7 @@
 											</div>
 											<div class="col-md-3">
 												<%= link_to "Confirm", update_reference_path(r), method: "patch", class: "btn btn-success" %>
-												<%= link_to "Delete", delete_reference_path(r), method: "delete", class: "btn btn-danger" %>
+												<%= link_to "Delete", delete_reference_path(r), method: "delete", data: {confirm: "Are you sure you want to delete this reference?"}, class: "btn btn-danger" %>
 											</div>
 										</div>
 										<hr class="HR"/>
@@ -380,7 +380,7 @@
 									<%= link_to "Edit Posting", edit_job_posting_path(j), class: "btn btn-warning"%>
 									<% application_count = j.job_posting_applications.where(status:-1..Float::INFINITY).count %>
 									<%= link_to raw("Applications <span class=\"badge\">#{application_count.to_s}</span>"), job_posting_applications_path(job_posting:j), class: "btn btn-success"%>						
-									<%= link_to "Delete Posting", job_posting_path(j), method: "delete", class: "btn btn-danger"%>
+									<%= link_to "Delete Posting", job_posting_path(j), method: "delete", data: {confirm: "Are you sure you want to delete this posting?"}, class: "btn btn-danger"%>
 								<% end %>
 							</div>
 						</div>

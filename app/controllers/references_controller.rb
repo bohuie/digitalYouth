@@ -25,6 +25,7 @@ class ReferencesController < ApplicationController
 	end
 
 	def destroy # Deletes a reference
+		byebug
 		@reference.destroy
 		redirect_to current_user, flash: {info: "Reference deleted!"}
 	end

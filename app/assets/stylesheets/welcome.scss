@@ -29,13 +29,22 @@ body.welcome > nav.navbar {
 	margin-bottom: 0px;
 }
 
-.signupbox{
+.infobox{
 	margin-top: 65px;
-	margin-right: 60px;
 	border: none;
 	border-radius: 5px;
-	width: 50%;
-	float: right;
+	background-color: rgb(23, 102, 136) ; 
+	text-align: center;
+	position: relative;
+	height: calc(100% - 65px);
+	top: 41px;
+	color: white;
+}
+
+.signupbox{
+	margin-top: 65px;
+	border: none;
+	border-radius: 5px;
 	background-color: rgb(23, 102, 136) ; 
 	text-align: center;
 	position: relative;
@@ -59,7 +68,6 @@ body.welcome > nav.navbar {
 	border:none;
 	border-bottom-left-radius: 5px;
 	border-bottom-right-radius: 5px;
-	width: 100%;
 	padding-top: 3px;
 	padding-bottom: 3px;
 	background-color: #52B4D9 ; 

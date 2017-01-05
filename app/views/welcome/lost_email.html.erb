@@ -5,5 +5,5 @@
 	<%= f.input :first_name, label: "First Name:", required: true %>
 	<%= f.input :last_name, label: "Last Name:", required: true %>
 	<%= f.input :message, required: false, as: :text, label: "Please include any other details here:" %>
-	<%= f.button :submit, "Send Request" %>
+	<%= f.button :submit, "Send Request", class: "btn btn-primary" %>
 <% end %>

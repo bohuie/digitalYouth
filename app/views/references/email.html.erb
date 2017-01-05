@@ -1,24 +1,16 @@
 <%= render "users/shared/profile" %>
 
-<div class="container" id="profileButtons">
-	<ul class="nav nav-tabs profileButtonContent">
-		<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("surveys","<%=user_path(current_user)%>");><a data-toggle="tab" href="<%=user_path(current_user)%>">SURVEYS</a></li>
-        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("applications","<%=user_path(current_user)%>");><a data-toggle="tab" href="<%=user_path(current_user)%>">APPLICATIONS</a></li>
-        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("projects","<%=user_path(current_user)%>");><a data-toggle="tab" href="#projects">PROJECTS</a></li>
-        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("skills","<%=user_path(current_user)%>");><a data-toggle="tab" href="#skills">SKILLS</a></li>
-        <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setUserTab("references","<%=user_path(current_user)%>");><a data-toggle="tab" href="#references">REFERENCES</a></li>
-    </ul>
-</div>
+<%= render partial: "shared/job_seeker_tabs", locals: {active: "references" } %>
 
 <div class ="container">
-		<p> Fill out this form to ask your contact to give you a reference</p>
+	<h4>Request a Reference</h4>
+	<p> Fill out this form to ask your contact to give you a reference.</p>
 		
-		<%= simple_form_for @reference_email do |r| %>
-			<%= r.input :first_name, required: true %>
-			<%= r.input :last_name, required: true %>
-			<%= r.input :email, as: "email", required: true %>
-			<%= r.hidden_field :reference_url, :value => @url%>
-			<%= r.button :submit, 'Send' %>
-		<% end -%>
-		
+	<%= simple_form_for @reference_email do |r| %>
+		<%= r.input :first_name, required: true %>
+		<%= r.input :last_name, required: true %>
+		<%= r.input :email, as: "email", required: true %>
+		<%= r.hidden_field :reference_url, :value => @url%>
+		<%= r.button :submit, 'Send', class: "btn btn-primary" %>
+	<% end %>
 </div>

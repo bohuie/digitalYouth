@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
         default_url: 'avatar-placeholder-:style.png',
         styles: { 
             medium: { geometry: "150x150#", :processors => [:cropper] },
-            thumb: { geometry: "75x75#", :processors => [:cropper] }, 
+            thumb: { geometry: "50x50#", :processors => [:cropper] }, 
             large: { geometry: "400x400>" }
         }
     include DeletableAttachment

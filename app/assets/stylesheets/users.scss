@@ -18,6 +18,12 @@
 	margin-right :auto;
 }
 
+.image-radius {
+	border-radius: 50%;
+	margin-left: auto;
+	margin-right :auto;
+}
+
 .profile-image {
 	display: block;
 	border-radius: 50%;
@@ -97,6 +103,8 @@ ul.nav-tabs > li.active > a {
 .refLeft
 {
 	margin-left: 2%;
+	margin-top: 0px;
+	margin-bottom: 0px;
 }
 //Aligns all items for Right side of the displayed reference
 .refRight

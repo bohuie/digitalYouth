@@ -16,13 +16,16 @@
 	margin-left: 45px;
 }
 
-.landing {
-	
-	margin-top: -20px;
-	height: 500px;
+body.welcome.index div.alert{
+	border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
 }
+
 body.welcome.index> div.container{
-	background-color: rgb(19, 151, 206);
+	background-image:linear-gradient(to bottom, rgb(19, 151, 206) 0%, rgb(19, 151, 206) 100%), linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 100%);
+	background-clip: content-box, padding-box;
 }
 
 body.welcome > nav.navbar {

@@ -1,3 +1,10 @@
+<%= render "users/shared/profile" %>
+<% if current_user.has_role?(:employee) %>
+	<%= render "shared/job_seeker_home_tabs", locals: {active: session[:home_tab]} %>
+<% elsif current_user.has_role?(:employer) %>
+	<%= render partial: "shared/employer_tabs", locals: {active: session[:home_tab]} %>
+<% end %>
+
 <div class="col-lg-6">
 	<ul id="index-notifs" style="list-style-type: none;">
 	  	<%= render 'shared/notifications', :local_activities => @notifications %>
@@ -11,7 +18,7 @@
 </div>
 <% if @notifications_count > 1 %>
 	<div class="col-lg-1">
-		<%= link_to delete_all_notifications_path, remote: true, method: "delete", id:"del-all" do %>
+		<%= link_to delete_all_notifications_path, remote: true, method: "delete", data: {confirm: "Are you sure you want to delete all notifications?"}, id:"del-all" do %>
 			<span class="glyphicon glyphicon-trash"></span>
 		<% end %>
 

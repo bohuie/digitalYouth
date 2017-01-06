@@ -1,5 +1,9 @@
+<%= render "users/shared/profile" %>
+
+<%= render partial: "shared/job_seeker_tabs", locals: {active: "projects" } %>
+
 <div class ="container">
-	<p>Refer: <%= @user.first_name %> <%= @user.last_name %></p>
+	<p>Refer: <%= @referUser.first_name %> <%= @referUser.last_name %></p>
 	<%if !user_signed_in?%>
 	<p><% if User.find_by(email: @reference_link.email.downcase) != nil%>
 			Hey we can see you have a <%=ENV['HOST_NAME']%> account<br>
@@ -19,6 +23,6 @@
 		<%= r.input :phone_number, :input_html => { :type => "tel", :pattern => "[\+]\d{1}[\(]\d{3}[\)]\d{3}[\-]\d{4}", :placeholder => "+9(999)999-9999" }%>
 		<%= r.input :reference_body, required: true%>
 		<%= recaptcha_tags %><br>
-		<%= r.button :submit %>
+		<%= r.button :submit, class: "btn btn-primary" %>
 	<% end -%>
 </div>

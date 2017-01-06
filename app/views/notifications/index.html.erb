@@ -18,7 +18,7 @@
 </div>
 <% if @notifications_count > 1 %>
 	<div class="col-lg-1">
-		<%= link_to delete_all_notifications_path, remote: true, method: "delete", id:"del-all" do %>
+		<%= link_to delete_all_notifications_path, remote: true, method: "delete", data: {confirm: "Are you sure you want to delete all notifications?"}, id:"del-all" do %>
 			<span class="glyphicon glyphicon-trash"></span>
 		<% end %>
 

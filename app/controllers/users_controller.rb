@@ -11,6 +11,7 @@ respond_to :html, :json
 	end
 
 	def show
+
 		@user = User.find(params[:id])
 
 		@surveys = Survey.get_title_map

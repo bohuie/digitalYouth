@@ -117,6 +117,8 @@ Rails.application.routes.draw do
   patch 'references/:id' => 'references#update', as: :update_reference
   delete 'references/:id' => 'references#destroy', as: :delete_reference
 
+  delete 'reference_redirections/:id' => 'reference_redirections#destroy', as: :delete_reference_redirection
+
   # Survey routes
   get 'surveys' => 'surveys#index'
   get 'surveys/:title' => 'surveys#show', as: :survey

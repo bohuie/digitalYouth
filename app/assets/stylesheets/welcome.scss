@@ -10,6 +10,25 @@
 	float: left;
 }
 
+div.bgimage{
+	background-position:bottom left;
+	background-repeat:no-repeat;
+	background-image: image-url("/assets/homepage.png");
+	height:220px;
+	width:100%;
+	position:absolute;
+	bottom:0px;
+	left:0px;
+}
+
+.landing{
+	background-image:image-url("/assets/homepage.png"), linear-gradient(to bottom, rgb(19, 151, 206) 0%, rgb(19, 151, 206) 100%), linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 100%);
+	background-clip: content-box, padding-box;
+	height: calc(100% - 65px); 
+	background-position:bottom left;
+	background-repeat:no-repeat;
+}
+
 .description{
 	width: 40%;
 	float: left;
@@ -17,15 +36,8 @@
 }
 
 body.welcome.index div.alert{
-	border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 4px;
-    border-bottom-left-radius: 4px;
-}
-
-body.welcome.index> div.container{
-	background-image:linear-gradient(to bottom, rgb(19, 151, 206) 0%, rgb(19, 151, 206) 100%), linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 100%);
-	background-clip: content-box, padding-box;
+	border-radius: 0px;
+	margin-bottom: 0px;
 }
 
 body.welcome > nav.navbar {

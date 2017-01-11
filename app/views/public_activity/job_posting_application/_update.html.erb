@@ -1,15 +1,17 @@
 <%j = activity.trackable %>
 <div>
 	<%= image_tag j.company.image.url, alt:"User Icon", class:"notif-image", style: "padding-right: 5px;" %>
-	<%=j.company.company_name%>
-	<% if p[:status] == -1 %>
-		has rejected your application.
-	<% elsif p[:status] == 1 %>
-		is considering your application.
-	<% elsif p[:status] == 2 %>
-		has accepted your application.
-	<% end %>
-	<br>
-	<%= local_time_ago(activity.created_at) %>
+	<div class="text">
+		<%=j.company.company_name%>
+		<% if p[:status] == -1 %>
+			has declined your application.
+		<% elsif p[:status] == 1 %>
+			is considering your application.
+		<% elsif p[:status] == 2 %>
+			has accepted your application.
+		<% end %>
+		<br>
+		<%= local_time_ago(activity.created_at) %>
+	</div>
 </div>
 <div style="clear:both;"></div>

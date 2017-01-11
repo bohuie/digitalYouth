@@ -56,6 +56,8 @@ Rails.application.routes.draw do
   get '/users/:id' => 'users#show', as: :user
   get '/users/:id/edit' => 'users#edit', as: :edit_user
   patch '/users/:id' => 'users#update'
+  get 'users/:id/contact' => 'users#contact', as: :contact_user
+  post 'users/:id/contact' => 'users#send_mail', as: :email_user
 
 
   # Skill routes

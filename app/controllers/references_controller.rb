@@ -45,7 +45,7 @@ class ReferencesController < ApplicationController
 		reference_redirection = ReferenceRedirection.create(reference_email_params)
 		referer = User.find_by(email: params[:reference_email][:email])
 		unless referer.nil?
-			reference_redirection.create_activity :request, owner: referer
+			reference_redirection.create_activity :request, owner: referer, parameters: {url: reference_redirection.reference_url}
 		end
 
 		ReferenceMailer.reference_email(@reference_email, current_user).deliver_now
@@ -55,6 +55,7 @@ class ReferencesController < ApplicationController
 
 	def new # Form to create a new reference
 		@user = current_user
+		@reference_redirection = ReferenceRedirection.find_by(reference_url: params[:id])
 		@reference_link = ReferenceRedirection.where(reference_url: params[:id])
 		if !@reference_link.empty?
 			@reference_link = @reference_link.first
@@ -104,7 +105,7 @@ private
 	end
 
 	def reference_email_params # Restricts reference email parameters
-		params.require(:reference_email).permit(:first_name, :last_name, :email, :reference_url, :user_id)
+		params.require(:reference_email).permit(:first_name, :last_name, :email, :reference_url, :user_id, :message)
 	end
 
 	def reference_owner # Checks if a user is the owner of a reference
@@ -121,7 +122,7 @@ private
 		args = params[:reference_email]
 		if args.nil?
 			flash[:warning] = "Missing required fields"
-		elsif args[:first_name].blank? || args[:last_name].blank? || args[:email].blank?
+		elsif args[:first_name].blank? || args[:last_name].blank? || args[:email].blank? || args[:message].blank?
 			flash[:warning] = "Missing required fields"
 		elsif args[:email] !~ Devise::email_regexp
 			flash[:warning] =  "Enter a valid email address"

@@ -1,6 +1,6 @@
 <%j = activity.trackable %>
 <div>
-	<%= image_tag j.applicant.image.url(:thumb), alt:"User Icon", class:"image-radius" %>
+	<%= image_tag j.applicant.image.url(:thumb), alt:"User Icon", class:"image-radius", style: "padding-right: 5px;" %>
 	
 	<%="#{j.applicant.first_name} #{j.applicant.last_name}"%> applied for your 
 	<% if j.job_posting.title.length < 40 %>

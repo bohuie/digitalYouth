@@ -161,6 +161,7 @@ ActiveRecord::Schema.define(version: 20161101211017) do
     t.string   "last_name"
     t.string   "email"
     t.string   "reference_url"
+    t.string   "message"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
   end
@@ -170,6 +171,7 @@ ActiveRecord::Schema.define(version: 20161101211017) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "email"
+    t.string   "message"
     t.integer  "user_id"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false

@@ -206,23 +206,17 @@
 								<% @confirmed_references.each do |r| %>
 									<div class ="row alternate" id="ref" style="padding-top:10px; padding-bottom: 10px;">
 											<div class="col-md-2">
-												<%= image_tag("avatar-placeholder-small.svg", class: "profile-image") %>
+												<% if r.referee %>
+													<%= image_tag r.referee.image.url(:small), alt:"User Icon", class: "profile-image" %>
+												<% else %>
+													<%= image_tag("avatar-placeholder-small.svg", class: "profile-image") %>
+												<% end %>
 											</div>
 											<div class="col-md-3">
 												<div class="row">
 													<h5><%= r.first_name%> <%= r.last_name %>
 													<br /><%= r.position %>
 													<br /><%= r.company%></h5>
-												</div>
-												<div class="row">
-													<h5 class="refLeft"><b>Contact:</b></h5>
-													<h5 class="refLeft contactElm">Email: <%= r.email %>
-													<% if r.phone_number.empty? %>
-														<% puts %> 
-													<% else %>
-														<br />Phone: <%= r.phone_number %>
-													<% end %>
-													</h5>
 												</div>
 											</div>
 											<div class="col-md-4">
@@ -234,6 +228,11 @@
 										<% if user_signed_in? && @current_user==@user %>
 											<div class="col-md-3">
 												<div style="float:right;">
+													<% if r.referee %>
+														<%= link_to "View", user_path(r.referee), class: "btn btn-primary" %>
+													<% else %>
+														<div class="btn btn-default btn-fake active">No Profile</div>
+													<% end %>
 													<%= link_to "Unconfirm", update_reference_path(r), method: "patch", class: "btn btn-warning" %>
 													<%= link_to "Delete", delete_reference_path(r), method: "delete", data: {confirm: "Are you sure you want to delete this reference?"}, class: "btn btn-danger" %>
 												</div>
@@ -259,23 +258,17 @@
 									<% @unconfirmed_references.each do |r| %>
 										<div class ="row alternate" id="ref2" style="padding-top:10px; padding-bottom: 10px;">
 											<div class="col-md-2">
-												<%= image_tag("avatar-placeholder-small.svg", class: "profile-image") %>
+												<% if r.referee %>
+													<%= image_tag r.referee.image.url(:small), alt:"User Icon", class: "profile-image" %>
+												<% else %>
+													<%= image_tag("avatar-placeholder-small.svg", class: "profile-image") %>
+												<% end %>
 											</div>
 											<div class="col-md-3">
 												<div class="row">
 													<h5><%= r.first_name%> <%= r.last_name %>
 													<br /><%= r.position %>
 													<br /><%= r.company%></h5>
-												</div>
-												<div class="row">
-													<h5 class="refLeft"><b>Contact:</b></h5>
-													<h5 class="refLeft contactElm">Email: <%= r.email %>
-													<% if r.phone_number.empty? %>
-														<% puts %> 
-													<% else %>
-														<br />Phone: <%= r.phone_number %>
-													<% end %>
-													</h5>
 												</div>
 											</div>
 											<div class="col-md-4">
@@ -286,6 +279,11 @@
 											</div>
 											<div class="col-md-3">
 												<div style="float:right;">
+													<% if r.referee %>
+														<%= link_to "View", user_path(r.referee), class: "btn btn-primary" %>
+													<% else %>
+														<div class="btn btn-default btn-fake active">No Profile</div>
+													<% end %>
 													<%= link_to "Confirm", update_reference_path(r), method: "patch", class: "btn btn-success" %>
 													<%= link_to "Delete", delete_reference_path(r), method: "delete", data: {confirm: "Are you sure you want to delete this reference?"}, class: "btn btn-danger" %>
 												</div>

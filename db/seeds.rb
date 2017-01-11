@@ -282,13 +282,13 @@ begin
 #	end
 
 	#--- References for testing ---
-	reference1 = Reference.create(first_name: 'Bernie', last_name: 'Smith', email: 'Andrew@gmail.com', company: 'Apple Picking Co.',
-				 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "He was the best Apple Picker.", user_id: user1.id)
-	reference1 = Reference.create(first_name: user11.first_name, last_name: user11.last_name, email: user11.first_name+"@"+user11.last_name+'.com', company: user11.company_name,
-				 position: "Developer", phone_number:"(250)555-5555", reference_body: "Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar ", user_id: user1.id)
+	reference1 = Reference.create!(first_name: 'Bernie', last_name: 'Smith', company: 'Apple Picking Co.',
+				 position: "Lead Apple Picker", reference_body: "He was the best Apple Picker.", user_id: user1.id)
+	reference1 = Reference.create(first_name: user11.first_name, last_name: user11.last_name, company: user11.company_name,
+				 position: "Developer", reference_body: "Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar ", user_id: user1.id)
 
-	reference2 = Reference.create(first_name: 'Bernie', last_name: 'Smith', email: 'Greg@gmail.com', company: 'Apple Pickers United LTD',
-				 position: "Apple QC Specialist", phone_number:"(250)555-5050", reference_body: "He was the best.", user_id: user2.id)
+	reference2 = Reference.create(first_name: 'Bernie', last_name: 'Smith', company: 'Apple Pickers United LTD',
+				 position: "Apple QC Specialist", reference_body: "He was the best.", user_id: user2.id)
 
 
 	# --- JobPostingApplications for testing ---

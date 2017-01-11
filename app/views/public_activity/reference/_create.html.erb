@@ -1,9 +1,9 @@
 <%r = activity.trackable %>
 <div>
 <% if r.referee.nil? %>
-	<img src="<%=asset_path('avatar-placeholder.svg')%>" alt="User Icon" height="50" width="50" style="float: left;  padding-right: 5px;">
+	<img src="<%=asset_path('avatar-placeholder-thumb.svg')%>" alt="User Icon" style="float: left;  padding-right: 5px;">
 <% else %>
-	<%= image_tag r.referee.image.url(:thumb), alt:"User Icon", class:"image-radius", style: "float:left;" %>
+	<%= image_tag r.referee.image.url(:thumb), alt:"User Icon", class:"image-radius", style: "float:left;  padding-right: 5px;" %>
 <% end %>
 <%= "#{r.first_name} #{r.last_name}"%> gave you a reference!<br>
 <%= local_time_ago(activity.created_at) %>

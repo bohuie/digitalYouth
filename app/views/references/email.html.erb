@@ -22,6 +22,11 @@
 				<%= r.input :email, as: "email", required: true %>
 			</div>
 		</div>
+		<div class="row">
+			<div class="col-md-3">
+				<%= r.input :message, as: :text, required: true %>
+			</div>
+		</div>
 		<%= r.hidden_field :reference_url, :value => @url%>
 		<%= r.button :submit, 'Send', class: "btn btn-primary" %>
 	<% end %>

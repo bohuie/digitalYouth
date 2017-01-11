@@ -5,6 +5,7 @@ class CreateReferenceEmails < ActiveRecord::Migration
     	t.string :last_name
     	t.string :email
     	t.string :reference_url
+      	t.string :message
 
       t.timestamps null: false
     end

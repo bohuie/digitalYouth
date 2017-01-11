@@ -74,7 +74,7 @@ class ReferencesController < ApplicationController
 			params[:reference][:user_id] = @reference_redirection.user_id
 			@reference = Reference.new(reference_params)
 			if user_signed_in?
-				@reference.referee_id = current_user.id
+				@reference.referee = current_user
 				@owner = (@reference_redirection.user_id == current_user.id) # Stops a user from referencing themself
 			end
 			@verified = verify_recaptcha(model: @reference)
@@ -101,7 +101,7 @@ class ReferencesController < ApplicationController
 
 private
 	def reference_params # Restricts reference parameters
-		params.require(:reference).permit(:first_name, :last_name, :email, :company, :position, :phone_number, :reference_body, :user_id)
+		params.require(:reference).permit(:first_name, :last_name, :company, :position, :reference_body, :user_id, :referee_id)
 	end
 
 	def reference_email_params # Restricts reference email parameters
@@ -138,8 +138,6 @@ private
 			flash[:warning] = "Missing required fields"
 		elsif args[:first_name].blank? || args[:last_name].blank?|| args[:company].blank? || args[:position].blank? || args[:reference_body].blank?  
 			flash[:warning] = "Missing required fields"
-		elsif args[:email] !~ Devise::email_regexp
-			flash[:warning] = "Enter a valid email address"
 		end
 		redirect_back_or new_reference_path(request.referer.rpartition('/')[-1]) if !flash[:warning].blank?
 	end

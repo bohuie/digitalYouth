@@ -53,13 +53,11 @@
 		<div class="col-md-6">
 			<%= r.input :first_name, required: true, input_html: {value: @reference_link.first_name}%>
 			<%= r.input :last_name, input_html: {value: @reference_link.last_name} %>
-			<%= r.input :email, input_html: {value: @reference_link.email} %>
 			<%= r.input :reference_body, required: true%>
 		</div>
 		<div class="col-md-6">
 			<%= r.input :company, required: true %>
 			<%= r.input :position, required: true %>
-			<%= r.input :phone_number, label: "Phone Number (format: (xxx)xxx-xxxx", :input_html => { :type => "tel", :pattern => '[\(]\d{3}[\)]\d{3}[\-]\d{4}', :placeholder => "(123)456-7890" }%>
 		</div>
 </div>
 		<%= recaptcha_tags %><br>

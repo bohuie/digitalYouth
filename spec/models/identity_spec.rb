@@ -1,5 +1,16 @@
 require 'rails_helper'
 
-RSpec.describe Identity, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+describe Identity do 
+	before { 
+		@user = FactoryGirl.create(:user)
+		@identity = FactoryGirl.create(:identity, user: @user)
+	} 
+	subject { @identity }
+
+	it { should respond_to(:user) }
+	it { should respond_to(:provider) }
+	it { should respond_to(:uid) }
+
+	it { should be_valid }
+
 end

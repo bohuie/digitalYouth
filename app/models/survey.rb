@@ -23,6 +23,8 @@ class Survey < ActiveRecord::Base
 		return title_string
 	end
 
+	validates :title, presence: true
+
 	def get_data(user)
 		data = Response.find_by(user_id: user.id, survey_id: self.id)
 		if(data)

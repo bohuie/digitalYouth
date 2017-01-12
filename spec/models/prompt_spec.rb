@@ -1,5 +1,13 @@
 require 'rails_helper'
 
-RSpec.describe Prompt, type: :model do
-  
+describe prompt do 
+	before { 
+		@question = FactoryGirl.create(:question)
+	} 
+	subject { @prompt }
+
+		it { should respond_to(:prompt) }
+
+	it { should be_valid }
 end
+  

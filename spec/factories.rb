@@ -2,13 +2,13 @@ include ActionDispatch::TestProcess
 
 FactoryGirl.define do
   factory :consent do
-    user nil
+    user
     answer 1
     name "MyString"
     date_signed "2016-11-01"
   end
   factory :identity do
-    user nil
+    user
     provider "MyString"
     uid "MyString"
   end
@@ -19,6 +19,7 @@ FactoryGirl.define do
     email		"john@example.com"
     password	"password"
     password_confirmation	"password"
+    postal_code "V1V 1V1"
   end
 
   factory :user2, class: User do
@@ -27,6 +28,7 @@ FactoryGirl.define do
     email   "foo@example.com"
     password  "password"
     password_confirmation "password"
+    postal_code "V1V 1V1"
   end
 
   factory :employer, class: User do
@@ -126,8 +128,9 @@ FactoryGirl.define do
 
   factory :job_posting do
     title "Social Media Expert"
-    location "Kelowna, BC"
-    pay_range "30¢/hr-40¢/hr"
+    city "Kelowna"
+    province "BC"
+    pay_rate "30¢/hr-40¢/hr"
     link "www.google.ca"
     posted_by "Testing"
     job_type 0
@@ -138,8 +141,9 @@ FactoryGirl.define do
 
   factory :job_posting2, class: JobPosting do
     title "Social Media Manager"
-    location "Kelowna, BC"
-    pay_range "$30/hr-$40/hr"
+    city "Kelowna"
+    province "BC"
+    pay_rate "$30/hr-$40/hr"
     link "www.google.com"
     posted_by "Testing"
     job_type 1
@@ -148,7 +152,7 @@ FactoryGirl.define do
     close_date Date.new(2016,3,1)
   end
 
-  factory :job_posting_skill do
+  factory :job_posting_skill do 
     importance 2
   end
 
@@ -157,7 +161,16 @@ FactoryGirl.define do
   end
 
   factory :job_posting_application, class: JobPostingApplication do
+    job_posting    
     message "this is a message"
+  end
+
+  factory :job_category do 
+     name "programming"
+  end
+
+  factory :survey do 
+     title "Survey1"
   end
 
 end

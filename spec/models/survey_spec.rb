@@ -1,5 +1,14 @@
 require 'rails_helper'
 
-RSpec.describe Survey, type: :model do
-  
+describe survey do 
+	before { 
+		@questions = FactoryGirl.create(:questions)
+		@survey = FactoryGirl.create(:survey) 
+	
+	} 
+	subject { @survey }
+
+		it { should respond_to(:question) }
+
+	it { should be_valid }
 end

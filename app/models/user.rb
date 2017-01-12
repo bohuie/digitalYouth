@@ -23,10 +23,11 @@ class User < ActiveRecord::Base
 	       :recoverable, :trackable, :validatable, :confirmable, :omniauthable
 
     has_attached_file :image,
-        default_url: 'avatar-placeholder-:style.png',
+        default_url: 'avatar-placeholder-:style.svg',
         styles: { 
             medium: { geometry: "150x150#", :processors => [:cropper] },
-            thumb: { geometry: "75x75#", :processors => [:cropper] }, 
+            small: { geometry: "100x100#", :processors => [:cropper] },
+            thumb: { geometry: "45x45#", :processors => [:cropper] }, 
             large: { geometry: "400x400>" }
         }
     include DeletableAttachment
@@ -36,12 +37,12 @@ class User < ActiveRecord::Base
 
     validates_format_of :email, :without => TEMP_EMAIL_REGEX, on: :update
 
-    has_many :job_postings
-    has_many :projects
-    has_many :references
-    has_many :reference_redirections
+    has_many :job_postings, dependent: :destroy
+    has_many :projects, dependent: :destroy
+    has_many :references, dependent: :destroy
+    has_many :reference_redirections, dependent: :destroy
     has_many :responses
-    has_many :job_posting_applications
+    has_many :job_posting_applications, dependent: :destroy
     has_many :identities
       
     has_many :user_skills, dependent: :destroy

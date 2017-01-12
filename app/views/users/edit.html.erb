@@ -39,27 +39,9 @@
           <div class="row" style="padding-bottom: 10px">
             <div class="col-md-6">
               <%= info.input :image, as: :file, label: "Upload Profile Picture", input_html: {style: 'display: inline;'}  %>
+              <p>You will be able to crop and edit your photo in the next screen.</p>
             </div>
           </div>
-          <script type="text/javascript">
-            $(function() {
-              $('#user_image').on('change', function(event) {
-                var files = event.target.files;
-                var image = files[0]
-                var reader = new FileReader();
-                reader.onload = function(file) {
-                  var img = new Image();
-                  console.log(file);
-                  img.src = file.target.result;
-                  img.style.height = '150px';
-                  img.style.width = '300px';
-                  $('#target').html(img);
-                }
-                reader.readAsDataURL(image);
-                console.log(files);
-              });
-            });
-          </script>
           <div class="row" style="padding-bottom: 10px">
             <div class="cold-md-6" id="target">
             </div>

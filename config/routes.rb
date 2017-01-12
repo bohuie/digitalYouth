@@ -56,6 +56,8 @@ Rails.application.routes.draw do
   get '/users/:id' => 'users#show', as: :user
   get '/users/:id/edit' => 'users#edit', as: :edit_user
   patch '/users/:id' => 'users#update'
+  get 'users/:id/contact' => 'users#contact', as: :contact_user
+  post 'users/:id/contact' => 'users#send_mail', as: :email_user
 
 
   # Skill routes
@@ -116,6 +118,8 @@ Rails.application.routes.draw do
   post 'references' => 'references#create'
   patch 'references/:id' => 'references#update', as: :update_reference
   delete 'references/:id' => 'references#destroy', as: :delete_reference
+
+  delete 'reference_redirections/:id' => 'reference_redirections#destroy', as: :delete_reference_redirection
 
   # Survey routes
   get 'surveys' => 'surveys#index'

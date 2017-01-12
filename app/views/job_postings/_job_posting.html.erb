@@ -1,28 +1,28 @@
 <% if !@job_posting.user.nil? %>
 	<%= image_tag @job_posting.user.image(:medium), class: "image-radius" if !@job_posting.user.image_file_name.nil? %>
 <% end %>
-
+<h4>
+<% if @job_posting.user.nil? %>
+	<%= @company_name %>
+<% else %>
+	<%= link_to @company_name, user_path(@job_posting.user) %>
+<% end %>
+</h4>
 <div class="row">
 	<div class="col-md-6">
 		<h4>
-			<% if @job_posting.user.nil? %>
-				<%= @company_name %>
-			<% else %>
-				<%= link_to @company_name, user_path(@job_posting.user) %>
-			<% end %>
-				<br /><%= @job_posting.title %>
+			<%= @job_posting.title %>
 		</h4>
 		<p> <%= @job_posting.city+", "+@job_posting.province %><br>
 			<%= @job_posting.job_category.name %><br>
-			<% if @job_posting.pay_rate == "salary" %>
-				Pay rate: Salary
+			<% if @job_posting.pay_rate == "yearly" %>
+				Pay rate: Yearly
 				<% unless @job_posting.lower_pay_range.nil? %>
 					, starting at <%=number_to_currency(@job_posting.lower_pay_range)%>
 				<% end %>
 				<% unless @job_posting.upper_pay_range.nil? %>
 					and capping at <%=number_to_currency(@job_posting.upper_pay_range)%>
 				<% end %>
-				<br />
 			<% elsif @job_posting.pay_rate == "hourly" %>
 				Pay rate: Hourly
 				<% unless @job_posting.lower_pay_range.nil? %>
@@ -31,15 +31,15 @@
 				<% unless @job_posting.upper_pay_range.nil? %>
 					and capping at <%=number_to_currency(@job_posting.upper_pay_range)%>
 				<% end %>
-				<br />
 			<% end %>
+			<br />
 			<%= raw("<a href=\"http://#{@job_posting.link}\">#{@job_posting.link}</a><br>") if !@job_posting.link.blank? %>
 			<%= raw("Posted By: #{@job_posting.posted_by}<br>") if !@job_posting.posted_by.blank? %>
 			Posted On: <%= local_date(@job_posting.created_at)%>
 			<%= raw("<br>"+@job_posting.get_type_string) if !@job_posting.job_type.nil? %>
 		</p>
 
-		<br><%= simple_format @job_posting.description %><br>
+		<%= simple_format @job_posting.description %>
 
 		<p><%= raw("Open date: #{@job_posting.open_date.strftime('%B %d, %Y')}<br>")   if !@job_posting.open_date.blank? %>
 		   <%= raw("Close date: #{@job_posting.close_date.strftime('%B %d, %Y')}<br>") if !@job_posting.close_date.blank? %>
@@ -70,10 +70,10 @@
 <% end %>
 
 <% if user_signed_in? && @current_user.id == @job_posting.user_id %>
-	<%= link_to "Edit Posting", edit_job_posting_path(@job_posting), class: "btn btn-warning"%>
+	<%= link_to "Edit", edit_job_posting_path(@job_posting), class: "btn btn-warning"%>
 	<% application_count = @job_posting.job_posting_applications.where(status:-1..Float::INFINITY).count %>
 	<% application_count = "" if application_count == 0 %>
 	<%= link_to raw("Applications <span class=\"badge\">#{application_count.to_s}</span>"), job_posting_applications_path(job_posting:@job_posting), class: "btn btn-success"%>
-	<%= link_to "Delete Posting", job_posting_path(@job_posting), method: "delete", data: {confirm: "Are you sure you want to delete this posting?"}, class: "btn btn-danger"%>
+	<%= link_to "Delete", job_posting_path(@job_posting), method: "delete", data: {confirm: "Are you sure you want to delete this posting?"}, class: "btn btn-danger"%>
 	<p><span class="label label-default"><%=@job_posting.views%> Views</span></p>
 <% end %>

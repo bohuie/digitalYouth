@@ -47,6 +47,17 @@ class JobPostingsController < ApplicationController
 		@pay_rates = JobPosting.get_pay_rates
 		@provinces = JobPosting.get_provinces
 		params[:job_posting][:user_id] = current_user.id
+		byebug
+		if params[:job_posting][:pay_rate] == "yearly"
+			params[:job_posting][:lower_pay_range] = params[:job_posting][:lower_pay_range_year]
+			params[:job_posting][:upper_pay_range] = params[:job_posting][:upper_pay_range_year]
+		elsif params[:job_posting][:pay_rate] == "hourly"
+			params[:job_posting][:lower_pay_range] = params[:job_posting][:lower_pay_range_hour]
+			params[:job_posting][:upper_pay_range] = params[:job_posting][:upper_pay_range_hour]
+		else
+			flash[:warning] = "Oops, there was an issue in editing your Job Posting."
+			redirect_back_or create_job_posting_path(@job_posting) and return
+		end
 		
 		@job_posting = JobPosting.new(job_posting_params)
 		if check_fields && @job_posting.save && @job_posting.process_skills(params[:job_posting]["job_posting_skills_attributes"])
@@ -68,9 +79,32 @@ class JobPostingsController < ApplicationController
 		@pay_rates = JobPosting.get_pay_rates
 		@provinces = JobPosting.get_provinces
 		@user = current_user
+		job_posting = JobPosting.find(params[:id])
+		if job_posting.pay_rate == "yearly"
+			@year_lower = job_posting.lower_pay_range
+			@year_upper = job_posting.upper_pay_range
+			@hour_lower
+			@hour_upper
+		else
+			@year_lower
+			@year_upper
+			@hour_lower = job_posting.lower_pay_range
+			@hour_upper = job_posting.upper_pay_range
+		end
 	end
 
 	def update # Updates the job posting
+		if params[:job_posting][:pay_rate] == "yearly"
+			params[:job_posting][:lower_pay_range] = params[:job_posting][:lower_pay_range_year]
+			params[:job_posting][:upper_pay_range] = params[:job_posting][:upper_pay_range_year]
+		elsif params[:job_posting][:pay_rate] == "hourly"
+			params[:job_posting][:lower_pay_range] = params[:job_posting][:lower_pay_range_hour]
+			params[:job_posting][:upper_pay_range] = params[:job_posting][:upper_pay_range_hour]
+		else
+			flash[:warning] = "Oops, there was an issue in editing your Job Posting."
+			redirect_back_or edit_job_posting_path(@job_posting) and return
+		end
+
 		if check_fields && @job_posting.update_attributes(job_posting_params) && @job_posting.process_skills(params[:job_posting]["job_posting_skills_attributes"])
 			redirect_to current_user, flash: {success: "Job Posting Updated!"}
 			JobPosting.reindex if !Rails.env.test?
@@ -223,6 +257,8 @@ private
 		
 		if args[:title].blank? || args[:city].blank?  || args[:province].blank? || args[:description].blank? || args[:open_date].blank? || args[:close_date].blank? || args[:job_category_id].blank? || args[:job_type].blank?
 			flash[:warning] = "Missing required fields"
+		elsif args[:lower_pay_range].blank?
+			flash[:warning] = "Missing From pay range"
 		elsif args[:open_date] > args[:close_date]
 			flash[:warning] ="Open date must be before close date"
 		elsif args["job_posting_skills_attributes"].nil?

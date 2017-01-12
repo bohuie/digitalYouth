@@ -358,18 +358,35 @@
 			<div id="about" class="<%= aclass %>">
 				<h4>About <%= @user.company_name %> </h4>
 				<% if user_signed_in? && current_user == @user %>
+					<p>Feel free to update your company bio and public message below.</p>
 					<%= simple_form_for @user do |u| %>
-						<%= u.input :bio, as: :text %>
-						<%= u.submit "Update Bio", name: 'bio', class: "btn btn-primary"%>
+						<div class="row">
+							<div class="col-md-8">
+								<%= u.input :bio, as: :text, input_html: {cols: 50, rows: 7} %>
+							</div>
+						</div>
+						<br />
+						<div class="row">
+							<div class="col-md-2">
+								<%= u.submit "Update Bio", name: 'bio', class: "btn btn-primary"%>
+							</div>
+						</div>
 					<% end %>
 				<% else %>
+					<p>Here you can read about <%= @user.company_name %>.</p>
 					<%= @user.bio %>
 				<% end %>
 			</div>
 			<div id="jobs" class="<%= jclass %>">
-				<br>
+				
 				<% if user_signed_in? && current_user == @user %>
-					<%= link_to "Create a New Posting", new_job_posting_path, class: "btn btn-primary" %><br>
+					<h4>Job Postings</h4>
+					<p>Here you can create new job postings, view, edit, see applicanations, or delete job postings.</p>
+					<div class="row padding15" ><%= link_to "Create a New Posting", new_job_posting_path, class: "btn btn-primary" %></div>
+
+				<% else %>
+					<h4>Job's Posted by <%= @user.company_name %></h4>
+					<p>Here you can view any job postings from <%= @user.company_name %>.</p>
 				<% end %>
 				<% if @job_postings.nil? %>
 					<% if user_signed_in? && current_user == @user %>
@@ -390,7 +407,7 @@
 								<%= raw("Open date: #{j.open_date.strftime('%B %d, %Y')}<br>")   if !j.open_date.blank? %>
 								<%= raw("Close date: #{j.close_date.strftime('%B %d, %Y')}<br>") if !j.close_date.blank? %>
 							</div>
-							<div class="col-md-6">
+							<div class="col-md-6 margintop5">
 								<%= link_to "View", job_posting_path(j), class: "btn btn-primary" %>
 								<% if user_signed_in? && current_user == @user %>
 									<%= link_to "Edit Posting", edit_job_posting_path(j), class: "btn btn-warning"%>

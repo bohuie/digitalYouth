@@ -58,10 +58,19 @@
 
 	<%i=0%>
 	<div id="job-skills">
-		<%= f.simple_fields_for :job_posting_skills do |builder| %>
-			<%= render 'job_postings/job_posting_skill_fields', id: i, f: builder %>
-			<%i=i+1%>
-		<% end%>
+		<% if @jobskills.nil? %>
+			<%= f.simple_fields_for :job_posting_skills do |builder| %>
+				<%= render 'job_postings/job_posting_skill_fields', id: i, f: builder %>
+				<%i=i+1%>
+			<% end%>
+		<% else %>
+			<% @jobskills.each do |js| %>
+				<%= f.simple_fields_for :job_posting_skills do |builder| %>
+					<%= render partial: 'job_postings/job_posting_skill_fields', locals: {js: js, id: i, f: builder} %>
+					<%i=i+1%>
+				<% end %>
+			<% end %>
+		<% end %>
 	</div>
 	<p><%= link_to_add_job_posting_skill_fields "Add Skill", f, "btn btn-primary" %></p>
 

@@ -23,10 +23,11 @@ class User < ActiveRecord::Base
 	       :recoverable, :trackable, :validatable, :confirmable, :omniauthable
 
     has_attached_file :image,
-        default_url: 'avatar-placeholder-:style.png',
+        default_url: 'avatar-placeholder-:style.svg',
         styles: { 
             medium: { geometry: "150x150#", :processors => [:cropper] },
-            thumb: { geometry: "75x75#", :processors => [:cropper] }, 
+            small: { geometry: "100x100#", :processors => [:cropper] },
+            thumb: { geometry: "45x45#", :processors => [:cropper] }, 
             large: { geometry: "400x400>" }
         }
     include DeletableAttachment

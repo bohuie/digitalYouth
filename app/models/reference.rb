@@ -5,9 +5,13 @@ class Reference < ActiveRecord::Base
 	belongs_to :referee, :class_name => "User"
 	belongs_to :user
 
-	before_save do
-  		self.email = self.email.downcase
-	end
+	validates :first_name, presence: true
+	validates :last_name, presence: true
+	validates :company, presence: true
+	validates :position, presence: true
+	validates :reference_body, presence: true
+
+
 
 	before_destroy :destroy_notification
 private

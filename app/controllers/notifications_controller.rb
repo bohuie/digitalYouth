@@ -45,7 +45,10 @@ class NotificationsController < ApplicationController
 		@notification.update(is_read: true)
 		
 		if @notification.trackable_type == "ReferenceRedirection"
-			redirect_to controller: 'users', action: 'reference_tab'
+			redirect_to controller: 'references', action: 'new', id: @notification.parameters[:url]
+		elsif @notification.trackable_type == "Reference"
+			session[:home_tab] = "references"
+			redirect_to controller: 'users', action: 'show', id: @notification.owner_id
 		else
 			redirect_to polymorphic_path(@notification.trackable)
 		end

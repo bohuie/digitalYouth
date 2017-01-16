@@ -52,9 +52,13 @@ class JobPostingsController < ApplicationController
 		if params[:job_posting][:pay_rate] == "yearly"
 			params[:job_posting][:lower_pay_range] = params[:job_posting][:lower_pay_range_year]
 			params[:job_posting][:upper_pay_range] = params[:job_posting][:upper_pay_range_year]
+			@year_lower = params[:job_posting][:lower_pay_range_year]
+			@year_upper = params[:job_posting][:upper_pay_range_year]
 		elsif params[:job_posting][:pay_rate] == "hourly"
 			params[:job_posting][:lower_pay_range] = params[:job_posting][:lower_pay_range_hour]
 			params[:job_posting][:upper_pay_range] = params[:job_posting][:upper_pay_range_hour]
+			@hour_lower = params[:job_posting][:lower_pay_range_hour]
+			@hour_upper = params[:job_posting][:upper_pay_range_hour]
 		else
 			flash.now[:warning] = "Please select yearly or hourly for pay rate."
 			skip = true
@@ -99,13 +103,22 @@ class JobPostingsController < ApplicationController
 
 	def update # Updates the job posting
 		@user = current_user
+		@surveys = Survey.get_title_map
+		@categories = JobCategory.all
+		@job_types = JobPosting.get_types_collection
+		@pay_rates = JobPosting.get_pay_rates
+		@provinces = JobPosting.get_provinces
 		skip = false
 		if params[:job_posting][:pay_rate] == "yearly"
 			params[:job_posting][:lower_pay_range] = params[:job_posting][:lower_pay_range_year]
 			params[:job_posting][:upper_pay_range] = params[:job_posting][:upper_pay_range_year]
+			@year_lower = params[:job_posting][:lower_pay_range_year]
+			@year_upper = params[:job_posting][:upper_pay_range_year]
 		elsif params[:job_posting][:pay_rate] == "hourly"
 			params[:job_posting][:lower_pay_range] = params[:job_posting][:lower_pay_range_hour]
 			params[:job_posting][:upper_pay_range] = params[:job_posting][:upper_pay_range_hour]
+			@hour_lower = params[:job_posting][:lower_pay_range_hour]
+			@hour_upper = params[:job_posting][:upper_pay_range_hour]
 		else
 			flash.now[:warning] = "Please select yearly or hourly for pay rate."
 			skip = true
@@ -116,7 +129,7 @@ class JobPostingsController < ApplicationController
 			JobPosting.reindex if !Rails.env.test?
 		else
 			skill = Skill.new
-			@job_posting.job_posting_skills.build(skill: skill)
+			@job_posting_skill = JobPostingSkill.new(skill: skill)
 			@jobskills = params[:job_posting]["job_posting_skills_attributes"]
 			if flash[:warning].blank?
 				flash[:warning] = "Oops, there was an issue in editing your Job Posting."

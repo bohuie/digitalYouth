@@ -1,0 +1,15 @@
+<!--<%= form_tag '/users/:id/contact' do %>
+	<%= label_tag('body') %>
+	<%= text_field_tag('body') %>
+	<%= submit_tag 'Send', class: "btn btn-primary" %>
+<% end %>
+-->
+
+<%= simple_form_for :contact, {url: email_user_path } do |f| %>
+	<div class="row">
+		<div class="col-md-4">
+			<%= f.input :body, as: :text %>
+		</div>
+	</div>
+	<%= f.button :submit, "Send Contact Request", class: "btn btn-primary" %>
+<% end %>

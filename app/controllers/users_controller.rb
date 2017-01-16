@@ -4,6 +4,7 @@ respond_to :html, :json
 	before_action :authenticate_user!, except: [:show, :index, :nav_tab] #ignore home_tab, only done when it is the current user and logged in
 	before_action :profile_owner, only: [:edit, :update, :destroy]
 	skip_before_action :verify_authenticity_token, only: [:nav_tab] #ignore home_tab, only done when it is the current user and logged in
+	before_action :employer_only, only: [:contact, :send_mail]
 
 	
 	def index
@@ -11,6 +12,7 @@ respond_to :html, :json
 	end
 
 	def show
+
 		@user = User.find(params[:id])
 
 		@surveys = Survey.get_title_map
@@ -117,6 +119,22 @@ respond_to :html, :json
     	end
   	end
 
+	def contact # Page for form to send an email
+		@user = current_user
+		@url = ""
+		@reference_email = ReferenceEmail.new 
+	end
+
+  	def send_mail # Sends the email
+		contact = User.find(params[:id])
+		unless contact.nil?
+			#create notification?
+		end
+
+		UserMailer.contact_user(contact, current_user, params[:contact][:body]).deliver_now
+		redirect_to current_user , flash: {success: "Contact request sent!"}
+	end
+
   	def home_tab
   		session[:home_tab] = params[:home_tab]
   		
@@ -182,6 +200,13 @@ respond_to :html, :json
 		unless @user.id == current_user.id
 			flash[:warning] = "You can only make changes to your own profile."
 			redirect_back_or current_user
+		end
+	end
+
+	def employer_only
+		unless current_user.has_role? :employer
+			flash[:warning] = "Sorry, we couldn't find that page."
+			redirect_back_or
 		end
 	end
 end

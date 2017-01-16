@@ -6,7 +6,6 @@
   <body>
     <h1>Hi <%= @reference_email.first_name %> <%= @reference_email.last_name %>!</h1>
     <p> <%= @user.first_name %> <%= @user.last_name %> would like you to give them a reference on <%= @host_string %>!</p>
-    <p> Please click on the following link to give them a reference!</p>
-    <p> <%= link_to @url_string, @url_string %> </p>
+    <p> If you would like to give a reference, click <%=link_to @url_string, 'here' %>.</p>
   </body>
 </html>

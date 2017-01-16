@@ -11,11 +11,12 @@ class JobPosting < ActiveRecord::Base
 	@@job_types = {"Full Time"=>0,"Part Time"=>1,"Contract"=>2,"Casual"=>3,
 			 "Summer Positions"=>4,"Graduate Year Recruitment Program"=>5,
 			 "Field Placement/Work Practicum"=>6,"Internship"=>7,"Volunteer"=>8}
-	@@pay_rates = {"Salary" => "salary", "Hourly" => "hourly"}
+	@@pay_rates = {"Yearly" => "yearly", "Hourly" => "hourly"}
 
 	@@provinces = {"AB" => "AB", "BC" => "BC", "MB" => "MB", "NB" => "NB", "NL" => "NL", "NS" => "NS", 
 			"NT" => "NT", "NU" => "NU", "ON" => "ON", "PE" => "PE", "QC" => "QC", "SK" => "SK", "YT" =>"YT"}
 
+	validates :lower_pay_range, presence: true
 
 	def search_data
 		data = Hash.new

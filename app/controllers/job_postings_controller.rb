@@ -46,15 +46,34 @@ class JobPostingsController < ApplicationController
 		@job_types = JobPosting.get_types_collection
 		@pay_rates = JobPosting.get_pay_rates
 		@provinces = JobPosting.get_provinces
+		skip = false
 		params[:job_posting][:user_id] = current_user.id
-		
+
+		if params[:job_posting][:pay_rate] == "yearly"
+			params[:job_posting][:lower_pay_range] = params[:job_posting][:lower_pay_range_year]
+			params[:job_posting][:upper_pay_range] = params[:job_posting][:upper_pay_range_year]
+			@year_lower = params[:job_posting][:lower_pay_range_year]
+			@year_upper = params[:job_posting][:upper_pay_range_year]
+		elsif params[:job_posting][:pay_rate] == "hourly"
+			params[:job_posting][:lower_pay_range] = params[:job_posting][:lower_pay_range_hour]
+			params[:job_posting][:upper_pay_range] = params[:job_posting][:upper_pay_range_hour]
+			@hour_lower = params[:job_posting][:lower_pay_range_hour]
+			@hour_upper = params[:job_posting][:upper_pay_range_hour]
+		else
+			flash.now[:warning] = "Please select yearly or hourly for pay rate."
+			skip = true
+		end
+
 		@job_posting = JobPosting.new(job_posting_params)
-		if check_fields && @job_posting.save && @job_posting.process_skills(params[:job_posting]["job_posting_skills_attributes"])
+		if !skip && check_fields && @job_posting.save && @job_posting.process_skills(params[:job_posting]["job_posting_skills_attributes"])
 			redirect_to current_user, flash: {success: "Job Posting Created!"}
 			JobPosting.reindex if !Rails.env.test?
 		else
+			skill = Skill.new
+			@job_posting.job_posting_skills.build(skill: skill)
+			@jobskills = params[:job_posting]["job_posting_skills_attributes"]
 			if flash[:warning].blank?
-				flash[:warning] = "Oops, there was an issue in creating your Job Posting."
+				flash.now[:warning] = "Oops, there was an issue in creating your Job Posting."
 			end
 			render 'new'
 		end
@@ -68,17 +87,54 @@ class JobPostingsController < ApplicationController
 		@pay_rates = JobPosting.get_pay_rates
 		@provinces = JobPosting.get_provinces
 		@user = current_user
+		job_posting = JobPosting.find(params[:id])
+		if job_posting.pay_rate == "yearly"
+			@year_lower = job_posting.lower_pay_range
+			@year_upper = job_posting.upper_pay_range
+			@hour_lower
+			@hour_upper
+		else
+			@year_lower
+			@year_upper
+			@hour_lower = job_posting.lower_pay_range
+			@hour_upper = job_posting.upper_pay_range
+		end
 	end
 
 	def update # Updates the job posting
-		if check_fields && @job_posting.update_attributes(job_posting_params) && @job_posting.process_skills(params[:job_posting]["job_posting_skills_attributes"])
+		@user = current_user
+		@surveys = Survey.get_title_map
+		@categories = JobCategory.all
+		@job_types = JobPosting.get_types_collection
+		@pay_rates = JobPosting.get_pay_rates
+		@provinces = JobPosting.get_provinces
+		skip = false
+		if params[:job_posting][:pay_rate] == "yearly"
+			params[:job_posting][:lower_pay_range] = params[:job_posting][:lower_pay_range_year]
+			params[:job_posting][:upper_pay_range] = params[:job_posting][:upper_pay_range_year]
+			@year_lower = params[:job_posting][:lower_pay_range_year]
+			@year_upper = params[:job_posting][:upper_pay_range_year]
+		elsif params[:job_posting][:pay_rate] == "hourly"
+			params[:job_posting][:lower_pay_range] = params[:job_posting][:lower_pay_range_hour]
+			params[:job_posting][:upper_pay_range] = params[:job_posting][:upper_pay_range_hour]
+			@hour_lower = params[:job_posting][:lower_pay_range_hour]
+			@hour_upper = params[:job_posting][:upper_pay_range_hour]
+		else
+			flash.now[:warning] = "Please select yearly or hourly for pay rate."
+			skip = true
+		end
+
+		if !skip && check_fields && @job_posting.update_attributes(job_posting_params) && @job_posting.process_skills(params[:job_posting]["job_posting_skills_attributes"])
 			redirect_to current_user, flash: {success: "Job Posting Updated!"}
 			JobPosting.reindex if !Rails.env.test?
 		else
+			skill = Skill.new
+			@job_posting_skill = JobPostingSkill.new(skill: skill)
+			@jobskills = params[:job_posting]["job_posting_skills_attributes"]
 			if flash[:warning].blank?
 				flash[:warning] = "Oops, there was an issue in editing your Job Posting."
 			end
-			redirect_back_or edit_job_posting_path(@job_posting)
+			render 'edit'
 		end
 	end
 
@@ -222,11 +278,13 @@ private
 		args = params[:job_posting]
 		
 		if args[:title].blank? || args[:city].blank?  || args[:province].blank? || args[:description].blank? || args[:open_date].blank? || args[:close_date].blank? || args[:job_category_id].blank? || args[:job_type].blank?
-			flash[:warning] = "Missing required fields"
+			flash.now[:warning] = "Missing required fields"
+		elsif args[:lower_pay_range].blank?
+			flash.now[:warning] = "Missing From in pay rate"
 		elsif args[:open_date] > args[:close_date]
-			flash[:warning] ="Open date must be before close date"
+			flash.now[:warning] ="Open date must be before close date"
 		elsif args["job_posting_skills_attributes"].nil?
-			flash[:warning] = "You must enter some skills associated with this job."
+			flash.now[:warning] = "You must enter some skills associated with this job."
 		elsif !args["job_posting_skills_attributes"].nil?
 			destroy = true
 			missing = false
@@ -236,8 +294,8 @@ private
 				missing = true if m[1]["importance"].blank?
 				destroy = false if m[1]["_destroy"] == "false"
 			end
-			flash[:warning] = "You must enter all skill fields." if missing
-			flash[:warning] = "You must enter some skills associated with this job." if destroy
+			flash.now[:warning] = "You must enter all skill fields." if missing
+			flash.now[:warning] = "You must enter some skills associated with this job." if destroy
 		end
 		if !flash[:warning].blank?
 			return false 

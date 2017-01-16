@@ -26,12 +26,14 @@
 	</div>
 	<div class="row">
 		<% if @job_posting.pay_rate.nil? %>
-			<%= f.input :pay_rate, collection: @pay_rates, checked:"yearly", as: :radio_buttons, wrapper_html: { class: "col-md-1" } %>
+			<%= f.input :pay_rate, collection: @pay_rates, required: true, checked:"yearly", as: :radio_buttons, wrapper_html: { class: "col-md-1", style: "min-width: 110px" } %>
 		<% else %>
-			<%= f.input :pay_rate, collection: @pay_rates, selected: @job_posting.pay_rate, as: :radio_buttons, wrapper_html: { class: "col-md-1"} %>
+			<%= f.input :pay_rate, collection: @pay_rates, required: true, selected: @job_posting.pay_rate, as: :radio_buttons, wrapper_html: { class: "col-md-1"} %>
 		<% end %>
 		<div class="col-md-6">
-			<div class="row" style="padding-top: 20px;">
+			<div class="row">
+				<div class="col-md-12"><b>A Starting amount (From) is required for your chosen pay rate.</b></div></div>
+			<div class="row">
 				<%= f.input :lower_pay_range_year, label: "From", label_html: { style: "width:35px; text-align: right;" }, input_html: {style: "display: inline-block; width: calc(100% - 35px);", value: number_with_precision(@year_lower, precision: 2)}, wrapper_html: { style: "margin-bottom:5px", class: "col-md-6" } %>
 
 				<%= f.input :upper_pay_range_year, label: "To", label_html: { style: "width:35px; text-align: right;" }, input_html: {style: "display: inline-block; width: calc(100% - 35px);", value: number_with_precision(@year_upper, precision: 2)}, wrapper_html: { style: "margin-bottom:5px", class: "col-md-6" }  %>

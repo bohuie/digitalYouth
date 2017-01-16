@@ -46,6 +46,7 @@ class JobPostingsController < ApplicationController
 		@job_types = JobPosting.get_types_collection
 		@pay_rates = JobPosting.get_pay_rates
 		@provinces = JobPosting.get_provinces
+		skip = false
 		params[:job_posting][:user_id] = current_user.id
 
 		if params[:job_posting][:pay_rate] == "yearly"
@@ -55,12 +56,12 @@ class JobPostingsController < ApplicationController
 			params[:job_posting][:lower_pay_range] = params[:job_posting][:lower_pay_range_hour]
 			params[:job_posting][:upper_pay_range] = params[:job_posting][:upper_pay_range_hour]
 		else
-			flash.now[:warning] = "Oops, there was an issue in creating your Job Posting."
-			render 'new' and return
+			flash.now[:warning] = "Please select yearly or hourly for pay rate."
+			skip = true
 		end
 
 		@job_posting = JobPosting.new(job_posting_params)
-		if check_fields && @job_posting.save && @job_posting.process_skills(params[:job_posting]["job_posting_skills_attributes"])
+		if !skip && check_fields && @job_posting.save && @job_posting.process_skills(params[:job_posting]["job_posting_skills_attributes"])
 			redirect_to current_user, flash: {success: "Job Posting Created!"}
 			JobPosting.reindex if !Rails.env.test?
 		else
@@ -97,6 +98,8 @@ class JobPostingsController < ApplicationController
 	end
 
 	def update # Updates the job posting
+		@user = current_user
+		skip = false
 		if params[:job_posting][:pay_rate] == "yearly"
 			params[:job_posting][:lower_pay_range] = params[:job_posting][:lower_pay_range_year]
 			params[:job_posting][:upper_pay_range] = params[:job_posting][:upper_pay_range_year]
@@ -104,18 +107,21 @@ class JobPostingsController < ApplicationController
 			params[:job_posting][:lower_pay_range] = params[:job_posting][:lower_pay_range_hour]
 			params[:job_posting][:upper_pay_range] = params[:job_posting][:upper_pay_range_hour]
 		else
-			flash[:warning] = "Oops, there was an issue in editing your Job Posting."
-			redirect_back_or edit_job_posting_path(@job_posting) and return
+			flash.now[:warning] = "Please select yearly or hourly for pay rate."
+			skip = true
 		end
 
-		if check_fields && @job_posting.update_attributes(job_posting_params) && @job_posting.process_skills(params[:job_posting]["job_posting_skills_attributes"])
+		if !skip && check_fields && @job_posting.update_attributes(job_posting_params) && @job_posting.process_skills(params[:job_posting]["job_posting_skills_attributes"])
 			redirect_to current_user, flash: {success: "Job Posting Updated!"}
 			JobPosting.reindex if !Rails.env.test?
 		else
+			skill = Skill.new
+			@job_posting.job_posting_skills.build(skill: skill)
+			@jobskills = params[:job_posting]["job_posting_skills_attributes"]
 			if flash[:warning].blank?
 				flash[:warning] = "Oops, there was an issue in editing your Job Posting."
 			end
-			redirect_back_or edit_job_posting_path(@job_posting)
+			render 'edit'
 		end
 	end
 

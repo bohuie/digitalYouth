@@ -84,6 +84,10 @@ Rails.application.routes.draw do
   patch 'job_postings/:id' => 'job_postings#update'
   delete 'job_postings/:id' => 'job_postings#destroy'
   post 'job_postings' => 'job_postings#create'
+  get 'job_postings/:id/compare' => 'job_postings#compare', as: :compare_applications
+  resources :job_postings do
+    get 'applications', on: :member
+  end
 
   # Job Posting Application routes
   get 'job_posting_applications' => 'job_posting_applications#index'
@@ -126,6 +130,7 @@ Rails.application.routes.draw do
   get 'surveys/:title' => 'surveys#show', as: :survey
   post 'responses' => 'responses#create'
   patch 'responses' => 'responses#update'
+  get 'surveys/:title/compare' => 'surveys#compare', as: :compare_survey
 
 
 

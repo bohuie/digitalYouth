@@ -1,0 +1,34 @@
+<%= render "users/shared/profile" %>
+
+<%= render partial: "shared/employer_tabs", locals: { active: "jobs" } %>
+
+<h4>Job Applications for <%= link_to @job_posting.title, job_posting_path(@job_posting.id) %></h4>
+<p>Listed below are all the applicants for <%= @job_posting.title %>.  You can view their profile by cliking on their name, as well as see how many of the job's required and preferred skills they have.</p>
+
+<div class="row">
+	<div class="col-md-2">
+	<%= link_to "Compare Applicant Skills", compare_applications_path(@job_posting), class: "btn btn-primary" %>
+	</div>
+</div>
+<br />
+<table data-toggle="table" data-pagination="true" data-page-size="5" data-page-list="[5,8,10]" >
+<thead>
+    <tr>
+      <th data-sortable="false">Name</th>
+      <th data-sortable="true">Required Skills</th>
+      <th data-sortable="true">Preferred Skills</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @job_posting_applications.each do |j| %>
+      <tr class="alternate">
+        <td><%= image_tag j.applicant.image.url(:thumb), class: "image-radius" if !j.applicant.image.nil? %>
+        <%= link_to "#{j.applicant.first_name} #{j.applicant.last_name}", job_posting_application_path(j) %>
+		<small class="job-application-content"><span class=" label label-<%=j.get_bootstrap_status%>"><%="#{j.get_status_string}"%></span></small></td>
+		<td><p>Required Skills: <%= @applicant_skills[j.applicant.id][:required] %> / <%= @req_skills_count %></p></td>
+		<td><p>Preferrred Skills: <%= @applicant_skills[j.applicant.id][:preferred] %> / <%= @pref_skills_count %></p></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

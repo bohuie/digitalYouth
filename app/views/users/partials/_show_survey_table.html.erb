@@ -14,7 +14,7 @@
 			<%= column_chart [
 				{name: "Average Job Seeker", data: @average_results[i]},
 				{name: "My Results", data: results[i], library: {style: {opacity: "0.2"}}}
-				], height: "100px", min: 0, max: 3, library: { legend: { position: 'none' }, vAxis: { textPosition: 'none' }, hAxis: {textPosition: 'none'}, series:{1 => {type: "line"}}} %>
+				], height: "100px", min: 0, max: 3, library: { legend: { position: 'none' }, vAxis: { textPosition: 'none' }, hAxis: {textPosition: 'none'}, series:{0 => {type: "line"}}} %>
 			<% if user.answered_surveys[i - 1] && user_signed_in? && current_user==user%>
 				<%= link_to "Update", survey_path(s.title) %>
 			<% end %>

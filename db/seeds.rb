@@ -69,7 +69,7 @@ begin
 	ProjectSkill.create(project_id: project1.id, skill_id: skill15.id, survey_id: 12)
 	ProjectSkill.create(project_id: project2.id, skill_id: skill10.id, survey_id: 3)
 
-	user2 = User.new(first_name: 'Jane', last_name: 'Doe', email: 'jane@doe.com', password: 'password', password_confirmation: 'password')
+	user2 = User.new(first_name: 'Ash', last_name: 'Wong', email: 'ashwongg@gmail.com', password: 'password', password_confirmation: 'password')
 	user2.add_role :employee
 	user2.skip_confirmation!
 	user2.save
@@ -176,14 +176,14 @@ begin
 	#--- Companies for testing ---
 	#Creatinga  company
 	user11 = User.new(first_name: 'Hugh', last_name: 'Mcguire', email: 'Hugh@Mcguire.com', password: 'password', password_confirmation: 'password', 
-		company_name: 'PetSmart Inc.')
+		company_name: 'PetSmart Inc.', bio:'We love pets and we believe pets make us better people. PetSmart will be the trusted partner to pet parents and pets in every moment of their lives.')
 	user11.add_role :employer
 	user11.skip_confirmation!
 	user11.save
 	user11.create_consent(answer: 1, name: "Hugh Mcguire", date_signed: Date.today, consent_type: 2)
 
 	#How to post jobs
-	jobposting1 = JobPosting.create(title: 'Social Media Manager', city: "Kelowna", province: "BC", pay_rate: 'salary', lower_pay_range: 40000.00, upper_pay_range: 45000.00, link:"www.google.ca", posted_by:"Seed File", job_type: 1,
+	jobposting1 = JobPosting.create(title: 'Social Media Manager', city: "Kelowna", province: "BC", pay_rate: 'yearly', lower_pay_range: 40000.00, upper_pay_range: 45000.00, link:"www.google.ca", posted_by:"Seed File", job_type: 1,
 				  description: 'Handling our Facebook and Twitter account, posting messages, and responding to clients.', open_date: Date.today-7, close_date: Date.today+7,
 				  job_category_id: 12, user_id: user11.id, created_at:Date.today-7)
 
@@ -282,32 +282,32 @@ begin
 #	end
 
 	#--- References for testing ---
-	reference1 = Reference.create(first_name: 'Bernie', last_name: 'Smith', email: 'Andrew@gmail.com', company: 'Apple Picking Co.',
-				 position: "Lead Apple Picker", phone_number:"(250)555-5555", reference_body: "He was the best Apple Picker.", user_id: user1.id)
-	reference1 = Reference.create(first_name: user11.first_name, last_name: user11.last_name, email: user11.first_name+"@"+user11.last_name+'.com', company: user11.company_name,
-				 position: "Developer", phone_number:"(250)555-5555", reference_body: "Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar ", user_id: user1.id)
+	reference1 = Reference.create!(first_name: 'Bernie', last_name: 'Smith', company: 'Apple Picking Co.',
+				 position: "Lead Apple Picker", reference_body: "He was the best Apple Picker.", user_id: user1.id)
+	reference1 = Reference.create(first_name: user11.first_name, last_name: user11.last_name, company: user11.company_name,
+				 position: "Developer", reference_body: "Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar ", user_id: user1.id)
 
-	reference2 = Reference.create(first_name: 'Bernie', last_name: 'Smith', email: 'Greg@gmail.com', company: 'Apple Pickers United LTD',
-				 position: "Apple QC Specialist", phone_number:"(250)555-5050", reference_body: "He was the best.", user_id: user2.id)
+	reference2 = Reference.create(first_name: 'Bernie', last_name: 'Smith', company: 'Apple Pickers United LTD',
+				 position: "Apple QC Specialist", reference_body: "He was the best.", user_id: user2.id)
 
 
 	# --- JobPostingApplications for testing ---
-	jobpostingapplication = JobPostingApplication.create(message: "Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar ", 
+	jobpostingapplication = JobPostingApplication.create(message: "Hello Mr Mcguire.  I believe I would be a strong candidate for your position, with an eagerness to learn.  I am an avid pet lover, and would love to work with a company that helps pets.", 
 		job_posting_id: jobposting1.id, applicant_id: user1.id, company_id: user11.id, status: 0)
-	jobpostingapplication = JobPostingApplication.create(message: "Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar ", 
+	jobpostingapplication = JobPostingApplication.create(message: "I have had much experience maintaining social media accounts.  I have led Facebook and Twitter outreach programs for other companies, and I feel like I would be a good fit with you and your company.", 
 		job_posting_id: jobposting1.id, applicant_id: user2.id, company_id: user11.id, status: 0)
 	jobpostingapplication = JobPostingApplication.create(message: "Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar ", 
-		job_posting_id: jobposting1.id, applicant_id: user3.id, company_id: user11.id, status: 0)
+		job_posting_id: jobposting2.id, applicant_id: user3.id, company_id: user11.id, status: 0)
 	jobpostingapplication = JobPostingApplication.create(message: "Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar ", 
-		job_posting_id: jobposting1.id, applicant_id: user4.id, company_id: user11.id, status: 0)
+		job_posting_id: jobposting2.id, applicant_id: user4.id, company_id: user11.id, status: 0)
 	jobpostingapplication = JobPostingApplication.create(message: "Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar ", 
-		job_posting_id: jobposting1.id, applicant_id: user5.id, company_id: user11.id, status: 0)
+		job_posting_id: jobposting2.id, applicant_id: user5.id, company_id: user11.id, status: 0)
 	jobpostingapplication = JobPostingApplication.create(message: "Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar ", 
-		job_posting_id: jobposting1.id, applicant_id: user6.id, company_id: user11.id, status: 0)
+		job_posting_id: jobposting2.id, applicant_id: user6.id, company_id: user11.id, status: 0)
 	jobpostingapplication = JobPostingApplication.create(message: "Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar ", 
-		job_posting_id: jobposting1.id, applicant_id: user7.id, company_id: user11.id, status: 0)
+		job_posting_id: jobposting2.id, applicant_id: user7.id, company_id: user11.id, status: 0)
 	jobpostingapplication = JobPostingApplication.create(message: "Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar ", 
-		job_posting_id: jobposting1.id, applicant_id: user8.id, company_id: user11.id, status: 0)
+		job_posting_id: jobposting2.id, applicant_id: user8.id, company_id: user11.id, status: 0)
 	jobpostingapplication = JobPostingApplication.create(message: "This be a message", job_posting_id: jobposting1.id, applicant_id: user2.id, company_id: user11.id, status:-2)
 	
 

@@ -3,8 +3,8 @@
 	<div class="col-md-6"> <h2>Category: <%=@survey.format_title.html_safe%></h2> </div>
 	<div class="col-md-6">
 		<%= column_chart [
-				{name: "My Results", data: @survey_results},
-				{name: "Average Job Seeker", data: @average_results}
+				{name: "Average Job Seeker", data: @average_results},
+				{name: "My Results", data: @survey_results}
 				], height: "200px", min: 0, max: 3, library: { legend: { position: 'top' }} %>
 	</div>
 </div>

@@ -130,6 +130,7 @@ Rails.application.routes.draw do
   get 'surveys/:title' => 'surveys#show', as: :survey
   post 'responses' => 'responses#create'
   patch 'responses' => 'responses#update'
+  get 'surveys/:title/compare' => 'surveys#compare', as: :compare_survey
 
 
 

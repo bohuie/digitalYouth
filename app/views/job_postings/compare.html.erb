@@ -13,6 +13,7 @@ is displayed in blue.</p>
 		<div class="col-md-5 survey-box" style="min-width: 540px; margin: 10px;" >
 			<h5><%= s.format_title.html_safe %></h5>
 			<%= column_chart @survey_results[i], min: 0, max: 3, library: { legend: { position: "right" }, chartArea: {left: 10, bottom: 20, width: '70%', height: '80%'}, series:{0 => {type: "line"}}} %>
+			<%= link_to "Details", compare_survey_path(s.title, job_posting: @job_posting.id) %>
 		</div>
 		<% if i % 2 == 0 %>
 			</div><div class="row">

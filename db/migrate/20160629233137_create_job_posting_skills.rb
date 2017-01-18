@@ -4,7 +4,7 @@ class CreateJobPostingSkills < ActiveRecord::Migration
     	t.integer :importance
     	t.belongs_to :job_posting, index: true
 		  t.belongs_to :skill, index: true
-		  t.belongs_to :question, index: true
+		  t.belongs_to :survey, index: true
     end
   end
 end

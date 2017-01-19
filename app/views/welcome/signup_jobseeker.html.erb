@@ -13,9 +13,12 @@
     <%= employee.input :postal_code, required: true, label: 'Postal Code.  This will not be displayed on your public profile, but is used for helping find jobs near you.' %>
     <%= hidden_field_tag :role, "employee" %>
 
-    <%= recaptcha_tags %>
+    <div style="margin-bottom: 15px;"><%= recaptcha_tags %></div>
 
-    <%= employee.button :submit, class: 'btn btn-primary' %>
+    <div class="actions" style="display: table;">
+      <%= employee.button :submit, class: 'btn btn-primary' %>
+      <div style="padding-left: 3px;display: table-cell;vertical-align: bottom;">Already a user? <%= link_to "Log in", new_session_path(resource_name) %></div>
+    </div>
 		
 		<br>
     <div class="shared_links">

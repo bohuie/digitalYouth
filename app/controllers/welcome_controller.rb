@@ -7,6 +7,7 @@ class WelcomeController < ApplicationController
   def signup_jobseeker
     @job_seeker = User.new
     @job_seeker.build_consent
+    @provinces = JobPosting.get_provinces
   end
 
   def signup_employer

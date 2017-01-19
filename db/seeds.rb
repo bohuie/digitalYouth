@@ -40,13 +40,13 @@ begin
 
 	#--- Job Seekers for testing ---#
 	#Creating a user with some info
-	user1 = User.new(first_name: 'Rodney', last_name: 'Earl', email: 'rsearl.90@gmail.com', password: 'password', password_confirmation: 'password',
+	user1 = User.new(first_name: 'Tyler', last_name: 'Finley', email: 'rsearl.90@gmail.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC',
 					 github: 'https://github.com/RodneyEarl', twitter: 'https://twitter.com/ShawnMendes?lang=en', facebook: 'https://www.facebook.com/rodney.earl.9',
 					 answered_surveys:[true,true,true,true,true,true,true,true,false,true,true,true]) #how to display answered surveys
 	user1.add_role :employee
 	user1.skip_confirmation!
 	user1.save
-	user1.create_consent(answer: 1, name: "John Doe", date_signed: Date.today, consent_type: 1)
+	user1.create_consent(answer: 1, name: "Tyler Finley", date_signed: Date.today, consent_type: 1)
 
 	#How to do user skills
 	UserSkill.create(user_id: user1.id, skill_id: skill5.id, survey_id:7)
@@ -69,11 +69,11 @@ begin
 	ProjectSkill.create(project_id: project1.id, skill_id: skill15.id, survey_id: 12)
 	ProjectSkill.create(project_id: project2.id, skill_id: skill10.id, survey_id: 3)
 
-	user2 = User.new(first_name: 'Ash', last_name: 'Wong', email: 'ashwongg@gmail.com', password: 'password', password_confirmation: 'password')
+	user2 = User.new(first_name: 'Mackena', last_name: 'Carroll', email: 'Mackena@Carroll.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC')
 	user2.add_role :employee
 	user2.skip_confirmation!
 	user2.save
-	user2.create_consent(answer: 0, name: "Jane Doe", date_signed: Date.today, consent_type: 1)
+	user2.create_consent(answer: 0, name: "Mackena Carroll", date_signed: Date.today, consent_type: 1)
 
 	
 	UserSkill.create(user_id: user2.id, skill_id: skill4.id, survey_id:3)
@@ -83,7 +83,7 @@ begin
 	ProjectSkill.create(project_id: project3.id, skill_id: skill4.id, survey_id: 3)
 	ProjectSkill.create(project_id: project3.id, skill_id: skill16.id, survey_id: 6)
 
-	user3 = User.new(first_name: 'Kaden', last_name: 'Buchanan', email: 'Kaden@Buchanan.com', password: 'password', password_confirmation: 'password')
+	user3 = User.new(first_name: 'Kaden', last_name: 'Buchanan', email: 'Kaden@Buchanan.com', password: 'password', password_confirmation: 'password', city: 'Vernon', province: 'BC')
 	user3.add_role :employee
 	user3.skip_confirmation!
 	user3.save
@@ -98,7 +98,7 @@ begin
 	ProjectSkill.create(project_id: project4.id, skill_id: skill16.id, survey_id: 3)
 	ProjectSkill.create(project_id: project4.id, skill_id: skill9.id, survey_id: 7)
 
-	user4 = User.new(first_name: 'Mackena', last_name: 'Finley', email: 'Mackena@Finley.com', password: 'password', password_confirmation: 'password')
+	user4 = User.new(first_name: 'Mackena', last_name: 'Finley', email: 'Mackena@Finley.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC')
 	user4.add_role :employee
 	user4.skip_confirmation!
 	user4.save
@@ -112,7 +112,7 @@ begin
 	ProjectSkill.create(project_id: project5.id, skill_id: skill17.id, survey_id: 3)
 	ProjectSkill.create(project_id: project5.id, skill_id: skill18.id, survey_id: 7)
 
-	user5 = User.new(first_name: 'Lenzy', last_name: 'Bennett', email: 'Lenzy@Bennett.com', password: 'password', password_confirmation: 'password')
+	user5 = User.new(first_name: 'Lenzy', last_name: 'Bennett', email: 'Lenzy@Bennett.com', password: 'password', password_confirmation: 'password', city: 'Penticton', province: 'BC')
 	user5.add_role :employee
 	user5.skip_confirmation!
 	user5.save
@@ -126,7 +126,7 @@ begin
 	ProjectSkill.create(project_id: project6.id, skill_id: skill12.id, survey_id: 3)
 	ProjectSkill.create(project_id: project6.id, skill_id: skill13.id, survey_id: 3)
 
-	user6 = User.new(first_name: 'Jordin', last_name: 'Carroll', email: 'Jordin@Carroll.com', password: 'password', password_confirmation: 'password')
+	user6 = User.new(first_name: 'Jordin', last_name: 'Carroll', email: 'Jordin@Carroll.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC')
 	user6.add_role :employee
 	user6.skip_confirmation!
 	user6.save
@@ -137,7 +137,7 @@ begin
 	UserSkill.create(user_id: user6.id, skill_id: skill5.id, survey_id:7)
 	UserSkill.create(user_id: user6.id, skill_id: skill7.id, survey_id:8)
 
-	user7 = User.new(first_name: 'Derryne', last_name: 'Keith', email: 'Derryne@Keith.com', password: 'password', password_confirmation: 'password')
+	user7 = User.new(first_name: 'Derryne', last_name: 'Keith', email: 'Derryne@Keith.com', password: 'password', password_confirmation: 'password', city: 'Vernon', province: 'BC')
 	user7.add_role :employee
 	user7.skip_confirmation!
 	user7.save
@@ -146,7 +146,7 @@ begin
 	UserSkill.create(user_id: user7.id, skill_id: skill5.id, survey_id:7)
 	UserSkill.create(user_id: user7.id, skill_id: skill7.id, survey_id:8)
 
-	user8 = User.new(first_name: 'Edwyn', last_name: 'Walter', email: 'Edwyn@Walter.com', password: 'password', password_confirmation: 'password')
+	user8 = User.new(first_name: 'Edwyn', last_name: 'Walter', email: 'Edwyn@Walter.com', password: 'password', password_confirmation: 'password', city: 'Penticton', province: 'BC')
 	user8.add_role :employee
 	user8.skip_confirmation!
 	user8.save
@@ -155,7 +155,7 @@ begin
 	UserSkill.create(user_id: user8.id, skill_id: skill6.id, survey_id:9)
 	UserSkill.create(user_id: user8.id, skill_id: skill9.id, survey_id:7)
 
-	user9 = User.new(first_name: 'Kingston', last_name: 'Fletcher', email: 'Kingston@Fletcher.com', password: 'password', password_confirmation: 'password')
+	user9 = User.new(first_name: 'Kingston', last_name: 'Fletcher', email: 'Kingston@Fletcher.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC')
 	user9.add_role :employee
 	user9.skip_confirmation!
 	user9.save
@@ -164,7 +164,7 @@ begin
 	UserSkill.create(user_id: user9.id, skill_id: skill8.id, survey_id:4)
 	UserSkill.create(user_id: user9.id, skill_id: skill5.id, survey_id:7)
 
-	user10 = User.new(first_name: 'Tyler', last_name: 'Weiss', email: 'Tyler@Weiss.com', password: 'password', password_confirmation: 'password')
+	user10 = User.new(first_name: 'Tyler', last_name: 'Weiss', email: 'Tyler@Weiss.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC')
 	user10.add_role :employee
 	user10.skip_confirmation!
 	user10.save
@@ -175,7 +175,7 @@ begin
 
 	#--- Companies for testing ---
 	#Creatinga  company
-	user11 = User.new(first_name: 'Hugh', last_name: 'Mcguire', email: 'Hugh@Mcguire.com', password: 'password', password_confirmation: 'password', 
+	user11 = User.new(first_name: 'Hugh', last_name: 'Mcguire', email: 'Hugh@Mcguire.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC', 
 		company_name: 'PetSmart Inc.', bio:'We love pets and we believe pets make us better people. PetSmart will be the trusted partner to pet parents and pets in every moment of their lives.')
 	user11.add_role :employer
 	user11.skip_confirmation!
@@ -199,7 +199,7 @@ begin
 	JobPostingSkill.create(job_posting_id: jobposting2.id, skill_id:skill1.id, importance:2, survey_id:5)
 	JobPostingSkill.create(job_posting_id: jobposting2.id, skill_id:skill2.id, importance:2, survey_id:6)
 
-	user12 = User.new(first_name: 'Mikella', last_name: 'Sims', email: 'Mikella@Sims.com', password: 'password', password_confirmation: 'password', 
+	user12 = User.new(first_name: 'Mikella', last_name: 'Sims', email: 'Mikella@Sims.com', password: 'password', password_confirmation: 'password', city: 'Penticton', province: 'BC', 
 		company_name: 'Dean Foods Company')
 	user12.add_role :employer
 	user12.skip_confirmation!
@@ -212,63 +212,63 @@ begin
 	JobPostingSkill.create(job_posting_id: jobposting3.id, skill_id:skill5.id, importance:1, survey_id:5)
 	JobPostingSkill.create(job_posting_id: jobposting3.id, skill_id:skill1.id, importance:1, survey_id:5)
 
-	user13 = User.new(first_name: 'Gomana', last_name: 'Reid', email: 'Gomana@Reid.com', password: 'password', password_confirmation: 'password', 
+	user13 = User.new(first_name: 'Gomana', last_name: 'Reid', email: 'Gomana@Reid.com', password: 'password', password_confirmation: 'password', city: 'Penticton', province: 'BC', 
 		company_name: 'H&R Block Inc.')
 	user13.add_role :employer
 	user13.skip_confirmation!
 	user13.save
 	user13.create_consent(answer: 1, name: "Gomana Reid", date_signed: Date.today, consent_type: 2)
 
-	user14 = User.new(first_name: 'Daisy', last_name: 'Fitzpatrick', email: 'Daisy@Fitzpatrick.com', password: 'password', password_confirmation: 'password', 
+	user14 = User.new(first_name: 'Daisy', last_name: 'Fitzpatrick', email: 'Daisy@Fitzpatrick.com', password: 'password', password_confirmation: 'password', city: 'Vernon', province: 'BC', 
 		company_name: 'EOG ResourcesInc.')
 	user14.add_role :employer
 	user14.skip_confirmation!
 	user14.save
 	user14.create_consent(answer: 1, name: "Daisy Fitzpatrick", date_signed: Date.today, consent_type: 2)
 
-	user15 = User.new(first_name: 'Foo', last_name: 'Bar', email: 'foo@bar.com', password: 'password', password_confirmation: 'password', 
+	user15 = User.new(first_name: 'Foo', last_name: 'Bar', email: 'foo@bar.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC', 
 		company_name: 'Google')
 	user15.add_role :employer
 	user15.skip_confirmation!
 	user15.save
 	user15.create_consent(answer: 1, name: "Hugh Mcguire", date_signed: Date.today, consent_type: 2)
 
-	user16 = User.new(first_name: 'Maximilian', last_name: 'Hanson', email: 'Maximilian@Hanson.com', password: 'password', password_confirmation: 'password', 
+	user16 = User.new(first_name: 'Maximilian', last_name: 'Hanson', email: 'Maximilian@Hanson.com', password: 'password', password_confirmation: 'password', city: 'Penticton', province: 'BC', 
 		company_name: "McDonald's Corporation")
 	user16.add_role :employer
 	user16.skip_confirmation!
 	user16.save
 	user16.create_consent(answer: 1, name: "Maximilian Hanson", date_signed: Date.today, consent_type: 2)
 
-	user17 = User.new(first_name: 'Karissa', last_name: 'Stafford', email: 'Karissa@Stafford.com', password: 'password', password_confirmation: 'password', 
+	user17 = User.new(first_name: 'Karissa', last_name: 'Stafford', email: 'Karissa@Stafford.com', password: 'password', password_confirmation: 'password', city: 'Vernon', province: 'BC', 
 		company_name: 'Volt Information Sciences Inc')
 	user17.add_role :employer
 	user17.skip_confirmation!
 	user17.save
 	user17.create_consent(answer: 1, name: "Karissa Stafford", date_signed: Date.today, consent_type: 2)
 
-	user18 = User.new(first_name: 'Jean', last_name: 'Monroe', email: 'Jean@Monroe.com', password: 'password', password_confirmation: 'password', 
+	user18 = User.new(first_name: 'Jean', last_name: 'Monroe', email: 'Jean@Monroe.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC', 
 		company_name: 'Potomac Electric Power Co.')
 	user18.add_role :employer
 	user18.skip_confirmation!
 	user18.save
 	user18.create_consent(answer: 1, name: "Jean Monroe", date_signed: Date.today, consent_type: 2)
 
-	user19 = User.new(first_name: 'Marcello', last_name: 'Mills', email: 'Marcello@Mills.com', password: 'password', password_confirmation: 'password', 
+	user19 = User.new(first_name: 'Marcello', last_name: 'Mills', email: 'Marcello@Mills.com', password: 'password', password_confirmation: 'password', city: 'Vernon', province: 'BC', 
 		company_name: "Toys 'R' Us Inc")
 	user19.add_role :employer
 	user19.skip_confirmation!
 	user19.save
 	user19.create_consent(answer: 1, name: "Marcello Mills", date_signed: Date.today, consent_type: 2)
 
-	user20 = User.new(first_name: 'Foo', last_name: 'Bar', email: 'foo@bar.com', password: 'password', password_confirmation: 'password', 
+	user20 = User.new(first_name: 'Foo', last_name: 'Bar', email: 'foo@bar.com', password: 'password', password_confirmation: 'password', city: 'Penticton', province: 'BC', 
 		company_name: 'Centex Corp.')
 	user20.add_role :employer
 	user20.skip_confirmation!
 	user20.save
 	user20.create_consent(answer: 1, name: "Foo Bar", date_signed: Date.today, consent_type: 2)
 
-	user21 = User.new(first_name: 'admin', last_name: 'admin', email: 'admin@admin.com', password: 'password', password_confirmation: 'password')
+	user21 = User.new(first_name: 'admin', last_name: 'admin', email: 'admin@admin.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC')
 	user21.add_role :admin
 	user21.skip_confirmation!
 	user21.save

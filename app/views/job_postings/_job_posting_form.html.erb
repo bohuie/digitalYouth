@@ -6,9 +6,9 @@
 		<%= f.input :city, required: true, wrapper_html: { class: "col-md-3" } %>
 
 		<% if @job_posting.province.nil? %>
-			<%= f.input :province, required: true, collection: @provinces, prompt: "Select Province", wrapper_html: { class: "col-md-3" } %>
+			<%= f.input :province, required: true, collection: PROVINCES, prompt: "Select Province", wrapper_html: { class: "col-md-3" } %>
 		<% else %>
-			<%= f.input :province, required: true, collection: @provinces, selected: @job_posting.province, wrapper_html: { class: "col-md-3" } %>
+			<%= f.input :province, required: true, collection: PROVINCES, selected: @job_posting.province, wrapper_html: { class: "col-md-3" } %>
 		<% end %>
 	</div>
 	<div class="row">
@@ -19,16 +19,16 @@
 		<% end %>
 
 		<% if !@job_posting.job_type.nil? %>
-			<%= f.input :job_type, required: true, label: "Type", collection: @job_types, selected: @job_posting.job_type, wrapper_html: { class: "col-md-6" } %>
+			<%= f.input :job_type, required: true, label: "Type", collection: JOB_TYPES, selected: @job_posting.job_type, wrapper_html: { class: "col-md-6" } %>
 		<% else %>
-			<%= f.input :job_type, required: true, label: "Type", collection: @job_types, prompt: "Select Type", wrapper_html: { class: "col-md-6" } %>
+			<%= f.input :job_type, required: true, label: "Type", collection: JOB_TYPES, prompt: "Select Type", wrapper_html: { class: "col-md-6" } %>
 		<% end %>
 	</div>
 	<div class="row">
 		<% if @job_posting.pay_rate.nil? %>
-			<%= f.input :pay_rate, collection: @pay_rates, required: true, checked:"yearly", as: :radio_buttons, wrapper_html: { class: "col-md-1", style: "min-width: 110px" } %>
+			<%= f.input :pay_rate, collection: PAY_RATES, required: true, checked:"yearly", as: :radio_buttons, wrapper_html: { class: "col-md-1", style: "min-width: 110px" } %>
 		<% else %>
-			<%= f.input :pay_rate, collection: @pay_rates, required: true, selected: @job_posting.pay_rate, as: :radio_buttons, wrapper_html: { class: "col-md-1"} %>
+			<%= f.input :pay_rate, collection: PAY_RATES, required: true, selected: @job_posting.pay_rate, as: :radio_buttons, wrapper_html: { class: "col-md-1"} %>
 		<% end %>
 		<div class="col-md-6">
 			<div class="row">

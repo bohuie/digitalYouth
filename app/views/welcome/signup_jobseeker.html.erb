@@ -10,6 +10,8 @@
     <%= employee.input :email, required: true %>
     <%= employee.input :password, required: true %>
     <%= employee.input :password_confirmation, required: true %>
+    <%= employee.input :city, required: true, label: 'City. This is used to help employers find local job seekers.' %>
+    <%= employee.input :province, collection: PROVINCES, required: true, label: 'Province. This is used to help employers find local job seekers.'  %>
     <%= employee.input :postal_code, required: true, label: 'Postal Code.  This will not be displayed on your public profile, but is used for helping find jobs near you.' %>
     <%= hidden_field_tag :role, "employee" %>
 

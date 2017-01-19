@@ -57,8 +57,6 @@ class JobPostingsController < ApplicationController
 		@pref_skills = JobPostingSkill.where(job_posting_id:params[:id], importance: 1).includes(:skill).order(:id)
 		add_view(@job_posting)
 		@user = @job_posting.user
-		@pay_rates = JobPosting.get_pay_rates
-		@provinces = JobPosting.get_provinces
 	end
 
 	def new # Creates the form to make a new job posting
@@ -67,9 +65,6 @@ class JobPostingsController < ApplicationController
 		job_posting_skills.skill = Skill.new
 		@surveys = Survey.get_title_map
 		@categories = JobCategory.all
-		@job_types = JobPosting.get_types_collection
-		@pay_rates = JobPosting.get_pay_rates
-		@provinces = JobPosting.get_provinces
 		@user = current_user
 	end
 
@@ -77,9 +72,6 @@ class JobPostingsController < ApplicationController
 		@user = current_user
 		@surveys = Survey.get_title_map
 		@categories = JobCategory.all
-		@job_types = JobPosting.get_types_collection
-		@pay_rates = JobPosting.get_pay_rates
-		@provinces = JobPosting.get_provinces
 		skip = false
 		params[:job_posting][:user_id] = current_user.id
 
@@ -117,9 +109,6 @@ class JobPostingsController < ApplicationController
 		@job_posting_skills = JobPostingSkill.where(job_posting_id:params[:id]).order(:id)
 		@surveys = Survey.get_title_map
 		@categories = JobCategory.all
-		@job_types = JobPosting.get_types_collection
-		@pay_rates = JobPosting.get_pay_rates
-		@provinces = JobPosting.get_provinces
 		@user = current_user
 		job_posting = JobPosting.find(params[:id])
 		if job_posting.pay_rate == "yearly"
@@ -139,9 +128,6 @@ class JobPostingsController < ApplicationController
 		@user = current_user
 		@surveys = Survey.get_title_map
 		@categories = JobCategory.all
-		@job_types = JobPosting.get_types_collection
-		@pay_rates = JobPosting.get_pay_rates
-		@provinces = JobPosting.get_provinces
 		skip = false
 		if params[:job_posting][:pay_rate] == "yearly"
 			params[:job_posting][:lower_pay_range] = params[:job_posting][:lower_pay_range_year]

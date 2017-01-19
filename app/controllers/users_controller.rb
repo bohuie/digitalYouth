@@ -60,7 +60,6 @@ respond_to :html, :json
 
 	def edit
 		@user = User.find(params[:id])
-    @provinces = JobPosting.get_provinces
 	end
 
 	def update

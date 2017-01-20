@@ -128,6 +128,7 @@ Rails.application.routes.draw do
   # Survey routes
   get 'surveys' => 'surveys#index'
   get 'surveys/:title' => 'surveys#show', as: :survey
+  get 'surveys/:title/edit' => 'surveys#edit', as: :edit_survey
   post 'responses' => 'responses#create'
   patch 'responses' => 'responses#update'
   get 'surveys/:title/compare' => 'surveys#compare', as: :compare_survey
@@ -141,6 +142,8 @@ Rails.application.routes.draw do
   get 'lost_email' => 'welcome#lost_email', as: :lost_email
   post 'lost_email' => 'welcome#send_lost_email', as: :send_lost_email
   root 'welcome#index'
+
+  get '*path' => redirect('/')
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

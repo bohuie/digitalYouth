@@ -1,12 +1,32 @@
 class SurveysController < ApplicationController
 	include ConstantHelper
 
-	before_action :authenticate_user!
-	before_action :check_role_jobseeker, only: [:show]
+	before_action :authenticate_user!, except: [:show]
+	before_action :check_role_jobseeker, only: [:edit]
 	before_action :check_role_employer, only: [:compare]
 	before_action :job_owner, only: [:compare]
 	
 	def show
+		@survey = Survey.find_by(title: params[:title])
+		@user = User.find(params[:user])
+		if @survey.nil? || @user.nil?
+			flash[:warning] = "Sorry, we couldn't find that survey for that user."
+			redirect_back_or and return
+		end
+
+		@survey_results = Array.new
+
+		@survey_results.push(name: "Average Job Seeker", data: @survey.get_average_data)
+		@survey_results.push(name: @user.first_name+" "+@user.last_name, data: @survey.get_data(@user))
+		@questions = @survey.questions
+
+		@prompts = Hash.new
+		@questions.each do |q|
+			@prompts = @prompts.merge({q.id => q.prompts})
+		end
+	end
+
+	def edit
 		# Fetch Survey data
 		@survey = Survey.find_by(title: params[:title])
 		if @survey.nil?
@@ -54,8 +74,6 @@ class SurveysController < ApplicationController
 		@questions = @survey.questions
 		@survey_results = Array.new
 
-
-		
 		@survey_results.push(name: "Average Job Seeker", data: @survey.get_average_data)
 
 		@job_posting_applications = @job_posting.job_posting_applications.where("status > ? ", -1)

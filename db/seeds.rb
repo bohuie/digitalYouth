@@ -69,7 +69,8 @@ begin
 	ProjectSkill.create(project_id: project1.id, skill_id: skill15.id, survey_id: 12)
 	ProjectSkill.create(project_id: project2.id, skill_id: skill10.id, survey_id: 3)
 
-	user2 = User.new(first_name: 'Mackena', last_name: 'Carroll', email: 'Mackena@Carroll.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC')
+	user2 = User.new(first_name: 'Mackena', last_name: 'Carroll', email: 'Mackena@Carroll.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC',
+					 answered_surveys:[true,true,true,true,true,true,true,true,false,true,true,true])
 	user2.add_role :employee
 	user2.skip_confirmation!
 	user2.save
@@ -83,7 +84,8 @@ begin
 	ProjectSkill.create(project_id: project3.id, skill_id: skill4.id, survey_id: 3)
 	ProjectSkill.create(project_id: project3.id, skill_id: skill16.id, survey_id: 6)
 
-	user3 = User.new(first_name: 'Kaden', last_name: 'Buchanan', email: 'Kaden@Buchanan.com', password: 'password', password_confirmation: 'password', city: 'Vernon', province: 'BC')
+	user3 = User.new(first_name: 'Kaden', last_name: 'Buchanan', email: 'Kaden@Buchanan.com', password: 'password', password_confirmation: 'password', city: 'Vernon', province: 'BC',
+					 answered_surveys:[true,true,true,true,true,true,true,true,false,true,true,true])
 	user3.add_role :employee
 	user3.skip_confirmation!
 	user3.save
@@ -98,7 +100,8 @@ begin
 	ProjectSkill.create(project_id: project4.id, skill_id: skill16.id, survey_id: 3)
 	ProjectSkill.create(project_id: project4.id, skill_id: skill9.id, survey_id: 7)
 
-	user4 = User.new(first_name: 'Mackena', last_name: 'Finley', email: 'Mackena@Finley.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC')
+	user4 = User.new(first_name: 'Mackena', last_name: 'Finley', email: 'Mackena@Finley.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC',
+					 answered_surveys:[true,true,true,true,true,true,true,true,false,true,true,true])
 	user4.add_role :employee
 	user4.skip_confirmation!
 	user4.save
@@ -112,7 +115,8 @@ begin
 	ProjectSkill.create(project_id: project5.id, skill_id: skill17.id, survey_id: 3)
 	ProjectSkill.create(project_id: project5.id, skill_id: skill18.id, survey_id: 7)
 
-	user5 = User.new(first_name: 'Lenzy', last_name: 'Bennett', email: 'Lenzy@Bennett.com', password: 'password', password_confirmation: 'password', city: 'Penticton', province: 'BC')
+	user5 = User.new(first_name: 'Lenzy', last_name: 'Bennett', email: 'Lenzy@Bennett.com', password: 'password', password_confirmation: 'password', city: 'Penticton', province: 'BC',
+					 answered_surveys:[true,true,true,true,true,true,true,true,false,true,true,true])
 	user5.add_role :employee
 	user5.skip_confirmation!
 	user5.save
@@ -126,7 +130,8 @@ begin
 	ProjectSkill.create(project_id: project6.id, skill_id: skill12.id, survey_id: 3)
 	ProjectSkill.create(project_id: project6.id, skill_id: skill13.id, survey_id: 3)
 
-	user6 = User.new(first_name: 'Jordin', last_name: 'Carroll', email: 'Jordin@Carroll.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC')
+	user6 = User.new(first_name: 'Jordin', last_name: 'Carroll', email: 'Jordin@Carroll.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC',
+					 answered_surveys:[true,true,true,true,true,true,true,true,false,true,true,true])
 	user6.add_role :employee
 	user6.skip_confirmation!
 	user6.save
@@ -137,7 +142,8 @@ begin
 	UserSkill.create(user_id: user6.id, skill_id: skill5.id, survey_id:7)
 	UserSkill.create(user_id: user6.id, skill_id: skill7.id, survey_id:8)
 
-	user7 = User.new(first_name: 'Derryne', last_name: 'Keith', email: 'Derryne@Keith.com', password: 'password', password_confirmation: 'password', city: 'Vernon', province: 'BC')
+	user7 = User.new(first_name: 'Derryne', last_name: 'Keith', email: 'Derryne@Keith.com', password: 'password', password_confirmation: 'password', city: 'Vernon', province: 'BC',
+					 answered_surveys:[true,true,true,true,true,true,true,true,false,true,true,true])
 	user7.add_role :employee
 	user7.skip_confirmation!
 	user7.save
@@ -146,7 +152,8 @@ begin
 	UserSkill.create(user_id: user7.id, skill_id: skill5.id, survey_id:7)
 	UserSkill.create(user_id: user7.id, skill_id: skill7.id, survey_id:8)
 
-	user8 = User.new(first_name: 'Edwyn', last_name: 'Walter', email: 'Edwyn@Walter.com', password: 'password', password_confirmation: 'password', city: 'Penticton', province: 'BC')
+	user8 = User.new(first_name: 'Edwyn', last_name: 'Walter', email: 'Edwyn@Walter.com', password: 'password', password_confirmation: 'password', city: 'Penticton', province: 'BC',
+					 answered_surveys:[true,true,true,true,true,true,true,true,false,true,true,true])
 	user8.add_role :employee
 	user8.skip_confirmation!
 	user8.save
@@ -155,7 +162,8 @@ begin
 	UserSkill.create(user_id: user8.id, skill_id: skill6.id, survey_id:9)
 	UserSkill.create(user_id: user8.id, skill_id: skill9.id, survey_id:7)
 
-	user9 = User.new(first_name: 'Kingston', last_name: 'Fletcher', email: 'Kingston@Fletcher.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC')
+	user9 = User.new(first_name: 'Kingston', last_name: 'Fletcher', email: 'Kingston@Fletcher.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC',
+					 answered_surveys:[true,true,true,true,true,true,true,true,false,true,true,true])
 	user9.add_role :employee
 	user9.skip_confirmation!
 	user9.save
@@ -164,7 +172,8 @@ begin
 	UserSkill.create(user_id: user9.id, skill_id: skill8.id, survey_id:4)
 	UserSkill.create(user_id: user9.id, skill_id: skill5.id, survey_id:7)
 
-	user10 = User.new(first_name: 'Tyler', last_name: 'Weiss', email: 'Tyler@Weiss.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC')
+	user10 = User.new(first_name: 'Tyler', last_name: 'Weiss', email: 'Tyler@Weiss.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC',
+					 answered_surveys:[true,true,true,true,true,true,true,true,false,true,true,true])
 	user10.add_role :employee
 	user10.skip_confirmation!
 	user10.save

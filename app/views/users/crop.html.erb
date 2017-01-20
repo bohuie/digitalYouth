@@ -1,0 +1,97 @@
+
+<% content_for(:head) do %>
+  <%= stylesheet_link_tag "jquery.Jcrop" %>
+  <%= javascript_include_tag "jquery.Jcrop.min" %>
+  <script type="text/javascript" charset="utf-8">
+    $(function() {
+      $('#cropbox').Jcrop({
+        onChange: update_crop,
+        onSelect: update_crop,
+        setSelect: [0, 0, 500, 500],
+        aspectRatio: 1
+      });
+    });
+
+    function update_crop(coords) {
+      var rx = 150/coords.w;
+      var ry = 150/coords.h;
+      $('#preview').css({
+        width: Math.round(rx * <%= @user.image_geometry(:large).width %>) + 'px',
+        height: Math.round(ry * <%= @user.image_geometry(:large).height %>) + 'px',
+        marginLeft: '-' + Math.round(rx * coords.x) + 'px',
+        marginTop: '-' + Math.round(ry * coords.y) + 'px'
+      });
+      var ratio = <%= @user.image_geometry(:original).width %> / <%= @user.image_geometry(:large).width %>; 
+      $('#crop_x').val(Math.floor(coords.x * ratio));
+      $('#crop_y').val(Math.floor(coords.y * ratio));
+      $('#crop_w').val(Math.floor(coords.w * ratio));
+      $('#crop_h').val(Math.floor(coords.h * ratio));  
+    }
+  </script>
+<% end %>
+
+<% if @user.has_role? :employee %>
+<!-- Employee Profile -->
+  <h4>Preview</h4>
+  <div class ="profileContainer">
+    <div class ="profileContainerImage" id="shadow-arch-edges">
+      <div class="image-display">
+        <%= image_tag @user.image.url(:large), id: "preview" %>
+      </div>
+    </div>
+    <div class ="profileContainerContent">
+      <h2> <%= link_to @user.first_name+' '+@user.last_name, @user %> </h2>
+      <% if !@user.github.nil? %>
+        <%= link_to 'GitHub', @user.github, id: 'github', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+      <% end %>
+      <% if !@user.linkedin.nil? %>
+        <%= link_to 'Linkedin', @user.linkedin, id: 'linkedin', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+      <% end %>
+      <% if !@user.twitter.nil? %>
+        <%= link_to 'Twitter', @user.twitter, id: 'twitter', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+      <% end %>
+      <% if !@user.facebook.nil? %>
+        <%= link_to 'Facebook', @user.facebook, id: 'facebook', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+      <% end %>
+      <%= raw('<br>') if @user.github.nil? && @user.linkedin.nil? && @user.twitter.nil? && @user.facebook.nil? %>
+    </div>
+  </div>
+<% elsif @user.has_role? :employer %>
+<!-- Employer Profile -->
+  <h4>Preview</h4>
+  <div class ="profileContainer">
+    <div class ="profileContainerImage" id="shadow-arch-edges">
+      <div class="image-display">
+        <%= image_tag @user.image.url(:large), id: "preview" %>
+      </div>
+    </div>
+    <div class ="profileContainerContent">
+      <h2> <%= link_to @user.company_name, @user %></h2>
+      <h5> <%= @user.street_address %><br><%= @user.city %> <%= @user.province %> <%= @user.postal_code %> </h5>
+      <h5> <%= @user.email %> </h5>
+      <% if !@user.linkedin.nil? %>
+        <%= link_to 'Linkedin', @user.linkedin, id: 'linkedin', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+      <% end %>
+      <% if !@user.twitter.nil? %>
+        <%= link_to 'Twitter', @user.twitter, id: 'twitter', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+      <% end %>
+      <% if !@user.facebook.nil? %>
+        <%= link_to 'Facebook', @user.facebook, id: 'facebook', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+      <% end %>
+      <%= raw('<br>') if @user.github.nil? && @user.linkedin.nil? && @user.twitter.nil? && @user.facebook.nil? %>
+    </div>
+  </div>
+<% else %>
+  <!-- admin -->
+<% end %>
+
+<%= image_tag @user.image.url(:large), :id => "cropbox" %>
+
+<br />
+
+<%= simple_form_for @user do |form| %>
+  <% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
+    <%= form.hidden_field attribute, :id => attribute %>
+  <% end %>
+  <p><%= form.submit "Crop", name: "crop" %></p>
+<% end %>

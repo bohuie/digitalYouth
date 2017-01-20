@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Hi <%= @to.first_name %> <%= @to.last_name %>!</h1>
+    <p> <%= @from.first_name %> <%= @from.last_name %>, representing <%= @from.company_name %> is wanting to contact you!</p>
+    <p> You can get a hold of them at <%= @from.email %></p>
+    <p> If you would like, you can view their profile <%= link_to 'here', user_url(@from) %></p>
+    <p> They left you a message: <%= @body %></p>
+  </body>
+</html>

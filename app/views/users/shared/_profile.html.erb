@@ -2,9 +2,7 @@
 <!-- Employee Profile -->
 <div class ="profileContainer">
 	<div class ="profileContainerImage" id="shadow-arch-edges">
-		<div class ="profileFrame">
-			<%= image_tag @user.image.url, alt:"User Icon" %> <!-- Should add a max size or auto scale pics that are uploaded -->
-		</div>
+			<%= image_tag @user.image.url(:medium), alt:"User Icon", class: "profile-image" %>
 	</div>
 	<div class ="profileContainerContent">
 		<h2> <%= link_to @user.first_name+' '+@user.last_name, @user %> </h2>
@@ -20,16 +18,16 @@
 		<% if !@user.facebook.nil? %>
 			<%= link_to 'Facebook', @user.facebook, id: 'facebook', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
 		<% end %>
-		<%= raw('<br>') if @user.github.nil? && @user.linkedin.nil? && @user.twitter.nil? && @user.facebook.nil? %>
+		<% if user_signed_in? && current_user.has_role?(:employer) %>
+			<div style="margin-top:10px;"><%= link_to 'Contact '+@user.first_name+' '+@user.last_name, contact_user_path(@user), class: "btn btn-primary" %></div>
+		<% end %>
 	</div>
 </div>
 <% elsif @user.has_role? :employer %>
 <!-- Employer Profile -->
 	<div class ="profileContainer">
 		<div class ="profileContainerImage" id="shadow-arch-edges">
-			<div class ="profileFrame">
-				<%= image_tag @user.image.url, alt:"User Icon" %> <!-- Should add a max size or auto scale pics that are uploaded -->
-			</div>
+			<%= image_tag @user.image.url(:medium), alt:"User Icon", class: "profile-image"  %> 
 		</div>
 		<div class ="profileContainerContent">
 			<h2> <%= link_to @user.company_name, @user %></h2>

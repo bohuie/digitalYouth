@@ -9,6 +9,16 @@
     border-right: 1px solid #eee;
 }
 
+.caret-right {
+    border-bottom: 4px solid transparent;
+    border-top: 4px solid transparent;
+    border-left: 4px solid;
+    display: inline-block;
+    height: 0;
+    width: 0;
+    padding-right: 1px;
+}
+
 .search-sidebar > hr{
 	margin-top: 10px;
 	margin-botom: 5px;

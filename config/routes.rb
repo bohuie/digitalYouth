@@ -41,12 +41,14 @@ Rails.application.routes.draw do
   patch 'notifications/all' => 'notifications#update_all', as: :update_all_notifications
   delete 'notifications' => 'notifications#delete'
   delete 'notifications/all' => 'notifications#delete_all', as: :delete_all_notifications
+  get 'users/referenceTab' => 'users#reference_tab'
 
   # Devise_for :users
   devise_for :users, controllers: { passwords: "users/passwords", sessions: "users/sessions", :registrations => "users/registrations", omniauth_callbacks: 'users/omniauth_callbacks' }
   match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
 
-  post 'users/userTab' => 'users#userTab'
+  post 'users/home_tab' => 'users#home_tab'
+  post 'users/nav_tab' => 'users#nav_tab'
 
  #devise_for :users
   #resources :users, only: :show, as: :user
@@ -54,6 +56,8 @@ Rails.application.routes.draw do
   get '/users/:id' => 'users#show', as: :user
   get '/users/:id/edit' => 'users#edit', as: :edit_user
   patch '/users/:id' => 'users#update'
+  get 'users/:id/contact' => 'users#contact', as: :contact_user
+  post 'users/:id/contact' => 'users#send_mail', as: :email_user
 
 
   # Skill routes
@@ -71,7 +75,7 @@ Rails.application.routes.draw do
   post '/user_skills' => 'user_skills#create'
 
   # Job Posting routes
-  get 'job_postings' => 'job_postings#index'
+  #get 'job_postings' => 'job_postings#index'
   get 'job_postings/new' => 'job_postings#new', as: :new_job_posting
   get 'job_postings/refresh' => 'job_postings#refresh', as: :refresh_job_posting
   post 'job_postings/refresh' => 'job_postings#refresh_process', as: :refresh_job_posting_process
@@ -80,6 +84,10 @@ Rails.application.routes.draw do
   patch 'job_postings/:id' => 'job_postings#update'
   delete 'job_postings/:id' => 'job_postings#destroy'
   post 'job_postings' => 'job_postings#create'
+  get 'job_postings/:id/compare' => 'job_postings#compare', as: :compare_applications
+  resources :job_postings do
+    get 'applications', on: :member
+  end
 
   # Job Posting Application routes
   get 'job_posting_applications' => 'job_posting_applications#index'
@@ -115,11 +123,15 @@ Rails.application.routes.draw do
   patch 'references/:id' => 'references#update', as: :update_reference
   delete 'references/:id' => 'references#destroy', as: :delete_reference
 
+  delete 'reference_redirections/:id' => 'reference_redirections#destroy', as: :delete_reference_redirection
+
   # Survey routes
   get 'surveys' => 'surveys#index'
   get 'surveys/:title' => 'surveys#show', as: :survey
+  get 'surveys/:title/edit' => 'surveys#edit', as: :edit_survey
   post 'responses' => 'responses#create'
   patch 'responses' => 'responses#update'
+  get 'surveys/:title/compare' => 'surveys#compare', as: :compare_survey
 
 
 

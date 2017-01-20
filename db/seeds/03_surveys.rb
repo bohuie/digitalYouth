@@ -99,14 +99,14 @@ survey1_prompt17 = Prompt.create(question_id: question3.id, prompt: 'Do similar 
 
 survey1_prompt14 = Prompt.create(question_id: question4.id, prompt: 'Save a file to a CD')
 survey1_prompt15 = Prompt.create(question_id: question4.id, prompt: 'Select software for a defined task')
-survey1_prompt16 = Prompt.create(question_id: question4.id, prompt: 'Connect a new device (e.g. scanner, mouse, printer, hard drive')
+survey1_prompt16 = Prompt.create(question_id: question4.id, prompt: 'Connect a new device (e.g. scanner, mouse, printer, hard drive)')
 survey1_prompt17 = Prompt.create(question_id: question4.id, prompt: 'Install new software (e.g. antivirus)')
 survey1_prompt18 = Prompt.create(question_id: question4.id, prompt: 'Do similar tasks on at least two operating systems')
 survey1_prompt19 = Prompt.create(question_id: question4.id, prompt: 'Encrypt data on a computer')
 
 #Survey 2: Internet and Networks
 survey2_prompt1 = Prompt.create(question_id: question5.id, prompt: 'Open a browser')
-survey2_prompt2 = Prompt.create(question_id: question5.id, prompt: 'Determine the url (web address) of a website')
+survey2_prompt2 = Prompt.create(question_id: question5.id, prompt: 'Determine the URL (web address) of a website')
 survey2_prompt3 = Prompt.create(question_id: question5.id, prompt: 'Go to a website')
 survey2_prompt4 = Prompt.create(question_id: question5.id, prompt: 'Follow links on a webpage')
 survey2_prompt5 = Prompt.create(question_id: question5.id, prompt: 'Print a webpage')
@@ -118,7 +118,7 @@ survey2_prompt9 = Prompt.create(question_id: question6.id, prompt: 'Download fil
 survey2_prompt10 = Prompt.create(question_id: question6.id, prompt: 'Install software from the internet')
 survey2_prompt11 = Prompt.create(question_id: question6.id, prompt: 'Check if the computer is connected to the internet')
 survey2_prompt12 = Prompt.create(question_id: question6.id, prompt: 'Connect to an (un)secured wireless connection')
-survey2_prompt13 = Prompt.create(question_id: question6.id, prompt: 'Use search engines (e.g. Google, Yahoo!')
+survey2_prompt13 = Prompt.create(question_id: question6.id, prompt: 'Use search engines (e.g. Google, Yahoo!)')
 
 survey2_prompt14 = Prompt.create(question_id: question7.id, prompt: 'Identify if a website is secured')
 survey2_prompt15 = Prompt.create(question_id: question7.id, prompt: 'Determine the domain name of a website')
@@ -254,7 +254,7 @@ survey7_prompt11 = Prompt.create(question_id: question26.id, prompt: 'Over the c
 survey7_prompt12 = Prompt.create(question_id: question26.id, prompt: 'At the end of a project, I am able to identify successes, challenges, and failures, and explain them with quantitative ')
 
 survey7_prompt13 = Prompt.create(question_id: question27.id, prompt: 'I listen to others and am receptive to their ideas')
-survey7_prompt14 = Prompt.create(question_id: question27.id, prompt: 'I consider\'s needs and priorities')
+survey7_prompt14 = Prompt.create(question_id: question27.id, prompt: 'I consider other people\'s needs and priorities')
 survey7_prompt15 = Prompt.create(question_id: question27.id, prompt: 'When working in a group, I ensure everyone has an opportunity to contribute')
 survey7_prompt16 = Prompt.create(question_id: question27.id, prompt: 'I am aware of other\'s emotions, perspectives, and behaviours when in a group')
 survey7_prompt17 = Prompt.create(question_id: question27.id, prompt: 'I am always involved in group tasks and discussions')
@@ -340,7 +340,7 @@ survey10_prompt17 = Prompt.create(question_id: question38.id, prompt: 'Transfer 
 survey10_prompt18 = Prompt.create(question_id: question38.id, prompt: 'Identify the copyrights and fair use of the media')
 
 survey10_prompt19 = Prompt.create(question_id: question39.id, prompt: 'Create infographics')
-survey10_prompt20 = Prompt.create(question_id: question39.id, prompt: 'Create animated gifs')
+survey10_prompt20 = Prompt.create(question_id: question39.id, prompt: 'Create animated GIFs')
 survey10_prompt21 = Prompt.create(question_id: question39.id, prompt: 'Browse and purchase media repositories')
 survey10_prompt22 = Prompt.create(question_id: question39.id, prompt: 'Determine the copyrights of a media file')
 survey10_prompt23 = Prompt.create(question_id: question39.id, prompt: 'Determine if a media file has been manipulated')

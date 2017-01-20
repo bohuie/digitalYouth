@@ -128,6 +128,7 @@ Rails.application.routes.draw do
   # Survey routes
   get 'surveys' => 'surveys#index'
   get 'surveys/:title' => 'surveys#show', as: :survey
+  get 'surveys/:title/edit' => 'surveys#edit', as: :edit_survey
   post 'responses' => 'responses#create'
   patch 'responses' => 'responses#update'
   get 'surveys/:title/compare' => 'surveys#compare', as: :compare_survey

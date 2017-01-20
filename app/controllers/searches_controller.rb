@@ -135,7 +135,7 @@ class SearchesController < ApplicationController
 
 			@dates_posted = ["Past day","Past Three days", "Past week","Past month"]
 			@industries = JobCategory.all.pluck(:name)
-			@job_types = JobPosting.get_types_collection.keys
+			@job_types = JOB_TYPES.keys
 		else # Search nothing
 			idxs=[]
 		end
@@ -173,7 +173,7 @@ class SearchesController < ApplicationController
 				when "skills"
 					where_clause[:skills]=@s if !@s.blank?
 				when "job_type"
-					where_clause[:job_type]=JobPosting.get_types_collection[@jt] if !@jt.blank?
+					where_clause[:job_type]=JOB_TYPES[@jt] if !@jt.blank?
 				when "date_posted"
 					if !@dp.blank?
 						["Past day","Three days ago", "One week ago","One month ago"]

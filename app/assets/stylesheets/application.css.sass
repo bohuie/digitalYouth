@@ -23,13 +23,34 @@
 
 @import "bootstrap-sprockets"
 @import "bootstrap"
+@import "bootstrap-table"
 @import "notifications.scss"
 @import font-awesome
 @import bootstrap-social
 
-body
+html, body
 	font-family: Geneva
+	min-height: 700px
+	height: 100%
+.wrapper
+	min-height: 100%
+	height: auto !important
+	height: 100%
+	margin: 0 auto -50px /* the bottom margin is the negative value of the footer's height */
+
+.push
+	height: 50px
+
+footer
+	height: 50px
 
 .nav-tabs
 	border-bottom: none
 	padding-bottom: 10px
+
+.padding15
+	padding-top: 15px
+	padding-bottom: 15px
+
+.margintop5
+	margin-top: 5px

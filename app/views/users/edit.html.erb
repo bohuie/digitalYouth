@@ -27,13 +27,13 @@
           </div>
           <div class="row" style="padding-bottom: 10px">
             <div class="col-md-3">
-              <%= info.input :city, input_html: {style: 'display: inline-block; width: 87%'} %>
+              <%= info.input :city, required: true, input_html: {style: 'display: inline-block; width: 87%'} %>
             </div>
             <div class="col-md-2">
-              <%= info.input :province, input_html: {style: 'display: inline-block; width: 60%'} %>
+              <%= info.input :province, required: true, collection: PROVINCES, input_html: {style: 'display: inline-block; width: 60%'} %>
             </div>
             <div class="col-md-3">
-              <%= info.input :postal_code, input_html: {style: 'display: inline-block; width: 65%'} %>
+              <%= info.input :postal_code, required: true, input_html: {style: 'display: inline-block; width: 65%'} %>
             </div>
           </div>
           <div class="row" style="padding-bottom: 10px">

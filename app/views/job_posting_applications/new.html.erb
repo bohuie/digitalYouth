@@ -2,21 +2,25 @@
 
 <%= render partial: "shared/job_seeker_tabs", locals: { active: "applications" } %>
 
-<h3>Job Posting Application</h3>
-<p> You are Applying for the <strong><%=@job_posting.title%></strong> position at <strong><%=@job_posting.user.company_name %></strong></p>
-<p> Feel free to include a message but remember to be professional as this application will be viewed by <%=@job_posting.user.company_name %>.<br>
-	Good Luck!
-<p>
+<h4>Job Posting Application</h4>
+<p> You are Applying for the <strong><%=@job_posting.title%></strong> position at <strong><%=@job_posting.user.company_name %></strong>.</p>
+<p>Below is the application <%=@job_posting.user.company_name %> will see.</p>
+<hr >
+<div>
+<h4 class="job-application-content"><%= link_to raw("#{@job_posting.title} (<i>#{@job_posting.user.company_name}</i>)"), job_posting_path(@job_posting) %>
+			<span class=" label label-primary">Undetermined</span>
+		</h4>
+<p> Your application has yet to be reviewed by <%=@job_posting.user.company_name %>.</p>
 <%= simple_form_for @job_posting_application do |f| %>
 	
 	<%= f.input :job_posting_id, as: :hidden, input_html: {value: @job_posting.id}%>
 	<%= f.input :company_id, as: :hidden, input_html: {value: @job_posting.user.id}%>
 
-	<div> <h4> Summary of what the Company will see.</h4>
+	
 	<%= render partial: "job_posting_applications/user_app_skills", locals: {applicant: current_user} %>
 	<div class="row">
-		<div class="col-md-6">
-			<%= f.input :message %>
+		<div class="col-md-4">
+			<%= f.input :message, input_html: {rows: "4"} %>
 		</div>
 	</div>
 	<%= f.button :submit, "Send", class:"btn btn-primary" %>

@@ -8,14 +8,6 @@ class JobPosting < ActiveRecord::Base
 	belongs_to :user
 	accepts_nested_attributes_for :job_posting_skills, reject_if: lambda {|a| a[:survey_id].blank?}, allow_destroy: true
 
-	@@job_types = {"Full Time"=>0,"Part Time"=>1,"Contract"=>2,"Casual"=>3,
-			 "Summer Positions"=>4,"Graduate Year Recruitment Program"=>5,
-			 "Field Placement/Work Practicum"=>6,"Internship"=>7,"Volunteer"=>8}
-	@@pay_rates = {"Yearly" => "yearly", "Hourly" => "hourly"}
-
-	@@provinces = {"AB" => "AB", "BC" => "BC", "MB" => "MB", "NB" => "NB", "NL" => "NL", "NS" => "NS", 
-			"NT" => "NT", "NU" => "NU", "ON" => "ON", "PE" => "PE", "QC" => "QC", "SK" => "SK", "YT" =>"YT"}
-
 	validates :lower_pay_range, presence: true
 
 	def search_data
@@ -105,19 +97,7 @@ class JobPosting < ActiveRecord::Base
 	end
 
 	def get_type_string # Returns a string representation of the job type
-		return @@job_types.key(self.job_type)
-	end
-
-	def self.get_types_collection
-		return @@job_types
-	end
-
-	def self.get_pay_rates
-		return @@pay_rates
-	end
-
-	def self.get_provinces
-		return @@provinces
+		return JOB_TYPES.key(self.job_type)
 	end
 
 	def compare_skills(user)

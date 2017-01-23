@@ -21,7 +21,7 @@
 		<%= render partial: "job_posting_applications/user_app_skills", locals: {applicant: @job_posting_application.applicant} %>
 		<div class="row">
 			<div class="col-md-4">
-				<b>Applicant Message:</b><br />
+				<h4>Applicant Message:</h4>
 				<%= @job_posting_application.message %>
 			</div>
 		</div>
@@ -30,7 +30,7 @@
 	<%= render partial: "shared/employer_tabs", locals: { active: "jobs" } %>
 	<div class="user-information">
 		<%= render partial: "job_posting_applications/user_app_skills", locals: {applicant: @job_posting_application.applicant} %>
-		<b>Applicant Message:</b><br />
+		<h4>Applicant Message:</h4>
 		<%= raw("<p>#{@job_posting_application.message}</p>") if !@job_posting_application.message.blank? %>
 	</div>
 

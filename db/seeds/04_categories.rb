@@ -8,4 +8,4 @@ JobCategory.create([{name: "Agriculture, Forestry, Fishing, and Hunting"},{name:
 					{name:"Real Estate Rental and Leasing"},{name:"Professional, Scientific, and Technical Services"},
 					{name:"Management of Companies and Enterprises"},{name:"Administrative and Support and Waste Management and Remediation Services"},
 					{name:"Educational Services"},{name:"Health Care and Social Assistance"},{name:"Arts, Entertainment, and Recreation"},
-					{name:"Accomodation and Food Services"},{name:"Other Services (except Public Administration"},{name:"Public Administration"}])
+					{name:"Accomodation and Food Services"},{name:"Other Services (except Public Administration)"},{name:"Public Administration"}])

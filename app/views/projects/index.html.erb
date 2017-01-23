@@ -20,7 +20,7 @@
 						<% #end 
 						%> -->
 						<% if user_signed_in? && @current_user==@user %>
-							<%= link_to "Edit Project", edit_project_path(p) %><br /><br /><br /><br />
+							<%= link_to "Edit Project", edit_project_path(p), class: "btn btn-warning" %><br /><br /><br /><br />
 						<% end %>
 					<% end %>
 				</div>
@@ -45,7 +45,7 @@
 					<%= f.input :title, required: true %>
 					<%= f.input :description, required: true, as: :text %>
 					<%= f.input :image, as: :file %>
-					<%= f.button :submit %>
+					<%= f.button :submit, class: "btn btn-primary" %>
 				<% end %>
 			</div>
 		</div>

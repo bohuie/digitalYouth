@@ -1,5 +1,6 @@
 <h2>Log in</h2>
 <br>
+<div class="row">
 <div class="col-md-4">
   <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
     <div class="form-group">
@@ -19,9 +20,11 @@
       </div>
     <% end -%>
     
-    <div class="actions">
-      <%= f.submit "Log in", class: "btn btn-default" %>
+    <div class="actions" style="display: table;">
+      <%= f.submit "Log in", class: "btn btn-primary", style: "float: left;" %><div style="padding-left: 3px;display: table-cell;vertical-align: bottom;">Need an account? <%= link_to "Sign up", welcome_index_path %></div>
     </div>
   <% end %>
-<br>
+<div style="clear:both;"></div><br />
 <%= render "users/shared/links" %>
+</div>
+</div>

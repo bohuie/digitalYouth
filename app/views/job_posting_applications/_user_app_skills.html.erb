@@ -1,54 +1,37 @@
 <div class="row">
-		<div class="col-md-3">
-			<%= render 'shared/user_summary', user: applicant%>
-		</div>
-		<div class="col-md-5">
-			<% if !@user_skill_matches.empty? %>
-				This user self reported these skills that match with this job posting: <br>
-
-				<% unless @req_skills.empty? %> 
-					<h4> Required Skills </h4>
-					<% unless @user_required_matches.empty? %>
-						<ul><%@user_required_matches.each do |r| %>
-							<li><%=r[:user_skill].skill.name.titleize%></li><% end %>
-						</ul>
-					<% else %>
-						<ul>
-							<li>You have no matching required skills.</li>
-						</ul>
-					<% end %>
-				<% end %>
-
-				<% unless @pref_skills.empty? %>
-					<h4> Preferred Skills </h4>
-					<% unless @user_preferred_matches.empty? %>
-						<ul><%@user_preferred_matches.each do |p| %>
-							<li><%=p[:user_skill].skill.name.titleize%></li><% end %>
-						</ul>
-					<% else %>
-						<ul>
-							<li>You have no matching preferrred skills.</li>
-						</ul>
-					<% end %>
-				<% end %>
-			<% else %>
-				The user currently has no matching skills for this job.
-			<% end %>
-		</div>
-		<div class="col-md-4">
-			These are the skills associated with this job posting:
-			<% if !@req_skills.empty? %>
-				<h4> Required Skills </h4>
-				<ul><%@req_skills.each do |r| %>
-					<li><%=r.skill.name.titleize%></li><% end %>
-				</ul>
-			<% end %>
-
-			<% if !@pref_skills.empty? %>
-				<h4> Preferred Skills </h4>
-					<ul><%@pref_skills.each do |p| %>
-						<li><%=p.skill.name.titleize%></li><% end %>
-					</ul>
-			<% end %>
-		</div>
+	<div class="col-md-2">
+		<%= render 'shared/user_summary', user: applicant%>
 	</div>
+	<div class="col-md-7">
+		<% if applicant.id == current_user.id %>
+			<p>Below are all the skills required and preferred by <%= @job_posting.user.company_name %> for this job.  A checkmark, <small><span class="glyphicon glyphicon-ok"></span></small>, means you have the skill, and an x, <small><span class="glyphicon glyphicon-remove"></span></small>, means you do not.</p>
+		<% else %>
+			<p>Below are the skills required and preferrred for this posting.  A checkmark, <small><span class="glyphicon glyphicon-ok"></span></small>, means <%= applicant.first_name %> has the skill, and an x, <small><span class="glyphicon glyphicon-remove"></span></small>, means they do not.</p>
+		<% end %>
+		<% if !@req_skills.empty? %>
+			<h4> Required Skills </h4>
+			<ul class="custom-bullet">
+				<%@req_skills.each do |r| %>
+					<% if @user_required_matches.detect { |h| h[:user_skill].skill==r.skill } %>
+						<li class="yes"><%=r.skill.name.titleize%></li>
+					<% else %>
+						<li class="no"><%=r.skill.name.titleize%></li>
+					<% end %>
+				<% end %>
+			</ul>
+		<% end %>
+
+		<% if !@pref_skills.empty? %>
+			<h4> Preferred Skills </h4>
+			<ul class="custom-bullet">
+				<%@pref_skills.each do |p| %>
+					<% if @user_preferred_matches.detect { |h| h[:user_skill].skill==p.skill } %>
+						<li class="yes"><%=p.skill.name.titleize%></li>
+					<% else %>
+						<li class="no"><%=p.skill.name.titleize%></li>
+					<% end %>
+				<% end %>
+			</ul>
+		<% end %>
+	</div>
+</div>

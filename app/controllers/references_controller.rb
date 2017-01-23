@@ -30,6 +30,7 @@ class ReferencesController < ApplicationController
 	end
 
 	def email # Page for form to send an email
+		@user = current_user
 		@url = ""
 		loop do
 			@url = SecureRandom.urlsafe_base64(10)
@@ -44,7 +45,7 @@ class ReferencesController < ApplicationController
 		reference_redirection = ReferenceRedirection.create(reference_email_params)
 		referer = User.find_by(email: params[:reference_email][:email])
 		unless referer.nil?
-			reference_redirection.create_activity :request, owner: referer
+			reference_redirection.create_activity :request, owner: referer, parameters: {url: reference_redirection.reference_url}
 		end
 
 		ReferenceMailer.reference_email(@reference_email, current_user).deliver_now
@@ -53,10 +54,12 @@ class ReferencesController < ApplicationController
 
 
 	def new # Form to create a new reference
+		@user = current_user
+		@reference_redirection = ReferenceRedirection.find_by(reference_url: params[:id])
 		@reference_link = ReferenceRedirection.where(reference_url: params[:id])
 		if !@reference_link.empty?
 			@reference_link = @reference_link.first
-			@user = User.find(@reference_link.user_id)
+			@referUser = User.find(@reference_link.user_id)
 			@reference = Reference.new
 		else
 			redirect_to root_path , flash: {danger: "Invalid reference link"}
@@ -71,13 +74,17 @@ class ReferencesController < ApplicationController
 			params[:reference][:user_id] = @reference_redirection.user_id
 			@reference = Reference.new(reference_params)
 			if user_signed_in?
-				@reference.referee_id = current_user.id
+				@reference.referee = current_user
 				@owner = (@reference_redirection.user_id == current_user.id) # Stops a user from referencing themself
 			end
 			@verified = verify_recaptcha(model: @reference)
 			if @verified && !@owner && @reference.save
 				ReferenceRedirection.find_by(reference_url: @url_string).destroy # Removes the redirection url
-				redirect_to root_path , flash: {success: "Thank you for making a reference!"}
+				if user_signed_in?
+					redirect_to current_user, flash: {success: "Thank you for making a reference!"}
+				else
+					redirect_to root_path , flash: {success: "Thank you for making a reference!"}
+				end
 			else
 				if !@verified
 					flash[:warning] = "Please redo the Captcha"
@@ -94,11 +101,11 @@ class ReferencesController < ApplicationController
 
 private
 	def reference_params # Restricts reference parameters
-		params.require(:reference).permit(:first_name, :last_name, :email, :company, :position, :phone_number, :reference_body, :user_id)
+		params.require(:reference).permit(:first_name, :last_name, :company, :position, :reference_body, :user_id, :referee_id)
 	end
 
 	def reference_email_params # Restricts reference email parameters
-		params.require(:reference_email).permit(:first_name, :last_name, :email, :reference_url, :user_id)
+		params.require(:reference_email).permit(:first_name, :last_name, :email, :reference_url, :user_id, :message)
 	end
 
 	def reference_owner # Checks if a user is the owner of a reference
@@ -115,7 +122,7 @@ private
 		args = params[:reference_email]
 		if args.nil?
 			flash[:warning] = "Missing required fields"
-		elsif args[:first_name].blank? || args[:last_name].blank? || args[:email].blank?
+		elsif args[:first_name].blank? || args[:last_name].blank? || args[:email].blank? || args[:message].blank?
 			flash[:warning] = "Missing required fields"
 		elsif args[:email] !~ Devise::email_regexp
 			flash[:warning] =  "Enter a valid email address"
@@ -131,8 +138,6 @@ private
 			flash[:warning] = "Missing required fields"
 		elsif args[:first_name].blank? || args[:last_name].blank?|| args[:company].blank? || args[:position].blank? || args[:reference_body].blank?  
 			flash[:warning] = "Missing required fields"
-		elsif args[:email] !~ Devise::email_regexp
-			flash[:warning] = "Enter a valid email address"
 		end
 		redirect_back_or new_reference_path(request.referer.rpartition('/')[-1]) if !flash[:warning].blank?
 	end

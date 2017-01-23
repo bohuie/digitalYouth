@@ -5,12 +5,12 @@
         <span class="glyphicon glyphicon-menu-hamburger" aria-label="Toggle navigation"></span>
       </button>
       <div class="login-menu">
-        <%= link_to(image_tag("home-icon.png", class: 'image-responsive'), root_path, method: :get) %>
+        <%= link_to(image_tag("home-logo.png", class: 'image-responsive', size: '92x40'), root_path, method: :get) %><!-- original size is 1000x434 -->
       </div>
     </div>
     <div class="collapse navbar-collapse" id="navbar">
 
-      <%= form_tag "/search", method: "get", class: "navbar-form navbar-left", role:"search" do %>
+      <%= form_tag "/search", method: "get", class: "navbar-form navbar-left", role:"search", id: 'search' do %>
         <div class="input-group">
             <%= text_field_tag 'q', params[:q], class: 'form-control', placeholder: "Search", autocomplete:"off"%>
             <select name="t" class="select form-control" id="type-select">

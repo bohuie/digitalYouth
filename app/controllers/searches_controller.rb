@@ -13,12 +13,12 @@ class SearchesController < ApplicationController
 		@usr 	= current_user.id if user_signed_in?
 
 		#Values for where clause
-		@l = params[:l].nil?  ? "" : format_location(params[:l])  #location
+		@l = params[:l].nil?  ? "" : params[:l].downcase  #location
 		@i = params[:i].nil?  ? "" : params[:i]  		  #industry
 		@c = params[:c].nil?  ? "" : params[:c].downcase  #company
-		@cc= params[:cc].nil? ? "" : params[:cc].downcase #current_company - not implemented
-		@pc= params[:pc].nil? ? "" : params[:pc].downcase #past_company - not implemented
-		@r = params[:r].nil?  ? "" : params[:r].downcase  #relationship - not implemented
+		@cc= params[:cc].nil? ? "" : params[:cc] #current_company - not implemented
+		@pc= params[:pc].nil? ? "" : params[:pc] #past_company - not implemented
+		@r = params[:r].nil?  ? "" : params[:r]  #relationship - not implemented
 		@s = params[:s].nil?  ? "" : params[:s].downcase  #skills
 		@jt= params[:jt].nil? ? "" : params[:jt] #job_type
 		@dp= params[:dp].nil? ? "" : params[:dp] #date_posted
@@ -40,7 +40,7 @@ class SearchesController < ApplicationController
 		when "People" # Searches User model, just employees, current + past company, skills, (and should have location and relationship) 
 			idxs=[User.searchkick_index.name]
 			where_clause[:role]="employee"
-			@toggles = {s:@s.titleize, l:@l} #need to add cc: @cc, pc: @pc for current company and past company	
+			@toggles = {s:@s.titleize, l:format_location(@l)} #need to add cc: @cc, pc: @pc for current company and past company	
 			@locations = Array.new
 			@relationships = ["1st","2nd", "Group Members", "3rd + Everyone"]
 			@current_companies = [] # To be implemented
@@ -66,7 +66,7 @@ class SearchesController < ApplicationController
 		when "Companies" # Searches User model, just employers, filters location (and should have industry)
 			idxs=[User.searchkick_index.name]
 			where_clause[:role]="employer"
-			@toggles = {l: @l}
+			@toggles = {l: format_location(@l)}
 			aggs = [:location, :industry]
 
 			@locations = Array.new
@@ -80,7 +80,7 @@ class SearchesController < ApplicationController
 
 		when "Projects" # Searches Project model, filters date-posted and skills
 			idxs=[Project.searchkick_index.name]
-			@toggles = { dp: @dp, s:@s}
+			@toggles = { dp: @dp, s:@s.titleize}
 
 			# Postgres query finds the most popular skill names (restricting length)
 			@pgrec = ActiveRecord::Base.connection.execute("
@@ -98,7 +98,7 @@ class SearchesController < ApplicationController
 
 		when "JobPostings" # Searches JobPosting, filters location, company, dateposted, industry, job type, skills.
 			idxs=[JobPosting.searchkick_index.name]
-			@toggles = {l: @l, c: @c, dp: @dp, i: @i, jt: @jt, s:@s}
+			@toggles = {l: format_location(@l), c: @c.titleize, dp: @dp, i: @i.titleize, jt: @jt.titleize, s:@s.titleize}
 			aggs = [:location, :company, :industry, :job_type, :skills, :created_at]
 			
 			# Postgres query finds the most popular company names joining between the two places the name can exist
@@ -157,6 +157,7 @@ class SearchesController < ApplicationController
 				#		where_clause[:location] = @l if !@l.blank?
 				#	end
 				when "industry"
+					byebug
 					where_clause[:industry]=JobCategory.find_by(name:@i).id
 				when "company"
 					ids = User.where(company_name: @c).pluck(:id)
@@ -213,7 +214,7 @@ class SearchesController < ApplicationController
 			if where_clause != {:role=>"employer"}
 				# Aggregates for the filters when the where clause is specified change filter values to work with whats queried
 				@skills   = make_agg_array("skills",@results.aggs,@skills,5)
-				@locations= make_agg_array("location",@results.aggs,@locations,5)
+				@locations= make_agg_array("locations",@results.aggs,@locations,5)
 			end
 			#Add queried value to collection
 			@locations= add_to_if_not_in(params[:l], @locations)

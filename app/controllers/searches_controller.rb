@@ -13,7 +13,7 @@ class SearchesController < ApplicationController
 		@usr 	= current_user.id if user_signed_in?
 
 		#Values for where clause
-		@l = params[:l].nil?  ? "" : params[:l].downcase  #location
+		@l = params[:l].nil?  ? "" : format_location(params[:l])  #location
 		@i = params[:i].nil?  ? "" : params[:i]  		  #industry
 		@c = params[:c].nil?  ? "" : params[:c].downcase  #company
 		@cc= params[:cc].nil? ? "" : params[:cc].downcase #current_company - not implemented
@@ -40,7 +40,7 @@ class SearchesController < ApplicationController
 		when "People" # Searches User model, just employees, current + past company, skills, (and should have location and relationship) 
 			idxs=[User.searchkick_index.name]
 			where_clause[:role]="employee"
-			@toggles = {s:@s, l:@l} #need to add cc: @cc, pc: @pc for current company and past company
+			@toggles = {s:@s.titleize, l:@l} #need to add cc: @cc, pc: @pc for current company and past company	
 			@locations = Array.new
 			@relationships = ["1st","2nd", "Group Members", "3rd + Everyone"]
 			@current_companies = [] # To be implemented
@@ -151,8 +151,8 @@ class SearchesController < ApplicationController
 				case f
 				when "locations"
 					#if @type == "Companies"
-						where_clause[:city] = @l.split(',')[0].strip
-						where_clause[:province] = @l.split(',')[1].strip
+						where_clause[:city] = @l.split(',')[0].strip.downcase
+						where_clause[:province] = @l.split(',')[1].strip.downcase unless @l.split(',')[1].blank?
 				#	else
 				#		where_clause[:location] = @l if !@l.blank?
 				#	end
@@ -245,6 +245,20 @@ private
 			return arr
 		else
 			return inpt
+		end
+	end
+
+	def format_location(loc)
+		if loc.blank?
+			return loc
+		else
+			arr = loc.split(",")
+			arr = arr.collect(&:strip)
+			if arr.length == 2
+				return arr[0].titleize+", "+arr[1].upcase
+			else
+				return arr[0].titleize
+			end
 		end
 	end
 end

@@ -7,6 +7,11 @@
  display: inline-block; 
  }
 
+ body.job_postings span.radio {
+  margin-bottom: 19px;
+  margin-top: 1px;
+ }
+
 .ui-autocomplete {
   position: absolute;
   top: 100%;

@@ -64,10 +64,11 @@ class JobPostingApplicationsController < ApplicationController
 	end
 
 	def update # Set the status to the value matching the parameter
+		job_posting = @job_posting_application.job_posting
 		save = @job_posting_application.update(status: JobPostingApplication.get_status_int(params[:status]))
 		if save #Create notification for user
 			@job_posting_application.create_activity :update, owner: @job_posting_application.applicant, parameters: {status: status}
-			redirect_to job_posting_applications_path, flash: {success: "Updated Application Status!"}
+			redirect_to applications_job_posting_path(job_posting), flash: {success: "Updated Application Status!"}
 		else
 			flash[:warning] = "Oops, there was an issue in updating that application."
 			redirect_back_or job_posting_application_path(params[:id])
@@ -79,14 +80,14 @@ class JobPostingApplicationsController < ApplicationController
 		if @job_posting_application.status == 0 #Job application hasn't been seen/considered by employer
 			if @job_posting_application.destroy
 				PublicActivity::Activity.where(trackable_id:(params[:id]),trackable_type:controller_path.classify).each {|a| a.destroy}
-				redirect_to job_posting_applications_path, flash: {success: "Deleted Application!"}
+				redirect_to current_user, flash: {success: "Deleted Application!"}
 			else
 				flash[:warning] = "Oops, there was an issue in deleting that application."
 				redirect_back_or 
 			end
 		elsif @job_posting_application.update(status: -2) # "delete" an application that has been considered/looked at destroy notifications
 			PublicActivity::Activity.where(trackable_id:(params[:id]),trackable_type:controller_path.classify).each {|a| a.destroy}
-			redirect_to job_posting_applications_path, flash: {success: "Deleted Application!"}
+			redirect_to current_user, flash: {success: "Deleted Application!"}
 		else
 			flash[:warning] = "Oops, there was an issue in deleting that application."
 			redirect_back_or 

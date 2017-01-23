@@ -40,8 +40,8 @@ class SearchesController < ApplicationController
 		when "People" # Searches User model, just employees, current + past company, skills, (and should have location and relationship) 
 			idxs=[User.searchkick_index.name]
 			where_clause[:role]="employee"
-			@toggles = {s:@s} #need to add cc: @cc, pc: @pc for current company and past company
-			@locations = [] # To be implemented
+			@toggles = {s:@s, l:@l} #need to add cc: @cc, pc: @pc for current company and past company
+			@locations = Array.new
 			@relationships = ["1st","2nd", "Group Members", "3rd + Everyone"]
 			@current_companies = [] # To be implemented
 			@past_companies = [] # To be implemented
@@ -57,6 +57,11 @@ class SearchesController < ApplicationController
 					LIMIT 5")
 			@skills = Array.new
 			@pgrec.each do |s| @skills.push(s["name"].titleize) end
+
+			locs = User.where.not(province: nil).group(:province,:city).order("COUNT(id)").limit(5).pluck(:city, :province)
+			locs.each do |l| 
+				@locations.push(l[0].titleize+', '+l[1].upcase)
+			end
 
 		when "Companies" # Searches User model, just employers, filters location (and should have industry)
 			idxs=[User.searchkick_index.name]
@@ -144,7 +149,7 @@ class SearchesController < ApplicationController
 		if !@filters.blank?
 			@filters.split(',').each do |f|
 				case f
-				when "location"
+				when "locations"
 					#if @type == "Companies"
 						where_clause[:city] = @l.split(',')[0].strip
 						where_clause[:province] = @l.split(',')[1].strip

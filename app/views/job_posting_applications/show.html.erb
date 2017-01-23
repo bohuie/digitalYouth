@@ -26,6 +26,7 @@
 			</div>
 		</div>
 	</div>
+	<br />
 <% elsif current_user.has_role? :employer %>
 	<%= render partial: "shared/employer_tabs", locals: { active: "jobs" } %>
 	<div class="user-information">
@@ -43,4 +44,5 @@
 		<%= link_to "Consider", update_job_posting_application_path(@job_posting_application, status:"Considering"), class: "btn btn-info", method: "patch" %>
 		<%= link_to "Accept", update_job_posting_application_path(@job_posting_application, status:"Accepted"), class: "btn btn-success", method: "patch" %>
 	</div>
+	<br />
 <% end %>

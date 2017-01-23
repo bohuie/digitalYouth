@@ -36,6 +36,8 @@ class User < ActiveRecord::Base
     #after_update :reprocess_image, :if => :cropping?
 
     validates_format_of :email, :without => TEMP_EMAIL_REGEX, on: :update
+    validates :province, presence: true
+    validates :city, presence: true
 
     has_many :job_postings, dependent: :destroy
     has_many :projects, dependent: :destroy

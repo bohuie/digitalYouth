@@ -1,12 +1,13 @@
 class UserMailer < ApplicationMailer
 
-	def contact_user(to, from, body)
+	def contact_user(to, from, subject, body)
 
 		@from = from
 		@to = to
 		@body = body
+		@subject = subject
 
-		mail(to: @to.email, subject: "#{@from.company_name} would like to talk to #{@to.first_name} #{@to.last_name}.")
+		mail(to: @to.email, subject: @subject)
 	end
 
 end

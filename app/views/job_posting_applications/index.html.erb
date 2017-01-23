@@ -30,17 +30,20 @@
 	<%@job_posting_applications.each do |j|%>
 		<% if j.status != -2 %>
 			<% cnt += 1 %>
-			<div class="row">
+			<div class="row alternate" style="padding: 5px;">
 				<% if last_posting != j.job_posting.id %>
 					<div class="col-md-4">
 						<h4><%= link_to j.job_posting.title, job_posting_path(j.job_posting.id) %></h4>
 					<% last_posting = j.job_posting.id %>
 					</div>
-					</div><div class="row"> 
+					</div><div class="row alternate" style="padding: 5px;"> 
 				<% end %>
 				<div class="col-md-1"></div>
 				<div class="col-md-4">
 					<div class="row">
+						<div class="col-md-3">
+							<%= image_tag j.applicant.image.url(:thumb), class: "image-radius" if !j.applicant.image.nil? %>
+						</div>
 						<%= link_to "#{j.applicant.first_name} #{j.applicant.last_name}", job_posting_application_path(j) %>
 						<small class="job-application-content"><span class=" label label-<%=j.get_bootstrap_status%>"><%="#{j.get_status_string}"%></span></small>
 					</div>

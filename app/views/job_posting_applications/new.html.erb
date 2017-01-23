@@ -20,9 +20,10 @@
 	<%= render partial: "job_posting_applications/user_app_skills", locals: {applicant: current_user} %>
 	<div class="row">
 		<div class="col-md-4">
-			<%= f.input :message, input_html: {rows: "4"} %>
+			<%= f.input :message, input_html: {rows: "4"}, label: "Applicant Message" %>
 		</div>
 	</div>
 	<%= f.button :submit, "Send", class:"btn btn-primary" %>
 <% end %>
 </div>
+<br />

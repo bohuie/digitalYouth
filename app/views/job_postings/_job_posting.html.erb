@@ -75,5 +75,5 @@
 	<% application_count = "" if application_count == 0 %>
 	<%= link_to raw("Applications <span class=\"badge\">#{application_count.to_s}</span>"), applications_job_posting_path(@job_posting), class: "btn btn-success"%>
 	<%= link_to "Delete", job_posting_path(@job_posting), method: "delete", data: {confirm: "Are you sure you want to delete this posting?"}, class: "btn btn-danger"%>
-	<p><span class="label label-default"><%=@job_posting.views%> Views</span></p>
+	<p><span class="label label-default"><%= pluralize(@job_posting.views, "View") %></span></p>
 <% end %>

@@ -120,7 +120,7 @@ respond_to :html, :json
   	end
 
 	def contact # Page for form to send an email
-		@user = current_user
+		@user = User.find(params[:id])
 		@url = ""
 		@reference_email = ReferenceEmail.new 
 	end
@@ -131,7 +131,7 @@ respond_to :html, :json
 			#create notification?
 		end
 
-		UserMailer.contact_user(contact, current_user, params[:contact][:body]).deliver_now
+		UserMailer.contact_user(contact, current_user, params[:contact][:subject], params[:contact][:body]).deliver_now
 		redirect_to current_user , flash: {success: "Contact request sent!"}
 	end
 

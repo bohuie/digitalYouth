@@ -28,7 +28,7 @@
 		<% if @job_posting.pay_rate.nil? %>
 			<%= f.input :pay_rate, collection: PAY_RATES, required: true, checked:"yearly", as: :radio_buttons, wrapper_html: { class: "col-md-1", style: "min-width: 110px" } %>
 		<% else %>
-			<%= f.input :pay_rate, collection: PAY_RATES, required: true, selected: @job_posting.pay_rate, as: :radio_buttons, wrapper_html: { class: "col-md-1"} %>
+			<%= f.input :pay_rate, collection: PAY_RATES, required: true, selected: @job_posting.pay_rate, as: :radio_buttons, wrapper_html: { class: "col-md-1", style: "min-width: 110px" } %>
 		<% end %>
 		<div class="col-md-6">
 			<div class="row">

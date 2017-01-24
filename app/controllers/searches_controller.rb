@@ -13,7 +13,7 @@ class SearchesController < ApplicationController
 		@usr 	= current_user.id if user_signed_in?
 
 		#Values for where clause
-		@l = params[:l].nil?  ? "" : params[:l].downcase  #location
+		@l = params[:l].nil?  ? "" : params[:l]  #location
 		@i = params[:i].nil?  ? "" : params[:i]  		  #industry
 		@c = params[:c].nil?  ? "" : params[:c].downcase  #company
 		@cc= params[:cc].nil? ? "" : params[:cc] #current_company - not implemented
@@ -151,13 +151,13 @@ class SearchesController < ApplicationController
 				case f
 				when "locations"
 					#if @type == "Companies"
-						where_clause[:city] = @l.split(',')[0].strip.downcase
-						where_clause[:province] = @l.split(',')[1].strip.downcase unless @l.split(',')[1].blank?
+						where_clause[:city] = @l.split(',')[0].strip
+						where_clause[:province] = @l.split(',')[1].strip unless @l.split(',')[1].blank?
+				byebug
 				#	else
 				#		where_clause[:location] = @l if !@l.blank?
 				#	end
 				when "industry"
-					byebug
 					where_clause[:industry]=JobCategory.find_by(name:@i).id
 				when "company"
 					ids = User.where(company_name: @c).pluck(:id)

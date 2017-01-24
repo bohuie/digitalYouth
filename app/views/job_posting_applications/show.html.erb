@@ -4,29 +4,62 @@
 	<%= render partial: "shared/job_seeker_tabs", locals: { active: "applications" } %>
 
     <div class="tab-content">
-		<h4 class="job-application-content"><%= link_to raw("#{@job_posting.title} (<i>#{@job_posting.user.company_name}</i>)"), job_posting_path(@job_posting) %>
-			<span class=" label label-<%=@job_posting_application.get_bootstrap_status%>"><%="#{@job_posting_application.get_status_string}"%></span>
-		</h4>
-		<% if @job_posting_application.status == -1 %>
-			<p> Sorry, your application has been rejected by <%=@job_posting_application.company.company_name%>.</p>
-		<% elsif @job_posting_application.status == 0 %>
-			<p> Your application has yet to be reviewed by <%=@job_posting_application.company.company_name%>.</p>
-		<% elsif @job_posting_application.status == 1 %>
-			<p> Your application is being considered by <%=@job_posting_application.company.company_name%>.</p>
-		<% elsif @job_posting_application.status == 2 %>
-			<p> Your application has been accepted!<br>
-			You will be contacted by <%=@job_posting_application.company.company_name%> soon.
-			</p>
-		<% end %>
-		<%= render partial: "job_posting_applications/user_app_skills", locals: {applicant: @job_posting_application.applicant} %>
+    	<h4>You application for <%= @job_posting.title %></h4>
+		<p>Below you can view your application, and delete it if you so choose.</p>
 		<div class="row">
+	  		<div class="col-md-2">
+			    <%= link_to "View Original Job Posting", job_posting_path(@job_posting.id), class: "btn btn-primary" %>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-3">
+				<h5>Application Status: <%= @job_posting_application.get_status_string %></h5>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-2">
+				<%= image_tag @job_posting_application.applicant.image.url(:small), class: "image-radius" if !@job_posting_application.applicant.image.nil? %>
+				<h4> <%="#{@job_posting_application.applicant.first_name} #{@job_posting_application.applicant.last_name}"%></h4>
+			</div>
 			<div class="col-md-4">
 				<h4>Applicant Message:</h4>
-				<%= @job_posting_application.message %>
+				<%= raw("<p>#{@job_posting_application.message}</p>") if !@job_posting_application.message.blank? %>
+			</div>
+			<div class="col-md-6">
+				<p>Below are all the skills required and preferred by <%= @job_posting.user.company_name %> for this job.  A checkmark, <small><span class="glyphicon glyphicon-ok"></span></small>, means you have the skill, and an x, <small><span class="glyphicon glyphicon-remove"></span></small>, means you do not.</p>
+				<% if !@req_skills.empty? %>
+					<h4> Required Skills </h4>
+					<ul class="custom-bullet">
+						<%@req_skills.each do |r| %>
+							<% if @user_required_matches.detect { |h| h[:user_skill].skill==r.skill } %>
+								<li class="yes"><%=r.skill.name.titleize%></li>
+							<% else %>
+								<li class="no"><%=r.skill.name.titleize%></li>
+							<% end %>
+						<% end %>
+					</ul>
+				<% end %>
+
+				<% if !@pref_skills.empty? %>
+					<h4> Preferred Skills </h4>
+					<ul class="custom-bullet">
+						<%@pref_skills.each do |p| %>
+							<% if @user_preferred_matches.detect { |h| h[:user_skill].skill==p.skill } %>
+								<li class="yes"><%=p.skill.name.titleize%></li>
+							<% else %>
+								<li class="no"><%=p.skill.name.titleize%></li>
+							<% end %>
+						<% end %>
+					</ul>
+				<% end %>
 			</div>
 		</div>
 	</div>
 	<br />
+	<div>
+		<%= link_to "Delete", job_posting_application_path(@job_posting_application), data: {confirm: "Are you sure you want to delete this application?"}, method: "delete", class: "btn btn-danger", id: "delete_job_application"%>
+	</div>
 <% elsif current_user.has_role? :employer %>
 	<%= render partial: "shared/employer_tabs", locals: { active: "jobs" } %>
 
@@ -85,8 +118,6 @@
 			<% end %>
 		</div>
 	</div>
-		
-
 
 	<div>
 		<br>

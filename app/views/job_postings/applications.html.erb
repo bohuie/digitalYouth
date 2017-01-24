@@ -12,8 +12,8 @@
 </div><br />
 <div class="row">
   <div class="col-md-2">
-<%= link_to "View Original Job Posting", job_posting_path(@job_posting.id), class: "btn btn-primary" %>
-</div>
+    <%= link_to "View Original Job Posting", job_posting_path(@job_posting.id), class: "btn btn-primary" %>
+  </div>
 </div>
 <br />
 <table data-toggle="table" data-sort-order="desc" data-sort-name="1" data-classes="table table-no-bordered">
@@ -33,7 +33,7 @@
         <td>
           <%= image_tag j.applicant.image.url(:thumb), class: "image-radius" if !j.applicant.image.nil? %>
           <%= "#{j.applicant.first_name} #{j.applicant.last_name}" %><br />
-          <%= j.message.truncate(100) %><%= link_to 'read more', job_posting_application_path(j) %>
+          <%= j.message.truncate(100) %><%= link_to ' See more.', job_posting_application_path(j) %>
         </td>
         <td>
           <% if !@req_skills.empty? %>
@@ -62,7 +62,7 @@
           <% end %>
         </td>
         <td>
-         <%="#{j.get_status_string}"%>
+         <%= j.get_status_string %>
         </td>
         <td>
           <%= link_to "View Profile", user_path(j.applicant), class: "btn btn-primary" %>

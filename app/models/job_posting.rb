@@ -12,16 +12,18 @@ class JobPosting < ActiveRecord::Base
 
 	def search_data
 		data = Hash.new
-		if close_date >= Date.today
-	  	data[:title] = title.downcase
+		if close_date > Date.today
+			byebug
+	  	data[:title] = title.titleize
 	  	if self.user_id.nil?
-	  		data[:company_name] = company_name.downcase
+	  		data[:company_name] = company_name.titleize
 	  	else
-	  		data[:company_name] = self.user.company_name.downcase
+	  		data[:company_name] = self.user.company_name.titleize
 	  	end
-	  	data[:city] = city.downcase
+	  	data[:city] = city.titleize
+	  	data[:province] = province.upcase
 	  	data[:job_type] = job_type
-	  	data[:description] = description.downcase
+	  	data[:description] = description.titleize
 	  	data[:industry] = job_category_id
 	  	data[:created_at] = created_at
 	  	data[:close_date] = close_date
@@ -43,9 +45,9 @@ class JobPosting < ActiveRecord::Base
 					if id.blank?
 						#Two different methods of items being added to the hash
 						if m[1]["skill"].nil?
-							skill_name = m[1]["skill_attributes"]["name"].downcase
+							skill_name = m[1]["skill_attributes"]["name"].titleize
 						else
-							skill_name = m[1]["skill"].downcase
+							skill_name = m[1]["skill"].titleize
 						end
 
 						skill = Skill.find_by(name: skill_name)
@@ -61,9 +63,9 @@ class JobPosting < ActiveRecord::Base
 				elsif m[1]["_destroy"] == "false"
 					#Fringe case for catching different method of passing the skill
 					if m[1]["skill"].nil?
-						skill_name = m[1]["skill_attributes"]["name"].downcase
+						skill_name = m[1]["skill_attributes"]["name"].titleize
 					else
-						skill_name = m[1]["skill"].downcase
+						skill_name = m[1]["skill"].titleize
 					end
 
 					skill = Skill.find_by(name: skill_name)

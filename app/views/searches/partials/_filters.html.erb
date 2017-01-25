@@ -11,7 +11,7 @@
 <% if !@toggles[:dp].nil? %>
 	<hr>
 	<span class="caret-right"></span><%= content_tag("a", "Date Posted", class: "filter-title", onclick: "$(date_posted).slideToggle(100);" )%>
-	<% if @filters.include? "date_posted".downcase %>
+	<% if @filters.include? "date_posted" %>
 		<div id="date_posted">
 	<% else %>
 		<div id="date_posted" style="display: none;">

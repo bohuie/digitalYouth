@@ -15,11 +15,11 @@ class SearchesController < ApplicationController
 		#Values for where clause
 		@l = params[:l].nil?  ? "" : format_location(params[:l])  #location
 		@i = params[:i].nil?  ? "" : params[:i]  		  #industry
-		@c = params[:c].nil?  ? "" : params[:c].downcase  #company
-		@cc= params[:cc].nil? ? "" : params[:cc].downcase #current_company - not implemented
-		@pc= params[:pc].nil? ? "" : params[:pc].downcase #past_company - not implemented
-		@r = params[:r].nil?  ? "" : params[:r].downcase  #relationship - not implemented
-		@s = params[:s].nil?  ? "" : params[:s].downcase  #skills
+		@c = params[:c].nil?  ? "" : params[:c].titleize  #company
+		@cc= params[:cc].nil? ? "" : params[:cc] #current_company - not implemented
+		@pc= params[:pc].nil? ? "" : params[:pc] #past_company - not implemented
+		@r = params[:r].nil?  ? "" : params[:r]  #relationship - not implemented
+		@s = params[:s].nil?  ? "" : params[:s].titleize  #skills
 		@jt= params[:jt].nil? ? "" : params[:jt] #job_type
 		@dp= params[:dp].nil? ? "" : params[:dp] #date_posted
 
@@ -94,7 +94,7 @@ class SearchesController < ApplicationController
 			@skills = Array.new
 			@pgrec.each do |s| @skills.push(s["name"].titleize) end
 
-			@dates_posted = ["Past day","Past Three days", "Past week","Past month"]
+			@dates_posted = ["Past Day","Past Three Days", "Past Week","Past Month"]
 
 		when "JobPostings" # Searches JobPosting, filters location, company, dateposted, industry, job type, skills.
 			idxs=[JobPosting.searchkick_index.name]
@@ -135,33 +135,32 @@ class SearchesController < ApplicationController
 			locs.each do |l| 
 				@locations.push(l[0].titleize+', '+l[1].upcase)
 			end
-			@dates_posted = ["Past day","Past Three days", "Past week","Past month"]
+			@dates_posted = ["Past Day","Past Three Days", "Past Week","Past Month"]
 			@industries = JobCategory.all.pluck(:name)
 			@job_types = JOB_TYPES.keys
 		else # Search nothing
 			idxs=[]
 		end
-
 		# Large block that modifies the where portion of the query
 		if !@filters.blank?
 			@filters.split(',').each do |f|
 				case f
 				when "locations"
 					#if @type == "Companies"
-						where_clause[:city] = @l.split(',')[0].strip.downcase
-						where_clause[:province] = @l.split(',')[1].strip.downcase unless @l.split(',')[1].blank?
+						where_clause[:city] = @l.split(',')[0].strip
+						where_clause[:province] = @l.split(',')[1].strip unless @l.split(',')[1].blank?
 				#	else
 				#		where_clause[:location] = @l if !@l.blank?
 				#	end
 				when "industry"
 					where_clause[:industry]=JobCategory.find_by(name:@i).id
 				when "company"
-					ids = User.where(company_name: @c).pluck(:id)
+					#ids = User.where(company_name: @c).pluck(:id)
 					if @type == "Companies"
-						where_clause[:user_id]=ids
+						#where_clause[:user_id]=ids
 					elsif
 						where_clause[:company_name]=@c
-						where_clause[:user_id]=ids if !ids.blank?
+						#where_clause[:user_id]=ids if !ids.blank?
 					end
 				when "current_company"
 					# To be implemented
@@ -178,20 +177,20 @@ class SearchesController < ApplicationController
 					where_clause[:job_type]=JOB_TYPES[@jt] if !@jt.blank?
 				when "date_posted"
 					if !@dp.blank?
-						["Past day","Three days ago", "One week ago","One month ago"]
-						if @dp == "Past day"
+						if @dp == "Past Day"
 							where_clause[:created_at]={gte:Date.today-1}
-						elsif @dp == "Three days ago"
+						elsif @dp == "Past Three Days"
 							where_clause[:created_at]={gte:Date.today-3}
-						elsif @dp == "One week ago"
+						elsif @dp == "Past Week"
 							where_clause[:created_at]={gte:Date.today-7}
-						elsif @dp == "One month ago"
+						elsif @dp == "Past Month"
 							where_clause[:created_at]={gte:Date.today-30}
 						end
 					end
 				end
 			end
 		end
+		byebug
 		aggs = [] if where_clause == {}
 		# There is an N+1 query problem here with rolify
 		@results = User.search @query, 
@@ -205,7 +204,6 @@ class SearchesController < ApplicationController
 				 page: params[:page], per_page: 15
 
 		@query = "" if @query == "*"
-
 		if where_clause != {}
 			if where_clause != {:role=>"employer"}
 				# Aggregates for the filters when the where clause is specified change filter values to work with whats queried

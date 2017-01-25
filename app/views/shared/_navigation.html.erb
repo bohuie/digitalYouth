@@ -12,15 +12,15 @@
 
       <%= form_tag "/search", method: "get", class: "navbar-form navbar-left", role:"search", id: 'search' do %>
         <div class="input-group">
-            <%= text_field_tag 'q', params[:q], class: 'form-control', placeholder: "Search", autocomplete:"off"%>
-            <select name="t" class="select form-control" id="type-select">
+            <%= text_field_tag 'q', params[:q], class: 'round-border form-control', placeholder: "Search", autocomplete:"off"%>
+            <select name="t" class="select form-control margin-left-5" id="type-select">
               <option value="">All</option>
               <option value="People">People</option>
               <option value="Companies">Companies</option>
               <option value="Projects">Projects</option>
               <option value="JobPostings">Job Postings</option>
             </select>
-            <%= button_tag type: "submit", class: "btn btn-default", name: nil do %>
+            <%= button_tag type: "submit", class: "btn btn-default margin-left-5", name: nil do %>
               <span class="glyphicon glyphicon-search"></span>
             <% end %>
         </div>

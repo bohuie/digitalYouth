@@ -6,15 +6,6 @@
   <%= link_to "Sign up", welcome_index_path %><br />
 <% end -%>
 
-<%- if devise_mapping.omniauthable? && controller_name != 'welcome' %>
-  <%- Devise.omniauth_providers.each do |provider| %>
-    <%= link_to omniauth_authorize_path(resource_name, provider), class: "btn btn-block btn-social-icon btn-#{provider}", style: "display: inline-block; margin-top: 0px;" do%>
-      <span class="fa fa-<%= provider %>"></span>
-    <% end %>
-  <% end -%>
-  <br />
-<% end -%>
-
 <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' && controller_name != 'welcome' %>
   <%= link_to "Forgot your password?", new_password_path(resource_name) %><br />
 <% end -%>

@@ -57,12 +57,12 @@ class User < ActiveRecord::Base
 
     def search_data
         data = Hash.new
-        data[:first_name] = first_name.downcase
-        data[:last_name] = last_name.downcase
-        data[:company_name] = company_name.downcase if company_name
-        data[:city] = city.downcase if city
-        data[:province] = province.downcase if province
-        data[:bio] = bio.downcase if bio
+        data[:first_name] = first_name.titleize
+        data[:last_name] = last_name.titleize
+        data[:company_name] = company_name.titleize if company_name
+        data[:city] = city.titleize if city
+        data[:province] = province.upcase if province
+        data[:bio] = bio if bio
         data[:role] = self.roles.first.name if !self.roles.first.nil?
         data[:skills] = self.skills.pluck(:name)
         return data
@@ -112,9 +112,9 @@ class User < ActiveRecord::Base
                 UserSkill.find(id).destroy if !id.blank?
             elsif m[1]["_destroy"] == "false" || m[1]["_destroy"].empty?
                 if m[1]["skill"].nil?
-                    skill_name = m[1]["skill_attributes"]["name"].downcase
+                    skill_name = m[1]["skill_attributes"]["name"].titleize
                 else
-                    skill_name = m[1]["skill"].downcase
+                    skill_name = m[1]["skill"].titleize
                 end
                 skill = Skill.find_by(name: skill_name)
                 if skill.nil?

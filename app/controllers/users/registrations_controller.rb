@@ -105,7 +105,7 @@ before_filter :logged_in, only: [:create]
 
   def consent_name_match
     if params[:user].key?(:consent_attributes)
-      unless (params[:user][:first_name].downcase+ " " + params[:user][:last_name].downcase).eql? params[:user][:consent_attributes][:name].downcase 
+      unless (params[:user][:first_name].titleize+ " " + params[:user][:last_name].titleize).eql? params[:user][:consent_attributes][:name].titleize 
         flash[:warning] = "The name in the consent form must match the first and last name supplied."
         return false 
       end

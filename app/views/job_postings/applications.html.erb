@@ -1,0 +1,76 @@
+<%= render "users/shared/profile" %>
+
+<%= render partial: "shared/employer_tabs", locals: { active: "jobs" } %>
+
+<h4>Job Applications for <%= @job_posting.title %></h4>
+<p>Listed below are all the applicants for <%= @job_posting.title %>.  You can view their profile by cliking on their name, as well as see how many of the job's required and preferred skills they have.</p>
+
+<div class="row">
+	<div class="col-md-2">
+	<%= link_to "Compare Applicant Skills", compare_applications_path(@job_posting), class: "btn btn-primary" %>
+	</div>
+</div><br />
+<div class="row">
+  <div class="col-md-2">
+    <%= link_to "View Original Job Posting", job_posting_path(@job_posting.id), class: "btn btn-primary" %>
+  </div>
+</div>
+<br />
+<table data-toggle="table" data-sort-order="desc" data-sort-name="1" data-classes="table table-no-bordered">
+<thead>
+    <tr>
+      <th data-sortable="false" class="col-md-3">Applicant</th>
+      <th data-sortable="true">Required Skills</th>
+      <th data-sortable="true">Preferred Skills</th>
+      <th data-sortable="true">Status</th>
+      <th data-sortable="true">Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @job_posting_applications.each do |j| %>
+      <tr class="alternate">
+        <td>
+          <%= image_tag j.applicant.image.url(:thumb), class: "image-radius" if !j.applicant.image.nil? %>
+          <%= "#{j.applicant.first_name} #{j.applicant.last_name}" %><br />
+          <%= j.message.truncate(100) %><%= link_to ' See more.', job_posting_application_path(j) %>
+        </td>
+        <td>
+          <% if !@req_skills.empty? %>
+            <ul class="custom-bullet">
+              <% @req_skills.each do |r| %>
+                <% if @applicant_skills[j.applicant.id][:required].detect { |h| h[:user_skill].skill==r.skill } %>
+                  <li class="yes"><%=r.skill.name.titleize%></li>
+                <% else %>
+                  <li class="no"><%=r.skill.name.titleize%></li>
+                <% end %>
+              <% end %>
+            </ul>
+          <% end %>
+        </td>
+        <td>
+          <% if !@pref_skills.empty? %>
+            <ul class="custom-bullet">
+              <% @pref_skills.each do |r| %>
+                <% if @applicant_skills[j.applicant.id][:preferred].detect { |h| h[:user_skill].skill==r.skill } %>
+                  <li class="yes"><%=r.skill.name.titleize%></li>
+                <% else %>
+                  <li class="no"><%=r.skill.name.titleize%></li>
+                <% end %>
+              <% end %>
+            </ul>
+          <% end %>
+        </td>
+        <td>
+         <%= j.get_status_string %>
+        </td>
+        <td>
+          <%= link_to "View Profile", user_path(j.applicant), class: "btn btn-primary" %>
+          <%= link_to "Reject", update_job_posting_application_path(j,status:"Rejected"), class: "btn btn-danger", method: "patch" %>
+          <%= link_to "Consider", update_job_posting_application_path(j, status:"Considering"), class: "btn btn-info", method: "patch" %>
+          <%= link_to "Accept", update_job_posting_application_path(j, status:"Accepted"), class: "btn btn-success", method: "patch" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

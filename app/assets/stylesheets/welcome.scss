@@ -14,23 +14,17 @@ body.welcome li {
 	padding-top: 2px;
 }
 
-div.bgimage{
-	background-position:bottom left;
-	background-repeat:no-repeat;
-	background-image: image-url("/assets/homepage.png");
-	height:220px;
-	width:100%;
-	position:absolute;
-	bottom:0px;
-	left:0px;
+.round-border {
+	border-radius: 4px !important;
 }
 
 .landing{
-	background-image:image-url("/assets/homepage.png"), linear-gradient(to bottom, rgb(19, 151, 206) 0%, rgb(19, 151, 206) 100%), linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 100%);
+	background-image:asset-url("homepage.svg"), linear-gradient(to bottom, rgb(19, 151, 206) 0%, rgb(19, 151, 206) 100%), linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 100%);
 	background-clip: content-box, padding-box;
 	height: calc(100% - 65px); 
 	background-position:bottom left;
 	background-repeat:no-repeat;
+	background-size: calc(50%) 300px, auto, auto, auto, auto;
 }
 
 .description{
@@ -44,7 +38,7 @@ body.welcome.index div.alert{
 	margin-bottom: 0px;
 }
 
-body.welcome > nav.navbar {
+body.welcome.index nav.navbar {
 	margin-bottom: 0px;
 }
 

@@ -72,8 +72,14 @@ respond_to :html, :json
 			end
 		elsif params.include?(:email)
 			if @user.valid_password?(params[:user][:email_password])
-				@user.update_attributes(email_params)
-				flash[:success] = "Email successfully updated. You will have to confirm your new email before we update to that email."
+				if User.exists?(email: params[:user][:new_email])
+					flash[:danger] = "That email is already taken."
+					render 'edit' and return
+				else
+					params[:user][:email] = params[:user][:new_email]
+					@user.update_attributes(email_params)
+					flash[:success] = "Email successfully updated. You will have to confirm your new email before we update to that email."
+				end
 			else
 				flash[:danger] = "Incorrect password."
 				render 'edit' and return
@@ -120,7 +126,7 @@ respond_to :html, :json
   	end
 
 	def contact # Page for form to send an email
-		@user = current_user
+		@user = User.find(params[:id])
 		@url = ""
 		@reference_email = ReferenceEmail.new 
 	end
@@ -131,7 +137,7 @@ respond_to :html, :json
 			#create notification?
 		end
 
-		UserMailer.contact_user(contact, current_user, params[:contact][:body]).deliver_now
+		UserMailer.contact_user(contact, current_user, params[:contact][:subject], params[:contact][:body]).deliver_now
 		redirect_to current_user , flash: {success: "Contact request sent!"}
 	end
 

@@ -13,7 +13,6 @@ class JobPosting < ActiveRecord::Base
 	def search_data
 		data = Hash.new
 		if close_date > Date.today
-			byebug
 	  	data[:title] = title.titleize
 	  	if self.user_id.nil?
 	  		data[:company_name] = company_name.titleize

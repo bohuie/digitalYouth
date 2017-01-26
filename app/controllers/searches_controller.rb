@@ -190,7 +190,6 @@ class SearchesController < ApplicationController
 				end
 			end
 		end
-		byebug
 		aggs = [] if where_clause == {}
 		# There is an N+1 query problem here with rolify
 		@results = User.search @query, 

@@ -1,130 +1,150 @@
 <%= render "users/shared/profile" %>
 
 <div class="container" id="profileButtons">
-    <ul class="nav nav-tabs profileButtonContent">
-          <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#personal">User Info</a></li>
-          <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#email">Change Email</a></li>
-          <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#password">Change Password</a></li>
-          <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#media">Social Media</a></li>
-    </ul>
-    <div class="tab-content profileButtonContent">
-        <div id="personal" class="tab-pane fade in active">
-        <%= simple_form_for (@user) do |info| %>
-          <br />
-          <p> Information added here will be publicly displayed on your profile. Click <a href='/' >here</a> to edit your privacy options.</p>
-          <div class="row" style="padding-bottom: 10px">
-            <div class="col-md-4">
-              <%= info.input :first_name, required: true, input_html: {style: 'display: inline-block; width: 75%'} %>
-            </div>
-            <div class="col-md-4">
-              <%= info.input :last_name, required: true, input_html: {style: 'display: inline-block; width: 74%'}  %>    
-            </div>
-          </div>
-          <div class="row" style="padding-bottom: 10px">
-            <div class="col-md-8">
-              <%= info.input :street_address, input_html: {style: 'display: inline-block; width: 85%'} %>
-            </div>
-          </div>
-          <div class="row" style="padding-bottom: 10px">
-            <div class="col-md-3">
-              <%= info.input :city, required: true, input_html: {style: 'display: inline-block; width: 87%'} %>
-            </div>
-            <div class="col-md-2">
-              <%= info.input :province, required: true, collection: PROVINCES, input_html: {style: 'display: inline-block; width: 60%'} %>
-            </div>
-            <div class="col-md-3">
-              <%= info.input :postal_code, required: true, input_html: {style: 'display: inline-block; width: 65%'} %>
-            </div>
-          </div>
-          <div class="row" style="padding-bottom: 10px">
-            <div class="col-md-6">
-              <%= info.input :image, as: :file, label: "Upload Profile Picture", input_html: {style: 'display: inline;'}  %>
-              <p>You will be able to crop and edit your photo in the next screen.</p>
-            </div>
-          </div>
-          <div class="row" style="padding-bottom: 10px">
-            <div class="cold-md-6" id="target">
-            </div>
-          </div>
-          <%= info.submit 'Update', name: 'personal', class: 'btn btn-primary' %>
-        <% end %>
+  <ul class="nav nav-tabs profileButtonContent">
+    <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#personal">User Info</a></li>
+    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#email">Change Email</a></li>
+    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#password">Change Password</a></li>
+    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#media">Social Media</a></li>
+  </ul>
+  <div class="tab-content profileButtonContent">
+    <div id="personal" class="tab-pane fade in active">
+      <h4>User Info</h4>
+      <%= simple_form_for (@user) do |info| %>
+        <p> Information added here will be publicly displayed on your profile. Click <a href='/' >here</a> to edit your privacy options.</p>
+        <div class="row" style="padding-bottom: 10px">
+          <%= info.input :first_name, required: true, wrapper_html: { class: "col-md-4 padding-left-0" } %>
+            
+          <%= info.input :last_name, required: true, wrapper_html: { class: "col-md-4" } %>    
         </div>
-
-        <div id="email" class="tab-pane fade">
-          <%= simple_form_for (@user) do |email| %>
-            <div class="row" style="padding-bottom: 10px">
-              <div class="col-md-6">
-                <%= email.input :email, required: true, label:"Email.  You need to confirm your new email before we update to it." , input_html: {style: 'display: inline-block; width: 85%'}%>
-              </div>
-            </div>
-            <div class="row" style="padding-bottom: 10px">
-              <div class="col-md-6">
-                <%= email.input :email_password, label: "Please confirm the change with your current password.", input_html: {style: 'display: inline-block; width: 85%'} %>
-              </div>
-            </div>
-            <%= email.submit 'Change Email', name: 'email', class: 'btn btn-primary'  %>
-          <% end %>
+        <div class="row" style="padding-bottom: 10px">
+          <%= info.input :street_address, wrapper_html: { class: "col-md-8 padding-left-0" }  %>
         </div>
+        <div class="row" style="padding-bottom: 10px">
+          <%= info.input :city, required: true, wrapper_html: { class: "col-md-3 padding-left-0" } %>
 
-        <div id="password" class="tab-pane fade">
-          <%= simple_form_for (@user) do |pwd| %>
-            <div class="row" style="padding-bottom: 10px">
-              <div class="col-md-5">
-                <%= pwd.input :current_password, label: "Old password", input_html: {style: 'display: inline-block; width: 72%'}%>
-              </div>
-            </div>
-            <div class="row" style="padding-bottom: 10px">
-              <div class="col-md-5">
-                <%= pwd.input :password, label: "New password", input_html: {style: 'display: inline-block; width: 71%'} %>
-              </div>
-            </div>
-            <div class="row" style="padding-bottom: 10px">
-              <div class="col-md-5">
-                <%= pwd.input :confirm_password, label: "Confirm new password", input_html: {style: 'display: inline-block; width: 58%'} %>
-              </div>
-            </div>
-            <%= pwd.submit 'Change Password', name: 'password', class: 'btn btn-primary'  %>
-          <% end %>
+          <%= info.input :province, required: true, collection: PROVINCES, wrapper_html: { class: "col-md-2" } %>
+
+          <%= info.input :postal_code, required: true, wrapper_html: { class: "col-md-3" } %>
         </div>
-
-        <div id="media" class="tab-pane fade">
-          <div class="row">
-            <div class="col-md-6">
-              <%= simple_form_for (@user) do |sm| %>
-                <p>Feel free to add URL links to your social media accounts below.  These will help showcase your social media skills, projects, or other items to potential employers.</p>
-                <div class="row" style="padding-bottom: 10px">
-                  <%= sm.input :facebook, input_html: {style: 'display: inline-block; width: 86%'} %>
-                </div>
-                <div class="row" style="padding-bottom: 10px">
-                  <%= sm.input :twitter, input_html: {style: 'display: inline-block; width: 90%'} %>
-                </div>
-                <div class="row" style="padding-bottom: 10px">
-                  <%= sm.input :github, input_html: {style: 'display: inline-block; width: 90%'} %>
-                </div>
-                <div class="row" style="padding-bottom: 10px">
-                  <%= sm.input :linkedin, input_html: {style: 'display: inline-block; width: 88%'} %>
-                </div>
-                <%= sm.submit 'Update', name: 'media', class: 'btn btn-primary'  %>
-              <% end %>
-            </div>
-            <div class="col-md-6">
-              <p>Connect Accounts.  Accounts connected are only used for logging in.  They are not shown on your profile page.  If you wish to do so, please fill out the information above.</p>
-              <% ['facebook', 'twitter', 'github', 'linkedin'].each do |provider| %>
-                  <% if current_user.identities.pluck(:provider).include?(provider.to_s) %>
-                  <div class="row" style="padding-bottom: 10px; padding-top: 10px; height: 44px">
-                    <%= provider.to_s.titleize %> Connected
-                    </div>
-                  <% else %>
-                  <div class="row" style="padding-bottom: 10px">
-                    <%= link_to omniauth_authorize_path('user', provider), class: "btn btn-block btn-social btn-#{provider}" do %>
-                      <span class="fa fa-<%= provider %>"></span> Connect with <%= OmniAuth::Utils.camelize(provider) %>
-                    <% end %>
-                    </div>
-                  <% end %>
-                
-              <% end %>
-            </div>
+        <div class="row" style="padding-bottom: 10px">
+          <div class="col-md-6 padding-left-0">
+            <%= info.input :image, as: :file, label: "Upload Profile Picture", input_html: {style: 'display: inline;'}  %>
+            <p>You will be able to crop and edit your photo in the next screen.</p>
           </div>
+        </div>
+        <div class="row" style="padding-bottom: 10px">
+          <div class="cold-md-6" id="target">
+          </div>
+        </div>
+        <%= info.submit 'Update', name: 'personal', class: 'btn btn-primary' %>
+      <% end %>
+    </div>
+
+    <div id="email" class="tab-pane fade">
+      <h4>Change Email</h4>
+      <p>Use this form to change your email address.</p>
+      <%= simple_form_for (@user) do |email| %>
+        <div class="row" style="padding-bottom: 10px">
+          <%= email.input :email, label:"Please enter in your old email for confiramtion.", wrapper_html: { class: "col-md-5 padding-left-0" } %>
+        </div>
+        <div class="row" style="padding-bottom: 10px">
+          <%= email.input :email_password, label: "Please confirm the change with your current password.", wrapper_html: { class: "col-md-5 padding-left-0" } %>
+        </div>
+        <div class="row" style="padding-bottom: 10px">
+          <%= email.input :new_email, label: "Enter the new email you want to use.", wrapper_html: { class: "col-md-5 padding-left-0" } %>
+        </div>
+        <%= email.submit 'Change Email', name: 'email', class: 'btn btn-primary'  %>
+      <% end %>
+    </div>
+
+    <div id="password" class="tab-pane fade">
+      <h4>Change Password</h4>
+      <p>Use this form to change your password.</p>
+      <%= simple_form_for (@user) do |pwd| %>
+        <div class="row" style="padding-bottom: 10px">
+          <%= pwd.input :current_password, label: "Old password", wrapper_html: { class: "col-md-5 padding-left-0" } %>
+        </div>
+        <div class="row" style="padding-bottom: 10px">
+          <%= pwd.input :password, label: "New password", wrapper_html: { class: "col-md-5 padding-left-0" } %>
+        </div>
+        <div class="row" style="padding-bottom: 10px">
+          <%= pwd.input :confirm_password, label: "Confirm new password", wrapper_html: { class: "col-md-5 padding-left-0" } %>
+        </div>
+        <%= pwd.submit 'Change Password', name: 'password', class: 'btn btn-primary'  %>
+      <% end %>
+    </div>
+
+    <div id="media" class="tab-pane fade">
+      <h4>Social Media</h4>
+      <div class="row">
+        <div class="col-md-6 col-sm-6 padding-left-0">
+          <p>Feel free to add URL links to your social media accounts below.  These will help showcase your social media skills, projects, or other items to potential employers.</p>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <p>Connect Accounts.  You may connect the below accounts to EdgeMap to allow for quicker logging in.  Connecting accounts does not display them on your profile.</p>
         </div>
       </div>
+      <%= simple_form_for (@user) do |sm| %>
+        <div class="row">
+          <%= sm.input :facebook, wrapper_html: { class: "col-md-6 col-sm-6 padding-left-0" } %>
+          <% if current_user.identities.pluck(:provider).include?('facebook') %>
+            <div class="col-md-6 col-sm-6 connected">
+              Facebook Connected
+            </div>
+          <% else %>
+            <div class="col-md-6 col-sm-6">
+              <%= link_to omniauth_authorize_path('user', 'facebook'), class: "btn btn-block btn-social btn-facebook connect" do %>
+                <span class="fa fa-facebook"></span> Connect with Facebook
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+        <div class="row">
+          <%= sm.input :twitter, wrapper_html: { class: "col-md-6 col-sm-6 padding-left-0" } %>
+          <% if current_user.identities.pluck(:provider).include?('twitter') %>
+            <div class="col-md-6 col-sm-6 connected">
+              Twitter Connected
+            </div>
+          <% else %>
+            <div class="col-md-6 col-sm-6">
+              <%= link_to omniauth_authorize_path('user', 'twitter'), class: "btn btn-block btn-social btn-twitter connect" do %>
+                <span class="fa fa-twitter"></span> Connect with Twitter
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+        <div class="row">
+          <%= sm.input :github, wrapper_html: { class: "col-md-6 col-sm-6 padding-left-0" } %>
+          <% if current_user.identities.pluck(:provider).include?('github') %>
+            <div class="col-md-6 col-sm-6 connected">
+              Github Connected
+            </div>
+          <% else %>
+            <div class="col-md-6 col-sm-6">
+              <%= link_to omniauth_authorize_path('user', 'github'), class: "btn btn-block btn-social btn-github connect" do %>
+                <span class="fa fa-github"></span> Connect with Github
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+        <div class="row">
+          <%= sm.input :linkedin, wrapper_html: { class: "col-md-6 col-sm-6 padding-left-0" } %>
+          <% if current_user.identities.pluck(:provider).include?('linked') %>
+            <div class="col-md-6 col-sm-6 connected">
+              LinkedIn Connected
+            </div>
+          <% else %>
+            <div class="col-md-6 col-sm-6">
+              <%= link_to omniauth_authorize_path('user', 'linkedin'), class: "btn btn-block btn-social btn-linkedin connect" do %>
+                <span class="fa fa-linkedin"></span> Connect with LinkedIn
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+        <br />
+        <%= sm.submit 'Update', name: 'media', class: 'btn btn-primary'  %>
+      <% end %>
+    </div>
+  </div>
 </div>

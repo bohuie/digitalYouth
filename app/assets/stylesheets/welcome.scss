@@ -19,7 +19,7 @@ body.welcome li {
 }
 
 .landing{
-	background-image:image-url("/assets/homepage.svg"), linear-gradient(to bottom, rgb(19, 151, 206) 0%, rgb(19, 151, 206) 100%), linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 100%);
+	background-image:asset-url("homepage.svg"), linear-gradient(to bottom, rgb(19, 151, 206) 0%, rgb(19, 151, 206) 100%), linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 100%);
 	background-clip: content-box, padding-box;
 	height: calc(100% - 65px); 
 	background-position:bottom left;

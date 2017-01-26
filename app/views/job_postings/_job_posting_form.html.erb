@@ -26,30 +26,26 @@
 	</div>
 	<div class="row">
 		<% if @job_posting.pay_rate.nil? %>
-			<%= f.input :pay_rate, collection: PAY_RATES, required: true, checked:"yearly", as: :radio_buttons, wrapper_html: { class: "col-md-1", style: "min-width: 110px" } %>
+			<%= f.input :pay_rate, collection: PAY_RATES, required: true, checked:"yearly", as: :radio_buttons, wrapper_html: { class: "col-md-1", style: "min-width: 120px" } %>
 		<% else %>
-			<%= f.input :pay_rate, collection: PAY_RATES, required: true, selected: @job_posting.pay_rate, as: :radio_buttons, wrapper_html: { class: "col-md-1", style: "min-width: 110px" } %>
+			<%= f.input :pay_rate, collection: PAY_RATES, required: true, selected: @job_posting.pay_rate, as: :radio_buttons, wrapper_html: { class: "col-md-1", style: "min-width: 120px" } %>
 		<% end %>
 		<div class="col-md-6">
 			<div class="row">
 				<div class="col-md-12"><b>A Starting amount (From) is required for your chosen pay rate.</b></div></div>
 			<div class="row">
-				<%= f.input :lower_pay_range_year, label: "From", label_html: { style: "width:35px; text-align: right;" }, input_html: {style: "display: inline-block; width: calc(100% - 35px);", value: number_with_precision(@year_lower, precision: 2)}, wrapper_html: { style: "margin-bottom:5px", class: "col-md-6" } %>
+				<%= f.input :lower_pay_range_year, label: "From", label_html: { style: "width:40px; text-align: right;" }, input_html: {style: "display: inline-block; width: calc(100% - 40px);", value: number_with_precision(@year_lower, precision: 2)}, wrapper_html: { style: "margin-bottom:5px", class: "col-md-6" } %>
 
-				<%= f.input :upper_pay_range_year, label: "To", label_html: { style: "width:35px; text-align: right;" }, input_html: {style: "display: inline-block; width: calc(100% - 35px);", value: number_with_precision(@year_upper, precision: 2)}, wrapper_html: { style: "margin-bottom:5px", class: "col-md-6" }  %>
+				<%= f.input :upper_pay_range_year, label: "To", label_html: { style: "width:40px; text-align: right;" }, input_html: {style: "display: inline-block; width: calc(100% - 40px);", value: number_with_precision(@year_upper, precision: 2)}, wrapper_html: { style: "margin-bottom:5px", class: "col-md-6" }  %>
 			</div>
 			<div class="row">
-				<%= f.input :lower_pay_range_hour, label: "From", label_html: { style: "width:35px; text-align: right;" }, input_html: {style: "display: inline-block; width: calc(100% - 35px);", value: number_with_precision(@hour_lower, precision: 2)}, wrapper_html: { class: "col-md-6" } %>
+				<%= f.input :lower_pay_range_hour, label: "From", label_html: { style: "width:40px; text-align: right;" }, input_html: {style: "display: inline-block; width: calc(100% - 40px);", value: number_with_precision(@hour_lower, precision: 2)}, wrapper_html: { class: "col-md-6" } %>
 
-				<%= f.input :upper_pay_range_hour, label: "To", label_html: { style: "width:35px; text-align: right;" }, input_html: {style: "display: inline-block; width: calc(100% - 35px);", value: number_with_precision(@hour_upper, precision: 2)}, wrapper_html: { class: "col-md-6" }  %>
+				<%= f.input :upper_pay_range_hour, label: "To", label_html: { style: "width:40px; text-align: right;" }, input_html: {style: "display: inline-block; width: calc(100% - 40px);", value: number_with_precision(@hour_upper, precision: 2)}, wrapper_html: { class: "col-md-6" }  %>
 			</div>
 		</div>
 	</div>
 	<div class="row">
-		<%= f.input :link, wrapper_html: { class: "col-md-3" } %>
-
-		<%= f.input :posted_by, wrapper_html: { class: "col-md-3" } %>
-
 		<%= f.input :open_date, as: :string, required: true, input_html: {type: :date, id: "open-date"}, wrapper_html: { class: "col-md-3" } %>
 
 		<%= f.input :close_date, as: :string, required: true, input_html: {type: :date, id: "close-date"}, wrapper_html: { class: "col-md-3" } %>
@@ -76,5 +72,8 @@
 	</div>
 	<div class="col-md-3 padding-left-0"><%= link_to_add_job_posting_skill_fields "Add Skill", f, "btn btn-primary " %></div>
 	<div class="row"></div><br />
+	<div class="row">
+		<%= f.input :link, wrapper_html: { class: "col-md-6" }, label: "Link. If you have an outside link or application process, include it here." %>
+	</div>
 	<%= f.button :submit, class: "btn btn-primary" %>
 <% end %>

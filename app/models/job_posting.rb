@@ -6,26 +6,23 @@ class JobPosting < ActiveRecord::Base
 	has_many :job_posting_applications, dependent: :destroy
 	belongs_to :job_category
 	belongs_to :user
-	accepts_nested_attributes_for :job_posting_skills, reject_if: lambda {|a| a[:question_id].blank?}, allow_destroy: true
+	accepts_nested_attributes_for :job_posting_skills, reject_if: lambda {|a| a[:survey_id].blank?}, allow_destroy: true
 
-	@@job_types = {"Full Time"=>0,"Part Time"=>1,"Contract"=>2,"Casual"=>3,
-			 "Summer Positions"=>4,"Graduate Year Recruitment Program"=>5,
-			 "Field Placement/Work Practicum"=>6,"Internship"=>7,"Volunteer"=>8}
-
+	validates :lower_pay_range, presence: true
 
 	def search_data
 		data = Hash.new
-		if close_date >= Date.today
-	  	data[:title] = title.downcase
+		if close_date > Date.today
+	  	data[:title] = title.titleize
 	  	if self.user_id.nil?
-	  		data[:company_name] = company_name.downcase
+	  		data[:company_name] = company_name.titleize
 	  	else
-	  		data[:company_name] = self.user.company_name.downcase
+	  		data[:company_name] = self.user.company_name.titleize
 	  	end
-	  	data[:location] = location.downcase
-	  	data[:pay_range] = pay_range.downcase ##?
+	  	data[:city] = city.titleize
+	  	data[:province] = province.upcase
 	  	data[:job_type] = job_type
-	  	data[:description] = description.downcase
+	  	data[:description] = description.titleize
 	  	data[:industry] = job_category_id
 	  	data[:created_at] = created_at
 	  	data[:close_date] = close_date
@@ -35,31 +32,62 @@ class JobPosting < ActiveRecord::Base
 	end
 
 	def process_skills(hash) # Creates and Updates job posting skills, creating new skills when needed.
-		hash.each do |m|
-			id = m[1]["id"]
-			if m[1]["_destroy"] == "true"
-				JobPostingSkill.find(id).destroy if !id.blank?
-			elsif m[1]["_destroy"] == "false"
-				skill_name = m[1]["skill_attributes"]["name"].downcase
-				skill = Skill.find_by(name: skill_name)
-				if skill.nil?
-					skill = Skill.new(name: skill_name)
-					return false if !skill.save
-				end
-				skill_id = skill.id
-				question_id = m[1]["question_id"]
-				importance = m[1]["importance"]
+		if hash.nil?
+			return true
+		else
+			hash.each do |m|
+				id = m[1]["id"]
+				survey_id = m[1]["survey_id"]
 
-				if id.blank?
-					job_posting_skill = JobPostingSkill.new(skill_id: skill_id, question_id: question_id, importance: importance, job_posting_id: self.id)
-					return false if !job_posting_skill.save
-				else
-					job_posting_skill = JobPostingSkill.find(id)
-					return false if !job_posting_skill.update(skill_id: skill_id, question_id: question_id, importance: importance, job_posting_id: self.id)
+				if m[1]["_destroy"] == "true"
+					#If there is no blank id, attempt to find the skill through other means and delete if it exists
+					if id.blank?
+						#Two different methods of items being added to the hash
+						if m[1]["skill"].nil?
+							skill_name = m[1]["skill_attributes"]["name"].titleize
+						else
+							skill_name = m[1]["skill"].titleize
+						end
+
+						skill = Skill.find_by(name: skill_name)
+						unless skill.nil? #dont add skill, since user is deleting it from the list
+							job_posting_skill = self.job_posting_skills.find_by(skill_id: skill.id, survey_id: survey_id)
+							unless job_posting_skill.nil?
+								job_posting_skill.destroy
+							end
+						end
+					else
+						JobPostingSkill.find(id).destroy
+					end
+				elsif m[1]["_destroy"] == "false"
+					#Fringe case for catching different method of passing the skill
+					if m[1]["skill"].nil?
+						skill_name = m[1]["skill_attributes"]["name"].titleize
+					else
+						skill_name = m[1]["skill"].titleize
+					end
+
+					skill = Skill.find_by(name: skill_name)
+					#Create the skill if it is not found
+					if skill.nil?
+						skill = Skill.new(name: skill_name)
+						return false if !skill.save
+					end
+
+					importance = m[1]["importance"]
+
+					#Add the skill to job posting's skills
+					if id.blank?
+						job_posting_skill = self.job_posting_skills.new(skill_id: skill.id, survey_id: survey_id, importance: importance)
+						return false if !job_posting_skill.save
+					else
+						job_posting_skill = JobPostingSkill.find(id)
+						return false if !job_posting_skill.update(skill_id: skill.id, survey_id: survey_id, importance: importance, job_posting_id: self.id)
+					end
 				end
 			end
+			return true
 		end
-		return true
 	end
 
 	def is_expired? # checks to see if a job posting is expired
@@ -70,11 +98,7 @@ class JobPosting < ActiveRecord::Base
 	end
 
 	def get_type_string # Returns a string representation of the job type
-		return @@job_types.key(self.job_type)
-	end
-
-	def self.get_types_collection
-		return @@job_types
+		return JOB_TYPES.key(self.job_type)
 	end
 
 	def compare_skills(user)
@@ -93,28 +117,21 @@ class JobPosting < ActiveRecord::Base
 				end
 			end
 		end
-		
-		#if !project_skills.empty? # Compare to User Project Skills
-		#	job_skills.each do |j|
-		#		project_skills.each do |p|
-		#			project_skill_matches.push(p) if p.skill_id == j.skill.id
-		#		end
-		#	end
-		#end
 
-		classifications = Question.get_label_map
+		classifications = Survey.get_title_map
 		if !responses.empty? # Compare to Survey Response
 			job_skills.each do |j|
 				responses.each do |r|
 					i = 0
-					r.question_ids.each do |q|
-						if q == j.question_id
+					s = r.survey_id
+					#r.survey_id.each do |s|
+						if s == j.survey_id
 							if r.scores[i] > 0
-								response_skill_matches.push({skill: j.skill, rating: r.scores[i], importance: j.importance, classification: classifications.key(j.question_id)})
+								response_skill_matches.push({skill: j.skill, rating: r.scores[i], importance: j.importance, classification: classifications.key(j.survey_id)})
 							end
 						end
 						i+=1
-					end
+					#end
 				end
 			end
 		end

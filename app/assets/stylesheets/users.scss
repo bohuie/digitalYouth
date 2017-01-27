@@ -2,6 +2,55 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.jcrop-holder div{
+    -webkit-border-radius: 50% !important;
+    -moz-border-radius: 50% !important;
+    border-radius: 50% !important;
+    margin: -1px;
+}
+
+.btn-fake {
+	background-image: linear-gradient(to bottom, #E6E6E6, #E6E6E6) !important;
+	border: none !important;
+	cursor: default !important;
+	box-shadow: none !important;
+}
+
+.center {
+	height: 50%;
+}
+
+.connected {
+	padding-top: 30px;
+}
+
+.connect {
+	margin-top: 25px;
+	max-width: 250px;
+}
+
+.image-display {
+	width: 150px;
+	height: 150px;
+	overflow: hidden;
+	border-radius: 50%;
+	margin-left: auto;
+	margin-right :auto;
+}
+
+.image-radius {
+	border-radius: 50%;
+	margin-left: auto;
+	margin-right :auto;
+}
+
+.profile-image {
+	display: block;
+	border-radius: 50%;
+	margin-left: auto;
+	margin-right :auto;
+}
+
 .survey-box-row{
 	display: -webkit-flex;
 }
@@ -74,6 +123,8 @@ ul.nav-tabs > li.active > a {
 .refLeft
 {
 	margin-left: 2%;
+	margin-top: 0px;
+	margin-bottom: 0px;
 }
 //Aligns all items for Right side of the displayed reference
 .refRight
@@ -137,8 +188,6 @@ ul.nav-tabs > li.active > a {
 }
 .profileContainer
 {
-	height: 400px;
-	width: 1200px;
 	margin: 0 auto;
 	//border: 2px solid black;
 }
@@ -147,9 +196,9 @@ ul.nav-tabs > li.active > a {
 	border-radius: 5px;
 	border: 2px solid grey;
 	height: 200px;
-	width: 350px;
+	width: 250px;
 	float: left;
-	padding: 20px;
+	padding: 23px;
 	margin: 0 auto;
 	background: #FFFFFF;
 }
@@ -171,7 +220,7 @@ ul.nav-tabs > li.active > a {
 {
 	width: 600px;
 	height: 300px;
-	margin-left: 380px;
+	margin-left: 275px;
 	//border: 2px solid blue;
 }
 .profileContainerContent input
@@ -276,7 +325,7 @@ ul.nav-tabs > li.active > a {
     	overflow: hidden;
     	outline:none;
 
-	width: 150px;
+	width: 175px;
 	margin: 3px;
 	color: #01B1AF;
 

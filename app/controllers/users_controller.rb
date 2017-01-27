@@ -1,12 +1,18 @@
 class UsersController < ApplicationController
-	before_action :authenticate_user!, except: [:show, :index]
-	before_action :profile_owner, only: [:edit, :update, :destroy]
+respond_to :html, :json
 
+	before_action :authenticate_user!, except: [:show, :index, :nav_tab] #ignore home_tab, only done when it is the current user and logged in
+	before_action :profile_owner, only: [:edit, :update, :destroy]
+	skip_before_action :verify_authenticity_token, only: [:nav_tab] #ignore home_tab, only done when it is the current user and logged in
+	before_action :employer_only, only: [:contact, :send_mail]
+
+	
 	def index
 		@users = User.all
 	end
 
 	def show
+
 		@user = User.find(params[:id])
 
 		@surveys = Survey.get_title_map
@@ -58,14 +64,22 @@ class UsersController < ApplicationController
 
 	def update
 		@user = User.find(params[:id])
-		
 		if params.include?(:personal)
 			@user.update_attributes(personal_params)
 			flash[:success] = "Personal Info successfully updated."
+			unless params[:user][:image].blank?
+				render action: 'crop' and return
+			end
 		elsif params.include?(:email)
 			if @user.valid_password?(params[:user][:email_password])
-				@user.update_attributes(email_params)
-				flash[:success] = "Email successfully updated. You will have to confirm your new email before we update to that email."
+				if User.exists?(email: params[:user][:new_email])
+					flash[:danger] = "That email is already taken."
+					render 'edit' and return
+				else
+					params[:user][:email] = params[:user][:new_email]
+					@user.update_attributes(email_params)
+					flash[:success] = "Email successfully updated. You will have to confirm your new email before we update to that email."
+				end
 			else
 				flash[:danger] = "Incorrect password."
 				render 'edit' and return
@@ -88,6 +102,10 @@ class UsersController < ApplicationController
 		elsif params.include?(:bio)
 			@user.update_attributes(bio_params)
 			flash[:success] = "Bio updated."
+		elsif params.include?(:crop)
+			@user.update_attributes(crop_params)
+			@user.reprocess_image
+			flash[:success] = "Profile Image updated."
 		else
 			flash[:danger] = "Something went wrong.  Please contact an administrator."
 		end
@@ -107,6 +125,42 @@ class UsersController < ApplicationController
     	end
   	end
 
+	def contact # Page for form to send an email
+		@user = User.find(params[:id])
+		@url = ""
+		@reference_email = ReferenceEmail.new 
+	end
+
+  	def send_mail # Sends the email
+		contact = User.find(params[:id])
+		unless contact.nil?
+			#create notification?
+		end
+
+		UserMailer.contact_user(contact, current_user, params[:contact][:subject], params[:contact][:body]).deliver_now
+		redirect_to current_user , flash: {success: "Contact request sent!"}
+	end
+
+  	def home_tab
+  		session[:home_tab] = params[:home_tab]
+  		
+  		if params.key?(:redirect)
+  			respond_to do |format|
+  				format.js { render js: "window.location = '#{params[:redirect]}'" }
+  			end
+  		end
+  	end
+
+  	def nav_tab
+  		session[:nav_tab] = params[:nav_tab]
+  		
+  		if params.key?(:redirect)
+  			respond_to do |format|
+  				format.js { render js: "window.location = '#{params[:redirect]}'" }
+  			end
+  		end
+  	end
+
 	private
 	def user_params
 		@user = User.find(params[:id])
@@ -116,6 +170,10 @@ class UsersController < ApplicationController
 			params.require(:user).permit(:email, :first_name, :last_name, :linkedin, :twitter, :facebook, :company_name, :street_address, :city, :province, :postal_code, :password, :password_confirmation, :current_password)
 		else
 		end
+	end
+
+	def crop_params
+		params.require(:user).permit(:crop_x, :crop_y, :crop_w, :crop_h)
 	end
 
 	def personal_params
@@ -150,6 +208,11 @@ class UsersController < ApplicationController
 			redirect_back_or current_user
 		end
 	end
-end
-nd
+
+	def employer_only
+		unless current_user.has_role? :employer
+			flash[:warning] = "Sorry, we couldn't find that page."
+			redirect_back_or
+		end
+	end
 end

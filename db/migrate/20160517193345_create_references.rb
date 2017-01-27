@@ -4,10 +4,8 @@ class CreateReferences < ActiveRecord::Migration
 
       t.string  :first_name
       t.string  :last_name
-      t.string	:email
       t.string	:company
       t.string	:position
-      t.string :phone_number
       t.text	:reference_body
       t.boolean :confirmed, default: false
 

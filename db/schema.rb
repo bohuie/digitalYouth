@@ -52,8 +52,9 @@ ActiveRecord::Schema.define(version: 20161101211017) do
     t.integer  "answer"
     t.string   "name"
     t.date     "date_signed"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer  "consent_type"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   add_index "consents", ["user_id"], name: "index_consents_on_user_id", using: :btree
@@ -88,29 +89,32 @@ ActiveRecord::Schema.define(version: 20161101211017) do
     t.integer "importance"
     t.integer "job_posting_id"
     t.integer "skill_id"
-    t.integer "question_id"
+    t.integer "survey_id"
   end
 
   add_index "job_posting_skills", ["job_posting_id"], name: "index_job_posting_skills_on_job_posting_id", using: :btree
-  add_index "job_posting_skills", ["question_id"], name: "index_job_posting_skills_on_question_id", using: :btree
   add_index "job_posting_skills", ["skill_id"], name: "index_job_posting_skills_on_skill_id", using: :btree
+  add_index "job_posting_skills", ["survey_id"], name: "index_job_posting_skills_on_survey_id", using: :btree
 
   create_table "job_postings", force: :cascade do |t|
     t.string   "title"
     t.string   "company_name"
-    t.string   "location"
-    t.string   "pay_range"
+    t.string   "city"
+    t.string   "province"
+    t.string   "pay_rate"
+    t.decimal  "lower_pay_range", precision: 10, scale: 2
+    t.decimal  "upper_pay_range", precision: 10, scale: 2
     t.string   "link"
     t.string   "posted_by"
     t.integer  "job_type"
     t.text     "description"
     t.date     "open_date"
     t.date     "close_date"
-    t.integer  "views",           default: 0, null: false
+    t.integer  "views",                                    default: 0, null: false
     t.integer  "user_id"
     t.integer  "job_category_id"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
   end
 
   create_table "project_skills", force: :cascade do |t|
@@ -157,6 +161,7 @@ ActiveRecord::Schema.define(version: 20161101211017) do
     t.string   "last_name"
     t.string   "email"
     t.string   "reference_url"
+    t.string   "message"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
   end
@@ -166,6 +171,7 @@ ActiveRecord::Schema.define(version: 20161101211017) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "email"
+    t.string   "message"
     t.integer  "user_id"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
@@ -176,10 +182,8 @@ ActiveRecord::Schema.define(version: 20161101211017) do
   create_table "references", force: :cascade do |t|
     t.string   "first_name"
     t.string   "last_name"
-    t.string   "email"
     t.string   "company"
     t.string   "position"
-    t.string   "phone_number"
     t.text     "reference_body"
     t.boolean  "confirmed",      default: false
     t.integer  "referee_id"
@@ -241,10 +245,9 @@ ActiveRecord::Schema.define(version: 20161101211017) do
   create_table "user_skills", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "skill_id"
-    t.integer  "rating"
+    t.integer  "survey_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer  "survey_id"
   end
 
   add_index "user_skills", ["skill_id"], name: "index_user_skills_on_skill_id", using: :btree
@@ -252,8 +255,8 @@ ActiveRecord::Schema.define(version: 20161101211017) do
   add_index "user_skills", ["user_id"], name: "index_user_skills_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  default: "",                                                                                   null: false
-    t.string   "encrypted_password",     default: "",                                                                                   null: false
+    t.string   "email",                       default: "",                                                                                   null: false
+    t.string   "encrypted_password",          default: "",                                                                                   null: false
     t.string   "first_name"
     t.string   "last_name"
     t.string   "image_file_name"
@@ -265,16 +268,19 @@ ActiveRecord::Schema.define(version: 20161101211017) do
     t.string   "twitter"
     t.string   "facebook"
     t.string   "company_name"
-    t.string   "street_address"
-    t.string   "unit_number"
+    t.string   "encrypted_street_address"
+    t.string   "encrypted_street_address_iv"
+    t.string   "encrypted_unit_number"
+    t.string   "encrypted_unit_number_iv"
+    t.string   "encrypted_postal_code"
+    t.string   "encrypted_postal_code_iv"
     t.string   "city"
     t.string   "province"
-    t.string   "postal_code"
     t.string   "bio"
-    t.boolean  "answered_surveys",       default: [false, false, false, false, false, false, false, false, false, false, false, false],              array: true
+    t.boolean  "answered_surveys",            default: [false, false, false, false, false, false, false, false, false, false, false, false],              array: true
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
-    t.integer  "sign_in_count",          default: 0,                                                                                    null: false
+    t.integer  "sign_in_count",               default: 0,                                                                                    null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
@@ -283,11 +289,11 @@ ActiveRecord::Schema.define(version: 20161101211017) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
-    t.integer  "failed_attempts",        default: 0,                                                                                    null: false
+    t.integer  "failed_attempts",             default: 0,                                                                                    null: false
     t.string   "unlock_token"
     t.datetime "locked_at"
-    t.datetime "created_at",                                                                                                            null: false
-    t.datetime "updated_at",                                                                                                            null: false
+    t.datetime "created_at",                                                                                                                 null: false
+    t.datetime "updated_at",                                                                                                                 null: false
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

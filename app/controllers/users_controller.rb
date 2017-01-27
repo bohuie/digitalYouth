@@ -153,7 +153,7 @@ respond_to :html, :json
 
   	def nav_tab
   		session[:nav_tab] = params[:nav_tab]
-  		
+ 
   		if params.key?(:redirect)
   			respond_to do |format|
   				format.js { render js: "window.location = '#{params[:redirect]}'" }

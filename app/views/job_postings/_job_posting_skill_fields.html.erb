@@ -1,5 +1,5 @@
 <% if defined?(js).nil? %>
-<div class="col-md-12 job-posting-skill paddingLeft0" id="job-posting-skill-<%=id%>">
+<div class="row margin-left-0" id="job-posting-skill-<%=id%>">
 	<%= f.input :id, as: :hidden %>
 	<%= f.simple_fields_for :skill do |builder| %>
 		<div class="col-md-3"><%= builder.input :name, label: "Skill", input_html: {onclick:"skill_autocomplete('#{id}')", id: "skill-name-#{id}"} %></div>
@@ -12,7 +12,7 @@
 	</div>
 </div>
 <% else %>
-<div class="col-md-12 job-posting-skill" id="job-posting-skill-<%=id%>">
+<div class="row margin-left-0" id="job-posting-skill-<%=id%>">
 	<%= f.input :id, as: :hidden %>
 	<%= f.simple_fields_for :skill do |builder| %>
 		<div class="col-md-3"><%= builder.input :name, label: "Skill", input_html: {onclick:"skill_autocomplete('#{id}')", id: "skill-name-#{id}", value: js[1][:skill_attributes][:name]} %></div>

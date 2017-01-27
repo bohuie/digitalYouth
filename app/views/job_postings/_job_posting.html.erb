@@ -34,9 +34,7 @@
 			<% end %>
 			<br />
 			<%= raw("<a href=\"http://#{@job_posting.link}\">#{@job_posting.link}</a><br>") if !@job_posting.link.blank? %>
-			<%= raw("Posted By: #{@job_posting.posted_by}<br>") if !@job_posting.posted_by.blank? %>
-			Posted On: <%= local_date(@job_posting.created_at)%>
-			<%= raw("<br>"+@job_posting.get_type_string) if !@job_posting.job_type.nil? %>
+			<%= raw(@job_posting.get_type_string) if !@job_posting.job_type.nil? %>
 		</p>
 
 		<%= simple_format @job_posting.description %>
@@ -44,6 +42,7 @@
 		<p><%= raw("Open date: #{@job_posting.open_date.strftime('%B %d, %Y')}<br>")   if !@job_posting.open_date.blank? %>
 		   <%= raw("Close date: #{@job_posting.close_date.strftime('%B %d, %Y')}<br>") if !@job_posting.close_date.blank? %>
 		</p>
+		Posted On: <%= local_date(@job_posting.created_at)%>
 	</div>
 	<div class="col-md-6">
 		<% if !@req_skills.empty? %>

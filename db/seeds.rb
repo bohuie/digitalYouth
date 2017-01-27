@@ -58,7 +58,7 @@ begin
 	UserSkill.create(user_id: user1.id, skill_id: skill10.id, survey_id:3)
 
 	#Creating projects
-	project1 = user1.projects.create(title: 'Mobile Dev game', description: 'Created a game using Corona and Lua.  Also collected data for analytics', project_date: '2016-09-10', image: File.new("#{Rails.root}/app/assets/images/mobigame.png"))
+	project1 = user1.projects.create(title: 'Mobile Dev game', description: 'Created a game using Corona and Lua.  Also collected data for analytics', project_date: '2017-01-22', image: File.new("#{Rails.root}/app/assets/images/mobigame.png"))
 	project2 = user1.projects.create(title: 'Java GUI Game', description: 'Introduction to java, for personal learning.', project_date: '2016-11-10', image: File.new("#{Rails.root}/app/assets/images/puzzle.png"))
 
 	#Linking projects and skills.  If they are not in the user's list, they will be automatically added

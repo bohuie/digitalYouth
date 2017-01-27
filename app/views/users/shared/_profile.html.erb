@@ -6,6 +6,7 @@
 	</div>
 	<div class ="profileContainerContent">
 		<h2> <%= link_to @user.first_name+' '+@user.last_name, @user %> </h2>
+		<h5><%= @user.city %> <%= @user.province %></h5>
 		<% if !@user.github.nil? %>
 			<%= link_to 'GitHub', @user.github, id: 'github', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
 		<% end %>

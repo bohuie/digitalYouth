@@ -93,5 +93,5 @@
   <% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
     <%= form.hidden_field attribute, :id => attribute %>
   <% end %>
-  <p><%= form.submit "Crop", name: "crop" %></p>
+  <p><%= form.submit "Crop", name: "crop", class: "btn btn-primary" %></p>
 <% end %>

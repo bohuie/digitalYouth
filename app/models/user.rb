@@ -25,14 +25,20 @@ class User < ActiveRecord::Base
     has_attached_file :image,
         default_url: 'avatar-placeholder-:style.svg',
         styles: { 
-            medium: { geometry: "150x150#", :processors => [:cropper] },
-            small: { geometry: "100x100#", :processors => [:cropper] },
-            thumb: { geometry: "45x45#", :processors => [:cropper] }, 
-            large: { geometry: "400x400>" }
+            medium: { geometry: "150x150", :processors => [:cropper] },
+            small: { geometry: "100x100", :processors => [:cropper] },
+            thumb: { geometry: "45x45", :processors => [:cropper] }, 
+            large: { geometry: "400x400" }
+        },
+        convert_options: {
+            medium: "-gravity center -extent 150x150",
+            small: "-gravity center -extent 100x100",
+            thumb: "-gravity center -extent 45x45",
+            large: "-gravity center -extent 400x400"
         }
     include DeletableAttachment
     validates_attachment :image, content_type: { content_type: ["image/jpg", "image/jpeg", "image/png", "image/svg"] }
-    attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
+    attr_accessor :crop_x, :crop_y, :crop_w, :crop_h, :new_email
     #after_update :reprocess_image, :if => :cropping?
 
     validates_format_of :email, :without => TEMP_EMAIL_REGEX, on: :update
@@ -57,12 +63,12 @@ class User < ActiveRecord::Base
 
     def search_data
         data = Hash.new
-        data[:first_name] = first_name.downcase
-        data[:last_name] = last_name.downcase
-        data[:company_name] = company_name.downcase if company_name
-        data[:city] = city.downcase if city
-        data[:province] = province.downcase if province
-        data[:bio] = bio.downcase if bio
+        data[:first_name] = first_name.titleize
+        data[:last_name] = last_name.titleize
+        data[:company_name] = company_name.titleize if company_name
+        data[:city] = city.titleize if city
+        data[:province] = province.upcase if province
+        data[:bio] = bio if bio
         data[:role] = self.roles.first.name if !self.roles.first.nil?
         data[:skills] = self.skills.pluck(:name)
         return data
@@ -112,9 +118,9 @@ class User < ActiveRecord::Base
                 UserSkill.find(id).destroy if !id.blank?
             elsif m[1]["_destroy"] == "false" || m[1]["_destroy"].empty?
                 if m[1]["skill"].nil?
-                    skill_name = m[1]["skill_attributes"]["name"].downcase
+                    skill_name = m[1]["skill_attributes"]["name"].titleize
                 else
-                    skill_name = m[1]["skill"].downcase
+                    skill_name = m[1]["skill"].titleize
                 end
                 skill = Skill.find_by(name: skill_name)
                 if skill.nil?

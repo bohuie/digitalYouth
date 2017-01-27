@@ -15,7 +15,7 @@ class UserSkillsController < ApplicationController
 	end
 
 	def create
-		@skill = Skill.find_or_create_by(name: params[:user_skill][:name].downcase)
+		@skill = Skill.find_or_create_by(name: params[:user_skill][:name].titleize)
 		@user_skill = current_user.user_skills.create(skill_id: @skill.id, survey_id: params[:user_skill][:survey_id])
 		if @user_skill.save
 			#session.delete(:skill_id)

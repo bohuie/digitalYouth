@@ -2,9 +2,13 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+ body.job_postings span.radio {
+  margin-bottom: 19px;
+  margin-top: 1px;
+ }
 
-.job-posting-skill{
- display: inline-block; 
+ .table th.right {
+  text-align: right;
  }
 
 .ui-autocomplete {

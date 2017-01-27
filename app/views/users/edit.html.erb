@@ -51,6 +51,9 @@
         <div class="row" style="padding-bottom: 10px">
           <%= email.input :email_password, label: "Please confirm the change with your current password.", wrapper_html: { class: "col-md-5 padding-left-0" } %>
         </div>
+        <div class="row" style="padding-bottom: 10px">
+          <%= email.input :new_email, label: "Enter the new email you want to use.", wrapper_html: { class: "col-md-5 padding-left-0" } %>
+        </div>
         <%= email.submit 'Change Email', name: 'email', class: 'btn btn-primary'  %>
       <% end %>
     </div>

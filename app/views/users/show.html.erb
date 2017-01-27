@@ -39,7 +39,7 @@
 							<p>Click on one of the boxes below to fill out a survey to showcase some of your skills.  Each graph shows the skills that an average person has (in blue) and the skills you've indicated (in red).</p>
 					<% else %>
 						<h4>These are <%= @user.first_name.titleize+" "+@user.last_name.titleize+"'s "%> surveys</h4>
-							<p>Each graph will show an average person's skills (in blue) versus <%= @user.first_name.titleize+" "+@user.last_name.titleize+"'s "%> skills (in red) if the survey has been completed.</p>
+							<p>Each graph will show an average person's skills (in blue) versus <%= @user.first_name.titleize+" "+@user.last_name.titleize+"'s "%> skills (in red) if the survey has been completed.  If you wish to see more details about the  kind of skills associated with a graph, click Details.  A gray graph means <%= @user.first_name.titleize+" "+@user.last_name.titleize%> has not done that survey yet.</p>
 					<% end %>
 					<%= render '/users/partials/show_survey_table', user:@user, results:@survey_results %>
 				</div>
@@ -397,7 +397,7 @@
 					<% end %>
 				<% else %>
 					<% @job_postings.each do |j| %>
-						<div id="postings" class="row alternate">
+						<div id="postings" class="row alternate padding-top-10">
 							<div class="col-md-2">
 								<%= link_to "#{j.title}\n", job_posting_path(j) %><br />
 								<%= raw(j.get_type_string+"<br />") if !j.job_type.nil? %>

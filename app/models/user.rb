@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
         }
     include DeletableAttachment
     validates_attachment :image, content_type: { content_type: ["image/jpg", "image/jpeg", "image/png", "image/svg"] }
-    attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
+    attr_accessor :crop_x, :crop_y, :crop_w, :crop_h, :new_email
     #after_update :reprocess_image, :if => :cropping?
 
     validates_format_of :email, :without => TEMP_EMAIL_REGEX, on: :update

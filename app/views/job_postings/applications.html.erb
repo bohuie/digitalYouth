@@ -3,26 +3,20 @@
 <%= render partial: "shared/employer_tabs", locals: { active: "jobs" } %>
 
 <h4>Job Applications for <%= @job_posting.title %></h4>
-<p>Listed below are all the applicants for <%= @job_posting.title %>.  You can view their profile by cliking on their name, as well as see how many of the job's required and preferred skills they have.</p>
+<p>Listed below are all the applicants for <%= @job_posting.title %>.  Here you can view the original job posting or compare all the applicants skills in graphs, by clicking the corresponding buttons.  You can also view their profile by cliking on their name, as well as if they have the position's required or preferred skills, as noted by the checkmarks and x's.  If you would like to read more of the application, click See More.</p>
 
-<div class="row">
-	<div class="col-md-2">
-	<%= link_to "Compare Applicant Skills", compare_applications_path(@job_posting), class: "btn btn-primary" %>
-	</div>
-</div><br />
-<div class="row">
-  <div class="col-md-2">
-    <%= link_to "View Original Job Posting", job_posting_path(@job_posting.id), class: "btn btn-primary" %>
-  </div>
+<div class="row margin-left-0">
+  <%= link_to "Compare Applicant Skills", compare_applications_path(@job_posting), class: "btn btn-primary" %>
+  <%= link_to "View Original Job Posting", job_posting_path(@job_posting.id), class: "btn btn-primary" %>
 </div>
 <br />
 <table data-toggle="table" data-sort-order="desc" data-sort-name="1" data-classes="table table-no-bordered">
 <thead>
     <tr>
       <th data-sortable="false" class="col-md-3">Applicant</th>
-      <th data-sortable="true">Required Skills</th>
-      <th data-sortable="true">Preferred Skills</th>
-      <th data-sortable="true">Status</th>
+      <th data-sortable="true" class="right">Required Skills</th>
+      <th data-sortable="true" class="right">Preferred Skills</th>
+      <th data-sortable="true" class="right">Status</th>
       <th data-sortable="true">Actions</th>
     </tr>
   </thead>

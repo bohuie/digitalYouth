@@ -13,8 +13,60 @@
  *= require_tree .
  *= require_self
  */
+
+.alternate:nth-of-type(even)
+	background-color: #f8f8f8
+
+
+.alternate:nth-of-type(odd)
+	background-color: #ffffff
+
 @import "bootstrap-sprockets"
 @import "bootstrap"
+@import "bootstrap-table"
 @import "notifications.scss"
 @import font-awesome
 @import bootstrap-social
+
+html, body
+	font-family: Geneva
+	min-height: 700px
+	height: 100%
+.wrapper
+	min-height: 100%
+	height: auto !important
+	height: 100%
+	margin: 0 auto -50px /* the bottom margin is the negative value of the footer's height */
+
+.push
+	height: 50px
+
+footer
+	margin-top: 25px
+	height: 50px
+
+.nav-tabs
+	border-bottom: none
+	padding-bottom: 10px
+
+.padding-15
+	padding-top: 15px
+	padding-bottom: 15px
+
+.padding-top-10
+	padding-top: 10px
+
+.padding-top-80
+	padding-top: 80px
+
+.padding-left-0
+	padding-left: 0px
+
+.margin-left-0
+	margin-left: 0px
+
+.margin-left-5
+	margin-left: 5px
+
+.margin-top-5
+	margin-top: 5px

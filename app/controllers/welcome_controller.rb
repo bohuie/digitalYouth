@@ -1,4 +1,6 @@
 class WelcomeController < ApplicationController
+
+  before_filter :logged_in, only: [:signup_jobseeker, :signup_employer]
   def index
   end
 
@@ -37,5 +39,12 @@ class WelcomeController < ApplicationController
  
   def devise_mapping
     @devise_mapping ||= Devise.mappings[:user]
+  end
+
+  private
+  def logged_in
+    if user_signed_in?
+      redirect_to current_user
+    end
   end
 end

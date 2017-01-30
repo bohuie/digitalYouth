@@ -1,5 +1,6 @@
 class Users::RegistrationsController < Devise::RegistrationsController
 before_action :configure_sign_up_params, only: [:create]
+before_filter :logged_in, only: [:create]
 # before_action :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
@@ -46,17 +47,55 @@ before_action :configure_sign_up_params, only: [:create]
             ## End
           end
         else
-          flash[:warning] = "The name in the consent form must match the first and last name supplied."
-          redirect_back_or
+          if params[:role] == 'employee'
+            clean_up_passwords resource
+            set_minimum_password_length
+            @job_seeker = @user
+            @job_seeker.build_consent(consent_params)
+            render template: "welcome/signup_employee" and return
+          elsif params[:role] =='employer'
+            clean_up_passwords resource
+            set_minimum_password_length
+            @employer = @user
+            @employer.build_consent(consent_params)
+            render template: "welcome/signup_employer" and return
+          else
+            flash[:danger] = "There was an error.  Please try again later, or contact an administrator."
+            redirect_to root_path
+          end
         end
       else
-        clean_up_passwords resource
-        set_minimum_password_length
-        redirect_back_or
+        if params[:role] == 'employee'
+          clean_up_passwords resource
+          set_minimum_password_length
+          @job_seeker = @user
+          @job_seeker.build_consent(consent_params)
+          render template: "welcome/signup_employee" and return
+        elsif params[:role] =='employer'
+          clean_up_passwords resource
+          set_minimum_password_length
+          @employer = @user
+          @employer.build_consent(consent_params)
+          render template: "welcome/signup_employer" and return
+        else
+          flash[:danger] = "There was an error.  Please try again later, or contact an administrator."
+          redirect_to root_path
+        end
       end
     else
       flash[:warning] = "Please redo the Captcha"
-      redirect_back_or 
+      if params[:role] == 'employee'
+        @job_seeker = @user
+        @job_seeker.build_consent(consent_params)
+        render template: "welcome/signup_employee" and return
+      elsif params[:role] =='employer'
+        @employer = @user
+        @employer.build_consent(consent_params)
+        render template: "welcome/signup_employer" and return
+      else
+        flash[:danger] = "There was an error.  Please try again later, or contact an administrator."
+        redirect_to root_path
+      end
     end
   end
 
@@ -104,8 +143,8 @@ before_action :configure_sign_up_params, only: [:create]
 
   def consent_name_match
     if params[:user].key?(:consent_attributes)
-      unless (params[:user][:first_name].downcase+ " " + params[:user][:last_name].downcase).eql? params[:user][:consent_attributes][:name].downcase 
-        flash[:warning] = "The name in the consent form must match the first and last name supplied."
+      unless (params[:user][:first_name].titleize+ " " + params[:user][:last_name].titleize).eql? params[:user][:consent_attributes][:name].titleize 
+        flash.now[:warning] = "The name in the consent form must match the first and last name supplied."
         return false 
       end
     end
@@ -114,13 +153,24 @@ before_action :configure_sign_up_params, only: [:create]
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:role, :first_name, :last_name, :company_name, :postal_code])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:role, :first_name, :last_name, :company_name, :postal_code, :city, :province])
   end
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_account_update_params
     devise_parameter_sanitizer.permit(:account_update, keys: [:role])
   end
+
+  private
+  def logged_in
+    if user_signed_in?
+      redirect_to current_user
+    end
+  end
+
+  def consent_params
+      params.require(:user).require(:consent_attributes).permit(:user_id, :name, :date_signed, :answer, :consent_type)
+    end
   # The path used after sign up.
   # def after_sign_up_path_for(resource)
   #   super(resource)

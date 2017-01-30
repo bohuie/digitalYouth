@@ -1,5 +1,5 @@
 <% path="searches/partials/filter"%>
-<%= render path, name: "Location"		, key: :l, filter_values: @locations, current_values: @l, input: true 			if !@toggles[:l].nil?  %>
+<%= render path, name: "Locations"		, key: :l, filter_values: @locations, current_values: @l, input: true 			if !@toggles[:l].nil?  %>
 <%= render path, name: "Current Company", key: :cc,filter_values: @current_companies, current_values: @cc, input: true  if !@toggles[:cc].nil? %>
 <%= render path, name: "Company"	 	, key: :c, filter_values: @companies, current_values: @c, input: true 			if !@toggles[:c].nil?  %>
 <%= render path, name: "Industry"	 	, key: :i, filter_values: @industries, current_values: @i 						if !@toggles[:i].nil?  %>
@@ -10,8 +10,8 @@
 
 <% if !@toggles[:dp].nil? %>
 	<hr>
-	<h6 class="filter-title" onclick="$('#date_posted').slideToggle(100);">Date Posted <span class="caret"></span></h6>
-	<% if @filters.include? "date_posted".downcase %>
+	<span class="caret-right"></span><%= content_tag("a", "Date Posted", class: "filter-title", onclick: "$(date_posted).slideToggle(100);" )%>
+	<% if @filters.include? "date_posted" %>
 		<div id="date_posted">
 	<% else %>
 		<div id="date_posted" style="display: none;">

@@ -22,21 +22,39 @@ class User < ActiveRecord::Base
 	devise :database_authenticatable, :registerable,
 	       :recoverable, :trackable, :validatable, :confirmable, :omniauthable
 
-    has_attached_file :image, default_url: 'avatar-placeholder.svg', style: { medium: "300x150#" }
+    has_attached_file :image,
+        default_url: 'avatar-placeholder-:style.svg',
+        styles: { 
+            medium: { geometry: "150x150#", :processors => [:cropper] },
+            small: { geometry: "100x100#", :processors => [:cropper] },
+            thumb: { geometry: "45x45#", :processors => [:cropper] }, 
+            large: { geometry: "400x400^" }
+        }#,
+        #convert_options: {
+        #    medium: "-gravity center -extent 150x150",
+        #    small: "-gravity center -extent 100x100",
+        #    thumb: "-gravity center -extent 45x45",
+        #    large: "-gravity center -extent 400x400"
+        #}
     include DeletableAttachment
     validates_attachment :image, content_type: { content_type: ["image/jpg", "image/jpeg", "image/png", "image/svg"] }
+    attr_accessor :crop_x, :crop_y, :crop_w, :crop_h, :new_email
+    #after_update :reprocess_image, :if => :cropping?
 
     validates_format_of :email, :without => TEMP_EMAIL_REGEX, on: :update
+    validates :province, presence: true
+    validates :city, presence: true
 
-    has_many :job_postings
-    has_many :projects
-    has_many :references
-    has_many :reference_redirections
+    has_many :job_postings, dependent: :destroy
+    has_many :projects, dependent: :destroy
+    has_many :references, dependent: :destroy
+    has_many :reference_redirections, dependent: :destroy
     has_many :responses
-    has_many :job_posting_applications
+    has_many :job_posting_applications, dependent: :destroy
     has_many :identities
       
     has_many :user_skills, dependent: :destroy
+    accepts_nested_attributes_for :user_skills
     has_many :skills, through: :user_skills
 
     has_one  :consent
@@ -45,12 +63,12 @@ class User < ActiveRecord::Base
 
     def search_data
         data = Hash.new
-        data[:first_name] = first_name.downcase
-        data[:last_name] = last_name.downcase
-        data[:company_name] = company_name.downcase if company_name
-        data[:city] = city.downcase if city
-        data[:province] = province.downcase if province
-        data[:bio] = bio.downcase if bio
+        data[:first_name] = first_name.titleize
+        data[:last_name] = last_name.titleize
+        data[:company_name] = company_name.titleize if company_name
+        data[:city] = city.titleize if city
+        data[:province] = province.upcase if province
+        data[:bio] = bio if bio
         data[:role] = self.roles.first.name if !self.roles.first.nil?
         data[:skills] = self.skills.pluck(:name)
         return data
@@ -91,5 +109,49 @@ class User < ActiveRecord::Base
 
     def email_verified?
         self.email && self.email !~ TEMP_EMAIL_REGEX
+    end
+
+    def process_skills(hash) # Creates and Updates user skills, creating new skills when needed.
+        hash.each do |m|
+            id = m[1]["id"]
+            if m[1]["_destroy"] == "true"
+                UserSkill.find(id).destroy if !id.blank?
+            elsif m[1]["_destroy"] == "false" || m[1]["_destroy"].empty?
+                if m[1]["skill"].nil?
+                    skill_name = m[1]["skill_attributes"]["name"].titleize
+                else
+                    skill_name = m[1]["skill"].titleize
+                end
+                skill = Skill.find_by(name: skill_name)
+                if skill.nil?
+                    skill = Skill.new(name: skill_name)
+                    return false if !skill.save
+                end
+                skill_id = skill.id
+                question_id = m[1]["question_id"]
+
+                if id.blank?
+                    user_skill = UserSkill.new(skill_id: skill_id, question_id: question_id, user_id: self.id)
+                    return false if !user_skill.save
+                else
+                    user_skill = UserSkill.find(id)
+                    return false if !user_skill.update(skill_id: skill_id, question_id: question_id, user_id: self.id)
+                end
+            end
+        end
+        return true
+    end
+
+    def cropping?
+        !crop_x.blank? && !crop_y.blank? && !crop_w.blank? && !crop_h.blank?
+    end
+
+    def image_geometry(style = :original)
+        @geometry ||= {}
+        @geometry[style] ||= Paperclip::Geometry.from_file(image.path(style))
+    end
+
+    def reprocess_image
+        image.reprocess!
     end
 end

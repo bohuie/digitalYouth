@@ -5,6 +5,7 @@ class CreateReferenceRedirections < ActiveRecord::Migration
       t.string :first_name
       t.string :last_name
       t.string :email
+      t.string :message
 
       t.references :user
       t.timestamps null: false

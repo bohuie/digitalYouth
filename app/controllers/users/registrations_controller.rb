@@ -47,22 +47,22 @@ before_filter :logged_in, only: [:create]
             ## End
           end
         else
-           if params[:role] == 'employee'
-          clean_up_passwords resource
-          set_minimum_password_length
-          @job_seeker = @user
-          @job_seeker.build_consent(consent_params)
-          render template: "welcome/signup_employee" and return
-        elsif params[:role] =='employer'
-          clean_up_passwords resource
-          set_minimum_password_length
-          @employer = @user
-          @employer.build_consent(consent_params)
-          render template: "welcome/signup_employer" and return
-        else
-           flash[:danger] = "There was an error.  Please try again later, or contact an administrator."
-        redirect_to root_path
-        end
+          if params[:role] == 'employee'
+            clean_up_passwords resource
+            set_minimum_password_length
+            @job_seeker = @user
+            @job_seeker.build_consent(consent_params)
+            render template: "welcome/signup_employee" and return
+          elsif params[:role] =='employer'
+            clean_up_passwords resource
+            set_minimum_password_length
+            @employer = @user
+            @employer.build_consent(consent_params)
+            render template: "welcome/signup_employer" and return
+          else
+            flash[:danger] = "There was an error.  Please try again later, or contact an administrator."
+            redirect_to root_path
+          end
         end
       else
         if params[:role] == 'employee'
@@ -78,8 +78,8 @@ before_filter :logged_in, only: [:create]
           @employer.build_consent(consent_params)
           render template: "welcome/signup_employer" and return
         else
-           flash[:danger] = "There was an error.  Please try again later, or contact an administrator."
-        redirect_to root_path
+          flash[:danger] = "There was an error.  Please try again later, or contact an administrator."
+          redirect_to root_path
         end
       end
     else

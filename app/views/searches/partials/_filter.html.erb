@@ -1,7 +1,7 @@
 <% formatted_name = name.downcase.tr(" ", "_") %>
 <hr>
 <span class="caret-right"></span><%= content_tag("a", name, class: "filter-title", onclick: "$(#{formatted_name}).slideToggle(100);" )%>
-<% if @filters.include? name.downcase %>
+<% if @filters.include? formatted_name.downcase %>
 	<div id="<%=formatted_name%>">
 <% else %>
 	<div id="<%=formatted_name%>" style="display: none;"> 

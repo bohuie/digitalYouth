@@ -14,7 +14,7 @@
 		</div>
 		<div class="row">
 			<div class="col-md-12">
-				<%= f.input :description, required: true, as: :text, input_html: {rows: "4"}%>
+				<%= f.input :description, required: true, as: :text, input_html: {rows: "4"}, wrapper_html: { class: "padding-left-0" } %>
 			</div>
 		</div>
 	</div>
@@ -44,9 +44,9 @@
 	</div>
 </div>
 	<%i=0%>
-	<div id="project-skills">
+	<div id="project-skills" class="row">
 		<%= f.simple_fields_for :project_skills do |builder| %>
-			<div class="col-md-12 project-skill" id="project-skill-<%=i%>">
+			<div class="row margin-left-0" id="project-skill-<%=i%>">
 				<%= builder.input :id, as: :hidden %>
 				<%= builder.simple_fields_for :skill do |s| %>
 					<div class="col-md-3"><%= s.input :name, label: "Skill", input_html: {onclick:"skill_autocomplete('#{i}')", id: "skill-name-#{i}"} %></div>

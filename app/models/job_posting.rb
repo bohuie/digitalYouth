@@ -8,27 +8,21 @@ class JobPosting < ActiveRecord::Base
 	belongs_to :user
 	accepts_nested_attributes_for :job_posting_skills, reject_if: lambda {|a| a[:survey_id].blank?}, allow_destroy: true
 
-	@@job_types = {"Full Time"=>0,"Part Time"=>1,"Contract"=>2,"Casual"=>3,
-			 "Summer Positions"=>4,"Graduate Year Recruitment Program"=>5,
-			 "Field Placement/Work Practicum"=>6,"Internship"=>7,"Volunteer"=>8}
-	@@pay_rates = {"Salary" => "salary", "Hourly" => "hourly"}
-
-	@@provinces = {"AB" => "AB", "BC" => "BC", "MB" => "MB", "NB" => "NB", "NL" => "NL", "NS" => "NS", 
-			"NT" => "NT", "NU" => "NU", "ON" => "ON", "PE" => "PE", "QC" => "QC", "SK" => "SK", "YT" =>"YT"}
-
+	validates :lower_pay_range, presence: true
 
 	def search_data
 		data = Hash.new
-		if close_date >= Date.today
-	  	data[:title] = title.downcase
+		if close_date > Date.today
+	  	data[:title] = title.titleize
 	  	if self.user_id.nil?
-	  		data[:company_name] = company_name.downcase
+	  		data[:company_name] = company_name.titleize
 	  	else
-	  		data[:company_name] = self.user.company_name.downcase
+	  		data[:company_name] = self.user.company_name.titleize
 	  	end
-	  	data[:city] = city.downcase
+	  	data[:city] = city.titleize
+	  	data[:province] = province.upcase
 	  	data[:job_type] = job_type
-	  	data[:description] = description.downcase
+	  	data[:description] = description.titleize
 	  	data[:industry] = job_category_id
 	  	data[:created_at] = created_at
 	  	data[:close_date] = close_date
@@ -50,9 +44,9 @@ class JobPosting < ActiveRecord::Base
 					if id.blank?
 						#Two different methods of items being added to the hash
 						if m[1]["skill"].nil?
-							skill_name = m[1]["skill_attributes"]["name"].downcase
+							skill_name = m[1]["skill_attributes"]["name"].titleize
 						else
-							skill_name = m[1]["skill"].downcase
+							skill_name = m[1]["skill"].titleize
 						end
 
 						skill = Skill.find_by(name: skill_name)
@@ -68,9 +62,9 @@ class JobPosting < ActiveRecord::Base
 				elsif m[1]["_destroy"] == "false"
 					#Fringe case for catching different method of passing the skill
 					if m[1]["skill"].nil?
-						skill_name = m[1]["skill_attributes"]["name"].downcase
+						skill_name = m[1]["skill_attributes"]["name"].titleize
 					else
-						skill_name = m[1]["skill"].downcase
+						skill_name = m[1]["skill"].titleize
 					end
 
 					skill = Skill.find_by(name: skill_name)
@@ -104,19 +98,7 @@ class JobPosting < ActiveRecord::Base
 	end
 
 	def get_type_string # Returns a string representation of the job type
-		return @@job_types.key(self.job_type)
-	end
-
-	def self.get_types_collection
-		return @@job_types
-	end
-
-	def self.get_pay_rates
-		return @@pay_rates
-	end
-
-	def self.get_provinces
-		return @@provinces
+		return JOB_TYPES.key(self.job_type)
 	end
 
 	def compare_skills(user)

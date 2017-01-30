@@ -23,7 +23,11 @@
 				<span class="glyphicon glyphicon-refresh"></span>
 			<% end %>
 		<% else %>
-			<p>No results found for <%=@query%></p>
+			<% if @query.blank? %>
+				<p>No results found.</p>
+			<% else %>
+				<p>No results found for <%=@query%>.</p>
+			<% end %>
 		<% end %>
 	</div>
 </div>

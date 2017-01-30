@@ -17,11 +17,11 @@ class Project < ActiveRecord::Base
 
 	def search_data
 		data = Hash.new
-	  	data[:title] = title.downcase
-	  	data[:description] = description.downcase
+	  	data[:title] = title.titleize
+	  	data[:description] = description.titleize
 	  	data[:user_id] = self.user_id #doesnt make sense?
-	  	data[:owner_first] = self.user.first_name.downcase
-	  	data[:owner_last] = self.user.last_name.downcase
+	  	data[:owner_first] = self.user.first_name.titleize
+	  	data[:owner_last] = self.user.last_name.titleize
 	  	data[:created_at] = created_at
 	  	data[:skills] = self.skills.pluck(:name)
 	  	return data
@@ -42,9 +42,9 @@ class Project < ActiveRecord::Base
 					if id.blank?
 						#Two different methods of items being added to the hash
 						if m[1]["skill"].nil?
-							skill_name = m[1]["skill_attributes"]["name"].downcase
+							skill_name = m[1]["skill_attributes"]["name"].titleize
 						else
-							skill_name = m[1]["skill"].downcase
+							skill_name = m[1]["skill"].titleize
 						end
 
 						skill = Skill.find_by(name: skill_name)
@@ -62,9 +62,9 @@ class Project < ActiveRecord::Base
 				elsif m[1]["_destroy"] == "false" || m[1]["_destroy"].empty?
 					#Two different methods of items being added to the hash
 					if m[1]["skill"].nil?
-						skill_name = m[1]["skill_attributes"]["name"].downcase
+						skill_name = m[1]["skill_attributes"]["name"].titleize
 					else
-						skill_name = m[1]["skill"].downcase
+						skill_name = m[1]["skill"].titleize
 					end
 					#Create the skill if it is not found
 					skill = Skill.find_by(name: skill_name)

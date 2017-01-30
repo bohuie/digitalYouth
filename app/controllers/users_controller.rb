@@ -138,7 +138,7 @@ respond_to :html, :json
 		end
 
 		UserMailer.contact_user(contact, current_user, params[:contact][:subject], params[:contact][:body]).deliver_now
-		redirect_to current_user , flash: {success: "Contact request sent!"}
+		redirect_to contact , flash: {success: "Contact request sent!"}
 	end
 
   	def home_tab

@@ -199,7 +199,7 @@ class JobPostingsController < ApplicationController
 
 private
 	def job_posting_params # Restricts parameters
-		params.require(:job_posting).permit(:title, :city, :province, :pay_rate, :lower_pay_range, :upper_pay_range, :link, :job_category_id, :posted_by, :description, :open_date, :close_date, :user_id, :job_type)
+		params.require(:job_posting).permit(:title, :city, :province, :pay_rate, :lower_pay_range, :upper_pay_range, :link, :job_category_id, :posted_by, :description, :open_date, :close_date, :user_id, :job_type, :unit_number, :street_address, :postal_code)
 	end
 
 	def reccomended_jobs

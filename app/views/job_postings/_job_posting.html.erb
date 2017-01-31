@@ -3,7 +3,19 @@
 		<h4>
 			<b><%= @job_posting.title %></b>
 		</h4>
-		<p> <%= @job_posting.city+", "+@job_posting.province %><br>
+		<p>
+			<% if @job_posting.unit_number %>
+				<%= @job_posting.unit_number %> -
+			<% end %>
+			<% if @job_posting.street_address %>
+				<%= @job_posting.street_address %><br />
+			<% end %>
+			<%= @job_posting.city+", "+@job_posting.province %>
+			<% if @job_posting.postal_code %>
+				<%= @job_posting.postal_code %>
+			<% end %>
+		</p>
+		<p>
 			<% if @job_posting.pay_rate == "yearly" %>
 				Pay rate: Yearly.
 				<% unless @job_posting.lower_pay_range.nil? %>
@@ -22,7 +34,6 @@
 				<% end %>
 			<% end %>
 			<br />
-			<%= raw("<a href=\"http://#{@job_posting.link}\">#{@job_posting.link}</a><br>") if !@job_posting.link.blank? %>
 			<%= raw(@job_posting.get_type_string) if !@job_posting.job_type.nil? %>
 		</p>
 
@@ -31,6 +42,7 @@
 		<p><%= raw("Open date: #{@job_posting.open_date.strftime('%B %d, %Y')}<br>")   if !@job_posting.open_date.blank? %>
 		   <%= raw("Close date: #{@job_posting.close_date.strftime('%B %d, %Y')}<br>") if !@job_posting.close_date.blank? %>
 		</p>
+		<p><%= raw("Check out this link <a href=\"http://#{@job_posting.link}\">#{@job_posting.link}</a><br>") if !@job_posting.link.blank? %></p>
 		<p>Posted On: <%= local_date(@job_posting.created_at)%></p>
 	</div>
 	<div class="col-md-2"></div>

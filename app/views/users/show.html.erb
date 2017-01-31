@@ -359,7 +359,7 @@
 			<div id="about" class="<%= aclass %>">
 				<div class="row">
 					<div class="col-md-12">
-						<h4>About <%= @user.company_name %> </h4>
+						<h4><b>About <%= @user.company_name %> </b></h4>
 					</div>
 				</div>
 				<% if user_signed_in? && current_user == @user %>
@@ -387,7 +387,12 @@
 					</div>
 					<div class="row">
 						<div class="col-md-12">
-							<%= @user.bio %>
+							<% if @user.bio.nil? %>
+								<p>No biography has been enetered yet.  Please check back later.</p>
+							<% else %>
+								<b>Bio</b><br />
+								<p><%= @user.bio %></p>
+							<% end %>
 						</div>
 					</div>
 				<% end %>
@@ -395,12 +400,12 @@
 			<div id="jobs" class="<%= jclass %>">
 				
 				<% if user_signed_in? && current_user == @user %>
-					<h4>Job Postings</h4>
+					<h4><b>Job Postings</b></h4>
 					<p>Here you can create new job postings, view, edit, see applicanations, or delete job postings.</p>
 					<div class="row padding-15" ><%= link_to "Create a New Posting", new_job_posting_path, class: "btn btn-primary" %></div>
 
 				<% else %>
-					<h4>Job's Posted by <%= @user.company_name %></h4>
+					<h4><b>Job's Posted by <%= @user.company_name %></b></h4>
 					<p>Here you can view any job postings from <%= @user.company_name %>.</p>
 				<% end %>
 				<% if @job_postings.nil? %>

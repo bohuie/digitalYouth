@@ -2,4 +2,16 @@
 
 <%= render partial: "shared/employer_tabs", locals: { active: "jobs" } %>
 
+<div class="row">
+	<div class="col-md-12">
+		<h4><b>Edit <%= @job_posting.title.titleize %></b></h4>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12">
+		<p>Feel free to make any changes to your job posting here.</p>
+	</div>
+</div>
+
 <%= render 'job_postings/job_posting_form' %>

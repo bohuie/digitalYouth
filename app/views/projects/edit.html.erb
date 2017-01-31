@@ -2,6 +2,17 @@
 
 <%= render partial: "shared/job_seeker_tabs", locals: {active: "projects" } %>
 
+<div class="row">
+	<div class="col-md-12">
+		<h4><b>Edit your Project.</b></h4>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<p>Feel free to update your project below and update as necessary.</p>
+	</div>
+</div>
+
 <%= simple_form_for @project do |f| %>
 <div class="row">
 	<div class="col-md-6">

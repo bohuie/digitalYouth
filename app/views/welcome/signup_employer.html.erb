@@ -4,8 +4,8 @@
   <%= devise_error_messages! %>
 
 <div class="employer">
-	<div class=col-md-4>
-    <h2>Sign up for Employers</h2>
+	<div class="col-md-5" style="padding-right: 70px;">
+    <h2 style=>Sign up for Job Providers</h2>
     <br />
 
     <%= employer.input :first_name, autofocus: true, required: true %>
@@ -14,8 +14,8 @@
     <%= employer.input :company_name, required: true %>
     <%= employer.input :password, required: true %>
     <%= employer.input :password_confirmation, required: true %>
-    <%= employer.input :city, required: true, label: 'City. This is used to help employers find local job seekers.' %>
-    <%= employer.input :province, collection: PROVINCES, required: true, label: 'Province. This is used to help employers find local job seekers.'  %>
+    <%= employer.input :city, required: true, label: 'City. This is used to help job providers find local job seekers.' %>
+    <%= employer.input :province, collection: PROVINCES, required: true, label: 'Province. This is used to help job providers find local job seekers.'  %>
     <%= employer.input :postal_code, required: true %>
     <%= hidden_field_tag :role, "employer" %>
   
@@ -30,8 +30,6 @@
       <%= render "users/shared/links" %>
     </div>
 	</div>
-
-  <div class="col-md-1"></div>
   <div class="col-md-7">
     <div class="row">
       <h2>Please read the following consent form and fill out the information in the bottom</h2><br />

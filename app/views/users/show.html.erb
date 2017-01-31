@@ -35,11 +35,11 @@
     		<div id="surveys" class= "<%= suclass %>">
       			<div class = "survey-table" id= "survey-table">
       				<% if current_user == @user %>
-      					<h4>These are your surveys.</h4>
+      					<h4><b>These are your surveys.</b></h4>
 							<p>Click on one of the boxes below to fill out a survey to showcase some of your skills.  Each graph shows the skills that an average person has (in blue) and the skills you've indicated (in red).</p>
 					<% else %>
-						<h4>These are <%= @user.first_name.titleize+" "+@user.last_name.titleize+"'s "%> surveys</h4>
-							<p>Each graph will show an average person's skills (in blue) versus <%= @user.first_name.titleize+" "+@user.last_name.titleize+"'s "%> skills (in red) if the survey has been completed.</p>
+						<h4><b>These are <%= @user.first_name.titleize+" "+@user.last_name.titleize+"'s "%> surveys</b></h4>
+							<p>Each graph will show an average person's skills (in blue) versus <%= @user.first_name.titleize+" "+@user.last_name.titleize+"'s "%> skills (in red) if the survey has been completed.  If you wish to see more details about the  kind of skills associated with a graph, click Details.  A gray graph means <%= @user.first_name.titleize+" "+@user.last_name.titleize%> has not done that survey yet.</p>
 					<% end %>
 					<%= render '/users/partials/show_survey_table', user:@user, results:@survey_results %>
 				</div>
@@ -47,7 +47,7 @@
     		<% if user_signed_in? && @current_user==@user %>
     			<div id="applications" class="<%= apclass %>">
 					<% cnt = 0 %>
-					<h4>These are your current job applications.</h4>
+					<h4><b>These are your current job applications.</b></h4>
 					<p> The status is displayed beside the posting title.<br>
 						The company which owns the job posting will update the status of the posting and it will be shown here.<br>
 						You have the option to delete your application but <b>you will not be able to reapply if the application has been looked at.</b><br>
@@ -74,11 +74,11 @@
     		<% end %>
     		<div id="projects" class="<%= prclass %>">
     			<% if current_user == @user %>
-      				<h4>These are your projects.</h4>
+      				<h4><b>These are your projects.</b></h4>
 						<p>Click on New Project to create a new one, or view, edit, or delete the projects listed below.  Projects are sorted
 						by their date.</p>
 				<% else %>
-					<h4>These are <%= @user.first_name.titleize+" "+@user.last_name.titleize+"'s "%> projects</h4>
+					<h4><b>These are <%= @user.first_name.titleize+" "+@user.last_name.titleize+"'s "%> projects</b></h4>
 						<p>Projects are sorted by their date.</p>
 				<% end %>
     			<% if user_signed_in? && @current_user==@user %>
@@ -90,7 +90,7 @@
 				<% if !@projects.empty? %>
 					<div class="projects">
 						<% @projects.each do |p| %>
-							<div class="row alternate" style="padding-bottom: 5px">
+							<div class="row alternate padding-10">
 								<div class="col-md-1">
 									<%= p.project_date.strftime('%B')+", "+p.project_date.strftime('%Y') %>
 								</div>
@@ -132,10 +132,10 @@
 			</div>
     		<div id="skills" class="<%= skclass %>">
     			<% if current_user == @user %>
-      				<h4>These are your skills.</h4>
+      				<h4><b>These are your skills.</b></h4>
 						<p>Create a new skill by filling out the info below, or view your skills listed below.</p>
 				<% else %>
-					<h4>These are <%= @user.first_name.titleize+" "+@user.last_name.titleize+"'s "%> skills</h4>
+					<h4><b>These are <%= @user.first_name.titleize+" "+@user.last_name.titleize+"'s "%> skills</b></h4>
 						<p>This is a summary of all of <%= @user.first_name.titleize+" "+@user.last_name.titleize+"'s "%> skills, organized by
 						categories they specified.</p>
 				<% end %>
@@ -156,7 +156,7 @@
 							<% j=1 %>
 							<% Survey.all.each do |s|%>
 								<div class="col-md-2" style="min-height: 150px">
-									<h5><u><%= s.title %></u></h5>
+									<h5><u><b><%= s.title %></b></u></h5>
 									<% if  @user_skills.where(survey_id: s.id).empty? %>
 										<p>No skills for this category yet</p>
 									<% else%>
@@ -183,12 +183,12 @@
     		</div>
 			<div id="references" class="<%= reclass %>">
 				<% if current_user == @user %>
-      				<h4>These are your references.</h4>
+      				<h4><b>These are your references.</b></h4>
 						<p>You can request one by clicking the button below.  References are split into Confirmed References, these will be 
 						displayed on your page, Unconfirmed References, references you have not confirmed yet and will not be displayed, and References 
 						Requests, which are requests from other EdgeMap users wanting a reference.</p>
 				<% else %>
-					<h4>These are <%= @user.first_name.titleize+" "+@user.last_name.titleize+"'s "%> confirmed references</h4>
+					<h4><b>These are <%= @user.first_name.titleize+" "+@user.last_name.titleize+"'s "%> confirmed references.</b></h4>
 						<p>These are all the references <%= @user.first_name.titleize+" "+@user.last_name.titleize %> has contacted and received.</p>
 				<% end %>
 				<div class = "references" id = "references">
@@ -201,7 +201,7 @@
 					<div class="row">
 						<div class="col-md-12">
 							<% if current_user == @user %>
-								<h4> Confirmed References </h4>
+								<h4><b>Confirmed References</b></h4>
 							<% end %>
 							<% if !@confirmed_references.empty? %>
 								<% @confirmed_references.each do |r| %>
@@ -254,7 +254,7 @@
 					<% if user_signed_in? && @current_user==@user %>
 						<div class="row">
 							<div class="col-md-12">
-								<h4> Unconfirmed References </h4>
+								<h4><b>Unconfirmed References</b></h4>
 								<% if !@unconfirmed_references.empty? %>
 									<% @unconfirmed_references.each do |r| %>
 										<div class ="row alternate" id="ref2" style="padding-top:10px; padding-bottom: 10px;">
@@ -299,7 +299,7 @@
 						<hr class="HR"/>
 						<div class="row">
 							<div class="col-md-12">
-								<h4> Reference Requests </h4>
+								<h4><b>Reference Requests</b></h4>
 								<% if !@reference_requests.empty? %>
 									<% @reference_requests.each do |r| %>
 										<div class ="row alternate" style="padding-top:10px; padding-bottom: 10px;">
@@ -357,36 +357,55 @@
 		<div class="tab-content profileButtonContent">
 
 			<div id="about" class="<%= aclass %>">
-				<h4>About <%= @user.company_name %> </h4>
+				<div class="row">
+					<div class="col-md-12">
+						<h4><b>About <%= @user.company_name %> </b></h4>
+					</div>
+				</div>
 				<% if user_signed_in? && current_user == @user %>
-					<p>Feel free to update your company bio and public message below.</p>
+					<div class="row">
+						<div class="col-md-12">
+							<p>Feel free to update your company bio and public message below.</p>
+						</div>
+					</div>
 					<%= simple_form_for @user do |u| %>
 						<div class="row">
-							<div class="col-md-8">
-								<%= u.input :bio, as: :text, input_html: {cols: 50, rows: 7} %>
-							</div>
+							<%= u.input :bio, as: :text, input_html: {cols: 50, rows: 7}, wrapper_html: { class: "col-md-8 padding-left-15" } %>
 						</div>
 						<br />
 						<div class="row">
 							<div class="col-md-2">
-								<%= u.submit "Update Bio", name: 'bio', class: "btn btn-primary"%>
+								<%= u.submit "Update Bio", name: 'bio', class: "btn btn-primary" %>
 							</div>
 						</div>
 					<% end %>
 				<% else %>
-					<p>Here you can read about <%= @user.company_name %>.</p>
-					<%= @user.bio %>
+					<div class="row">
+						<div class="col-md-12">
+							<p>Here you can read about <%= @user.company_name %>.</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<% if @user.bio.nil? %>
+								<p>No biography has been enetered yet.  Please check back later.</p>
+							<% else %>
+								<b>Bio</b><br />
+								<p><%= @user.bio %></p>
+							<% end %>
+						</div>
+					</div>
 				<% end %>
 			</div>
 			<div id="jobs" class="<%= jclass %>">
 				
 				<% if user_signed_in? && current_user == @user %>
-					<h4>Job Postings</h4>
+					<h4><b>Job Postings</b></h4>
 					<p>Here you can create new job postings, view, edit, see applicanations, or delete job postings.</p>
 					<div class="row padding-15" ><%= link_to "Create a New Posting", new_job_posting_path, class: "btn btn-primary" %></div>
 
 				<% else %>
-					<h4>Job's Posted by <%= @user.company_name %></h4>
+					<h4><b>Job's Posted by <%= @user.company_name %></b></h4>
 					<p>Here you can view any job postings from <%= @user.company_name %>.</p>
 				<% end %>
 				<% if @job_postings.nil? %>

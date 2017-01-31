@@ -2,7 +2,7 @@
 
 <%= render partial: "shared/job_seeker_tabs", locals: {active: "surveys" } %>
 
-<h4>Contact <%= @user.first_name %> <%= @user.last_name %></h4>
+<h4><b>Contact <%= @user.first_name %> <%= @user.last_name %></b></h4>
 <p>Fill out the contact form below to send a message.  Your email will be provided so they can contact you back.  Please include a message below, and customize the subject line if you so choose.</p>
 
 <%= simple_form_for :contact, {url: email_user_path } do |f| %>

@@ -2,7 +2,7 @@
 
 <%= render partial: "shared/employer_tabs", locals: { active: "jobs" } %>
 
-<h4>Applicant Overall Skill Comparison for <%= link_to @job_posting.title, job_posting_path(@job_posting.id) %></h4>
+<h4><b>Applicant Overall Skill Comparison for <%= link_to @job_posting.title, job_posting_path(@job_posting.id) %></b></h4>
 <p>Below are the 12 skill graphs.  Each user, that has completed the surveys, has their results displayed.  
 If they have not completed the survey, they are not displayed on the graph.  In addition, the average Edge Map job seeker is displayed in blue.  If you would like to see more about what kind of skills are in each category, click details.</p>
 

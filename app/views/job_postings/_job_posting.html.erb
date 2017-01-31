@@ -1,24 +1,24 @@
 <div class="row">
 	<div class="col-md-4">
 		<h4>
-			<%= @job_posting.title %>
+			<b><%= @job_posting.title %></b>
 		</h4>
 		<p> <%= @job_posting.city+", "+@job_posting.province %><br>
 			<% if @job_posting.pay_rate == "yearly" %>
-				Pay rate: Yearly
+				Pay rate: Yearly.
 				<% unless @job_posting.lower_pay_range.nil? %>
-					, from <%=number_to_currency(@job_posting.lower_pay_range)%>
+					From <%=number_to_currency(@job_posting.lower_pay_range)%>
 				<% end %>
 				<% unless @job_posting.upper_pay_range.nil? %>
-					and to <%=number_to_currency(@job_posting.upper_pay_range)%>
+					to <%=number_to_currency(@job_posting.upper_pay_range)%>
 				<% end %>
 			<% elsif @job_posting.pay_rate == "hourly" %>
-				Pay rate: Hourly
+				Pay rate: Hourly.
 				<% unless @job_posting.lower_pay_range.nil? %>
-					, from <%=number_to_currency(@job_posting.lower_pay_range)%>
+					From <%=number_to_currency(@job_posting.lower_pay_range)%>
 				<% end %>
 				<% unless @job_posting.upper_pay_range.nil? %>
-					and to <%=number_to_currency(@job_posting.upper_pay_range)%>
+					to <%=number_to_currency(@job_posting.upper_pay_range)%>
 				<% end %>
 			<% end %>
 			<br />
@@ -36,14 +36,14 @@
 	<div class="col-md-2"></div>
 	<div class="col-md-4">
 		<% if !@req_skills.empty? %>
-			<h4> Required Skills </h4>
+			<h4><b>Required Skills</b></h4>
 			<ul><%@req_skills.each do |r| %>
 				<li><%=r.skill.name.titleize%></li><% end %>
 			</ul>
 		<% end %>
 
 		<% if !@pref_skills.empty? %>
-			<h4> Preferred Skills </h4>
+			<h4><b>Preferred Skills</b></h4>
 			<ul><%@pref_skills.each do |p| %>
 				<li><%=p.skill.name.titleize%></li><% end %>
 			</ul>

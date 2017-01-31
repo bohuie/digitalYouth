@@ -357,25 +357,39 @@
 		<div class="tab-content profileButtonContent">
 
 			<div id="about" class="<%= aclass %>">
-				<h4>About <%= @user.company_name %> </h4>
+				<div class="row">
+					<div class="col-md-12">
+						<h4>About <%= @user.company_name %> </h4>
+					</div>
+				</div>
 				<% if user_signed_in? && current_user == @user %>
-					<p>Feel free to update your company bio and public message below.</p>
+					<div class="row">
+						<div class="col-md-12">
+							<p>Feel free to update your company bio and public message below.</p>
+						</div>
+					</div>
 					<%= simple_form_for @user do |u| %>
 						<div class="row">
-							<div class="col-md-8">
-								<%= u.input :bio, as: :text, input_html: {cols: 50, rows: 7} %>
-							</div>
+							<%= u.input :bio, as: :text, input_html: {cols: 50, rows: 7}, wrapper_html: { class: "col-md-8 padding-left-15" } %>
 						</div>
 						<br />
 						<div class="row">
 							<div class="col-md-2">
-								<%= u.submit "Update Bio", name: 'bio', class: "btn btn-primary"%>
+								<%= u.submit "Update Bio", name: 'bio', class: "btn btn-primary" %>
 							</div>
 						</div>
 					<% end %>
 				<% else %>
-					<p>Here you can read about <%= @user.company_name %>.</p>
-					<%= @user.bio %>
+					<div class="row">
+						<div class="col-md-12">
+							<p>Here you can read about <%= @user.company_name %>.</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<%= @user.bio %>
+						</div>
+					</div>
 				<% end %>
 			</div>
 			<div id="jobs" class="<%= jclass %>">

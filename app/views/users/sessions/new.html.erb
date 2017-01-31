@@ -3,14 +3,15 @@
   <div class="col-md-4">
     <h2>Log in</h2>
     <br>
-    <%- if devise_mapping.omniauthable? && controller_name != 'welcome' %>
-      <%- Devise.omniauth_providers.each do |provider| %>
-        <%= link_to omniauth_authorize_path(resource_name, provider), class: "btn btn-block btn-social-icon btn-#{provider}", style: "display: inline-block; margin-top: 0px;" do%>
-          <span class="fa fa-<%= provider %>"></span>
-        <% end %>
+    <p>
+      <%- if devise_mapping.omniauthable? && controller_name != 'welcome' %>
+        <%- Devise.omniauth_providers.each do |provider| %>
+          <%= link_to omniauth_authorize_path(resource_name, provider), class: "btn btn-block btn-social-icon btn-#{provider}", style: "display: inline-block; margin-top: 0px;" do%>
+            <span class="fa fa-<%= provider %>"></span>
+          <% end %>
+        <% end -%>
       <% end -%>
-    <% end -%>
-
+    </p>
     <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
       <div class="form-group">
         <%= f.label :email %><br />

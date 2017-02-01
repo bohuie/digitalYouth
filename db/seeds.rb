@@ -244,7 +244,7 @@ begin
 	user15.add_role :employer
 	user15.skip_confirmation!
 	user15.save
-	user15.create_consent(answer: 1, name: "Jess McGomack, date_signed: Date.today, consent_type: 2)
+	user15.create_consent(answer: 1, name: "Jess McGomack", date_signed: Date.today, consent_type: 2)
 
 	user16 = User.new(first_name: 'Maximilian', last_name: 'Hanson', email: 'Maximilian@Hanson.com', password: 'password', password_confirmation: 'password', city: 'Penticton', province: 'BC', image: File.new("#{Rails.root}/app/assets/images/user16.jpg"), 
 		company_name: "McDonald's Corporation")

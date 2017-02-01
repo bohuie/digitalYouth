@@ -138,7 +138,7 @@ respond_to :html, :json
 		end
 
 		UserMailer.contact_user(contact, current_user, params[:contact][:subject], params[:contact][:body]).deliver_now
-		redirect_to current_user , flash: {success: "Contact request sent!"}
+		redirect_to contact , flash: {success: "Contact request sent!"}
 	end
 
   	def home_tab
@@ -153,7 +153,7 @@ respond_to :html, :json
 
   	def nav_tab
   		session[:nav_tab] = params[:nav_tab]
-  		
+ 
   		if params.key?(:redirect)
   			respond_to do |format|
   				format.js { render js: "window.location = '#{params[:redirect]}'" }

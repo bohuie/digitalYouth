@@ -10,7 +10,7 @@
 <div class="row">
 <% @questions.each do |question| %>
 	<div class="col-md-3">
-	<h4><%= question.classification %></h4>
+	<h4><b><%= question.classification %></b></h4>
 
 	<ul>
 		<% question.prompts.each do |p| %>

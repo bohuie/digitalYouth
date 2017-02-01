@@ -135,9 +135,8 @@
       				<h4><b>These are your skills.</b></h4>
 						<p>Create a new skill by filling out the info below, or view your skills listed below.</p>
 				<% else %>
-					<h4><b>These are <%= @user.first_name.titleize+" "+@user.last_name.titleize+"'s "%> skills</b></h4>
-						<p>This is a summary of all of <%= @user.first_name.titleize+" "+@user.last_name.titleize+"'s "%> skills, organized by
-						categories they specified.</p>
+					<h4><b>Category of Skills</b></h4>
+						<p>This is a summary of all of <%= @user.first_name.titleize+" "+@user.last_name.titleize+"'s "%> skills organized by categories they selected.</p>
 				<% end %>
     			<% if user_signed_in? && @current_user==@user %>
 						<%= simple_form_for @user_skill do |g| %>
@@ -370,7 +369,7 @@
 					</div>
 					<%= simple_form_for @user do |u| %>
 						<div class="row">
-							<%= u.input :bio, as: :text, input_html: {cols: 50, rows: 7}, wrapper_html: { class: "col-md-8 padding-left-15" } %>
+							<%= u.input :bio, as: :text, input_html: {cols: 50, rows: 7}, wrapper_html: { class: "padding-left-15 col-md-8" }, label_html: { class: "padding-left-0" } %>
 						</div>
 						<br />
 						<div class="row">
@@ -401,8 +400,8 @@
 				
 				<% if user_signed_in? && current_user == @user %>
 					<h4><b>Job Postings</b></h4>
-					<p>Here you can create new job postings, view, edit, see applicanations, or delete job postings.</p>
-					<div class="row padding-15" ><%= link_to "Create a New Posting", new_job_posting_path, class: "btn btn-primary" %></div>
+					<p>Here you can create new job postings or change them as needed.  Once job seekers have applied, you can view their applicanations and profiles as well.</p>
+					<div class="padding-15 row" ><%= link_to "Create a New Posting", new_job_posting_path, class: "btn btn-primary" %></div>
 
 				<% else %>
 					<h4><b>Job's Posted by <%= @user.company_name %></b></h4>
@@ -416,7 +415,7 @@
 					<% end %>
 				<% else %>
 					<% @job_postings.each do |j| %>
-						<div id="postings" class="row alternate padding-top-10">
+						<div id="postings" class="padding-top-10 alternate row">
 							<div class="col-md-2">
 								<%= link_to "#{j.title}\n", job_posting_path(j) %><br />
 								<%= raw(j.get_type_string+"<br />") if !j.job_type.nil? %>
@@ -427,7 +426,7 @@
 								<%= raw("Open date: #{j.open_date.strftime('%B %d, %Y')}<br>")   if !j.open_date.blank? %>
 								<%= raw("Close date: #{j.close_date.strftime('%B %d, %Y')}<br>") if !j.close_date.blank? %>
 							</div>
-							<div class="col-md-6 margin-top-5">
+							<div class="margin-top-5 col-md-6">
 								<%= link_to "View", job_posting_path(j), class: "btn btn-primary" %>
 								<% if user_signed_in? && current_user == @user %>
 									<%= link_to "Edit Posting", edit_job_posting_path(j), class: "btn btn-warning"%>

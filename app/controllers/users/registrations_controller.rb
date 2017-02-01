@@ -83,7 +83,7 @@ before_filter :logged_in, only: [:create]
         end
       end
     else
-      flash[:warning] = "Please redo the Captcha"
+      flash.now[:warning] = "Please redo the Captcha"
       if params[:role] == 'employee'
         @job_seeker = @user
         @job_seeker.build_consent(consent_params)

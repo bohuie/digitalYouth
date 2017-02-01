@@ -33,13 +33,13 @@
  }
 
  .pay-label {
-  width:40px;
-  text-align: right;
+  width:40px !important;
+  text-align: right !important;
  }
 
  .pay-input {
-  display: inline-block;
-  width: calc(100% - 40px);
+  display: inline-block !important;
+  width: calc(100% - 40px) !important;
  }
 
 .ui-autocomplete {

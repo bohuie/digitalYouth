@@ -27,7 +27,7 @@
       <tr class="alternate">
         <td>
           <%= image_tag j.applicant.image.url(:thumb), class: "image-radius" if !j.applicant.image.nil? %>
-          <%= "#{j.applicant.first_name} #{j.applicant.last_name}" %><br />
+          <%= link_to "#{j.applicant.first_name} #{j.applicant.last_name}", job_posting_application_path(j) %><br />
           <%= j.message.truncate(100) %><%= link_to ' See more.', job_posting_application_path(j) %>
         </td>
         <td>

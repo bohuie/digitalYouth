@@ -4,6 +4,9 @@
 
     	t.string :title
       t.string :company_name # ONLY USED FOR AUTOPOPULATION
+      t.string :street_address
+      t.string :unit_number
+      t.string :postal_code
       t.string :city
       t.string :province
       t.string :pay_rate

@@ -99,6 +99,9 @@ ActiveRecord::Schema.define(version: 20161101211017) do
   create_table "job_postings", force: :cascade do |t|
     t.string   "title"
     t.string   "company_name"
+    t.string   "street_address"
+    t.string   "unit_number"
+    t.string   "postal_code"
     t.string   "city"
     t.string   "province"
     t.string   "pay_rate"

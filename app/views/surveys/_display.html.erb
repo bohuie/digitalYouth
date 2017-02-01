@@ -6,7 +6,15 @@
 </div>
 <!--<hr style="height: 1px;border:none;color:#333;background-color:#333;">-->
 <br />
-<p>There are 4 skill levels: Basic, Intermediate, Advanced, and Expert. Each level has a list of skills associated with it.  Users rate themselves based on how well they know each group of skills: None of the skills, a few of the skills, half of the skills, or most/all of the skills.</p>
+
+<% if survey_title == 'Time, Project, People' %>
+	<p>There are 3 skill classifications: Time, Project, and People. Each classification has a list of skills associated with it.  Users rate themselves based on how well they know each group of skills: None of the skills, a few of the skills, half of the skills, or most/all of the skills.</p>
+<% elsif survey_title == '21st Century Skills' %>
+	<p>There are 4 skill classifications: Communication, Problem Solving, Self-Directed Skills, and Accountability. Each classification has a list of skills associated with it.  Users rate themselves based on how well they know each group of skills: None of the skills, a few of the skills, half of the skills, or most/all of the skills.</p>
+<% else %>
+	<p>There are 4 skill levels: Basic, Intermediate, Advanced, and Expert. Each level has a list of skills associated with it.  Users rate themselves based on how well they know each group of skills: None of the skills, a few of the skills, half of the skills, or most/all of the skills.</p>
+<% end %>
+
 <div class="row">
 <% @questions.each do |question| %>
 	<div class="col-md-3">

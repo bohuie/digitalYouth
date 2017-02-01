@@ -5,4 +5,4 @@
 	<div class="col-md-6"><br /><%= link_to 'Go back to compare applicants', compare_applications_path(@job_posting) %></div>
 </div>
 
-<%= render partial: "surveys/display", locals: { survey_results: @survey_results } %>
+<%= render partial: "surveys/display", locals: { survey_results: @survey_results, survey_title: @survey.title } %>

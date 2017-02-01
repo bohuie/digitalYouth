@@ -11,7 +11,7 @@
     <div id="personal" class="tab-pane fade in active">
       <h4><b>User Info</b></h4>
       <%= simple_form_for (@user) do |info| %>
-        <p> Information added here will be publicly displayed on your profile. Click <a href='/' >here</a> to edit your privacy options.</p>
+        <p> Information added here will be publicly displayed on your profile.</p>
         <div class="row" style="padding-bottom: 10px">
           <%= info.input :first_name, required: true, wrapper_html: { class: "col-md-4 padding-left-0" } %>
             

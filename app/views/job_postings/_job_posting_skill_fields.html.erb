@@ -1,5 +1,5 @@
-<% if defined?(jobskill).nil? %>
 
+<% if defined?(jobskill).nil? %>
 <div class="row margin-left-0" id="job-posting-skill-<%=id%>">
 	<%= f.input :id, as: :hidden %>
 	<%= f.simple_fields_for :skill do |builder| %>
@@ -13,7 +13,8 @@
 	</div>
 </div>
 <% else %>
-<div class="row margin-left-0" id="job-posting-skill-<%=id%>">
+<% style = "display:none;" if jobskill["_destroy"]=="true" %>
+<div class="row margin-left-0" id="job-posting-skill-<%=id%>" style=<%=style%> >
 	<%= f.input :id, as: :hidden, input_html: { value: jobskill[:id] } %>
 	<%= f.simple_fields_for '[skill_attributes]' do |builder| %>
 		<div class="col-md-3"><%= builder.input :name, label: "Skill", input_html: {onclick:"skill_autocomplete('#{id}')", id: "skill-name-#{id}", value: jobskill[:skill_attributes][:name]} %></div>
@@ -21,7 +22,7 @@
 	<div class="col-md-6"><%= f.input :survey_id, required:true, selected: jobskill[:survey_id], collection: @surveys, prompt: "Select Classification", label: "Associated Survey Skill"%></div>
 	<div class="col-md-2"><%= f.input :importance, required: true, selected: jobskill[:importance], collection: {'Preferred' => 1, 'Required' => 2}, prompt: "Select Importance"%></div>
 	<div class="col-md-1">
-		<%= f.input :_destroy, as: :hidden, input_html: {id: "job-skill-destroy-#{id}", value: "false"}%>
+		<%= f.input :_destroy, as: :hidden, input_html: {id: "job-skill-destroy-#{id}", value: jobskill["_destroy"]}%>
 		<span class="glyphicon glyphicon-remove" onclick="remove_posting_skill('<%=id%>')"></span>
 	</div>
 </div>

@@ -77,12 +77,12 @@
 				<%i=i+1%>
 			<% end%>
 		<% else %>
-		<%byebug%>
-				<%= f.simple_fields_for :job_posting_skills do |builder| %>
-				<% byebug %>
-					<%= render 'job_postings/job_posting_skill_fields', collection: @jobskills, id: i, f: builder%>
+			<% @jobskills.each do |js| %>
+				<%= f.simple_fields_for '[job_posting_skills_attributes]', index: i do |builder| %>
+					<%= render 'job_postings/job_posting_skill_fields', id: i, f: builder, jobskill: js[1] %>
 					<%i=i+1%>
 				<% end %>
+			<% end %>
 		<% end %>
 	</div>
 	<div class="row">

@@ -11,24 +11,29 @@
     <div id="personal" class="tab-pane fade in active">
       <h4><b>User Info</b></h4>
       <%= simple_form_for (@user) do |info| %>
-        <p> Information added here will be publicly displayed on your profile. Click <a href='/' >here</a> to edit your privacy options.</p>
-        <div class="row" style="padding-bottom: 10px">
-          <%= info.input :first_name, required: true, wrapper_html: { class: "col-md-4 padding-left-0" } %>
+        <p> Information added here will be publicly displayed on your profile.</p>
+        <% if @user.has_role?(:employer) %>
+          <div class="padding-bottom-10 row">
+            <%= info.input :company_name, required: true, wrapper_html: { class: "padding-left-0 col-md-4" } %>
+          </div>
+        <% end %>
+        <div class="padding-bottom-10 row">
+          <%= info.input :first_name, required: true, wrapper_html: { class: "padding-left-0 col-md-4" } %>
             
           <%= info.input :last_name, required: true, wrapper_html: { class: "col-md-4" } %>    
         </div>
-        <div class="row" style="padding-bottom: 10px">
-          <%= info.input :street_address, wrapper_html: { class: "col-md-8 padding-left-0" }  %>
+        <div class="padding-bottom-10 row">
+          <%= info.input :street_address, wrapper_html: { class: "padding-left-0 col-md-8" }  %>
         </div>
-        <div class="row" style="padding-bottom: 10px">
-          <%= info.input :city, required: true, wrapper_html: { class: "col-md-3 padding-left-0" } %>
+        <div class="padding-bottom-10 row">
+          <%= info.input :city, required: true, wrapper_html: { class: "padding-left-0 col-md-3" } %>
 
           <%= info.input :province, required: true, collection: PROVINCES, wrapper_html: { class: "col-md-2" } %>
 
           <%= info.input :postal_code, required: true, wrapper_html: { class: "col-md-3" } %>
         </div>
-        <div class="row" style="padding-bottom: 10px">
-          <div class="col-md-6 padding-left-0">
+        <div class="padding-bottom-10 row">
+          <div class="padding-left-0 col-md-6">
             <%= info.input :image, as: :file, label: "Upload Profile Picture", input_html: {style: 'display: inline;'}  %>
             <p>You will be able to crop and edit your photo in the next screen.</p>
           </div>
@@ -45,14 +50,14 @@
       <h4><b>Change Email</b></h4>
       <p>Use this form to change your email address.</p>
       <%= simple_form_for (@user) do |email| %>
-        <div class="row" style="padding-bottom: 10px">
-          <%= email.input :email, label:"Please enter in your old email for confiramtion.", wrapper_html: { class: "col-md-5 padding-left-0" } %>
+        <div class="padding-bottom-10 row">
+          <%= email.input :email, label:"Please enter in your old email for confiramtion.", wrapper_html: { class: "padding-left-0 col-md-5" } %>
         </div>
-        <div class="row" style="padding-bottom: 10px">
-          <%= email.input :email_password, label: "Please confirm the change with your current password.", wrapper_html: { class: "col-md-5 padding-left-0" } %>
+        <div class="padding-bottom-10 row">
+          <%= email.input :email_password, label: "Please confirm the change with your current password.", wrapper_html: { class: "padding-left-0 col-md-5" } %>
         </div>
-        <div class="row" style="padding-bottom: 10px">
-          <%= email.input :new_email, label: "Enter the new email you want to use.", wrapper_html: { class: "col-md-5 padding-left-0" } %>
+        <div class="padding-bottom-10 row">
+          <%= email.input :new_email, label: "Enter the new email you want to use.", wrapper_html: { class: "padding-left-0 col-md-5" } %>
         </div>
         <%= email.submit 'Change Email', name: 'email', class: 'btn btn-primary'  %>
       <% end %>
@@ -62,14 +67,14 @@
       <h4><b>Change Password</b></h4>
       <p>Use this form to change your password.</p>
       <%= simple_form_for (@user) do |pwd| %>
-        <div class="row" style="padding-bottom: 10px">
-          <%= pwd.input :current_password, label: "Old password", wrapper_html: { class: "col-md-5 padding-left-0" } %>
+        <div class="padding-bottom-10 row">
+          <%= pwd.input :current_password, label: "Old password", wrapper_html: { class: "padding-left-0 col-md-5" } %>
         </div>
-        <div class="row" style="padding-bottom: 10px">
-          <%= pwd.input :password, label: "New password", wrapper_html: { class: "col-md-5 padding-left-0" } %>
+        <div class="padding-bottom-10 row">
+          <%= pwd.input :password, label: "New password", wrapper_html: { class: "padding-left-0 col-md-5" } %>
         </div>
-        <div class="row" style="padding-bottom: 10px">
-          <%= pwd.input :confirm_password, label: "Confirm new password", wrapper_html: { class: "col-md-5 padding-left-0" } %>
+        <div class="padding-bottom-10 row">
+          <%= pwd.input :confirm_password, label: "Confirm new password", wrapper_html: { class: "padding-left-0 col-md-5" } %>
         </div>
         <%= pwd.submit 'Change Password', name: 'password', class: 'btn btn-primary'  %>
       <% end %>
@@ -78,8 +83,8 @@
     <div id="media" class="tab-pane fade">
       <h4><b>Social Media</b></h4>
       <div class="row">
-        <div class="col-md-6 col-sm-6 padding-left-0">
-          <p>Feel free to add URL links to your social media accounts below.  These will help showcase your social media skills, projects, or other items to potential employers.</p>
+        <div class="padding-left-0 col-md-6 col-sm-6">
+          <p>Feel free to add URL links to your social media accounts below.  These will help showcase your social media skills, projects, or other items to potential job providers.</p>
         </div>
         <div class="col-md-6 col-sm-6">
           <p>Connect Accounts.  You may connect the below accounts to EdgeMap to allow for quicker logging in.  Connecting accounts does not display them on your profile.</p>
@@ -87,9 +92,9 @@
       </div>
       <%= simple_form_for (@user) do |sm| %>
         <div class="row">
-          <%= sm.input :facebook, wrapper_html: { class: "col-md-6 col-sm-6 padding-left-0" } %>
+          <%= sm.input :facebook, wrapper_html: { class: "padding-left-0 col-md-6 col-sm-6" } %>
           <% if current_user.identities.pluck(:provider).include?('facebook') %>
-            <div class="col-md-6 col-sm-6 connected">
+            <div class="connected col-md-6 col-sm-6">
               Facebook Connected
             </div>
           <% else %>
@@ -101,9 +106,9 @@
           <% end %>
         </div>
         <div class="row">
-          <%= sm.input :twitter, wrapper_html: { class: "col-md-6 col-sm-6 padding-left-0" } %>
+          <%= sm.input :twitter, wrapper_html: { class: "padding-left-0 col-md-6 col-sm-6" } %>
           <% if current_user.identities.pluck(:provider).include?('twitter') %>
-            <div class="col-md-6 col-sm-6 connected">
+            <div class="connected col-md-6 col-sm-6">
               Twitter Connected
             </div>
           <% else %>
@@ -115,9 +120,9 @@
           <% end %>
         </div>
         <div class="row">
-          <%= sm.input :github, wrapper_html: { class: "col-md-6 col-sm-6 padding-left-0" } %>
+          <%= sm.input :github, wrapper_html: { class: "padding-left-0 col-md-6 col-sm-6" } %>
           <% if current_user.identities.pluck(:provider).include?('github') %>
-            <div class="col-md-6 col-sm-6 connected">
+            <div class="connected col-md-6 col-sm-6">
               Github Connected
             </div>
           <% else %>
@@ -129,9 +134,9 @@
           <% end %>
         </div>
         <div class="row">
-          <%= sm.input :linkedin, wrapper_html: { class: "col-md-6 col-sm-6 padding-left-0" } %>
+          <%= sm.input :linkedin, wrapper_html: { class: "padding-left-0 col-md-6 col-sm-6" } %>
           <% if current_user.identities.pluck(:provider).include?('linked') %>
-            <div class="col-md-6 col-sm-6 connected">
+            <div class="connected col-md-6 col-sm-6">
               LinkedIn Connected
             </div>
           <% else %>

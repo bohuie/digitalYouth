@@ -1,7 +1,7 @@
 <%= simple_form_for @job_seeker, url: registration_path(@job_seeker) do |employee| %>
   <%= devise_error_messages! %>
 <div class="employee">
-	<div class=col-md-4>
+  <div class="col-md-5" style="padding-right: 70px;">
     <h2>Sign up for Job Seekers</h2>
     <br />
     <%= employee.input :first_name, required: true %>
@@ -9,8 +9,8 @@
     <%= employee.input :email, required: true %>
     <%= employee.input :password, required: true %>
     <%= employee.input :password_confirmation, required: true %>
-    <%= employee.input :city, required: true, label: 'City. This is used to help employers find local job seekers.' %>
-    <%= employee.input :province, collection: PROVINCES, required: true, label: 'Province. This is used to help employers find local job seekers.'  %>
+    <%= employee.input :city, required: true, label: 'City. This is used to help job providers find local job seekers.' %>
+    <%= employee.input :province, collection: PROVINCES, required: true, label: 'Province. This is used to help job providers find local job seekers.'  %>
     <%= employee.input :postal_code, required: true, label: 'Postal Code.  This will not be displayed on your public profile, but is used for helping find jobs near you.' %>
     <%= hidden_field_tag :role, "employee" %>
 
@@ -26,17 +26,16 @@
       <%= render "users/shared/links" %>
     </div>
 	</div>
-  <div class="col-md-1"></div>
   <div class="col-md-7">
     <div class="row">
       <h2>Please read the following consent form and fill out the information in the bottom</h2><br />
-      <div style="height:400px; overflow:auto;">
+      <div class="padding-left-5" style="height:400px; overflow:auto;">
         <%= render "consent/shared/adult_consent" %>
         <%= employee.simple_fields_for :consent do |c| %>
           <%= c.input :name, label: 'Please enter your full name.  It must match the info you have to the left.', required: true, input_html: { style: 'width: 50%;' } %>
           <%= c.input :date_signed %>
           <%= c.hidden_field :consent_type, value: 1 %>
-          <%= c.collection_radio_buttons :answer, [[1, 'Yes, I consent'], [0, 'No, I do not consent']], :first, :last, style: "display:inline", checked: 1 %><br />
+          <%= c.collection_radio_buttons :answer, [[1, 'Yes, I consent'], [0, 'No, I do not consent']], :first, :last, checked: 1, item_wrapper_class: 'inline' do |b|  b.radio_button + b.label(:class => "padding-left-5") end %><br />
         <% end %>
       </div>
     </div>

@@ -77,12 +77,12 @@
 				<%i=i+1%>
 			<% end%>
 		<% else %>
-			<% @jobskills.each do |js| %>
-				<%= f.simple_fields_for :job_posting_skills, @job_posting_skill do |builder| %>
-					<%= render partial: 'job_postings/job_posting_skill_fields', locals: {js: js, id: i, f: builder} %>
+		<%byebug%>
+				<%= f.simple_fields_for :job_posting_skills do |builder| %>
+				<% byebug %>
+					<%= render 'job_postings/job_posting_skill_fields', collection: @jobskills, id: i, f: builder%>
 					<%i=i+1%>
 				<% end %>
-			<% end %>
 		<% end %>
 	</div>
 	<div class="row">

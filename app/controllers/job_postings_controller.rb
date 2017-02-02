@@ -296,7 +296,7 @@ private
 
 	def check_fields # Performs rigorous checks to ensure that the job posting is valid
 		args = params[:job_posting]
-		
+		byebug
 		if args[:title].blank? || args[:city].blank?  || args[:province].blank? || args[:description].blank? || args[:open_date].blank? || args[:close_date].blank? || args[:job_category_id].blank? || args[:job_type].blank?
 			flash.now[:warning] = "Missing required fields"
 		elsif args[:lower_pay_range].blank?

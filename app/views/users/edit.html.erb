@@ -135,7 +135,7 @@
         </div>
         <div class="row">
           <%= sm.input :linkedin, wrapper_html: { class: "padding-left-0 col-md-6 col-sm-6" } %>
-          <% if current_user.identities.pluck(:provider).include?('linked') %>
+          <% if current_user.identities.pluck(:provider).include?('linkedin') %>
             <div class="connected col-md-6 col-sm-6">
               LinkedIn Connected
             </div>

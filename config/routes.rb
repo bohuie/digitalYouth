@@ -1,7 +1,24 @@
 Rails.application.routes.draw do
+  get 'settings/consent'
+
+  get 'settings/privacy'
+
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   mount Searchjoy::Engine, at: "/admin/searchjoy"
   get 'welcome/index'
+  get 'signup_jobseeker' => 'welcome#signup_jobseeker'
+  get 'signup_employer' => 'welcome#signup_employer'
+  get 'welcome/signup_jobseeker' => 'welcome#signup_jobseeker'
+  get 'welcome/signup_employer' => 'welcome#signup_employer'
+
+  # Consent
+  get 'consent/business_consent/:id' => 'consent#business_consent', as: :business_consent
+  get 'consent/adult_consent/:id' => 'consent#adult_consent', as: :adult_consent
+  post 'consent/create' => 'consent#create'
+  patch 'consent/update/:id' => 'consent#update'
+
+  # Settings
+  get 'settings/consent' => 'settings#consent', as: :consent_settings
 
   # Searches
   get 'search' => 'searches#index'
@@ -24,10 +41,14 @@ Rails.application.routes.draw do
   patch 'notifications/all' => 'notifications#update_all', as: :update_all_notifications
   delete 'notifications' => 'notifications#delete'
   delete 'notifications/all' => 'notifications#delete_all', as: :delete_all_notifications
+  get 'users/referenceTab' => 'users#reference_tab'
 
   # Devise_for :users
-  devise_for :users, controllers: { sessions: "users/sessions", :registrations => "users/registrations", omniauth_callbacks: 'users/omniauth_callbacks' }
+  devise_for :users, controllers: { passwords: "users/passwords", sessions: "users/sessions", :registrations => "users/registrations", omniauth_callbacks: 'users/omniauth_callbacks' }
   match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
+
+  post 'users/home_tab' => 'users#home_tab'
+  post 'users/nav_tab' => 'users#nav_tab'
 
  #devise_for :users
   #resources :users, only: :show, as: :user
@@ -35,6 +56,8 @@ Rails.application.routes.draw do
   get '/users/:id' => 'users#show', as: :user
   get '/users/:id/edit' => 'users#edit', as: :edit_user
   patch '/users/:id' => 'users#update'
+  get 'users/:id/contact' => 'users#contact', as: :contact_user
+  post 'users/:id/contact' => 'users#send_mail', as: :email_user
 
 
   # Skill routes
@@ -52,7 +75,7 @@ Rails.application.routes.draw do
   post '/user_skills' => 'user_skills#create'
 
   # Job Posting routes
-  get 'job_postings' => 'job_postings#index'
+  #get 'job_postings' => 'job_postings#index'
   get 'job_postings/new' => 'job_postings#new', as: :new_job_posting
   get 'job_postings/refresh' => 'job_postings#refresh', as: :refresh_job_posting
   post 'job_postings/refresh' => 'job_postings#refresh_process', as: :refresh_job_posting_process
@@ -61,6 +84,10 @@ Rails.application.routes.draw do
   patch 'job_postings/:id' => 'job_postings#update'
   delete 'job_postings/:id' => 'job_postings#destroy'
   post 'job_postings' => 'job_postings#create'
+  get 'job_postings/:id/compare' => 'job_postings#compare', as: :compare_applications
+  resources :job_postings do
+    get 'applications', on: :member
+  end
 
   # Job Posting Application routes
   get 'job_posting_applications' => 'job_posting_applications#index'
@@ -96,11 +123,15 @@ Rails.application.routes.draw do
   patch 'references/:id' => 'references#update', as: :update_reference
   delete 'references/:id' => 'references#destroy', as: :delete_reference
 
+  delete 'reference_redirections/:id' => 'reference_redirections#destroy', as: :delete_reference_redirection
+
   # Survey routes
   get 'surveys' => 'surveys#index'
   get 'surveys/:title' => 'surveys#show', as: :survey
+  get 'surveys/:title/edit' => 'surveys#edit', as: :edit_survey
   post 'responses' => 'responses#create'
   patch 'responses' => 'responses#update'
+  get 'surveys/:title/compare' => 'surveys#compare', as: :compare_survey
 
 
 
@@ -111,6 +142,8 @@ Rails.application.routes.draw do
   get 'lost_email' => 'welcome#lost_email', as: :lost_email
   post 'lost_email' => 'welcome#send_lost_email', as: :send_lost_email
   root 'welcome#index'
+
+  get '*path' => redirect('/')
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

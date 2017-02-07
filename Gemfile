@@ -1,5 +1,11 @@
 source 'https://rubygems.org'
 
+# Whenever for Cron Jobs
+gem 'whenever'
+
+# Encryption for user data
+gem "attr_encrypted", "~> 3.0.0"
+
 # SearchJoy gem for search analytics
 gem "searchjoy"
 
@@ -50,6 +56,7 @@ gem 'bootstrap-sass'
 gem 'autoprefixer-rails'
 gem 'font-awesome-rails'
 gem 'bootstrap-social-rails'
+gem "bootstrap-table-rails"
 
 # Paperclip gem for images
 gem 'paperclip'
@@ -67,6 +74,7 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 gem 'omniauth-github'
+gem 'omniauth-linkedin'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.6'
@@ -84,7 +92,9 @@ gem 'coffee-rails', '~> 4.1.0'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
+gem 'turbolinks', '< 5'
+#turbolinks fix
+gem 'jquery-turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.

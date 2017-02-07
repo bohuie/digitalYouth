@@ -20,38 +20,45 @@ class ProjectsController < ApplicationController
 
 	def new
 		@project = Project.new
+		project_skills = @project.project_skills.build
+		project_skills.skill = Skill.new
+		@surveys = Survey.get_title_map
+		@user = current_user
 	end
 
 	def show
 		@project = Project.find(params[:id])
+		@user = @project.user
 	end
 
 	def edit
 		@project = Project.find(params[:id])
 		@skills = @project.skills
-		@project_skill = @project.project_skills.create
+		@project_skills = ProjectSkill.where(project_id:params[:id]).order(:id)
+		@surveys = Survey.get_title_map
+		@user= @project.user
 	end
 
 	def create
-		#@project = Project.new(project_params)
+		@user = current_user
 		@project = current_user.projects.build(project_params)
-		if @project.save
-			#current_user.projects << @project
+
+		if @project.save && @project.process_skills(params[:project][:project_skills_attributes])
 			Project.reindex if !Rails.env.test?
 			flash[:success] = "Project successfully created."
-			redirect_back_or
+
+			redirect_back_or current_user
 		else
 			flash[:danger] = "Please fix the errors below."
-			render 'users/show'
+			render 'projects/new'
 		end
 	end
 
 	def update
 		@project = Project.find(params[:id])
 		@skills = @project.skills
-		@project_skill = @project.project_skills.create
 		
-		if @project.update_attributes(project_params)
+		if @project.update_attributes(project_params) && @project.process_skills(params[:project][:project_skills_attributes])
 			Project.reindex if !Rails.env.test?
 			flash[:success] = "Project successfully updated."
 			redirect_to current_user
@@ -74,7 +81,11 @@ class ProjectsController < ApplicationController
 
 	private
 	def project_params
-		params.require(:project).permit(:title, :description, :image, :delete_image)
+		params.require(:project).permit(:title, :description, :image, :delete_image, :project_date)
+	end
+
+	def project_skill_params
+		params.require(:project_skill).permit(:skill_id, :project_id)
 	end
 
 	# Checks current user is the project owner

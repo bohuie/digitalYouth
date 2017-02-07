@@ -2,8 +2,65 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.jcrop-holder div{
+    -webkit-border-radius: 50% !important;
+    -moz-border-radius: 50% !important;
+    border-radius: 50% !important;
+    margin: -1px;
+}
+
+.btn-fake {
+	background-image: linear-gradient(to bottom, #E6E6E6, #E6E6E6) !important;
+	border: none !important;
+	cursor: default !important;
+	box-shadow: none !important;
+}
+
+.center {
+	height: 50%;
+}
+
+.connected {
+	padding-top: 30px;
+}
+
+.connect {
+	margin-top: 25px;
+	max-width: 250px;
+}
+
+.image-display {
+	width: 150px;
+	height: 150px;
+	overflow: hidden;
+	border-radius: 50%;
+	margin-left: auto;
+	margin-right :auto;
+}
+
+.image-radius {
+	border-radius: 50%;
+	margin-left: auto;
+	margin-right :auto;
+}
+
+.profile-image {
+	display: block;
+	border-radius: 50%;
+	margin-left: auto;
+	margin-right :auto;
+}
+
 .survey-box-row{
 	display: -webkit-flex;
+}
+
+label {
+	padding-right: 5px;
+}
+
+ul.nav-tabs > li.active > a {
+	font-weight: bold;
 }
 
 .survey-box{
@@ -31,6 +88,98 @@
 	margin: 5px 0px 5px 0px;
 
 }
+
+//Projects
+
+.project-skill{
+ display: inline-block; 
+ }
+
+//References
+.HR
+{
+	border: 0;
+    	height: 1px;
+    	background: #333;
+    	background-image: linear-gradient(to right, #ccc, #333, #ccc);
+}
+#ref, #ref2
+{
+	//border: 2px solid red;
+	width: 100%;
+	overflow: hidden;
+}
+#refImage, #refImage2
+{
+	height: 150px;
+	width: 150px;
+	//border: 2px solid blue;
+}
+#refName, #refName2
+{
+	font-size: 32px;
+}
+//Aligns all items for left side of the displayed reference
+.refLeft
+{
+	margin-left: 2%;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+//Aligns all items for Right side of the displayed reference
+.refRight
+{
+	margin-left: 70%;
+	margin-top: 4%;
+}
+//Aligns all items for centre of the displayed reference
+.refCentre
+{
+	margin-left: 35%;
+	margin-top: 4%;
+}
+.contactElm
+{
+	margin-left: 6%;
+}
+#contact, #contact2
+{
+	width: 60%;
+	height: 10%;
+	float: right;
+}
+#relEmployment, #relEmployment2
+{
+	float: right;
+	overflow: hidden;
+	width: 60%;
+}
+#relProjects, #relProjects2
+{
+	float: right;
+	overflow: hidden;
+	width: 60%;
+}
+#left, #left2
+{
+	//border: 2px solid blue;
+	width: 25%;
+	float: left;
+}
+#centre, #centre2
+{
+	//border: 2px solid yellow;
+	width: 50%;
+	overflow: hidden;
+	float: left;
+}
+#right, #right2
+{
+	//border: 2px solid purple;
+	width: 25%;
+	overflow: hidden;
+}
+
 //Profile
 .flashContainer
 {
@@ -39,8 +188,6 @@
 }
 .profileContainer
 {
-	height: 400px;
-	width: 1200px;
 	margin: 0 auto;
 	//border: 2px solid black;
 }
@@ -49,9 +196,9 @@
 	border-radius: 5px;
 	border: 2px solid grey;
 	height: 200px;
-	width: 350px;
+	width: 250px;
 	float: left;
-	padding: 20px;
+	padding: 23px;
 	margin: 0 auto;
 	background: #FFFFFF;
 }
@@ -72,8 +219,8 @@
 .profileContainerContent
 {
 	width: 600px;
-	height: 300px;
-	margin-left: 380px;
+	height: 220px;
+	margin-left: 275px;
 	//border: 2px solid blue;
 }
 .profileContainerContent input
@@ -178,7 +325,7 @@
     	overflow: hidden;
     	outline:none;
 
-	width: 150px;
+	width: 175px;
 	margin: 3px;
 	color: #01B1AF;
 
@@ -186,6 +333,15 @@
 	border-bottom: 2px solid #01B1AF;
 
 	opacity: 0.6;
+}
+
+.editProfileImage
+{
+	float: left;
+    clear: both;
+    margin-top: 10px;
+    margin-left: 25px;
+    margin-bottom: -40px;
 }
 .profileButtonResume
 {
@@ -255,6 +411,14 @@
 #shadow-arch-edges:after{
   right: 30px;
   transform: skewY(10deg);
+}
+
+
+li.skill {
+	opacity: 1.0;
+	color: #333333;
+	border: 0px;
+	overflow: visible;
 }
 //Partials
 //#survey-table,

@@ -4,10 +4,100 @@
 
 .employee {
 	float: left; 
-	width: 50%;
 }
 
 .employer {
-	float: right; 
-	width: 50%;
+	float: left;
+}
+
+body.welcome li {
+	padding-top: 2px;
+}
+
+.round-border {
+	border-radius: 4px !important;
+}
+
+.landing{
+	background-image:asset-url("homepage.svg"), linear-gradient(to bottom, rgb(19, 151, 206) 0%, rgb(19, 151, 206) 100%), linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 100%);
+	background-clip: content-box, padding-box;
+	height: calc(100% - 65px); 
+	background-position:bottom left;
+	background-repeat:no-repeat;
+	background-size: calc(50%) 300px, auto, auto, auto, auto;
+}
+
+.description{
+	width: 40%;
+	float: left;
+	margin-left: 45px;
+}
+
+body.welcome.index div.alert{
+	border-radius: 0px;
+	margin-bottom: 0px;
+}
+
+body.welcome.index nav.navbar {
+	margin-bottom: 0px;
+}
+
+.infobox{
+	margin-top: 65px;
+	border: none;
+	border-radius: 5px;
+	background-color: rgb(23, 102, 136) ; 
+	text-align: center;
+	position: relative;
+	height: calc(100% - 65px);
+	top: 41px;
+	color: white;
+}
+
+.signupbox{
+	margin-top: 65px;
+	border: none;
+	border-radius: 5px;
+	background-color: rgb(23, 102, 136) ; 
+	text-align: center;
+	position: relative;
+	height: calc(100% - 65px);
+	top: 41px;
+	color: white;
+}
+
+.titlebox{
+	border:none;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	width: 100%;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	background-color: #52B4D9 ; 
+	text-align: center;
+	color: white;
+}
+.footerbox{
+	border:none;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	background-color: #52B4D9 ; 
+	text-align: center;
+	color: white;
+}
+
+.signuplink {
+    background-color: #52B4D9;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 5px;
+    cursor: pointer;
 }

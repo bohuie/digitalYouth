@@ -1,100 +1,155 @@
-
-<div class ="profileContainerImage" id="shadow-arch-edges">
-  <div class ="profileFrame">
-    <%= simple_form_for @user do |img| %>
-      <%= image_tag @user.image.url, alt:"User Icon" %> <!-- Should add a max size or auto scale pics that are uploaded -->
-      <%= img.input :image, as: :file %>
-      <%= img.check_box :delete_image %>Delete Image<br/>
-      <%= img.submit "Update Image", name: "image" %>
-    <% end %>
-  </div>
-</div>
-
-<div class ="profileContainerContent">
-  <h2> <%= @user.first_name %> <%= @user.last_name %> </h2>
-  <h5> <%= @user.street_address %><%= @user.city %> <%= @user.province %> <%= @user.postal_code %> </h5>
-  <h5> <%= @user.email %> </h5>
-  <% if !@user.github.nil? %>
-    <%= link_to 'GitHub', @user.github, id: 'github', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
-  <% end %>
-  <% if !@user.linkedin.nil? %>
-    <%= link_to 'Linkedin', @user.linkedin, id: 'linkedin', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
-  <% end %>
-  <% if !@user.twitter.nil? %>
-    <%= link_to 'Twitter', @user.twitter, id: 'twitter', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
-  <% end %>
-  <% if !@user.facebook.nil? %>
-    <%= link_to 'Facebook', @user.facebook, id: 'facebook', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
-  <% end %>
-  <%= raw('<br>') if @user.github.nil? && @user.linkedin.nil? && @user.twitter.nil? && @user.facebook.nil? %>
-</div>
-
-<div class ="profileButtonResume">
-  <div class="resumeShadowBox bottom"> </div>
-  <div class="resumeShadowBox left"> </div>
-  <input type="button" value="RESUME"/>   
-</div>
+<%= render "users/shared/profile" %>
 
 <div class="container" id="profileButtons">
-    <ul class="nav nav-tabs profileButtonContent">
-          <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#personal">User Info</a></li>
-          <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#email">Change Email</a></li>
-          <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#password">Change Password</a></li>
-          <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#media">Social Media</a></li>
-    </ul>
-    <div class="tab-content profileButtonContent">
-        <div id="personal" class="tab-pane fade in active">
-        <%= simple_form_for (@user) do |info| %>
-          <%= info.input :first_name, required: true %>
-          <%= info.input :last_name, required: true %>
-          <%= info.input :street_address %>
-          <%= info.input :city %>
-          <%= info.input :province %>
-          <%= info.input :postal_code %>
-          <%= info.submit 'Update', name: 'personal' %>
+  <ul class="nav nav-tabs profileButtonContent">
+    <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#personal">User Info</a></li>
+    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#email">Change Email</a></li>
+    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#password">Change Password</a></li>
+    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#media">Social Media</a></li>
+  </ul>
+  <div class="tab-content profileButtonContent">
+    <div id="personal" class="tab-pane fade in active">
+      <h4><b>User Info</b></h4>
+      <%= simple_form_for (@user) do |info| %>
+        <p> Information added here will be publicly displayed on your profile.</p>
+        <% if @user.has_role?(:employer) %>
+          <div class="padding-bottom-10 row">
+            <%= info.input :company_name, required: true, wrapper_html: { class: "padding-left-0 col-md-4" } %>
+          </div>
         <% end %>
+        <div class="padding-bottom-10 row">
+          <%= info.input :first_name, required: true, wrapper_html: { class: "padding-left-0 col-md-4" } %>
+            
+          <%= info.input :last_name, required: true, wrapper_html: { class: "col-md-4" } %>    
         </div>
-
-        <div id="email" class="tab-pane fade">
-         <%= simple_form_for (@user) do |email| %>
-          <%= email.input :email, required: true, label:"Email.  You need to confirm your new email before we update to it." %>
-          <%= email.input :email_password, label: "Please confirm the change with your current password." %>
-          <%= email.submit 'Change Email', name: 'email' %>
-          <%= email.submit 'Update', name: 'personal' %>
-        <% end %>
+        <div class="padding-bottom-10 row">
+          <%= info.input :street_address, wrapper_html: { class: "padding-left-0 col-md-8" }  %>
         </div>
+        <div class="padding-bottom-10 row">
+          <%= info.input :city, required: true, wrapper_html: { class: "padding-left-0 col-md-3" } %>
 
-        <div id="password" class="tab-pane fade">
-         <%= simple_form_for (@user) do |pwd| %>
-          <%= pwd.input :current_password, label: "Old password." %>
-          <%= pwd.input :password, label: "New password." %>
-          <%= pwd.input :confirm_password, label: "Confirm new password." %>
-          <%= pwd.submit 'Change Password', name: 'password' %>
-        <% end %>
+          <%= info.input :province, required: true, collection: PROVINCES, wrapper_html: { class: "col-md-2" } %>
+
+          <%= info.input :postal_code, required: true, wrapper_html: { class: "col-md-3" } %>
         </div>
-
-        <div id="media" class="tab-pane fade">
-         <%= simple_form_for (@user) do |sm| %>
-          <p>Feel free to add your social media accounts below.  These will help showcase your social media skills, projects, or other items to potential employers.</p>
-          <%= sm.input :github %>
-          <%= sm.input :linkedin %>
-          <%= sm.input :twitter %>
-          <%= sm.input :facebook %>
-          <%= sm.submit 'Update', name: 'media' %>
-        <% end %>
-          <div>
-            <p>Connect Accounts.  Accounts connected are only used for logging in.  They are not shown on your profile page.  If you wish to do so, please fill out the information above.</p>
-            <% ['facebook', 'twitter', 'github'].each do |provider| %>
-              <% if current_user.identities.pluck(:provider).include?(provider.to_s) %>
-                <%= provider.to_s.titleize %> Connected
-              <% else %>
-                <%= link_to omniauth_authorize_path('user', provider), class: "btn btn-block btn-social btn-#{provider}" do %>
-                  <span class="fa fa-<%= provider %>"></span> Connect with <%= OmniAuth::Utils.camelize(provider) %>
-                <% end %>
-              <% end %>
-              <br/>
-            <% end %>
+        <div class="padding-bottom-10 row">
+          <div class="padding-left-0 col-md-6">
+            <%= info.input :image, as: :file, label: "Upload Profile Picture", input_html: {style: 'display: inline;'}  %>
+            <p>You will be able to crop and edit your photo in the next screen.</p>
           </div>
         </div>
+        <div class="row" style="padding-bottom: 10px">
+          <div class="cold-md-6" id="target">
+          </div>
+        </div>
+        <%= info.submit 'Update', name: 'personal', class: 'btn btn-primary' %>
+      <% end %>
     </div>
+
+    <div id="email" class="tab-pane fade">
+      <h4><b>Change Email</b></h4>
+      <p>Use this form to change your email address.</p>
+      <%= simple_form_for (@user) do |email| %>
+        <div class="padding-bottom-10 row">
+          <%= email.input :email, label:"Please enter in your old email for confiramtion.", wrapper_html: { class: "padding-left-0 col-md-5" } %>
+        </div>
+        <div class="padding-bottom-10 row">
+          <%= email.input :email_password, label: "Please confirm the change with your current password.", wrapper_html: { class: "padding-left-0 col-md-5" } %>
+        </div>
+        <div class="padding-bottom-10 row">
+          <%= email.input :new_email, label: "Enter the new email you want to use.", wrapper_html: { class: "padding-left-0 col-md-5" } %>
+        </div>
+        <%= email.submit 'Change Email', name: 'email', class: 'btn btn-primary'  %>
+      <% end %>
+    </div>
+
+    <div id="password" class="tab-pane fade">
+      <h4><b>Change Password</b></h4>
+      <p>Use this form to change your password.</p>
+      <%= simple_form_for (@user) do |pwd| %>
+        <div class="padding-bottom-10 row">
+          <%= pwd.input :current_password, label: "Old password", wrapper_html: { class: "padding-left-0 col-md-5" } %>
+        </div>
+        <div class="padding-bottom-10 row">
+          <%= pwd.input :password, label: "New password", wrapper_html: { class: "padding-left-0 col-md-5" } %>
+        </div>
+        <div class="padding-bottom-10 row">
+          <%= pwd.input :confirm_password, label: "Confirm new password", wrapper_html: { class: "padding-left-0 col-md-5" } %>
+        </div>
+        <%= pwd.submit 'Change Password', name: 'password', class: 'btn btn-primary'  %>
+      <% end %>
+    </div>
+
+    <div id="media" class="tab-pane fade">
+      <h4><b>Social Media</b></h4>
+      <div class="row">
+        <div class="padding-left-0 col-md-6 col-sm-6">
+          <p>Feel free to add URL links to your social media accounts below.  These will help showcase your social media skills, projects, or other items to potential job providers.</p>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <p>Connect Accounts.  You may connect the below accounts to EdgeMap to allow for quicker logging in.  Connecting accounts does not display them on your profile.</p>
+        </div>
+      </div>
+      <%= simple_form_for (@user) do |sm| %>
+        <div class="row">
+          <%= sm.input :facebook, wrapper_html: { class: "padding-left-0 col-md-6 col-sm-6" } %>
+          <% if current_user.identities.pluck(:provider).include?('facebook') %>
+            <div class="connected col-md-6 col-sm-6">
+              Facebook Connected
+            </div>
+          <% else %>
+            <div class="col-md-6 col-sm-6">
+              <%= link_to omniauth_authorize_path('user', 'facebook'), class: "btn btn-block btn-social btn-facebook connect" do %>
+                <span class="fa fa-facebook"></span> Connect with Facebook
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+        <div class="row">
+          <%= sm.input :twitter, wrapper_html: { class: "padding-left-0 col-md-6 col-sm-6" } %>
+          <% if current_user.identities.pluck(:provider).include?('twitter') %>
+            <div class="connected col-md-6 col-sm-6">
+              Twitter Connected
+            </div>
+          <% else %>
+            <div class="col-md-6 col-sm-6">
+              <%= link_to omniauth_authorize_path('user', 'twitter'), class: "btn btn-block btn-social btn-twitter connect" do %>
+                <span class="fa fa-twitter"></span> Connect with Twitter
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+        <div class="row">
+          <%= sm.input :github, wrapper_html: { class: "padding-left-0 col-md-6 col-sm-6" } %>
+          <% if current_user.identities.pluck(:provider).include?('github') %>
+            <div class="connected col-md-6 col-sm-6">
+              Github Connected
+            </div>
+          <% else %>
+            <div class="col-md-6 col-sm-6">
+              <%= link_to omniauth_authorize_path('user', 'github'), class: "btn btn-block btn-social btn-github connect" do %>
+                <span class="fa fa-github"></span> Connect with Github
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+        <div class="row">
+          <%= sm.input :linkedin, wrapper_html: { class: "padding-left-0 col-md-6 col-sm-6" } %>
+          <% if current_user.identities.pluck(:provider).include?('linkedin') %>
+            <div class="connected col-md-6 col-sm-6">
+              LinkedIn Connected
+            </div>
+          <% else %>
+            <div class="col-md-6 col-sm-6">
+              <%= link_to omniauth_authorize_path('user', 'linkedin'), class: "btn btn-block btn-social btn-linkedin connect" do %>
+                <span class="fa fa-linkedin"></span> Connect with LinkedIn
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+        <br />
+        <%= sm.submit 'Update', name: 'media', class: 'btn btn-primary'  %>
+      <% end %>
+    </div>
+  </div>
 </div>

@@ -7,19 +7,19 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
         if @user.nil?
           flash[:danger] = "We could not find this "+"#{provider}".capitalize+" account associated with a user account.  Please either make a new account or login with your main account, and then associate a "+"#{provider}".capitalize+" account with yours, in Edit Profile, Social Media tab."
-          redirect_to new_user_registration_url
+          redirect_to root_path
         elsif @user.persisted?
           sign_in_and_redirect @user, event: :authentication
           set_flash_message(:notice, :success, kind: "#{provider}".capitalize) if is_navigational_format?
         else
           session["devise.#{provider}_data"] = env["omniauth.auth"]
-          redirect_to new_user_registration_url
+          redirect_to root_path
         end
       end
     }
   end
 
-  [:facebook, :twitter, :github].each do |provider|
+  [:facebook, :twitter, :github, :linkedin].each do |provider|
     provides_callback_for provider
   end
 

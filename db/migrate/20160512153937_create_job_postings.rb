@@ -4,8 +4,14 @@
 
     	t.string :title
       t.string :company_name # ONLY USED FOR AUTOPOPULATION
-      t.string :location
-      t.string :pay_range
+      t.string :street_address
+      t.string :unit_number
+      t.string :postal_code
+      t.string :city
+      t.string :province
+      t.string :pay_rate
+      t.decimal :lower_pay_range, scale: 2, precision: 10
+      t.decimal :upper_pay_range, scale: 2, precision: 10
       t.string :link
       t.string :posted_by
       # job_type:

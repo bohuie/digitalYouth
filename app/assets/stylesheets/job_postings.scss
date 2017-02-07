@@ -2,9 +2,44 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+ body.job_postings span.radio {
+  margin-bottom: 19px;
+  margin-top: 1px;
+ }
 
-.job-posting-skill{
- display: inline-block; 
+ .table th.right {
+  text-align: right;
+ }
+
+ .compare-box {
+  padding: 10px 30px 30px 80px;
+  text-align:center;
+  border-style: solid;
+  border-width: 2px;
+  min-width: 540px;
+  margin: 15px;
+ }
+
+ .unit-width{
+  min-width: 150px;
+ }
+
+ .street-width{
+  max-width: calc(50% - 150px);
+ }
+
+ .pay-rate-width{
+  min-width: 120px
+ }
+
+ .pay-label {
+  width:40px !important;
+  text-align: right !important;
+ }
+
+ .pay-input {
+  display: inline-block !important;
+  width: calc(100% - 40px) !important;
  }
 
 .ui-autocomplete {

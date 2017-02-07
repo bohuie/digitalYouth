@@ -25,19 +25,26 @@ class User < ActiveRecord::Base
     has_attached_file :image,
         default_url: 'avatar-placeholder-:style.svg',
         styles: { 
-            medium: { geometry: "150x150#", :processors => [:cropper] },
-            small: { geometry: "100x100#", :processors => [:cropper] },
-            thumb: { geometry: "45x45#", :processors => [:cropper] }, 
-            large: { geometry: "400x400>" }
+            medium: { geometry: "150x150>", :processors => [:cropper] },
+            small: { geometry: "100x100>", :processors => [:cropper] },
+            thumb: { geometry: "45x45>", :processors => [:cropper] },
+            large: { geometry: "400x400" }
+        },
+        convert_options: {
+            medium: "-gravity center -extent 150x150",
+            small: "-gravity center -extent 100x100",
+            thumb: "-gravity center -extent 45x45",
+            large: "-gravity center -extent 400x400"
         }
     include DeletableAttachment
     validates_attachment :image, content_type: { content_type: ["image/jpg", "image/jpeg", "image/png", "image/svg"] }
-    attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
+    attr_accessor :crop_x, :crop_y, :crop_w, :crop_h, :new_email
     #after_update :reprocess_image, :if => :cropping?
 
     validates_format_of :email, :without => TEMP_EMAIL_REGEX, on: :update
     validates :province, presence: true
     validates :city, presence: true
+    validates :summary, length: { maximum: 200 }
 
     has_many :job_postings, dependent: :destroy
     has_many :projects, dependent: :destroy
@@ -63,6 +70,7 @@ class User < ActiveRecord::Base
         data[:city] = city.titleize if city
         data[:province] = province.upcase if province
         data[:bio] = bio if bio
+        data[:summary] = summary.downcase if summary
         data[:role] = self.roles.first.name if !self.roles.first.nil?
         data[:skills] = self.skills.pluck(:name)
         return data

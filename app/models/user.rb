@@ -44,6 +44,7 @@ class User < ActiveRecord::Base
     validates_format_of :email, :without => TEMP_EMAIL_REGEX, on: :update
     validates :province, presence: true
     validates :city, presence: true
+    validates :summary, length: { maximum: 200 }
 
     has_many :job_postings, dependent: :destroy
     has_many :projects, dependent: :destroy
@@ -69,6 +70,7 @@ class User < ActiveRecord::Base
         data[:city] = city.titleize if city
         data[:province] = province.upcase if province
         data[:bio] = bio if bio
+        data[:summary] = summary.downcase if summary
         data[:role] = self.roles.first.name if !self.roles.first.nil?
         data[:skills] = self.skills.pluck(:name)
         return data

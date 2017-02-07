@@ -30,7 +30,8 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string  :province
 
       #Bio info
-      t.string  :bio
+      t.text    :bio
+      t.string  :summary
 
       #Survey tracking - survey_id-1 maps to each spot in the array
       t.boolean :answered_surveys, array: true, default: [false, false, false, false, false, false, false, false, false, false, false, false]

@@ -1,7 +1,7 @@
 <% if @user.has_role? :employee %>
 <!-- Employee Profile -->
 <div class ="profileContainer">
-	<div class ="profileContainerImage" id="shadow-arch-edges">
+	<div class ="profileContainerImage">
 			<%= image_tag @user.image.url(:medium), alt:"User Icon", class: "profile-image" %>
 	</div>
 	<div class ="profileContainerContent">
@@ -27,7 +27,7 @@
 <% elsif @user.has_role? :employer %>
 <!-- Employer Profile -->
 	<div class ="profileContainer">
-		<div class ="profileContainerImage" id="shadow-arch-edges">
+		<div class ="profileContainerImage">
 			<%= image_tag @user.image.url(:medium), alt:"User Icon", class: "profile-image"  %> 
 		</div>
 		<div class ="profileContainerContent">

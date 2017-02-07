@@ -1,5 +1,17 @@
 <%= simple_form_for @job_posting do |f| %>
 <%= f.error_notification %>
+ <% if f.object.errors.any? %>
+  <div id="error_explanation">
+   <div class="alert alert-error">
+     The form contains <%= pluralize(f.object.errors.count, "error") %>.
+   </div>
+  <ul>
+   <% f.object.errors.full_messages.each do |msg| %>
+    <li>* <%= msg %></li>
+   <% end %>
+ </ul>
+</div>
+<% end %>
 	<div class="row">
 
 		<%= f.input :title, required: true, wrapper_html: { class: "col-md-6" } %>

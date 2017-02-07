@@ -151,7 +151,7 @@ class JobPostingsController < ApplicationController
 			@job_posting_skill = JobPostingSkill.new(skill: skill)
 			@jobskills = params[:job_posting]["job_posting_skills_attributes"]
 			if flash[:warning].blank?
-				flash[:warning] = "Oops, there was an issue in editing your Job Posting."
+				flash.now[:warning] = "Oops, there was an issue in editing your Job Posting."
 			end
 			render 'edit'
 		end

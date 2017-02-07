@@ -45,6 +45,17 @@ footer
 	margin-top: 25px
 	height: 50px
 
+#error_explanation
+	color: red
+	ul
+		color: red
+		margin: 0 0 30px 0
+
+.field_with_errors
+	@extend .has-error
+	.form-control
+		color: $state-danger-text
+
 hr.gray-2
 	border-top: 2px solid GAINSBORO
 

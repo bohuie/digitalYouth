@@ -7,18 +7,21 @@
 	<div class ="profileContainerContent">
 		<h2> <%= link_to @user.first_name+' '+@user.last_name, @user %> </h2>
 		<h5><%= @user.city %> <%= @user.province %></h5>
-		<% if !@user.github.nil? %>
-			<%= link_to 'GitHub', @user.github, id: 'github', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
-		<% end %>
-		<% if !@user.linkedin.nil? %>
-			<%= link_to 'Linkedin', @user.linkedin, id: 'linkedin', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
-		<% end %>
-		<% if !@user.twitter.nil? %>
-			<%= link_to 'Twitter', @user.twitter, id: 'twitter', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
-		<% end %>
-		<% if !@user.facebook.nil? %>
-			<%= link_to 'Facebook', @user.facebook, id: 'facebook', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
-		<% end %>
+		<h5>
+			<% if !@user.github.nil? %>
+				<%= link_to 'GitHub', @user.github, id: 'github', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %>
+			<% end %>
+			<% if !@user.linkedin.nil? %>
+				<%= link_to 'Linkedin', @user.linkedin, id: 'linkedin', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+			<% end %>
+			<% if !@user.twitter.nil? %>
+				<%= link_to 'Twitter', @user.twitter, id: 'twitter', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+			<% end %>
+			<% if !@user.facebook.nil? %>
+				<%= link_to 'Facebook', @user.facebook, id: 'facebook', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+			<% end %>
+		</h5>
+		<h5><%= @user.summary %></h5>
 		<% if user_signed_in? && current_user.has_role?(:employer) %>
 			<div style="margin-top:10px;"><%= link_to 'Contact '+@user.first_name+' '+@user.last_name, contact_user_path(@user), class: "btn btn-primary" %></div>
 		<% end %>
@@ -34,16 +37,18 @@
 			<h2> <%= link_to @user.company_name, @user %></h2>
 			<h5> <%= @user.street_address %><br><%= @user.city %> <%= @user.province %> <%= @user.postal_code %> </h5>
 			<h5> <%= @user.email %> </h5>
-			<% if !@user.linkedin.nil? %>
-				<%= link_to 'Linkedin', @user.linkedin, id: 'linkedin', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
-			<% end %>
-			<% if !@user.twitter.nil? %>
-				<%= link_to 'Twitter', @user.twitter, id: 'twitter', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
-			<% end %>
-			<% if !@user.facebook.nil? %>
-				<%= link_to 'Facebook', @user.facebook, id: 'facebook', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
-			<% end %>
-			<%= raw('<br>') if @user.github.nil? && @user.linkedin.nil? && @user.twitter.nil? && @user.facebook.nil? %>
+			<h5>
+				<% if !@user.linkedin.nil? %>
+					<%= link_to 'Linkedin', @user.linkedin, id: 'linkedin', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+				<% end %>
+				<% if !@user.twitter.nil? %>
+					<%= link_to 'Twitter', @user.twitter, id: 'twitter', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+				<% end %>
+				<% if !@user.facebook.nil? %>
+					<%= link_to 'Facebook', @user.facebook, id: 'facebook', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+				<% end %>
+			</h5>
+			<h5><%= @user.summary %></h5>
 		</div>
 	</div>
 <% else %>

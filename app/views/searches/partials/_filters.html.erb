@@ -1,4 +1,5 @@
 <% path="searches/partials/filter"%>
+<hr>
 <%= render path, name: "Locations"		, key: :l, filter_values: @locations, current_values: @l, input: true 			if !@toggles[:l].nil?  %>
 <%= render path, name: "Current Company", key: :cc,filter_values: @current_companies, current_values: @cc, input: true  if !@toggles[:cc].nil? %>
 <%= render path, name: "Company"	 	, key: :c, filter_values: @companies, current_values: @c, input: true 			if !@toggles[:c].nil?  %>
@@ -13,16 +14,16 @@
 	<% if @filters.include? "date_posted" %>
 		<div id="date_posted">
 	<% else %>
-		<div id="date_posted" style="display: none;">
+		<div id="date_posted">
 	<% end %>
-		<%= link_to	"All", search_path(all_path_hash(@toggles,@query,@type,@filters,"date_posted", :dp)) %><br>
+		<p><%= link_to	"All", search_path(all_path_hash(@toggles,@query,@type,@filters,"date_posted", :dp)), class: "search-text #{active_search('All',params[:dp])}" %></p>
 		<% str = "day" %> 
 		<% cnt = 0 %>
 		<% @dates_posted.each do |dp| %>
 			<% str = "days" if cnt > 0 %>
 			<% path_hash = get_path_hash(@toggles,@query,@type,@filters,"date_posted") %>
 			<% path_hash[:dp] = dp %>
-			<%= link_to "#{dp}", search_path(path_hash), class: active_search(dp,params[:dp]) %><br>
+			<p><%= link_to "#{dp}", search_path(path_hash), class: active_search(dp,params[:dp]), class: "search-text #{active_search(dp,params[:dp])}" %></p>
 			<% cnt += 1 %>
 		<% end %>
 	</div>

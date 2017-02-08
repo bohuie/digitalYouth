@@ -16,14 +16,14 @@
 	<% else %>
 		<div id="date_posted">
 	<% end %>
-		<p><%= link_to	"All", search_path(all_path_hash(@toggles,@query,@type,@filters,"date_posted", :dp)), class: "search-text #{active_search('All',params[:dp])}" %></p>
+		<p><%= link_to	link_to radio_button("search", 'date_posted', 'All', {checked: active_search('All',params[:dp])})+" All", search_path(all_path_hash(@toggles,@query,@type,@filters,"date_posted", :dp)), class: "search-text #{active_search('All',params[:dp])}" %></p>
 		<% str = "day" %> 
 		<% cnt = 0 %>
 		<% @dates_posted.each do |dp| %>
 			<% str = "days" if cnt > 0 %>
 			<% path_hash = get_path_hash(@toggles,@query,@type,@filters,"date_posted") %>
 			<% path_hash[:dp] = dp %>
-			<p><%= link_to "#{dp}", search_path(path_hash), class: active_search(dp,params[:dp]), class: "search-text #{active_search(dp,params[:dp])}" %></p>
+			<p><%= link_to link_to radio_button("search", 'date_posted', dp, {checked: active_search(dp,params[:dp])})+" "+"#{dp}", search_path(path_hash), class: active_search(dp,params[:dp]), class: "search-text #{active_search(dp,params[:dp])}" %></p>
 			<% cnt += 1 %>
 		<% end %>
 	</div>

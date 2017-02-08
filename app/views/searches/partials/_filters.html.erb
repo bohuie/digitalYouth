@@ -1,5 +1,5 @@
 <% path="searches/partials/filter"%>
-<hr>
+<% unless params[:t].blank? %> <hr> <% end %>
 <%= render path, name: "Locations"		, key: :l, filter_values: @locations, current_values: @l, input: true 			if !@toggles[:l].nil?  %>
 <%= render path, name: "Current Company", key: :cc,filter_values: @current_companies, current_values: @cc, input: true  if !@toggles[:cc].nil? %>
 <%= render path, name: "Company"	 	, key: :c, filter_values: @companies, current_values: @c, input: true 			if !@toggles[:c].nil?  %>

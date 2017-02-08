@@ -19,12 +19,12 @@ body.welcome li {
 }
 
 .landing{
-	background-image:asset-url("homepage.svg"), linear-gradient(to bottom, rgb(19, 151, 206) 0%, rgb(19, 151, 206) 100%), linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 100%);
+	background-image:asset-url("homepage.svg"), linear-gradient(to bottom, rgb(82, 180, 217) 0%, rgb(82, 180, 217) 100%), linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 100%);
 	background-clip: content-box, padding-box;
 	height: calc(100% - 65px); 
 	background-position:bottom left;
 	background-repeat:no-repeat;
-	background-size: calc(50%) 300px, auto, auto, auto, auto;
+	background-size: calc(74%) 500px, auto, auto, auto, auto;
 }
 
 .description{
@@ -46,7 +46,7 @@ body.welcome.index nav.navbar {
 	margin-top: 65px;
 	border: none;
 	border-radius: 5px;
-	background-color: rgb(23, 102, 136) ; 
+	background-color: rgb(19, 151, 206) ; 
 	text-align: center;
 	position: relative;
 	height: calc(100% - 65px);
@@ -73,7 +73,7 @@ body.welcome.index nav.navbar {
 	width: 100%;
 	padding-top: 3px;
 	padding-bottom: 3px;
-	background-color: #52B4D9 ; 
+	background-color: rgb(19, 151, 206) ; 
 	text-align: center;
 	color: white;
 }
@@ -83,7 +83,7 @@ body.welcome.index nav.navbar {
 	border-bottom-right-radius: 5px;
 	padding-top: 3px;
 	padding-bottom: 3px;
-	background-color: #52B4D9 ; 
+	background-color: rgb(19, 151, 206) ; 
 	text-align: center;
 	color: white;
 }

@@ -2,9 +2,11 @@ module SearchesHelper
 	
 	def active_search(link,type) # Returns the class string if the two input strings match
 		if type.blank? && link == 'All'
-			return "active-search"
+			return true
+		elsif link == type
+			return true
 		else
-			return "active-search" if link == type
+			return false
 		end
 	end
 

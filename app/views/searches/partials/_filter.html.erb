@@ -1,11 +1,11 @@
 <% formatted_name = name.downcase.tr(" ", "_") %>
 	<b><%= name %></b>
-	<div id="<%=formatted_name%>">
-	<p><%= link_to	"All", search_path(all_path_hash(@toggles,@query,@type,@filters,formatted_name,key)), class: "search-text #{active_search('All', params[key])}" %></p>
+	<div id="<%=formatted_name%>" >
+	<p><%= link_to	radio_button("search", name, 'All', {checked: active_search('All',params[key])})+" All", search_path(all_path_hash(@toggles,@query,@type,@filters,formatted_name,key)), class: "search-text #{active_search('All', params[key])}" %></p>
 	<%filter_values.each do |v|%>
 		<% path_hash = get_path_hash(@toggles,@query,@type,@filters,formatted_name) %>
 		<% path_hash[key] = v %>
-		<p><%= link_to v, search_path(path_hash), class: "search-text #{active_search(v,params[key])}" %></p>
+		<p><%= link_to radio_button("search", name, v, {checked: active_search(v,params[key])})+" "+v, search_path(path_hash), class: "search-text #{active_search(v,params[key])}" %></p>
 	<% end %>
 
 	<% if local_assigns[:input] == true %>

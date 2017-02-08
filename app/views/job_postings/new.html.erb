@@ -1,5 +1,18 @@
+
 <%= render "users/shared/profile" %>
 
 <%= render partial: "shared/employer_tabs", locals: { active: "jobs" } %>
+
+<div class="row">
+	<div class="col-md-12">
+		<h4><b>New Job Posting</b></h4>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12">
+		<p>Fill out the form below to create a job posting for job seekers.</p>
+	</div>
+</div>
 
 <%= render 'job_postings/job_posting_form' %>

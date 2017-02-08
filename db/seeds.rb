@@ -40,8 +40,8 @@ begin
 
 	#--- Job Seekers for testing ---#
 	#Creating a user with some info
-	user1 = User.new(first_name: 'Tyler', last_name: 'Finley', email: 'rsearl.90@gmail.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC', image: File.new("#{Rails.root}/app/assets/images/user1.png"),
-					 github: 'https://github.com/RodneyEarl', twitter: 'https://twitter.com/ShawnMendes?lang=en', facebook: 'https://www.facebook.com/rodney.earl.9',
+	user1 = User.new(first_name: 'Tyler', last_name: 'Finley', email: 'rsearl.90@gmail.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC', image: File.new("#{Rails.root}/app/assets/images/user1.jpg"), postal_code: 'V1V 1V1',
+					 github: 'https://github.com/RodneyEarl', twitter: 'https://twitter.com/ShawnMendes?lang=en', facebook: 'https://www.facebook.com/rodney.earl.9', linkedin: 'https://ca.linkedin.com/in/rodney-earl-8485094a', summary: 'I am a newly graduated student looking to find a programming job in Kelowna.',
 					 answered_surveys:[true,true,true,true,true,true,true,true,false,true,true,true]) #how to display answered surveys
 	user1.add_role :employee
 	user1.skip_confirmation!
@@ -79,6 +79,9 @@ begin
 	
 	UserSkill.create(user_id: user2.id, skill_id: skill4.id, survey_id:3)
 	UserSkill.create(user_id: user2.id, skill_id: skill16.id, survey_id:6)
+	UserSkill.create(user_id: user2.id, skill_id: skill3.id, survey_id:6)
+	UserSkill.create(user_id: user2.id, skill_id: skill1.id, survey_id:11)
+	UserSkill.create(user_id: user2.id, skill_id: skill2.id, survey_id:11)
 
 	project3 = user2.projects.create(title: 'Concept Navigation', description: 'Online course management that helps users self-regulate their learning, by providing individualized paths.', project_date: '2016-11-10', image: File.new("#{Rails.root}/app/assets/images/ER.png"))
 	ProjectSkill.create(project_id: project3.id, skill_id: skill4.id, survey_id: 3)
@@ -115,7 +118,7 @@ begin
 	ProjectSkill.create(project_id: project5.id, skill_id: skill17.id, survey_id: 3)
 	ProjectSkill.create(project_id: project5.id, skill_id: skill18.id, survey_id: 7)
 
-	user5 = User.new(first_name: 'Lenzy', last_name: 'Bennett', email: 'Lenzy@Bennett.com', password: 'password', password_confirmation: 'password', city: 'Penticton', province: 'BC', image: File.new("#{Rails.root}/app/assets/images/user5.png"),
+	user5 = User.new(first_name: 'Lenzy', last_name: 'Bennett', email: 'Lenzy@Bennett.com', password: 'password', password_confirmation: 'password', city: 'Penticton', province: 'BC', image: File.new("#{Rails.root}/app/assets/images/user5.jpg"),
 					 answered_surveys:[true,true,true,true,true,true,true,true,false,true,true,true])
 	user5.add_role :employee
 	user5.skip_confirmation!
@@ -185,19 +188,20 @@ begin
 
 	#--- Companies for testing ---
 	#Creatinga  company
-	user11 = User.new(first_name: 'Hugh', last_name: 'Mcguire', email: 'Hugh@Mcguire.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC', image: File.new("#{Rails.root}/app/assets/images/user11.png"), 
-		company_name: 'PetSmart Inc.', bio:'We love pets and we believe pets make us better people. PetSmart will be the trusted partner to pet parents and pets in every moment of their lives.')
+	user11 = User.new(first_name: 'Hugh', last_name: 'Mcguire', email: 'Hugh@Mcguire.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC', postal_code: 'V1V 1V1', street_address: '1000 Harvey Ave.',
+		company_name: 'PetSmart Inc.', bio:'We love pets and we believe pets make us better people. PetSmart will be the trusted partner to pet parents and pets in every moment of their lives.', image: File.new("#{Rails.root}/app/assets/images/user11.png"), 
+		twitter: 'https://twitter.com/ShawnMendes?lang=en', facebook: 'https://www.facebook.com/rodney.earl.9', linkedin: 'https://ca.linkedin.com/in/rodney-earl-8485094a', summary: 'We are looking for someone to host our Social Media accounts.')
 	user11.add_role :employer
 	user11.skip_confirmation!
 	user11.save
 	user11.create_consent(answer: 1, name: "Hugh Mcguire", date_signed: Date.today, consent_type: 2)
 
 	#How to post jobs
-	jobposting1 = JobPosting.create(title: 'Social Media Manager', city: "Kelowna", province: "BC", pay_rate: 'yearly', lower_pay_range: 40000.00, upper_pay_range: 45000.00, link:"www.google.ca", posted_by:"Seed File", job_type: 1,
+	jobposting1 = JobPosting.create(title: 'Social Media Manager', city: "Kelowna", province: "BC", pay_rate: 'yearly', lower_pay_range: 40000.00, upper_pay_range: 45000.00, job_type: 1,
 				  description: 'Handling our Facebook and Twitter account, posting messages, and responding to clients.', open_date: Date.today-7, close_date: Date.today+7,
 				  job_category_id: 12, user_id: user11.id, created_at:Date.today-7)
 
-	jobposting2 = JobPosting.create(title: 'Social Media Expert', city: "Vernon", province: "BC", pay_rate: "hourly", lower_pay_range: 13.81, upper_pay_range: 15.60, link:"www.google.ca", posted_by:"Seed File", job_type: 0,
+	jobposting2 = JobPosting.create(title: 'Social Media Expert', city: "Vernon", province: "BC", pay_rate: "hourly", lower_pay_range: 13.81, upper_pay_range: 15.60, posted_by:"Seed File", job_type: 0,
 				  description: 'Handling our Facebook and Twitter account, posting messages, and responding to clients.', open_date: Date.today-7, close_date: Date.today,
 				  job_category_id: 12, user_id: user11.id, created_at:Date.today-7)
 
@@ -236,12 +240,12 @@ begin
 	user14.save
 	user14.create_consent(answer: 1, name: "Daisy Fitzpatrick", date_signed: Date.today, consent_type: 2)
 
-	user15 = User.new(first_name: 'Foo', last_name: 'Bar', email: 'foo@bar.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC', image: File.new("#{Rails.root}/app/assets/images/user15.png"), 
+	user15 = User.new(first_name: 'Jess', last_name: 'McGomack', email: 'jess@mcgomack.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC', image: File.new("#{Rails.root}/app/assets/images/user15.png"), 
 		company_name: 'Google')
 	user15.add_role :employer
 	user15.skip_confirmation!
 	user15.save
-	user15.create_consent(answer: 1, name: "Hugh Mcguire", date_signed: Date.today, consent_type: 2)
+	user15.create_consent(answer: 1, name: "Jess McGomack", date_signed: Date.today, consent_type: 2)
 
 	user16 = User.new(first_name: 'Maximilian', last_name: 'Hanson', email: 'Maximilian@Hanson.com', password: 'password', password_confirmation: 'password', city: 'Penticton', province: 'BC', image: File.new("#{Rails.root}/app/assets/images/user16.jpg"), 
 		company_name: "McDonald's Corporation")
@@ -271,12 +275,12 @@ begin
 	user19.save
 	user19.create_consent(answer: 1, name: "Marcello Mills", date_signed: Date.today, consent_type: 2)
 
-	user20 = User.new(first_name: 'Foo', last_name: 'Bar', email: 'foo@bar.com', password: 'password', password_confirmation: 'password', city: 'Penticton', province: 'BC', image: File.new("#{Rails.root}/app/assets/images/user20.png"), 
+	user20 = User.new(first_name: 'John', last_name: 'Smith', email: 'john@smith.com', password: 'password', password_confirmation: 'password', city: 'Penticton', province: 'BC', image: File.new("#{Rails.root}/app/assets/images/user20.png"), 
 		company_name: 'Centex Corp.')
 	user20.add_role :employer
 	user20.skip_confirmation!
 	user20.save
-	user20.create_consent(answer: 1, name: "Foo Bar", date_signed: Date.today, consent_type: 2)
+	user20.create_consent(answer: 1, name: "John Smith", date_signed: Date.today, consent_type: 2)
 
 	user21 = User.new(first_name: 'admin', last_name: 'admin', email: 'admin@admin.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC')
 	user21.add_role :admin
@@ -295,7 +299,7 @@ begin
 	reference1 = Reference.create!(first_name: 'Bernie', last_name: 'Smith', company: 'Apple Picking Co.',
 				 position: "Lead Apple Picker", reference_body: "He was the best Apple Picker.", user_id: user1.id)
 	reference1 = Reference.create(first_name: user11.first_name, last_name: user11.last_name, company: user11.company_name,
-				 position: "Developer", reference_body: "Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar Foo bar ", user_id: user1.id)
+				 position: "Developer", reference_body: "Tyler was a good developer.  He coded many different projects for us, using various skills from different languages.  While working with us, he learned how to do mobile development, and ended up leading a group on another mobile project.", user_id: user1.id)
 
 	reference2 = Reference.create(first_name: 'Bernie', last_name: 'Smith', company: 'Apple Pickers United LTD',
 				 position: "Apple QC Specialist", reference_body: "He was the best.", user_id: user2.id)

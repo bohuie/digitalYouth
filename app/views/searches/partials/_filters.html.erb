@@ -9,7 +9,6 @@
 <%= render path, name: "Relationship"	, key: :r, filter_values: @relationships, current_values: @r if !@toggles[:r].nil? && user_signed_in?  %>
 
 <% if !@toggles[:dp].nil? %>
-	<hr>
 	<span class="caret-right"></span><%= content_tag("a", "Date Posted", class: "filter-title", onclick: "$(date_posted).slideToggle(100);" )%>
 	<% if @filters.include? "date_posted" %>
 		<div id="date_posted">

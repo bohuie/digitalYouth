@@ -1,0 +1,41 @@
+<div class="signupbox col-md-5 col-xs-5">
+	<div class="row">
+		<div class="titlebox">
+			<h4><b>Welcome <%= current_user.first_name + " " + current_user.last_name %></b></h4>
+		</div>
+	</div>
+	<br />
+	<div class="row">
+		<div class="col-md-12">
+			<%= link_to 'My Profile', user_path(current_user), class: 'signuplink' %>
+			<ul style="text-align: left;">
+				<% if current_user.bio.blank? %>
+					<li><h4>Your company biography is the first thing job seekers see on your page.  Include some info so they can know more about you.  Update it <%= link_to "here", user_path(current_user), onclick: "setHomeTab('bio')" %> </h4></li>
+				<% else %>
+					<li><h4>Keep your biography up to date, to let job seekers know what you do.</h4></li>
+				<% end %>
+
+				<% if current_user.job_postings.count < LOW_JOBS %>
+					<li><h4>Reach out to job seekers by posting a job <%= link_to "here", new_job_posting_path %> </h4></li>
+				<% else %>
+					<% if @new_application.blank? %>
+						<li><h4>No new applicants</h4></li>
+					<% else %>
+						<%= link_to 'App', '#', onclick: "window.location='"+show_trackable_path(@new_application)+"'" %>
+					<% end %>
+					<% if @expired_posting.blank? %>
+						<li><h4>All of your job postings are current and still looking for applicants.  You can see them <%= link_to "here", user_path(current_user), onclick: "setHomeTab('jobs')" %></h4></li>
+					<% elsif @expired_posting.job_posting_applications.blank? %>
+						<li><h4>You have a job posting that has expired and has no applicants.  You can extend it <%= link_to "here", edit_job_posting_path(@expired_posting) %></h4></li>
+					<% else %>
+						<li><h4>You have a job posting that has expired and has some applicants.  You can look at them <%= link_to "here", applications_job_posting_path(@expired_posting) %></h4></li>
+					<% end %>
+				<% end %>
+			</ul>
+		</div>
+	</div>
+	<br />
+	<div class="footerbox row">
+		<h5>Already a member? <a href="users/sign_in">Login</a></h5>
+	</div>
+</div>

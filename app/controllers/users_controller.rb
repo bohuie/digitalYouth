@@ -4,7 +4,7 @@ respond_to :html, :json
 	before_action :authenticate_user!, except: [:show, :index, :nav_tab] #ignore home_tab, only done when it is the current user and logged in
 	before_action :profile_owner, only: [:edit, :update, :destroy]
 	skip_before_action :verify_authenticity_token, only: [:nav_tab] #ignore home_tab, only done when it is the current user and logged in
-	before_action :employer_only, only: [:contact, :send_mail]
+	before_action :job_provider_only, only: [:contact, :send_mail]
 
 	
 	def index
@@ -237,7 +237,7 @@ respond_to :html, :json
 		end
 	end
 
-	def employer_only
+	def job_provider_only
 		unless current_user.has_role? :employer
 			flash[:warning] = "Sorry, we couldn't find that page."
 			redirect_back_or

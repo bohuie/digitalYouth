@@ -16,3 +16,5 @@ LOW_SKILLS = 10.freeze
 LOW_PROJECTS= 5.freeze
 
 LOW_REFERENCES = 3.freeze
+
+LOW_JOBS = 1.freeze

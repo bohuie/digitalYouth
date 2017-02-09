@@ -7,7 +7,7 @@
 	<br />
 	<div class="row">
 		<div class="col-md-12">
-			<a href="signup_jobseeker" class="signuplink">My Profile</a>
+			<%= link_to 'My Profile', user_path(current_user), class: 'signuplink' %>
 			<ul style="text-align: left;">
 				<% if current_user.answered_surveys.include? false %>
 					<li><h4>It seems you haven't answer all your skill surveys, check it out <%= link_to "here", edit_survey_path(SURVEYS[current_user.answered_surveys.index(false)]) %></h4></li>

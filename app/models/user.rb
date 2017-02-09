@@ -156,4 +156,16 @@ class User < ActiveRecord::Base
     def reprocess_image
         image.reprocess!
     end
+
+    def confirmed_reference_count
+        return Reference.where(user_id: self.id, confirmed: true).count
+    end
+
+    def unconfirmed_reference_count
+        return Reference.where(user_id: self.id, confirmed: false).count
+    end
+
+    def reference_count
+        return Reference.where(user_id: self.id).count
+    end
 end

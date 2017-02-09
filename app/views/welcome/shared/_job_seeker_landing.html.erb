@@ -1,0 +1,46 @@
+<div class="signupbox col-md-5 col-xs-5">
+	<div class="row">
+		<div class="titlebox">
+			<h4><b>Welcome <%= current_user.first_name + " " + current_user.last_name %></b></h4>
+		</div>
+	</div>
+	<br />
+	<div class="row">
+		<div class="col-md-12">
+			<a href="signup_jobseeker" class="signuplink">My Profile</a>
+			<ul style="text-align: left;">
+				<% if current_user.answered_surveys.include? false %>
+					<li><h4>It seems you haven't answer all your skill surveys, check it out <%= link_to "here", edit_survey_path(SURVEYS[current_user.answered_surveys.index(false)]) %></h4></li>
+				<% else %>
+					<li><h4>All your skill surveys are complete!  Make sure to update them once in a while.</h4></li>
+				<% end %>
+
+				<% if current_user.skills.count < LOW_SKILLS %>
+					<li><h4>Potential Job Providers like to see skills, add some more <%= link_to "here", user_path(current_user), onclick: "setHomeTab('skills')" %></h4></li>
+				<% else %>
+					<li><h4>You have lots of skills to showcase, but add more as you learn them.</h4></li>
+				<% end %>
+
+				<% if current_user.projects.count < LOW_PROJECTS %>
+					<li><h4>Projects are a great way to show off certain skills you've used in practical settings, add some more <%= link_to "here", new_project_path %></h4></li>
+				<% else %>
+					<li><h4>Projects are great to show Job Providers what you are capable of, keep adding them as you get more done.</h4></li>
+				<% end %>
+
+				<!-- Job Recommendations -->
+
+				<% if current_user.unconfirmed_reference_count > 0 %>
+					<li><h4>You have some unconfirmed references.  If everything checks out, <%= link_to "confirm", user_path(current_user), onclick: "setHomeTab('references')" %> them so Job Providers can learn more about you.</h4></li>
+				<% elsif current_user.confirmed_reference_count < LOW_REFERENCES %>
+					<li><h4>References are a great way for Job Providers to learn more about you, add some more <%= link_to "here", email_reference_path %></h4></li>
+				<% else %>
+					<li><h4>Make sure you keep in touch with your references and up to date.</h4></li>
+				<% end %>
+			</ul>
+		</div>
+	</div>
+	<br />
+	<div class="footerbox row">
+		<h5>Already a member? <a href="users/sign_in">Login</a></h5>
+	</div>
+</div>

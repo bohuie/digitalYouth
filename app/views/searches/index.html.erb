@@ -1,19 +1,19 @@
 <div class="row">
 	<div class="col-md-2"></div>
 	<div class="col-md-2">
-		<%= link_to "All", search_path(q:@query), class: "btn btn-sq btn-primary" %>
+		<a href=<%= search_path(q:@query) %> class="btn btn-sq btn-primary"><%= image_tag("World_Icon.svg", size: "64x64") %><br /><p>All</p></a>
 	</div>
 	<div class="col-md-2">
-		<%= link_to "People", search_path(q:@query, t:"People"), class: "btn btn-sq btn-primary" %>
+		<a href=<%= search_path(q:@query, t:"People") %> class="btn btn-sq btn-primary"><%= image_tag("People_Icon.svg", size: "64x64") %><br /><p>People</p></a>
 	</div>
 	<div class="col-md-2">
-		<%= link_to "Companies", search_path(q:@query, t:"Companies"), class: "btn btn-sq btn-primary" %>
+		<a href=<%= search_path(q:@query, t:"Companies") %> class="btn btn-sq btn-primary"><%= image_tag("Companies_Icon.svg", size: "64x64") %><br /><p>Companies</p></a>
 	</div>
 	<div class="col-md-2">
-		<%= link_to "Projects", search_path(q:@query, t:"Projects"), class: "btn btn-sq btn-primary" %>
+		<a href=<%= search_path(q:@query, t:"Projects") %> class="btn btn-sq btn-primary"><%= image_tag("Projects_Icon.svg", size: "64x64") %><br /><p>Projects</p></a>
 	</div>
 	<div class="col-md-2">
-		<%= link_to "Job Postings", search_path(q:@query, t:"JobPostings"), class: "btn btn-sq btn-primary" %>
+		<a href=<%= search_path(q:@query, t:"JobPostings") %> class="btn btn-sq btn-primary"><%= image_tag("JobPosting_Icon.svg", size: "64x64") %><br /><p>Job Postings</p></a>
 	</div>
 </div>
 

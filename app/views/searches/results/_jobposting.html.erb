@@ -1,8 +1,25 @@
-<p><%=result.title%><br>
-<% if !result.company_name.nil? %>
-	<%=result.company_name%><br>
-<% else %>
-	<%=result.user.company_name%><br>
-<% end %>
-   <i><%=result.description[0..30]%> ...</i>
-</p>
+
+<div class="display-flex col-md-2">
+	<%= image_tag result.user.image.url(:thumb), alt:"Job Posting Icon", class: "profile-image align-center" %>
+</div>
+<div class="col-md-10">
+	<div class="row">
+		<b><%= "#{result.title}" %></b>
+	</div>
+	<div class="row gray-text">
+		<%= "#{result.user.company_name}" %>
+	</div>
+	<div class="row gray-text">
+		<% if !result.city.blank? && !result.province.blank? %>
+			<%= "#{result.city}, #{result.province}" %>
+		<% elsif !result.city.blank? %>
+			<%= "#{result.city}" %>
+		<% elsif !result.province.blank? %>
+			<%= "#{result.province}" %>
+		<% else %>
+		<% end %>
+	</div>
+	<div class="row gray-text">
+		<%= "#{result.description}" %>
+	</div>
+</div>

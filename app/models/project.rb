@@ -7,7 +7,9 @@ class Project < ActiveRecord::Base
 	accepts_nested_attributes_for :project_skills
 	has_many :skills, through: :project_skills
 
-	has_attached_file :image, styles: {medium: '200x200'}
+	has_attached_file :image, styles: {
+		medium: '200x200',
+		thumb: "45x45#"}
 	include DeletableAttachment
 
 	validates :title, presence: true

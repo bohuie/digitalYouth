@@ -13,6 +13,7 @@
       <%= form_tag "/search", method: "get", class: "navbar-form navbar-left", role:"search", id: 'search' do %>
         <div class="input-group">
             <%= text_field_tag 'q', params[:q], class: 'round-border form-control', placeholder: "Search", autocomplete:"off"%>
+            <%= hidden_field_tag 't', params[:t] %>
             <%= button_tag type: "submit", class: "btn btn-default margin-left-5", name: nil do %>
               <span class="glyphicon glyphicon-search"></span>
             <% end %>

@@ -172,6 +172,22 @@ class User < ActiveRecord::Base
         return Reference.where(user_id: self.id).count
     end
 
+    def formatted_name(current)
+        if self.show_name || self == current
+            return self.first_name + ' ' + self.last_name
+        else
+            return 'Anonymous Job Seeker'
+        end
+    end
+
+    def formatted_location(current)
+        if self.show_location || self == current
+            return self.city + ', ' + self.province
+        else
+            return 'Secret Location'
+        end
+    end
+
     def gender_check
         unless self.gender.blank?
             if self.gender != "male" && self.gender != "female"

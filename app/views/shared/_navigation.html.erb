@@ -13,13 +13,7 @@
       <%= form_tag "/search", method: "get", class: "navbar-form navbar-left", role:"search", id: 'search' do %>
         <div class="input-group">
             <%= text_field_tag 'q', params[:q], class: 'round-border form-control', placeholder: "Search", autocomplete:"off"%>
-            <select name="t" class="select form-control margin-left-5" id="type-select">
-              <option value="">All</option>
-              <option value="People">People</option>
-              <option value="Companies">Companies</option>
-              <option value="Projects">Projects</option>
-              <option value="JobPostings">Job Postings</option>
-            </select>
+            <%= hidden_field_tag 't', params[:t] %>
             <%= button_tag type: "submit", class: "btn btn-default margin-left-5", name: nil do %>
               <span class="glyphicon glyphicon-search"></span>
             <% end %>
@@ -28,8 +22,6 @@
 
       <ul class="nav navbar-nav navbar-right">
         <% if user_signed_in? %>
-          <li><%= link_to current_user.first_name, current_user, html_options = { style: "cursos:default;"} %></li>
-
           <li class="dropdown">                                   
             <%= link_to show_notifications_path, html_options = 
             {class: "dropdown-toggle", "data-toggle"=>"dropdown","data-remote"=>"true"}, remote: true do %>
@@ -46,14 +38,24 @@
           </li>
 
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu <span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
+            <a href="#" class="dropdown-toggle padding-5" data-toggle="dropdown"><%= image_tag current_user.image.url(:menu), alt:"User Icon", class: "profile-image" %>Me<span class="caret"></span></a>
+            <ul class="dropdown-menu padding-10" role="menu">
+              <li class="menu-profile">
+                <%= image_tag current_user.image.url(:thumb), alt:"User Icon", class: "profile-image menu-image" %>
+                <div class="menu-name">
+                  <% if current_user.has_role?(:employee) %>
+                    <%= current_user.first_name+" "+current_user.last_name %><br /><%= link_to "View Profile", user_path(current_user) %>
+                  <% elsif current_user.has_role?(:employer) %>
+                    <%= current_user.company_name %><br /><%= link_to "View Profile", user_path(current_user) %>
+                  <% end %>
+                </div>
+                <div style="clear:both;"></div>
+              </li>
+              <hr class="margin-all-10">
               <li><%= link_to "Edit Profile", edit_user_path(current_user) %></li>
               <!-- Placeholder: Will this be used? -->
-              <li><%= link_to '/settings/consent' do %>
-                <i class="glyphicon glyphicon glyphicon-cog" aria-label="Settings"></i>
-                <%end %></li>
-
+              <li><%= link_to "Consent", '/settings/consent' %></li>
+              <hr class="margin-all-0">
               <li><%= link_to 'Logout', destroy_user_session_path, :method => :delete %></li>
             </ul>
           </li>

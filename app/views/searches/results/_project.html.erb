@@ -1,2 +1,15 @@
-<p><%=result.title%><br>
-   <%=result.description[0..20]%> ...</p>
+
+<div class="display-flex col-md-2">
+	<%= image_tag result.image.url(:thumb), alt:"Project Icon", class: "profile-image align-center" %>
+</div>
+<div class="col-md-10">
+	<div class="row">
+		<b><%= "#{result.title}" %></b>
+	</div>
+	<div class="row gray-text">
+		<%= "#{result.user.first_name} #{result.user.last_name}" %>
+	</div>
+	<div class="row gray-text">
+		<%= "#{result.description}" %>
+	</div>
+</div>

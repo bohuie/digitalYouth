@@ -36,7 +36,7 @@
             
           <%= info.input :last_name, required: true, wrapper_html: { class: "col-md-4" } %>
 
-          <%= info.input :show_name, label: 'Display Name', as: :radio_buttons,  item_wrapper_class: 'radio-inline margin-top-0', wrapper_html: { class: "col-md-4", style: "padding-top:30px;" } if current_user.has_role?(:employee) %>
+          <%= info.input :show_name, label: 'Display Name', label_html: { class: "min-width-120" }, as: :radio_buttons,  item_wrapper_class: 'radio-inline margin-top-0', wrapper_html: { class: "col-md-4", style: "padding-top:30px;" } if current_user.has_role?(:employee) %>
         </div>
         <div class="padding-bottom-10 row">
           <%= info.input :street_address, wrapper_html: { class: "padding-left-0 col-md-8" }  %>
@@ -56,7 +56,7 @@
           <%= info.input :postal_code, required: true, wrapper_html: { class: "col-md-3" } %>
           <% end %>
 
-          <%= info.input :show_location, label: 'Display Location', as: :radio_buttons,  item_wrapper_class: 'radio-inline margin-top-0', wrapper_html: { class: "col-md-4", style: "padding-top:30px;" } if current_user.has_role?(:employee) %>
+          <%= info.input :show_location, label: 'Display Location', label_html: { class: "min-width-120" }, as: :radio_buttons,  item_wrapper_class: 'radio-inline margin-top-0', wrapper_html: { class: "col-md-4", style: "padding-top:30px;" } if current_user.has_role?(:employee) %>
         </div>
         <hr>
         <div class="padding-bottom-10 row">
@@ -64,7 +64,7 @@
             <%= info.input :image, as: :file, label: "Upload Profile Picture", input_html: {style: 'display: inline;'} %>
             <p>You will be able to crop and edit your photo in the next screen.</p>
           </div>
-          <%= info.input :show_picture, label: 'Display Picture', as: :radio_buttons,  item_wrapper_class: 'radio-inline margin-top-0', wrapper_html: { class: "col-md-4", style: "padding-top:15px;" } if current_user.has_role?(:employee) %>
+          <%= info.input :show_picture, label: 'Display Picture', label_html: { class: "min-width-120" }, as: :radio_buttons,  item_wrapper_class: 'radio-inline margin-top-0', wrapper_html: { class: "col-md-4", style: "padding-top:15px;" } if current_user.has_role?(:employee) %>
         </div>
         <div class="padding-bottom-10 row">
           <%= info.input :gender, collection: GENDERS, as: :radio_buttons, item_wrapper_class: 'radio-inline margin-top-0', wrapper_html: { class: "padding-left-0 col-md-8" } %>

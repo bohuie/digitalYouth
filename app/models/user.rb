@@ -28,12 +28,14 @@ class User < ActiveRecord::Base
             medium: { geometry: "150x150>", :processors => [:cropper] },
             small: { geometry: "100x100>", :processors => [:cropper] },
             thumb: { geometry: "45x45>", :processors => [:cropper] },
+            menu: { geometry: "20x20>", :processors => [:cropper] },
             large: { geometry: "400x400" }
         },
         convert_options: {
             medium: "-gravity center -extent 150x150",
             small: "-gravity center -extent 100x100",
             thumb: "-gravity center -extent 45x45",
+            menu: "-gravity center -extent 20x20",
             large: "-gravity center -extent 400x400"
         }
     include DeletableAttachment
@@ -45,6 +47,7 @@ class User < ActiveRecord::Base
     validates :province, presence: true
     validates :city, presence: true
     validates :summary, length: { maximum: 200 }
+    validate  :gender_check
 
     has_many :job_postings, dependent: :destroy
     has_many :projects, dependent: :destroy
@@ -155,5 +158,25 @@ class User < ActiveRecord::Base
 
     def reprocess_image
         image.reprocess!
+    end
+
+    def confirmed_reference_count
+        return Reference.where(user_id: self.id, confirmed: true).count
+    end
+
+    def unconfirmed_reference_count
+        return Reference.where(user_id: self.id, confirmed: false).count
+    end
+
+    def reference_count
+        return Reference.where(user_id: self.id).count
+    end
+
+    def gender_check
+        unless self.gender.blank?
+            if self.gender != "male" && self.gender != "female"
+                errors.add(:gender, "must be blank, male, or female.")
+            end
+        end
     end
 end

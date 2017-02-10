@@ -1,7 +1,13 @@
 module SearchesHelper
 	
 	def active_search(link,type) # Returns the class string if the two input strings match
-		return "active-search" if link == type
+		if type.blank? && link == 'All'
+			return true
+		elsif link == type
+			return true
+		else
+			return false
+		end
 	end
 
 	def all_path_hash(input_hash,query,type,filters,filter,key) # Returns a path hash for searching on an all link

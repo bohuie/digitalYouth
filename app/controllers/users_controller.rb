@@ -205,7 +205,7 @@ respond_to :html, :json
 	end
 
 	def personal_params
-		params.require(:user).permit(:first_name, :last_name, :street_address, :city, :province, :postal_code, :image, :delete_image, :company_name, :summary)
+		params.require(:user).permit(:first_name, :last_name, :street_address, :city, :province, :postal_code, :image, :delete_image, :company_name, :summary, :gender)
 	end
 
 	def email_params

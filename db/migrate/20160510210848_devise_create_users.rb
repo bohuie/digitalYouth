@@ -7,6 +7,7 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string  :first_name
       t.string  :last_name
       t.attachment :image
+      t.string  :gender
 
       #social media
       t.string  :github

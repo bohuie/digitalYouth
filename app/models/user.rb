@@ -47,6 +47,7 @@ class User < ActiveRecord::Base
     validates :province, presence: true
     validates :city, presence: true
     validates :summary, length: { maximum: 200 }
+    validate  :gender_check
 
     has_many :job_postings, dependent: :destroy
     has_many :projects, dependent: :destroy
@@ -169,5 +170,13 @@ class User < ActiveRecord::Base
 
     def reference_count
         return Reference.where(user_id: self.id).count
+    end
+
+    def gender_check
+        unless self.gender.blank?
+            if self.gender != "male" && self.gender != "female"
+                errors.add(:gender, "must be blank, male, or female.")
+            end
+        end
     end
 end

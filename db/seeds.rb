@@ -40,7 +40,7 @@ begin
 
 	#--- Job Seekers for testing ---#
 	#Creating a user with some info
-	user1 = User.new(first_name: 'Tyler', last_name: 'Finley', email: 'rsearl.90@gmail.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC', image: File.new("#{Rails.root}/app/assets/images/user1.jpg"), postal_code: 'V1V 1V1',
+	user1 = User.new(first_name: 'Tyler', last_name: 'Finley', email: 'rsearl.90@gmail.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC', image: File.new("#{Rails.root}/app/assets/images/user1.jpg"), postal_code: 'V1V 1V1', gender: "male",
 					 github: 'https://github.com/RodneyEarl', twitter: 'https://twitter.com/ShawnMendes?lang=en', facebook: 'https://www.facebook.com/rodney.earl.9', linkedin: 'https://ca.linkedin.com/in/rodney-earl-8485094a', summary: 'I am a newly graduated student looking to find a programming job in Kelowna.',
 					 answered_surveys:[true,true,true,true,true,true,true,true,false,true,true,true]) #how to display answered surveys
 	user1.add_role :employee
@@ -69,7 +69,7 @@ begin
 	ProjectSkill.create(project_id: project1.id, skill_id: skill15.id, survey_id: 12)
 	ProjectSkill.create(project_id: project2.id, skill_id: skill10.id, survey_id: 3)
 
-	user2 = User.new(first_name: 'Mackena', last_name: 'Carroll', email: 'Mackena@Carroll.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC', image: File.new("#{Rails.root}/app/assets/images/user2.jpg"),
+	user2 = User.new(first_name: 'Mackena', last_name: 'Carroll', email: 'Mackena@Carroll.com', password: 'password', password_confirmation: 'password', city: 'Kelowna', province: 'BC', image: File.new("#{Rails.root}/app/assets/images/user2.jpg"), gender: "female",
 					 answered_surveys:[true,true,true,true,true,true,true,true,false,true,true,true])
 	user2.add_role :employee
 	user2.skip_confirmation!
@@ -87,7 +87,7 @@ begin
 	ProjectSkill.create(project_id: project3.id, skill_id: skill4.id, survey_id: 3)
 	ProjectSkill.create(project_id: project3.id, skill_id: skill16.id, survey_id: 6)
 
-	user3 = User.new(first_name: 'Kaden', last_name: 'Buchanan', email: 'Kaden@Buchanan.com', password: 'password', password_confirmation: 'password', city: 'Vernon', province: 'BC', image: File.new("#{Rails.root}/app/assets/images/user3.jpg"),
+	user3 = User.new(first_name: 'Kaden', last_name: 'Buchanan', email: 'Kaden@Buchanan.com', password: 'password', password_confirmation: 'password', city: 'Vernon', province: 'BC', image: File.new("#{Rails.root}/app/assets/images/user3.jpg"), gender: "male",
 					 answered_surveys:[true,true,true,true,true,true,true,true,false,true,true,true])
 	user3.add_role :employee
 	user3.skip_confirmation!
@@ -118,7 +118,7 @@ begin
 	ProjectSkill.create(project_id: project5.id, skill_id: skill17.id, survey_id: 3)
 	ProjectSkill.create(project_id: project5.id, skill_id: skill18.id, survey_id: 7)
 
-	user5 = User.new(first_name: 'Lenzy', last_name: 'Bennett', email: 'Lenzy@Bennett.com', password: 'password', password_confirmation: 'password', city: 'Penticton', province: 'BC', image: File.new("#{Rails.root}/app/assets/images/user5.jpg"),
+	user5 = User.new(first_name: 'Lenzy', last_name: 'Bennett', email: 'Lenzy@Bennett.com', password: 'password', password_confirmation: 'password', city: 'Penticton', province: 'BC', image: File.new("#{Rails.root}/app/assets/images/user5.jpg"), gender: "female",
 					 answered_surveys:[true,true,true,true,true,true,true,true,false,true,true,true])
 	user5.add_role :employee
 	user5.skip_confirmation!

@@ -144,7 +144,6 @@ class JobPosting < ActiveRecord::Base
 	end
 
 	def validate_skills
-		byebug
 		errors.add(:job_posting_skills, "must have at least one skill") if self.job_posting_skills.size < 1
 	end
 

@@ -178,7 +178,7 @@ class User < ActiveRecord::Base
     end
 
     def formatted_name(current)
-        if self.show_name || self == current
+        if self.show_name || self == current || JobPostingApplication.check_app(self, current)
             return self.first_name + ' ' + self.last_name
         else
             return 'Anonymous Job Seeker'
@@ -186,10 +186,18 @@ class User < ActiveRecord::Base
     end
 
     def formatted_location(current)
-        if self.show_location || self == current
+        if self.show_location || self == current || JobPostingApplication.check_app(self, current)
             return self.city + ', ' + self.province
         else
             return 'Secret Location'
+        end
+    end
+
+    def formatted_picture(current)
+        if self.show_picture || self == current || JobPostingApplication.check_app(self, current)
+            return true
+        else
+            return false
         end
     end
 

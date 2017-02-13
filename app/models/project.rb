@@ -7,7 +7,9 @@ class Project < ActiveRecord::Base
 	accepts_nested_attributes_for :project_skills
 	has_many :skills, through: :project_skills
 
-	has_attached_file :image, styles: {medium: '200x200'}
+	has_attached_file :image, styles: {
+		medium: '200x200',
+		thumb: "45x45#"}
 	include DeletableAttachment
 
 	validates :title, presence: true
@@ -19,9 +21,8 @@ class Project < ActiveRecord::Base
 		data = Hash.new
 	  	data[:title] = title.titleize
 	  	data[:description] = description.titleize
-	  	data[:user_id] = self.user_id #doesnt make sense?
-	  	data[:owner_first] = self.user.first_name.titleize
-	  	data[:owner_last] = self.user.last_name.titleize
+	  	data[:owner_first] = self.user.first_name.titleize if self.user.show_name
+	  	data[:owner_last] = self.user.last_name.titleize if self.user.show_name
 	  	data[:created_at] = created_at
 	  	data[:skills] = self.skills.pluck(:name)
 	  	return data

@@ -3,10 +3,12 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .search-sidebar{
-    display: block;
-    padding: 20px;
-    background-color: #f2f2f2;
-    border-right: 1px solid #eee;
+  display: block;
+  padding: 20px;
+}
+
+a.search-text, a.hover.search-text {
+  color: black;
 }
 
 .caret-right {
@@ -34,17 +36,29 @@
 	cursor:default;
 }
 
+.gray-text {
+  color: darkgray;
+}
+
+.align-center {
+  align-self: center;
+}
+
+.display-flex {
+  display: flex;
+}
+
 .search-result{
   cursor:pointer;
   background-color: #FCFCFC;
   border: 1px solid #F5F5F5;
-  padding: 2px, 2px, 2px, 2px;
+  padding: 10px 2px 10px 2px;
   margin-bottom: 5px;
+  display: flex;
 }
 
 .active-search{
-  background: #DBDBDB;
-  padding-left: 10px;
+  color: red !important;
   padding-right: 10px;
   padding-top: 2px;
   padding-bottom: 2px;

@@ -61,6 +61,15 @@
         <hr>
         <div class="padding-bottom-10 row">
           <div class="padding-left-0 col-md-8">
+            <%= info.input :resume, as: :file, label: "Upload Private Resume", input_html: {style: 'display: inline;'} %>
+            <% unless @user.resume.blank? %>
+              <p>Current Resume: <%= link_to @user.resume.original_filename, @user.resume.url, target: '_blank' %></p>
+            <% end %>
+          </div>
+          <div class="col-md-4">
+            <p>Only displayed to Job Providers in your job applications to them.</p>
+          </div>
+          <div class="padding-left-0 col-md-8">
             <%= info.input :image, as: :file, label: "Upload Profile Picture", input_html: {style: 'display: inline;'} %>
             <p>You will be able to crop and edit your photo in the next screen.</p>
           </div>

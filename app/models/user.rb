@@ -41,7 +41,14 @@ class User < ActiveRecord::Base
     include DeletableAttachment
     validates_attachment :image, content_type: { content_type: ["image/jpg", "image/jpeg", "image/png", "image/svg"] }
     attr_accessor :crop_x, :crop_y, :crop_w, :crop_h, :new_email
-    #after_update :reprocess_image, :if => :cropping?
+    
+    has_attached_file :resume
+    validates_attachment_content_type :resume, content_type: [
+        'application/msword',
+        'application/pdf',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/vnd.oasis.opendocument.text'
+      ]
 
     validates_format_of :email, :without => TEMP_EMAIL_REGEX, on: :update
     validates :province, presence: true

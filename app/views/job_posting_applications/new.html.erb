@@ -30,6 +30,9 @@
 		<div class="col-md-2">
 			<%= image_tag current_user.image.url(:small), class: "image-radius" if !current_user.image.nil? %>
 			<h4> <%="#{current_user.first_name} #{current_user.last_name}"%></h4>
+			<% unless @user.resume.blank? %>
+           		<p>Current Resume: <%= link_to @user.resume.original_filename, @user.resume.url, target: '_blank' %></p>
+            <% end %>
 		</div>
 		<div class="col-md-4">
 			<h4><b>Applicant Message:</b></h4>

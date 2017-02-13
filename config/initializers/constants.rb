@@ -11,7 +11,7 @@ SURVEYS = { 0 => "General Computer", 1 => "Internet and Networks", 2 => "Program
 			4 => "Spreadsheet", 5 => "Online Communication and Collaboration", 6 => " Time, Proejct, People", 
 			7 => "Money", 8 => "Presentation", 9 => " Multimedia", 10 => "Social Media", 11 => "21st Century Skills" }.freeze
 
-GENDERS = { "Male" => "male", "Female" => "female", "Not specify" => "" }.freeze
+GENDERS = { "Male" => "male", "Female" => "female"}.freeze
 
 LOW_SKILLS = 10.freeze
 

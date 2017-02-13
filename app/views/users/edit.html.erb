@@ -60,6 +60,17 @@
         </div>
         <hr>
         <div class="padding-bottom-10 row">
+          <% if current_user.has_role? :employee %>
+            <div class="padding-left-0 col-md-8">
+              <%= info.input :resume, as: :file, label: "Upload Private Resume", input_html: {style: 'display: inline;'} %>
+              <% unless @user.resume.blank? %>
+                <p>Current Resume: <%= link_to @user.resume.original_filename, @user.resume.url, target: '_blank' %></p>
+              <% end %>
+            </div>
+          <% end %>
+          <div class="col-md-4">
+            <p>Only displayed to Job Providers in your job applications to them.</p>
+          </div>
           <div class="padding-left-0 col-md-8">
             <%= info.input :image, as: :file, label: "Upload Profile Picture", input_html: {style: 'display: inline;'} %>
             <p>You will be able to crop and edit your photo in the next screen.</p>
@@ -67,12 +78,20 @@
           <%= info.input :show_picture, label: 'Display Picture', label_html: { class: "min-width-120" }, as: :radio_buttons,  item_wrapper_class: 'radio-inline margin-top-0', wrapper_html: { class: "col-md-4", style: "padding-top:15px;" } if current_user.has_role?(:employee) %>
         </div>
         <div class="padding-bottom-10 row">
-          <%= info.input :gender, collection: GENDERS, as: :radio_buttons, item_wrapper_class: 'radio-inline margin-top-0', wrapper_html: { class: "padding-left-0 col-md-8" } %>
+          <%= info.input :gender, required: true, collection: GENDERS, as: :radio_buttons, item_wrapper_class: 'radio-inline margin-top-0', wrapper_html: { class: "padding-left-0 col-md-8" } %>
           <% if current_user.has_role?(:employee) %>
-          <div class="col-md-4">
-          <p>Never displayed.  Used for default image choice.</p>
+            <div class="col-md-4">
+              <p>Never displayed.  Used for default image choice.</p>
+            </div>
+          <% end %>
         </div>
-        <% end %>
+        <div class="padding-bottom-10 row">
+          <%= info.input :birth_year, required: true, as: :date, discard_day: true, discard_month: true, start_year: Date.today.year-100, end_year: Date.today.year, wrapper_html: { class: "padding-left-0 col-md-8" } %>
+          <% if current_user.has_role?(:employee) %>
+            <div class="col-md-4">
+              <p>Never displayed.</p>
+            </div>
+          <% end %>
         </div>
         <hr>
         <div class="padding-bottom-10 row">

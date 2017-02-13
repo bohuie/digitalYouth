@@ -65,7 +65,16 @@ class User < ActiveRecord::Base
 
     accepts_nested_attributes_for :consent
 
+    def should_index?
+        if self.has_role?(:admin)
+            false
+        else
+            true
+        end
+    end
+
     def search_data
+
         data = Hash.new
         data[:first_name] = first_name.titleize if self.show_name
         data[:last_name] = last_name.titleize if self.show_name
@@ -80,8 +89,9 @@ class User < ActiveRecord::Base
 	end
 
     def user_reindex
-        if !Rails.env.test?
+        if !Rails.env.test? 
             self.reindex
+
             self.projects.each do |p|
                 p.reindex
             end
@@ -202,10 +212,8 @@ class User < ActiveRecord::Base
     end
 
     def gender_check
-        unless self.gender.blank?
-            if self.gender != "male" && self.gender != "female"
-                errors.add(:gender, "must be blank, male, or female.")
-            end
+        if self.gender != "male" && self.gender != "female"
+            errors.add(:gender, "must be male or female.")
         end
     end
 end

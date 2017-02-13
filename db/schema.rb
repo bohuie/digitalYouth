@@ -267,6 +267,7 @@ ActiveRecord::Schema.define(version: 20161101211017) do
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
     t.string   "gender"
+    t.integer  "birth_year"
     t.string   "github"
     t.string   "linkedin"
     t.string   "twitter"

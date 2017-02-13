@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
         'application/pdf',
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         'application/vnd.oasis.opendocument.text'
-      ]
+      ], message: "must be pdf, .doc, .docx, or .odt type."
 
     validates_format_of :email, :without => TEMP_EMAIL_REGEX, on: :update
     validates :province, presence: true

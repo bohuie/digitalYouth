@@ -21,8 +21,8 @@
 			<div class="col-md-2">
 				<%= image_tag @job_posting_application.applicant.image.url(:small), class: "image-radius" if !@job_posting_application.applicant.image.nil? %>
 				<h4> <%="#{@job_posting_application.applicant.first_name} #{@job_posting_application.applicant.last_name}"%></h4>
-				<% unless @user.resume.blank? %>
-             		<p>Current Resume: <%= link_to @user.resume.original_filename, @user.resume.url, target: '_blank' %></p>
+				<% unless @job_posting_application.applicant.resume.blank? %>
+             		<p>Current Resume: <%= link_to @job_posting_application.applicant.resume.original_filename, @job_posting_application.applicant.resume.url, target: '_blank' %></p>
             	<% end %>
 			</div>
 			<div class="col-md-4">
@@ -84,6 +84,9 @@
 		<div class="col-md-2">
 			<%= image_tag @job_posting_application.applicant.image.url(:small), class: "image-radius" if !@job_posting_application.applicant.image.nil? %>
 			<h4> <%="#{@job_posting_application.applicant.first_name} #{@job_posting_application.applicant.last_name}"%></h4>
+			<% unless @job_posting_application.applicant.resume.blank? %>
+      	 		<p>Current Resume: <%= link_to @job_posting_application.applicant.resume.original_filename, @job_posting_application.applicant.resume.url, target: '_blank' %></p>
+           	<% end %>
 		</div>
 		<div class="col-md-4">
 			<h4><b>Applicant Message:</b></h4>

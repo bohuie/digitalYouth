@@ -63,6 +63,11 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.datetime :locked_at
 
 
+      ## Privacy
+      t.boolean :show_picture, default: true
+      t.boolean :show_name, default: true
+      t.boolean :show_location, default: true
+
       t.timestamps null: false
     end
 

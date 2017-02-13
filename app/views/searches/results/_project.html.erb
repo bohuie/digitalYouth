@@ -7,7 +7,7 @@
 		<b><%= "#{result.title}" %></b>
 	</div>
 	<div class="row gray-text">
-		<%= "#{result.user.first_name} #{result.user.last_name}" %>
+		<%= result.user.formatted_name(current_user) %>
 	</div>
 	<div class="row gray-text">
 		<%= "#{result.description}" %>

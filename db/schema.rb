@@ -297,6 +297,9 @@ ActiveRecord::Schema.define(version: 20161101211017) do
     t.integer  "failed_attempts",             default: 0,                                                                                    null: false
     t.string   "unlock_token"
     t.datetime "locked_at"
+    t.boolean  "show_picture",                default: true
+    t.boolean  "show_name",                   default: true
+    t.boolean  "show_location",               default: true
     t.datetime "created_at",                                                                                                                 null: false
     t.datetime "updated_at",                                                                                                                 null: false
   end

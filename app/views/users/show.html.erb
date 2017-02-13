@@ -38,7 +38,7 @@
       				<% if current_user == @user %>
 							<p>Click on one of the boxes below to fill out a survey to showcase some of your skills.  Each graph shows the skills that an average person has (in blue) and the skills you've indicated (in red).</p>
 					<% else %>
-							<p>Each graph will show an average person's skills (in blue) versus <%= @user.first_name.titleize+" "+@user.last_name.titleize+"'s "%> skills (in red) if the survey has been completed.  If you wish to see more details about the  kind of skills associated with a graph, click Details.  A gray graph means <%= @user.first_name.titleize+" "+@user.last_name.titleize%> has not done that survey yet.</p>
+							<p>Each graph will show an average person's skills (in blue) versus <%= @user.formatted_name(current_user)+"'s "%> skills (in red) if the survey has been completed.  If you wish to see more details about the  kind of skills associated with a graph, click Details.  A gray graph means <%= @user.formatted_name(current_user)%> has not done that survey yet.</p>
 					<% end %>
 					<%= render '/users/partials/show_survey_table', user:@user, results:@survey_results %>
 				</div>
@@ -76,7 +76,7 @@
     			<% if current_user == @user %>
 						<p>Click on New Project to create a new one, or view, edit, or delete the projects listed below.  Projects are sorted by their date.</p>
 				<% else %>
-						<p>These are <%= @user.first_name.titleize+" "+@user.last_name.titleize+"'s "%> projects, sorted by their date.</p>
+						<p>These are <%= @user.formatted_name(current_user)+"'s "%> projects, sorted by their date.</p>
 				<% end %>
     			<% if user_signed_in? && @current_user==@user %>
 					<div class="row">
@@ -132,7 +132,7 @@
     			<% if current_user == @user %>
 						<p>Create a new skill by filling out the info below, or view your skills listed below.</p>
 				<% else %>
-						<p>This is a summary of all of <%= @user.first_name.titleize+" "+@user.last_name.titleize+"'s "%> skills organized by categories they selected.</p>
+						<p>This is a summary of all of <%= @user.formatted_name(current_user)+"'s "%> skills organized by categories they selected.</p>
 				<% end %>
     			<% if user_signed_in? && @current_user==@user %>
 						<%= simple_form_for @user_skill do |g| %>
@@ -183,7 +183,7 @@
 						displayed on your page, Unconfirmed References, references you have not confirmed yet and will not be displayed, and References 
 						Requests, which are requests from other EdgeMap users wanting a reference.</p>
 				<% else %>
-						<p>These are all the references <%= @user.first_name.titleize+" "+@user.last_name.titleize %> has contacted and received.</p>
+						<p>These are all the references <%= @user.formatted_name(current_user) %> has contacted and received.</p>
 				<% end %>
 				<div class = "references" id = "references">
 					<div class="row">

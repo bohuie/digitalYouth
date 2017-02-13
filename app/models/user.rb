@@ -67,11 +67,11 @@ class User < ActiveRecord::Base
 
     def search_data
         data = Hash.new
-        data[:first_name] = first_name.titleize
-        data[:last_name] = last_name.titleize
+        data[:first_name] = first_name.titleize if self.show_name
+        data[:last_name] = last_name.titleize if self.show_name
         data[:company_name] = company_name.titleize if company_name
-        data[:city] = city.titleize if city
-        data[:province] = province.upcase if province
+        data[:city] = city.titleize if city && self.show_location
+        data[:province] = province.upcase if province && self.show_location
         data[:bio] = bio if bio
         data[:summary] = summary.downcase if summary
         data[:role] = self.roles.first.name if !self.roles.first.nil?
@@ -80,7 +80,12 @@ class User < ActiveRecord::Base
 	end
 
     def user_reindex
-        User.reindex if !Rails.env.test?
+        if !Rails.env.test?
+            self.reindex
+            self.projects.each do |p|
+                p.reindex
+            end
+        end
     end
 
     def self.find_for_oauth(auth, signed_in_resource = nil)
@@ -170,6 +175,30 @@ class User < ActiveRecord::Base
 
     def reference_count
         return Reference.where(user_id: self.id).count
+    end
+
+    def formatted_name(current)
+        if self.show_name || self == current || JobPostingApplication.check_app(self, current)
+            return self.first_name + ' ' + self.last_name
+        else
+            return 'Anonymous Job Seeker'
+        end
+    end
+
+    def formatted_location(current)
+        if self.show_location || self == current || JobPostingApplication.check_app(self, current)
+            return self.city + ', ' + self.province
+        else
+            return 'Secret Location'
+        end
+    end
+
+    def formatted_picture(current)
+        if self.show_picture || self == current || JobPostingApplication.check_app(self, current)
+            return true
+        else
+            return false
+        end
     end
 
     def gender_check

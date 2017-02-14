@@ -207,12 +207,10 @@
 													<%= image_tag("avatar-placeholder-small.svg", class: "profile-image") %>
 												<% end %>
 											</div>
-											<div class="col-md-3">
-												<div class="row">
-													<h5><%= r.first_name%> <%= r.last_name %>
-													<br /><%= r.position %>
-													<br /><%= r.company%></h5>
-												</div>
+											<div class="col-md-2">
+												<h5><%= r.first_name%> <%= r.last_name %>
+												<br /><%= r.position %>
+												<br /><%= r.company%></h5>
 											</div>
 											<div class="col-md-4">
 												<div class="row">
@@ -221,7 +219,7 @@
 												</div>
 											</div>
 										<% if user_signed_in? && @current_user==@user %>
-											<div class="col-md-3">
+											<div class="col-md-4">
 												<div style="float:right;">
 													<% if r.referee %>
 														<%= link_to "View", user_path(r.referee), class: "btn btn-primary" %>
@@ -259,12 +257,10 @@
 													<%= image_tag("avatar-placeholder-small.svg", class: "profile-image") %>
 												<% end %>
 											</div>
-											<div class="col-md-3">
-												<div class="row">
-													<h5><%= r.first_name%> <%= r.last_name %>
-													<br /><%= r.position %>
-													<br /><%= r.company%></h5>
-												</div>
+											<div class="col-md-2">
+												<h5><%= r.first_name%> <%= r.last_name %>
+												<br /><%= r.position %>
+												<br /><%= r.company%></h5>
 											</div>
 											<div class="col-md-4">
 												<div class="row">
@@ -272,7 +268,7 @@
 													<h5><%= r.reference_body %></h5>
 												</div>
 											</div>
-											<div class="col-md-3">
+											<div class="col-md-4">
 												<div style="float:right;">
 													<% if r.referee %>
 														<%= link_to "View", user_path(r.referee), class: "btn btn-primary" %>

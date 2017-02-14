@@ -1,18 +1,58 @@
-<%= simple_form_for @project do |f| %>
-	<%= f.input :title, required: true %>
-		
-	<%= f.input :description, required: true, as: :text, input_html: {rows: "4"}, wrapper_html: { class: "padding-left-0" } %>
+<script type="text/javascript">
+	$(function() {
+  		$('#project_image').on('change', function(event) {
+   			var files = event.target.files;
+    		var image = files[0]
+    		var reader = new FileReader();
+    		reader.onload = function(file) {
+      			var img = new Image();
+      			console.log(file);
+      			img.src = file.target.result;
+      			img.style.height = '200px';
+      			img.style.width = '200px';
+      			$('#target').html(img);
+    		}
+    		reader.readAsDataURL(image);
+    		console.log(files);
+  		});
+	});
+</script>
 
+<%= simple_form_for @project do |f| %>
+	<div class="row">
+		<div class="col-md-3">
+			<%= f.input :image, as: :file, wrapper_html: { class: 'margin-all-0 row' } %>
+			<div class="margin-all-0 row" id="target">
+				<%= image_tag @project.image.url(:medium) %>
+			</div>
+		</div>
+		<div class="col-md-9" style="min-height: 260px;">
+			<%= f.input :title, required: true, wrapper_html: { class: 'margin-all-0 row'} %>
+			<%= f.input :project_date, wrapper_html: { class: 'margin-all-0 row'}, discard_day: true, order: [:month, :year] %>
+		
+			<%= f.input :description, required: true, as: :text, input_html: {rows: "4"}, wrapper_html: { class: 'padding-left-0 margin-all-0 row' } %>
+		
+		</div>
+		
+	</div>
 	<%i=0%>
-	<div id="project-skills">
+	<div class="row" id="project-skills">
 		<%= f.simple_fields_for :project_skills do |builder| %>
-			<%= render 'projects/project_skill_fields', id: i, f: builder %>
+			<div class="padding-left-0 col-md-12 project-skill" id="project-skill-<%=i%>">
+				<%= builder.input :id, as: :hidden %>
+				<%= builder.simple_fields_for :skill do |s| %>
+					<div class="col-md-3"><%= s.input :name, label: "Skill", input_html: {onclick:"skill_autocomplete('#{i}')", id: "skill-name-#{i}"} %></div>
+				<% end %>
+				<div class="col-md-6"><%= builder.input :survey_id, required:true, collection: @surveys, prompt: "Select Classification", label: "Associated Survey Skill and Level"%></div>
+				<div class="col-md-1">
+					<%= builder.input :_destroy, as: :hidden, input_html: {id: "project-skill-destroy-#{i}"}%>
+					<span class="glyphicon glyphicon-remove" onclick="remove_project_skill('<%=i%>')"></span>
+				</div>
+			</div>
 			<%i=i+1%>
 		<% end%>
 	</div>
-	<p><%= link_to_add_project_skill_fields "Add Skill", f, "btn btn-primary" %></p>
 
-	<%= f.input :image, as: :file %>
-	
+	<p><%= link_to_add_project_skill_fields "Add Skill", f, "btn btn-primary" %></p>
 	<%= f.button :submit, class: "btn btn-primary" %>
 <% end %>

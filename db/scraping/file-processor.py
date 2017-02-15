@@ -16,7 +16,7 @@ def extract_data(file):
 		tree = html.fromstring(open(file, "r").read())
 		logo = tree.xpath('//a[@class="job-view-company-logo-link"]/img/@src')
 		company_name = tree.xpath('//span[@data-automation="job-company"]')[0].text.title()
-		title = tree.xpath('//*[@data-automation="job-title"]')[0].text.title()
+		title = tree.xpath('//*[@data-automation="job-title"]')[0].text
 		loc_arr = tree.xpath('//*[@data-automation="job-Location"]')[0].text.title().split(',')
 		location = loc_arr[0] + "," + loc_arr[1].upper() #Converts location string to city, Province code
 		link = tree.xpath('//*[@class="page-link"]/@href')[0]
@@ -113,9 +113,10 @@ def process(file,cnt,SKL_map,JOB_postings,ARR_names):
 	if job_type is not None:
 		job_type = job_dict[job_type.lower()]
 
+	arr = location.split(',')
 	JOBPOSTING = '{title:\"'+title+'\",company_name:\"'+company_name+'\",'
 	JOBPOSTING += 'job_category_id: '+get_category_id(category)+','
-	JOBPOSTING += 'location:\"'+location+'\", link: \"'+ link +'\",'
+	JOBPOSTING += 'city:\"'+arr[0]+'\", province: \"'+arr[1]+'\", link: \"'+ link +'\",'
 	JOBPOSTING += '' if job_type == None else "job_type: "+str(job_type)+"," 
 	JOBPOSTING += 'description: \"'+desc+'\",'
 	JOBPOSTING += '' if closing == "" else "close_date: \""+closing+"\""
@@ -163,7 +164,7 @@ def add_skills(skill_str,arr):
 	return arr
 
 def check_string(string):
-	string = string.strip().replace("\"", "")
+	string = string.strip().replace("\"", "'")
 
 	string = string.replace("\r\n","\n")
 	string = string.replace("\n ", "\n")
@@ -171,8 +172,48 @@ def check_string(string):
 	string = string.replace("\n\n\n", "\n")
 	string = string.replace("\n\n", "\n")
 
-	string = string.replace("\xa0"," ")
+	string = string.replace(u'\xa0',u' ')
+	string = string.replace(u'\u2018','\'')
+	string = string.replace(u'\u2019','\'')
+	string = string.replace(u'\u2011','-')
+	string = string.replace(u'\u2013','-')
+	string = string.replace(u'\u2014','-')
+	string = string.replace(u'\u201c','\'')
+	string = string.replace(u'\u201d','\'')
+	string = string.replace(u'\u2026','...')
+	string = string.replace(u'\xae','') #Registered Symbol
+	string = string.replace(u'\u2022','') #Bullet Point
+	string = string.replace(u'\xab','<<')
+	string = string.replace(u'\xb7','.')
+	string = string.replace(u'\xbb','>>')
+	string = string.replace(u'\xbf','?')
+	string = string.replace(u'\xc0','') #A with grave accent
+	string = string.replace(u'\xc9','') #E with acute accent
+	string = string.replace(u'\xca','') #E with circumflex accent
+	string = string.replace(u'\xe0','') #a with grave accent
+	string = string.replace(u'\xe1','') #a with acute accent
+	string = string.replace(u'\xe2','') #a with circumflex accent
+	string = string.replace(u'\xe3','') #a with tilde accent
+	string = string.replace(u'\xe4','') #a with diaeresis accent
+	string = string.replace(u'\xe5','') #a with ringabove accent
+	string = string.replace(u'\xe6','') #ae
+	string = string.replace(u'\xe7','') #c with cedilla accent
+	string = string.replace(u'\xe8','') #e with grave accent
+	string = string.replace(u'\xe9','') #e with acute accent
+	string = string.replace(u'\xea','') #e with circumflex accent
+	string = string.replace(u'\xeb','') #e with diaeresis accent
+	string = string.replace(u'\xec','') #i with grave accent
+	string = string.replace(u'\xed','') #i with acute accent
+	string = string.replace(u'\xee','') #i with circumflex accent
+	string = string.replace(u'\xef','') #i with diaeresis accent
+	string = string.replace(u'\xf0','') #eth
+	string = string.replace(u'\xf1','') #n with tilde accent
+	string = string.replace(u'\xf2','') #o with grave accent
+	string = string.replace(u'\xf3','') #o with acute accent
+	string = string.replace(u'\xf4','') #o with circumflex accent
+	string = string.replace(u'\xf9','') #u with acute accent
 	string = string.replace('\\','/')
+	string = string.replace(u'\uf0a7','')
 
 	if string.endswith('/') or string.endswith(';'):
 		return string[:-1]
@@ -265,7 +306,7 @@ print(path)
 print("If it doesn't then cd to the correct path and run again.\n")
 print("--------------------------------------------------")
 
-cont = input("Is the path correct? (y/n): ")
+cont = raw_input("Is the path correct? (y/n): ")
 cont = str(cont).lower()
 if cont == "y" or cont == "yes":
 	print("Processing:")

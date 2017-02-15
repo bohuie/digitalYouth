@@ -3,9 +3,9 @@
 		<% if result.formatted_picture(current_user) %>
 			<%= image_tag result.image.url(:thumb), alt:"User Icon", class: "profile-image align-center" %>
 		<% elsif result.gender == "male" %>
-			<%= image_tag "avatar-placeholder-thumb.svg", alt: "User Icon", class: "profile-image align-center" %>
+			<%= image_tag "avatar-placeholderM-thumb.svg", alt: "User Icon", class: "profile-image align-center" %>
 		<% elsif result.gender == "female" %>
-			<%= image_tag "avatar-placeholder-thumb.svg", alt: "User Icon", class: "profile-image align-center" %>
+			<%= image_tag "avatar-placeholderF-thumb.svg", alt: "User Icon", class: "profile-image align-center" %>
 		<% else %>
 			<%= image_tag "avatar-placeholder-thumb.svg", alt: "User Icon", class: "profile-image align-center" %>
 		<% end %>

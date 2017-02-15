@@ -2,6 +2,6 @@
 	<div class="col-md-6"><h2>Category: <%=@survey.format_title.html_safe%></h2> </div>
 </div>
 <div class="row">
-	<div class="col-md-6"><br /><%= link_to 'Go back to '+@user.first_name+' '+@user.last_name+'\'s profile', user_path(@user) %></div>
+	<div class="col-md-6"><br /><%= link_to 'Go back to '+@user.formatted_name(current_user)+'\'s profile', user_path(@user) %></div>
 </div>
 <%= render partial: "surveys/display", locals: { survey_results: @survey_results, survey_title: @survey.title } %>

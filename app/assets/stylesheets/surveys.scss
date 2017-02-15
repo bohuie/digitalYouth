@@ -4,11 +4,10 @@
 
 .center{
 	position: absolute;
-    top: 50%;
-    left: 60%;
+    top: calc(50% - 12px);
+    left: calc(50% - 13px);
     height: 50%;
     width: 50%;
-    margin: -15% 0 0 -25%;
 }
 
 .row-style{

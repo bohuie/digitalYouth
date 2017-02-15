@@ -17,7 +17,7 @@ class SurveysController < ApplicationController
 		@survey_results = Array.new
 
 		@survey_results.push(name: "Average Job Seeker", data: @survey.get_average_data)
-		@survey_results.push(name: @user.first_name+" "+@user.last_name, data: @survey.get_data(@user))
+		@survey_results.push(name: @user.formatted_name(current_user), data: @survey.get_data(@user))
 		@questions = @survey.questions
 
 		@prompts = Hash.new

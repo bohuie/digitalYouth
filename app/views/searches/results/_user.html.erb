@@ -1,13 +1,21 @@
 <% if result.has_role? :employee %>
 	<div class="display-flex col-md-2">
-		<%= image_tag result.image.url(:thumb), alt:"User Icon", class: "profile-image align-center" %>
+		<% if result.formatted_picture(current_user) %>
+			<%= image_tag result.image.url(:thumb), alt:"User Icon", class: "profile-image align-center" %>
+		<% elsif result.gender == "male" %>
+			<%= image_tag "avatar-placeholderM-thumb.svg", alt: "User Icon", class: "profile-image align-center" %>
+		<% elsif result.gender == "female" %>
+			<%= image_tag "avatar-placeholderF-thumb.svg", alt: "User Icon", class: "profile-image align-center" %>
+		<% else %>
+			<%= image_tag "avatar-placeholder-thumb.svg", alt: "User Icon", class: "profile-image align-center" %>
+		<% end %>
 	</div>
 	<div class="col-md-10">
 		<div class="row">
-			<b><%= "#{result.first_name} #{result.last_name}" %></b>
+			<b><%= result.formatted_name(current_user) %></b>
 		</div>
 		<div class="row" style="color: dimgray;">
-			<%= "#{result.city}, #{result.province}" %>
+			<%= result.formatted_location(current_user) %>
 		</div>
 		<div class="row" style="color: darkgray;">
 			<%= "#{result.summary}" %>

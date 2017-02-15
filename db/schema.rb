@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161101211017) do
+ActiveRecord::Schema.define(version: 20170213193139) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -266,6 +266,8 @@ ActiveRecord::Schema.define(version: 20161101211017) do
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
+    t.string   "gender"
+    t.integer  "birth_year"
     t.string   "github"
     t.string   "linkedin"
     t.string   "twitter"
@@ -279,7 +281,8 @@ ActiveRecord::Schema.define(version: 20161101211017) do
     t.string   "encrypted_postal_code_iv"
     t.string   "city"
     t.string   "province"
-    t.string   "bio"
+    t.text     "bio"
+    t.string   "summary"
     t.boolean  "answered_surveys",            default: [false, false, false, false, false, false, false, false, false, false, false, false],              array: true
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -295,8 +298,15 @@ ActiveRecord::Schema.define(version: 20161101211017) do
     t.integer  "failed_attempts",             default: 0,                                                                                    null: false
     t.string   "unlock_token"
     t.datetime "locked_at"
+    t.boolean  "show_picture",                default: true
+    t.boolean  "show_name",                   default: true
+    t.boolean  "show_location",               default: true
     t.datetime "created_at",                                                                                                                 null: false
     t.datetime "updated_at",                                                                                                                 null: false
+    t.string   "resume_file_name"
+    t.string   "resume_content_type"
+    t.integer  "resume_file_size"
+    t.datetime "resume_updated_at"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

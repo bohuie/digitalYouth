@@ -45,7 +45,6 @@ class SearchesController < ApplicationController
 			@relationships = ["1st","2nd", "Group Members", "3rd + Everyone"]
 			@current_companies = [] # To be implemented
 			@past_companies = [] # To be implemented
-
 			# Postgres query finds the most popular skill names (restricting length)
 			@pgrec = ActiveRecord::Base.connection.execute("
 					SELECT skills.name 
@@ -81,7 +80,6 @@ class SearchesController < ApplicationController
 		when "Projects" # Searches Project model, filters date-posted and skills
 			idxs=[Project.searchkick_index.name]
 			@toggles = { dp: @dp, s:@s.titleize}
-
 			# Postgres query finds the most popular skill names (restricting length)
 			@pgrec = ActiveRecord::Base.connection.execute("
 					SELECT skills.name 
@@ -192,6 +190,7 @@ class SearchesController < ApplicationController
 		end
 		aggs = [] if where_clause == {}
 		# There is an N+1 query problem here with rolify
+		
 		@results = User.search @query, 
 				 index_name: idxs,
 				 fields: fields,

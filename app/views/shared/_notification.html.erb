@@ -3,7 +3,7 @@
 <li id="<%=notification_id%>" class="<%=options[0]%> alternate">
 	<div class="notif-inside">
 		<div class="content" onclick="window.location='<%=show_trackable_path(activity)%>'">
-			<div><%= render_activity activity %></div>
+			<div style="display:flex;"><%= render_activity activity %></div>
 		</div>
 		<div class="controls">
 			<div><%= link_to notifications_path(id: activity.id), remote: true, method: "delete" do %>

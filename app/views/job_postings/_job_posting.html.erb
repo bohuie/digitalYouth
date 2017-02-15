@@ -4,10 +4,10 @@
 			<b><%= @job_posting.title %></b>
 		</h4>
 		<p>
-			<% if @job_posting.unit_number %>
+			<% unless @job_posting.unit_number.blank? %>
 				<%= @job_posting.unit_number %> -
 			<% end %>
-			<% if @job_posting.street_address %>
+			<% unless @job_posting.street_address.blank? %>
 				<%= @job_posting.street_address %><br />
 			<% end %>
 			<%= @job_posting.city+", "+@job_posting.province %>

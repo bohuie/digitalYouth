@@ -83,7 +83,7 @@ before_filter :logged_in, only: [:create]
         end
       end
     else
-      flash[:warning] = "Please redo the Captcha"
+      flash.now[:warning] = "Please redo the Captcha"
       if params[:role] == 'employee'
         @job_seeker = @user
         @job_seeker.build_consent(consent_params)
@@ -153,7 +153,7 @@ before_filter :logged_in, only: [:create]
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:role, :first_name, :last_name, :company_name, :postal_code, :city, :province])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:role, :first_name, :last_name, :company_name, :postal_code, :city, :province, :gender])
   end
 
   # If you have extra params to permit, append them to the sanitizer.

@@ -1,11 +1,18 @@
 <div class="row">
-	<div class="col-md-6"><h2>Category: <%=@survey.format_title.html_safe%></h2> </div></div>
-<div class="row">
-	<div class="col-md-12">
-		<%= column_chart survey_results, min: 0, max: 3, library: { legend: { position: "right" }, chartArea: {left: 10, bottom: 20, width: '70%', height: '80%'}, series:{0 => {type: "line"}}} %>
+	<div class="col-md-8">
+		<%= column_chart survey_results, min: 0, max: 3, library: { legend: { position: "top" }, chartArea: {left: 50, bottom: 20, width: '100%', height: '80%'}, series:{0 => {type: "line"}}, vAxis: { ticks: [{v: 0, f: "None"}, {v: 1, f: "Few"}, {v:2, f:"Half"}, {v: 3, f:"Most"}]}} %>
 	</div>
 </div>
-<hr style="height: 1px;border:none;color:#333;background-color:#333;">
+<br />
+
+<% if survey_title == 'Time, Project, People' %>
+	<p>There are 3 skill classifications: Time, Project, and People. Each classification has a list of skills associated with it.  Users rate themselves based on how well they know each group of skills: None of the skills, a few of the skills, half of the skills, or most/all of the skills.</p>
+<% elsif survey_title == '21st Century Skills' %>
+	<p>There are 4 skill classifications: Communication, Problem Solving, Self-Directed Skills, and Accountability. Each classification has a list of skills associated with it.  Users rate themselves based on how well they know each group of skills: None of the skills, a few of the skills, half of the skills, or most/all of the skills.</p>
+<% else %>
+	<p>There are 4 skill levels: Basic, Intermediate, Advanced, and Expert. Each level has a list of skills associated with it.  Users rate themselves based on how well they know each group of skills: None of the skills, a few of the skills, half of the skills, or most/all of the skills.</p>
+<% end %>
+
 <div class="row">
 <% @questions.each do |question| %>
 	<div class="col-md-3">

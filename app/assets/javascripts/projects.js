@@ -38,14 +38,14 @@ function add_project_skill_fields(association, content){
   if ($('body').hasClass('users')){
     var skills = 0;
     $('#project-skills').children().each(function(){if(this.id.includes("project-skill-")) skills++;});
-    var new_id = skills + 1;
+    var new_id = skills;
     var regexp = new RegExp("new_project_skills", "g");
     $('#project-skills').append(content.replace(regexp, new_id));
   }
   else if ($('body').hasClass('projects')){
     var skills = 0;
     $('#project-skills').children().each(function(){if(this.id.includes("project-skill-")) skills++;});
-    var new_id = skills + 1;
+    var new_id = skills;
     var regexp = new RegExp("new_project_skills", "g");
     $('#project-skills').append(content.replace(regexp, new_id));
   }

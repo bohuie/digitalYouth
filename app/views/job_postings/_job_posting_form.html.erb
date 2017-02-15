@@ -73,6 +73,7 @@
 
 	<%id=0%>
 	<div id="job-skills" class="row">
+	<%byebug%>
 		<% if @jobskills.nil? %>
 			<%= f.simple_fields_for :job_posting_skills do |builder| %>
 				<%= render 'job_postings/job_posting_skill_fields', id: id, f: builder %>
@@ -94,10 +95,10 @@
 	</div>
 	<div class="row">
 		<% if  @job_posting.errors.messages[:job_posting_skills] %>
-				<div class="col-md-3 has-error">
+			<div class="col-md-3 has-error">
 				<span class="help-block"><%=  @job_posting.errors.messages[:job_posting_skills][0] %></span>
-				</div>
-			<% end %>
+			</div>
+		<% end %>
 	</div>
 
 	<hr>

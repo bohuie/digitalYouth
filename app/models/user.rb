@@ -41,7 +41,14 @@ class User < ActiveRecord::Base
     include DeletableAttachment
     validates_attachment :image, content_type: { content_type: ["image/jpg", "image/jpeg", "image/png", "image/svg"] }
     attr_accessor :crop_x, :crop_y, :crop_w, :crop_h, :new_email
-    #after_update :reprocess_image, :if => :cropping?
+    
+    has_attached_file :resume
+    validates_attachment_content_type :resume, content_type: [
+        'application/msword',
+        'application/pdf',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/vnd.oasis.opendocument.text'
+      ], message: "must be pdf, .doc, .docx, or .odt type."
 
     validates_format_of :email, :without => TEMP_EMAIL_REGEX, on: :update
     validates :province, presence: true
@@ -65,7 +72,16 @@ class User < ActiveRecord::Base
 
     accepts_nested_attributes_for :consent
 
+    def should_index?
+        if self.has_role?(:admin)
+            false
+        else
+            true
+        end
+    end
+
     def search_data
+
         data = Hash.new
         data[:first_name] = first_name.titleize if self.show_name
         data[:last_name] = last_name.titleize if self.show_name
@@ -80,8 +96,9 @@ class User < ActiveRecord::Base
 	end
 
     def user_reindex
-        if !Rails.env.test?
+        if !Rails.env.test? 
             self.reindex
+
             self.projects.each do |p|
                 p.reindex
             end
@@ -202,10 +219,8 @@ class User < ActiveRecord::Base
     end
 
     def gender_check
-        unless self.gender.blank?
-            if self.gender != "male" && self.gender != "female"
-                errors.add(:gender, "must be blank, male, or female.")
-            end
+        if self.gender != "male" && self.gender != "female"
+            errors.add(:gender, "must be male or female.")
         end
     end
 end

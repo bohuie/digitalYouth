@@ -7,6 +7,7 @@ class JobPostingsController < ApplicationController
 	#before_action :check_fields	 , only: [:create, :update]
 
 	def index # Job Postings landing page
+
 		if params[:user].nil?
 			@job_postings = JobPosting.all.order(views: :desc).limit(10)
 			@reccommended_job_postings = reccomended_jobs
@@ -220,7 +221,10 @@ private
 						  AND time > NOW() - INTERVAL '1 years'
 						").values.flatten # Does not currently take into account the times on each page or much of the age, could order by time spent on a page and limit results
 			corpus = Array.new
-			corpus << viewed_job_postings if !viewed_job_postings.empty?
+			viewed_job_postings.each do |vjp|
+				corpus << vjp unless vjp.to_i == 0 #catches applications pages
+			end
+			#corpus << viewed_job_postings if !viewed_job_postings.empty?
 
 			if !corpus.empty?
 				corpus = JobPosting.find(corpus)

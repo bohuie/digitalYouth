@@ -22,7 +22,7 @@ class JobPosting < ActiveRecord::Base
 	#validate  :validate_skills
 	#validates :job_posting_skills, presence: { message: 'must have valid skills' }
 	
-	validate :date_check
+	#validate :date_check
 	validate :lower_pay
 	validate :pay_check
 

@@ -218,7 +218,7 @@ survey5_prompt23 = Prompt.create(question_id: question20.id, prompt: 'Writing VB
 survey6_prompt1 = Prompt.create(question_id: question21.id, prompt: 'Read emails')
 survey6_prompt2 = Prompt.create(question_id: question21.id, prompt: 'Compose new emails')
 survey6_prompt3 = Prompt.create(question_id: question21.id, prompt: 'Send, reply, and forward emails')
-survey6_prompt4 = Prompt.create(question_id: question21.id, prompt: 'Attend and online meeting')
+survey6_prompt4 = Prompt.create(question_id: question21.id, prompt: 'Attend an online meeting')
 survey6_prompt5 = Prompt.create(question_id: question21.id, prompt: 'Edit documents online')
 
 survey6_prompt6 = Prompt.create(question_id: question22.id, prompt: 'Carbon copy additional recipients in an email')

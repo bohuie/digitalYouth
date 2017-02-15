@@ -52,7 +52,7 @@ before_filter :logged_in, only: [:create]
             set_minimum_password_length
             @job_seeker = @user
             @job_seeker.build_consent(consent_params)
-            render template: "welcome/signup_employee" and return
+            render template: "welcome/signup_jobseeker" and return
           elsif params[:role] =='employer'
             clean_up_passwords resource
             set_minimum_password_length
@@ -70,7 +70,7 @@ before_filter :logged_in, only: [:create]
           set_minimum_password_length
           @job_seeker = @user
           @job_seeker.build_consent(consent_params)
-          render template: "welcome/signup_employee" and return
+          render template: "welcome/signup_jobseeker" and return
         elsif params[:role] =='employer'
           clean_up_passwords resource
           set_minimum_password_length
@@ -87,7 +87,7 @@ before_filter :logged_in, only: [:create]
       if params[:role] == 'employee'
         @job_seeker = @user
         @job_seeker.build_consent(consent_params)
-        render template: "welcome/signup_employee" and return
+        render template: "welcome/signup_jobseeker" and return
       elsif params[:role] =='employer'
         @employer = @user
         @employer.build_consent(consent_params)

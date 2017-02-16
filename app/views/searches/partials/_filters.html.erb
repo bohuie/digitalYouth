@@ -8,23 +8,5 @@
 <%= render path, name: "Skills"		 	, key: :s, filter_values: @skills, current_values: @s, input: true 				if !@toggles[:s].nil?  %>
 <%= render path, name: "Job Type"	 	, key: :jt,filter_values: @job_types, current_values: @jt 						if !@toggles[:jt].nil? %>
 <%= render path, name: "Relationship"	, key: :r, filter_values: @relationships, current_values: @r if !@toggles[:r].nil? && user_signed_in?  %>
-
-<% if !@toggles[:dp].nil? %>
-	<span class="caret-right"></span><%= content_tag("a", "Date Posted", class: "filter-title", onclick: "$(date_posted).slideToggle(100);" )%>
-	<% if @filters.include? "date_posted" %>
-		<div id="date_posted">
-	<% else %>
-		<div id="date_posted">
-	<% end %>
-		<p><%= link_to	link_to radio_button("search", 'date_posted', 'All', {checked: active_search('All',params[:dp])})+" All", search_path(all_path_hash(@toggles,@query,@type,@filters,"date_posted", :dp)), class: "search-text #{active_search('All',params[:dp])}" %></p>
-		<% str = "day" %> 
-		<% cnt = 0 %>
-		<% @dates_posted.each do |dp| %>
-			<% str = "days" if cnt > 0 %>
-			<% path_hash = get_path_hash(@toggles,@query,@type,@filters,"date_posted") %>
-			<% path_hash[:dp] = dp %>
-			<p><%= link_to link_to radio_button("search", 'date_posted', dp, {checked: active_search(dp,params[:dp])})+" "+"#{dp}", search_path(path_hash), class: active_search(dp,params[:dp]), class: "search-text #{active_search(dp,params[:dp])}" %></p>
-			<% cnt += 1 %>
-		<% end %>
-	</div>
-<% end %>
+<%= render path, name: "Date Posted", key: :dp, filter_values: @dates_posted, current_values: @dp, input: true if !@toggles[:dp].nil? %>
+<%= render path, name: "Project Date", key: :pd, filter_values: @project_date, current_values: @pd, input: true if !@toggles[:pd].nil? %>

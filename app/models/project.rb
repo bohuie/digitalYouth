@@ -23,11 +23,12 @@ class Project < ActiveRecord::Base
 	def search_data
 		data = Hash.new
 	  	data[:title] = title.titleize
-	  	data[:description] = description.titleize
+	  	data[:description] = description
 	  	data[:owner_first] = self.user.first_name.titleize if self.user.show_name
 	  	data[:owner_last] = self.user.last_name.titleize if self.user.show_name
 	  	data[:created_at] = created_at
 	  	data[:skills] = self.skills.pluck(:name)
+	  	data[:project_date] = self.project_date
 	  	return data
 	end
 

@@ -55,6 +55,7 @@ class User < ActiveRecord::Base
     validates :city, presence: true
     validates :summary, length: { maximum: 200 }
     validate  :gender_check
+    validate  :birth_year_check
 
     has_many :job_postings, dependent: :destroy
     has_many :projects, dependent: :destroy
@@ -221,6 +222,12 @@ class User < ActiveRecord::Base
     def gender_check
         if self.gender != "male" && self.gender != "female"
             errors.add(:gender, "must be male or female.")
+        end
+    end
+
+    def birth_year_check
+        if self.birth_date.blank? || self.birth_date > (Date.today - 15.year)
+            errors.add(:birth_date, "must be 15 or older.")
         end
     end
 end

@@ -86,7 +86,7 @@
           <% end %>
         </div>
         <div class="padding-bottom-10 row">
-          <%= info.input :birth_year, required: true, as: :date, discard_day: true, discard_month: true, start_year: Date.today.year-100, end_year: Date.today.year, wrapper_html: { class: "padding-left-0 col-md-8" } %>
+          <%= info.input :birth_date, required: true, as: :date, start_year: Date.today.year-100, end_year: Date.today.year, wrapper_html: { class: "padding-left-0 col-md-8" } %>
           <% if current_user.has_role?(:employee) %>
             <div class="col-md-4">
               <p>Never displayed.</p>

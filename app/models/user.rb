@@ -55,6 +55,7 @@ class User < ActiveRecord::Base
     validates :city, presence: true
     validates :summary, length: { maximum: 200 }
     validate  :gender_check
+    validate  :birth_year_check
 
     has_many :job_postings, dependent: :destroy
     has_many :projects, dependent: :destroy
@@ -195,7 +196,7 @@ class User < ActiveRecord::Base
     end
 
     def formatted_name(current)
-        if self.show_name || self == current || JobPostingApplication.check_app(self, current)
+        if self.show_name || self == current || (current && JobPostingApplication.check_app(self, current))
             return self.first_name + ' ' + self.last_name
         else
             return 'Anonymous Job Seeker'
@@ -203,7 +204,7 @@ class User < ActiveRecord::Base
     end
 
     def formatted_location(current)
-        if self.show_location || self == current || JobPostingApplication.check_app(self, current)
+        if self.show_location || self == current || (current && JobPostingApplication.check_app(self, current))
             return self.city + ', ' + self.province
         else
             return 'Secret Location'
@@ -211,7 +212,7 @@ class User < ActiveRecord::Base
     end
 
     def formatted_picture(current)
-        if self.show_picture || self == current || JobPostingApplication.check_app(self, current)
+        if self.show_picture || self == current || (current && JobPostingApplication.check_app(self, current))
             return true
         else
             return false
@@ -221,6 +222,12 @@ class User < ActiveRecord::Base
     def gender_check
         if self.gender != "male" && self.gender != "female"
             errors.add(:gender, "must be male or female.")
+        end
+    end
+
+    def birth_year_check
+        if self.birth_date.blank? || self.birth_date > (Date.today - 15.year)
+            errors.add(:birth_date, "must be 15 or older.")
         end
     end
 end

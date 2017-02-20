@@ -10,100 +10,131 @@
   <div class="tab-content profileButtonContent">
     <div id="personal" class="tab-pane fade in active">
     <div class="row">
-      <div class="padding-left-0 col-md-8"><h4><b>User Info</b></h4></div>
+      <div class="padding-left-0 col-md-8 col-sm-8"><h4><b>User Info</b></h4></div>
       <% if current_user.has_role?(:employee) %>
-      <div class="col-md-4"><h4><b>Privacy</b></h4></div>
+        <div class="privacy col-md-4 col-sm-4"><h4><b>Privacy</b></h4></div>
       <% end %>
       </div>
       <div class="row">
-      <div class="padding-left-0 col-md-8">
+      <div class="padding-left-0 col-md-8 col-sm-8">
         <p> Below is the information for your account.</p>
       </div>
       <% if current_user.has_role?(:employee) %>
-      <div class="col-md-4">
+      <div class="privacy col-md-4 col-sm-4">
         <p>Change your privacy settings, to control what is displayed to other users.</p>
         </div>
       <% end %>
       </div>
       <%= simple_form_for (@user) do |info| %>
         <% if @user.has_role?(:employer) %>
-          <div class="padding-bottom-10 row">
-            <%= info.input :company_name, required: true, wrapper_html: { class: "padding-left-0 col-md-4" } %>
+          <div class="row">
+            <%= info.input :company_name, required: true, wrapper_html: { class: "padding-left-0 col-md-4 col-sm-4" } %>
           </div>
         <% end %>
-        <div class="padding-bottom-10 row">
-          <%= info.input :first_name, required: true, wrapper_html: { class: "padding-left-0 col-md-4" } %>
+        <div class="row">
+          <%= info.input :first_name, required: true, wrapper_html: { class: "padding-left-0 col-md-4 col-sm-4" } %>
             
-          <%= info.input :last_name, required: true, wrapper_html: { class: "col-md-4" } %>
+          <%= info.input :last_name, required: true, wrapper_html: { class: "col-md-4 col-sm-4" } %>
 
-          <%= info.input :show_name, label: 'Display Name', label_html: { class: "min-width-120" }, as: :radio_buttons,  item_wrapper_class: 'radio-inline margin-top-0', wrapper_html: { class: "col-md-4", style: "padding-top:30px;" } if current_user.has_role?(:employee) %>
-        </div>
-        <div class="padding-bottom-10 row">
-          <%= info.input :street_address, wrapper_html: { class: "padding-left-0 col-md-8" }  %>
           <% if current_user.has_role?(:employee) %>
-          <div class="col-md-4">
-            <p style="padding-top:30px;">Never displayed.</p>
-          </div>
-        <% end %>
+            <div class="privacy col-md-4 col-sm-4" style="padding-top: 10px;">
+              <p>Display Name</p>
+              <%= info.input :show_name, label: false, label_html: { class: "min-width-120" }, as: :radio_buttons,  item_wrapper_class: 'radio-inline margin-top-0' %>
+            </div>
+          <% end %>
         </div>
-        <div class="padding-bottom-10 row">
-          <%= info.input :city, required: true, wrapper_html: { class: "padding-left-0 col-md-3" } %>
+        <div class="row">
+          <%= info.input :street_address, wrapper_html: { class: "padding-top-10 padding-left-0 col-md-8 col-sm-8" }  %>
+          <% if current_user.has_role?(:employee) %>
+            <div class="privacy col-md-4 col-sm-4">
+              <p style="padding-top:40px;">Never displayed.</p>
+            </div>
+          <% end %>
+        </div>
+        <div class="row">
+          <%= info.input :city, required: true, wrapper_html: { class: "padding-top-10 padding-left-0 col-md-3 col-sm-3" } %>
 
-          <%= info.input :province, required: true, collection: PROVINCES, wrapper_html: { class: "col-md-2" } %>
+          <%= info.input :province, required: true, collection: PROVINCES, wrapper_html: { class: "padding-top-10 col-md-2 col-sm-2" } %>
           <% if current_user.has_role?(:employee) %>
-          <%= info.input :postal_code, label: "Postal code.  Never displayed.", required: true, wrapper_html: { class: "col-md-3" } %>
+            <%= info.input :postal_code, label: "Postal code.  Never displayed.", label_html: { style: 'min-width: 216px;' }, required: true, wrapper_html: { class: "padding-top-10 col-md-3 col-sm-3" } %>
           <% else %>
-          <%= info.input :postal_code, required: true, wrapper_html: { class: "col-md-3" } %>
+            <%= info.input :postal_code, required: true, wrapper_html: { class: "padding-top-10 col-md-3 col-sm-3" } %>
           <% end %>
 
-          <%= info.input :show_location, label: 'Display Location', label_html: { class: "min-width-120" }, as: :radio_buttons,  item_wrapper_class: 'radio-inline margin-top-0', wrapper_html: { class: "col-md-4", style: "padding-top:30px;" } if current_user.has_role?(:employee) %>
+          <% if current_user.has_role?(:employee) %>
+            <div class="privacy col-md-4 col-sm-4" style="padding-top: 20px;">
+              <p>Display Location</p>
+              <%= info.input :show_location, label: false, label_html: { class: "min-width-120" }, as: :radio_buttons,  item_wrapper_class: 'radio-inline margin-top-0' %>
+            </div>
+          <% end %>
         </div>
-        <hr>
-        <div class="padding-bottom-10 row">
-          <% if current_user.has_role? :employee %>
-            <div class="padding-left-0 col-md-8">
+        <div class="row">
+          <% if current_user.has_role?(:employee) %>
+            <div class="padding-0 col-md-8 col-sm-8"><hr></div>
+            <div class="privacy padding-0 col-md-4 col-sm-4"><hr></div>
+          <% else %>
+            <hr>
+          <% end %>
+        </div>
+        <% if current_user.has_role? :employee %>
+          <div class="row">
+            <div class="padding-top-10 padding-left-0 col-md-8 col-sm-8">
               <%= info.input :resume, as: :file, label: "Upload Private Resume", input_html: {style: 'display: inline;'} %>
               <% unless @user.resume.blank? %>
                 <p>Current Resume: <%= link_to @user.resume.original_filename, @user.resume.url, target: '_blank' %></p>
               <% end %>
             </div>
-          <% end %>
-          <div class="col-md-4">
-            <p>Only displayed to Job Providers in your job applications to them.</p>
+            <div class="privacy col-md-4 col-sm-4" style="padding-top:15px;">
+              <p>Only displayed to Job Providers in your job applications to them.</p>
+            </div>
           </div>
-          <div class="padding-left-0 col-md-8">
+        <% end %>
+        <div class="row">
+          <div class="padding-top-10 padding-left-0 col-md-8 col-sm-8">
             <%= info.input :image, as: :file, label: "Upload Profile Picture", input_html: {style: 'display: inline;'} %>
             <p>You will be able to crop and edit your photo in the next screen.</p>
           </div>
-          <%= info.input :show_picture, label: 'Display Picture', label_html: { class: "min-width-120" }, as: :radio_buttons,  item_wrapper_class: 'radio-inline margin-top-0', wrapper_html: { class: "col-md-4", style: "padding-top:15px;" } if current_user.has_role?(:employee) %>
-        </div>
-        <div class="padding-bottom-10 row">
-          <%= info.input :gender, required: true, collection: GENDERS, as: :radio_buttons, item_wrapper_class: 'radio-inline margin-top-0', wrapper_html: { class: "padding-left-0 col-md-8" } %>
           <% if current_user.has_role?(:employee) %>
-            <div class="col-md-4">
+          <div class="privacy col-md-4 col-sm-4" style="padding-top: 5px;">
+          <p>Display Picture</p>
+          <%= info.input :show_picture, label: false, label_html: { class: "min-width-120" }, as: :radio_buttons,  item_wrapper_class: 'radio-inline margin-top-0' %>
+          </div>
+          <% end %>
+        </div>
+        <div class="row">
+          <%= info.input :gender, required: true, collection: GENDERS, as: :radio_buttons, item_wrapper_class: 'radio-inline margin-top-0', wrapper_html: { class: "padding-top-10 padding-left-0 col-md-8 col-sm-8" } %>
+          <% if current_user.has_role?(:employee) %>
+            <div class="privacy col-md-4 col-sm-4" style="margin-top:-10px; padding-top:20px;">
               <p>Never displayed.  Used for default image choice.</p>
             </div>
           <% end %>
         </div>
-        <div class="padding-bottom-10 row">
-          <%= info.input :birth_year, required: true, as: :date, discard_day: true, discard_month: true, start_year: Date.today.year-100, end_year: Date.today.year, wrapper_html: { class: "padding-left-0 col-md-8" } %>
+        <div class="row">
+          <%= info.input :birth_date, required: true, as: :date, start_year: Date.today.year-100, end_year: Date.today.year, wrapper_html: { class: "padding-top-10 padding-left-0 col-md-8 col-sm-8" } %>
           <% if current_user.has_role?(:employee) %>
-            <div class="col-md-4">
+            <div class="privacy col-md-4 col-sm-4" style="padding-top:40px;">
               <p>Never displayed.</p>
             </div>
           <% end %>
         </div>
-        <hr>
-        <div class="padding-bottom-10 row">
-        <%= info.input :summary, as: :text, wrapper_html: { class: "padding-left-0 col-md-8" }, input_html: { maxlength: 200 }, label: "Summary (max 200 characters)", label_html: { class: "padding-left-0" } %>
-        <% if current_user.has_role?(:employee) %>
-        <div class="col-md-4">
-        <p style="padding-top:30px;">Always displayed.</p>
+        <div class="row">
+          <% if current_user.has_role?(:employee) %>
+            <div class="padding-0 col-md-8 col-sm-8"><hr></div>
+            <div class="privacy padding-0 col-md-4 col-sm-4"><hr></div>
+          <% else %>
+            <hr>
+          <% end %>
         </div>
+        <div class="row">
+        <%= info.input :summary, as: :text, wrapper_html: { class: "padding-left-0 col-md-8 col-sm-8" }, input_html: { maxlength: 200 }, label: "Summary (max 200 characters)", label_html: { class: "padding-top-10 padding-left-0" } %>
+        <% if current_user.has_role?(:employee) %>
+          <div class="privacy col-md-4 col-sm-4">
+            <p style="padding-top:60px;">Always displayed.</p>
+          </div>
         <% end %>
         </div>
         <div class="row" style="padding-bottom: 10px">
-          <div class="cold-md-6" id="target">
+          <div class="col-md-6 col-sm-6" id="target">
           </div>
         </div>
         <%= info.submit 'Update', name: 'personal', class: 'btn btn-primary' %>

@@ -8,7 +8,6 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string  :last_name
       t.attachment :image
       t.string  :gender
-      t.integer :birth_year
 
       #social media
       t.string  :github

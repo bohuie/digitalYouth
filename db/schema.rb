@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170213193139) do
+ActiveRecord::Schema.define(version: 20170216175428) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -267,7 +267,6 @@ ActiveRecord::Schema.define(version: 20170213193139) do
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
     t.string   "gender"
-    t.integer  "birth_year"
     t.string   "github"
     t.string   "linkedin"
     t.string   "twitter"
@@ -307,6 +306,7 @@ ActiveRecord::Schema.define(version: 20170213193139) do
     t.string   "resume_content_type"
     t.integer  "resume_file_size"
     t.datetime "resume_updated_at"
+    t.datetime "birth_date"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

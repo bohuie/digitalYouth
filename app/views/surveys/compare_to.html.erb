@@ -1,0 +1,7 @@
+<%= render "users/shared/profile" %>
+
+<%= render partial: "shared/job_seeker_tabs", locals: {active: "surveys" } %>
+
+<h4><b>Category: <%=@survey.format_title.html_safe%></b></h4>
+
+<%= render partial: "surveys/display", locals: { survey_results: @survey_results, survey_title: @survey.title } %>

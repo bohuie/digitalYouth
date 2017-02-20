@@ -22,6 +22,7 @@ class SearchesController < ApplicationController
 		@s = params[:s].nil?  ? "" : params[:s].titleize  #skills
 		@jt= params[:jt].nil? ? "" : params[:jt] #job_type
 		@dp= params[:dp].nil? ? "" : params[:dp] #date_posted
+		@pd= params[:pd].nil? ? "" : params[:pd] #project_date
 
 		#Hashes for filtering
 		@toggles = Hash.new()
@@ -29,7 +30,7 @@ class SearchesController < ApplicationController
 		where_clause = Hash.new()
 		aggs = Array.new()
 		fields = [:company_name, :skills, :first_name, :last_name, :city, :province,
-			:title, :description, :owner_first, :owner_last,
+			:title, :description, :owner_first, :owner_last, :project_date,
 			:location]
 
 		case @type # Modifies the indexes to search with, i.e. selects the model(s) to search from, sets up extra data, and filters
@@ -45,7 +46,6 @@ class SearchesController < ApplicationController
 			@relationships = ["1st","2nd", "Group Members", "3rd + Everyone"]
 			@current_companies = [] # To be implemented
 			@past_companies = [] # To be implemented
-
 			# Postgres query finds the most popular skill names (restricting length)
 			@pgrec = ActiveRecord::Base.connection.execute("
 					SELECT skills.name 
@@ -80,8 +80,7 @@ class SearchesController < ApplicationController
 
 		when "Projects" # Searches Project model, filters date-posted and skills
 			idxs=[Project.searchkick_index.name]
-			@toggles = { dp: @dp, s:@s.titleize}
-
+			@toggles = { pd: @pd, s:@s.titleize}
 			# Postgres query finds the most popular skill names (restricting length)
 			@pgrec = ActiveRecord::Base.connection.execute("
 					SELECT skills.name 
@@ -94,7 +93,7 @@ class SearchesController < ApplicationController
 			@skills = Array.new
 			@pgrec.each do |s| @skills.push(s["name"].titleize) end
 
-			@dates_posted = ["Past Day","Past Three Days", "Past Week","Past Month"]
+			@project_date = ["Past Month","Past 6 Months", "Past Year"]
 
 		when "JobPostings" # Searches JobPosting, filters location, company, dateposted, industry, job type, skills.
 			idxs=[JobPosting.searchkick_index.name]
@@ -135,7 +134,7 @@ class SearchesController < ApplicationController
 			locs.each do |l| 
 				@locations.push(l[0].titleize+', '+l[1].upcase)
 			end
-			@dates_posted = ["Past Day","Past Three Days", "Past Week","Past Month"]
+			@dates_posted = ["Past Day", "Past Week","Past Month"]
 			@industries = JobCategory.all.pluck(:name)
 			@job_types = JOB_TYPES.keys
 		else # Search nothing
@@ -179,12 +178,20 @@ class SearchesController < ApplicationController
 					if !@dp.blank?
 						if @dp == "Past Day"
 							where_clause[:created_at]={gte:Date.today-1}
-						elsif @dp == "Past Three Days"
-							where_clause[:created_at]={gte:Date.today-3}
 						elsif @dp == "Past Week"
 							where_clause[:created_at]={gte:Date.today-7}
 						elsif @dp == "Past Month"
 							where_clause[:created_at]={gte:Date.today-30}
+						end
+					end
+				when "project_date"
+					if !@pd.blank?
+						if @pd == "Past Month"
+							where_clause[:project_date]={gte:Date.today-30}
+						elsif @pd == "Past 6 Months"
+							where_clause[:project_date]={gte:Date.today-182}
+						elsif @pd == "Past Year"
+							where_clause[:project_date]={gte:Date.today-365}
 						end
 					end
 				end
@@ -192,6 +199,7 @@ class SearchesController < ApplicationController
 		end
 		aggs = [] if where_clause == {}
 		# There is an N+1 query problem here with rolify
+		
 		@results = User.search @query, 
 				 index_name: idxs,
 				 fields: fields,

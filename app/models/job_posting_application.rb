@@ -41,4 +41,12 @@ class JobPostingApplication < ActiveRecord::Base
 				return "success"
 		end
 	end
+
+	def self.check_app(applicant, company)
+		if applicant.has_role?(:employee) && company.has_role?(:employer) && JobPostingApplication.where('applicant_id = ? AND company_id = ? AND status > -1',applicant.id, company.id).take
+			return true
+		else
+			return false
+		end
+	end
 end

@@ -4,7 +4,7 @@ respond_to :html, :json
 	before_action :authenticate_user!, except: [:show, :index, :nav_tab] #ignore home_tab, only done when it is the current user and logged in
 	before_action :profile_owner, only: [:edit, :update, :destroy]
 	skip_before_action :verify_authenticity_token, only: [:nav_tab] #ignore home_tab, only done when it is the current user and logged in
-	before_action :employer_only, only: [:contact, :send_mail]
+	before_action :job_provider_only, only: [:contact, :send_mail]
 
 	
 	def index
@@ -65,10 +65,14 @@ respond_to :html, :json
 	def update
 		@user = User.find(params[:id])
 		if params.include?(:personal)
-			@user.update_attributes(personal_params)
-			flash[:success] = "Personal Info successfully updated."
-			unless params[:user][:image].blank?
-				render action: 'crop' and return
+			if @user.update_attributes(personal_params)
+				flash[:success] = "Personal Info successfully updated."
+				unless params[:user][:image].blank?
+					render action: 'crop' and return
+				end
+			else
+				flash[:danger] = "Unable to update your info, please check all fields are completed properly."
+				render 'edit' and return
 			end
 		elsif params.include?(:email)
 			if @user.valid_password?(params[:user][:email_password])
@@ -77,8 +81,12 @@ respond_to :html, :json
 					render 'edit' and return
 				else
 					params[:user][:email] = params[:user][:new_email]
-					@user.update_attributes(email_params)
-					flash[:success] = "Email successfully updated. You will have to confirm your new email before we update to that email."
+					if @user.update_attributes(email_params)
+						flash[:success] = "Email successfully updated. You will have to confirm your new email before we update to that email."
+					else
+						flash[:danger] = "There was an error updating your email.  Please check all fields are completed properly."
+						render 'edit' and return
+					end
 				end
 			else
 				flash[:danger] = "Incorrect password."
@@ -86,30 +94,50 @@ respond_to :html, :json
 			end
 		elsif params.include?(:password)
 			if @user.valid_password?(params[:user][:current_password])
-				@user.update_attributes(password_params)
-				sign_in :user, @user, bypass: true
-				flash[:success] = "Password successfully updated."
+				if @user.update_attributes(password_params)
+					sign_in :user, @user, bypass: true
+					flash[:success] = "Password successfully updated."
+				else
+					flash[:danger] = "There was an error updating your password.  Please check all fields are completed properly."
+					render 'edit' and return
+				end
 			else
 				flash[:danger] = "Incorrect password."
 				render 'edit' and return
 			end
 		elsif params.include?(:media)
-			@user.update_attributes(media_params)
-			flash[:success] = "Social Media successfully updated."
+			if @user.update_attributes(media_params)
+				flash[:success] = "Social Media successfully updated."
+			else
+				flash[:danger] = "There was an error updating your social media links.  Please check all fields are completed properly."
+				render 'edit' and return
+			end
 		elsif params.include?(:image)
-			@user.update_attributes(image_params)
-			flash[:success] = "Profile Image updated."
+			if @user.update_attributes(image_params)
+				flash[:success] = "Profile Image updated."
+			else
+				flash[:danger] = "There was an error updating your profile picture.  Please check all fields are completed properly."
+				render 'edit' and return
+			end
 		elsif params.include?(:bio)
-			@user.update_attributes(bio_params)
-			flash[:success] = "Bio updated."
+			if @user.update_attributes(bio_params)
+				flash[:success] = "Bio updated."
+			else
+				flash[:danger] = "There was an error updating your bio.  Please check all fields are completed properly."
+				render 'edit' and return
+			end
 		elsif params.include?(:crop)
-			@user.update_attributes(crop_params)
-			@user.reprocess_image
-			flash[:success] = "Profile Image updated."
+			if @user.update_attributes(crop_params)
+				@user.reprocess_image
+				flash[:success] = "Profile Image updated."
+			else
+				flash[:danger] = "There was an error cropping your photo.  Please try again or contact an administrator."
+				render 'edit' and return
+			end
 		else
 			flash[:danger] = "Something went wrong.  Please contact an administrator."
 		end
-		redirect_back_or user_path
+		redirect_to edit_user_path
 	end
 
 	def finish_signup
@@ -177,7 +205,7 @@ respond_to :html, :json
 	end
 
 	def personal_params
-		params.require(:user).permit(:first_name, :last_name, :street_address, :city, :province, :postal_code, :image, :delete_image, :company_name)
+		params.require(:user).permit(:first_name, :last_name, :street_address, :city, :province, :postal_code, :image, :delete_image, :company_name, :summary, :gender, :birth_date, :show_name, :show_location, :show_picture, :resume)
 	end
 
 	def email_params
@@ -209,7 +237,7 @@ respond_to :html, :json
 		end
 	end
 
-	def employer_only
+	def job_provider_only
 		unless current_user.has_role? :employer
 			flash[:warning] = "Sorry, we couldn't find that page."
 			redirect_back_or

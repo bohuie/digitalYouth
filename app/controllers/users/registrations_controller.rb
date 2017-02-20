@@ -52,7 +52,7 @@ before_filter :logged_in, only: [:create]
             set_minimum_password_length
             @job_seeker = @user
             @job_seeker.build_consent(consent_params)
-            render template: "welcome/signup_employee" and return
+            render template: "welcome/signup_jobseeker" and return
           elsif params[:role] =='employer'
             clean_up_passwords resource
             set_minimum_password_length
@@ -70,7 +70,7 @@ before_filter :logged_in, only: [:create]
           set_minimum_password_length
           @job_seeker = @user
           @job_seeker.build_consent(consent_params)
-          render template: "welcome/signup_employee" and return
+          render template: "welcome/signup_jobseeker" and return
         elsif params[:role] =='employer'
           clean_up_passwords resource
           set_minimum_password_length
@@ -87,7 +87,7 @@ before_filter :logged_in, only: [:create]
       if params[:role] == 'employee'
         @job_seeker = @user
         @job_seeker.build_consent(consent_params)
-        render template: "welcome/signup_employee" and return
+        render template: "welcome/signup_jobseeker" and return
       elsif params[:role] =='employer'
         @employer = @user
         @employer.build_consent(consent_params)
@@ -153,7 +153,7 @@ before_filter :logged_in, only: [:create]
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:role, :first_name, :last_name, :company_name, :postal_code, :city, :province])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:role, :first_name, :last_name, :company_name, :postal_code, :city, :province, :gender])
   end
 
   # If you have extra params to permit, append them to the sanitizer.

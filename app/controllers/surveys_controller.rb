@@ -2,7 +2,7 @@ class SurveysController < ApplicationController
 	include ConstantHelper
 
 	before_action :authenticate_user!, except: [:show]
-	before_action :check_role_jobseeker, only: [:edit]
+	before_action :check_role_jobseeker, only: [:edit, :compare_to, :compare_all]
 	before_action :check_role_employer, only: [:compare]
 	before_action :job_owner, only: [:compare]
 	
@@ -17,7 +17,7 @@ class SurveysController < ApplicationController
 		@survey_results = Array.new
 
 		@survey_results.push(name: "Average Job Seeker", data: @survey.get_average_data)
-		@survey_results.push(name: @user.first_name+" "+@user.last_name, data: @survey.get_data(@user))
+		@survey_results.push(name: @user.formatted_name(current_user), data: @survey.get_data(@user))
 		@questions = @survey.questions
 
 		@prompts = Hash.new
@@ -80,13 +80,92 @@ class SurveysController < ApplicationController
 		@job_posting_applications.each do |j|
 			user_results = @survey.get_data(j.applicant)
 			if user_results
-				@survey_results.push(name: j.applicant.first_name+" "+j.applicant.last_name, data: user_results)
+				@survey_results.push(name: j.applicant.formatted_name(@job_posting.user_id), data: user_results)
 			end
 		end
 
 		@prompts = Hash.new
 		@questions.each do |q|
 			@prompts = @prompts.merge({q.id => q.prompts})
+		end
+	end
+
+	def compare_all
+		if !params[:jp].blank?
+			#compare to a job posting
+			@survey_results = Array.new
+			average_results = Survey.get_average_data
+			average_results.each do |index, avg|
+				@survey_results[index] = Array.new if @survey_results[index].nil?
+				@survey_results[index].push(name: "Average Job Seeker", data: avg)
+			end
+		elsif !params[:js].blank?
+			#compare to another job seeker
+			@survey_results = Array.new
+			average_results = Survey.get_average_data
+			average_results.each do |index, avg|
+				@survey_results[index] = Array.new if @survey_results[index].nil?
+				@survey_results[index].push(name: "Average Job Seeker", data: avg)
+			end
+
+			user_results = Survey.get_table_data(current_user)
+			user_results.each do |index, results|
+				@survey_results[index].push(name: current_user.formatted_name(current_user), data: results)
+			end
+
+			@user = User.find(params[:js])
+			user_results = Survey.get_table_data(@user)
+			user_results.each do |index, results|
+				@survey_results[index].push(name: @user.formatted_name(current_user), data: results)
+			end
+		else
+			#error
+			flash[:warning] = "Sorry, there was an unexpected error.  Please try again or contact and administrator."
+			redirect_to current_user
+		end
+	end
+
+	def compare_to
+
+		if !params[:jp].blank?
+			#compare to a job posting
+		elsif !params[:js].blank?
+			#compare to another job seeker
+			@survey = Survey.find_by(title: params[:title])
+			if @survey.nil?
+				flash[:warning] = "Sorry, we couldn't find that survey."
+				redirect_to current_user and return
+			end
+
+			@questions = @survey.questions
+			@survey_results = Array.new
+
+			@survey_results.push(name: "Average Job Seeker", data: @survey.get_average_data)
+
+			user_results = @survey.get_data(current_user)
+			if user_results
+				@survey_results.push(name: current_user.formatted_name(current_user), data: user_results)
+			end
+
+			@user = User.find(params[:js])
+			if @user.nil? || @user.has_role?(:employer)
+				flash[:warning] = "Sorry, we couldn't find that job seeker."
+				redirect_to current_user and return
+			end
+
+			user_results = @survey.get_data(@user)
+			if user_results
+				@survey_results.push(name: @user.formatted_name(current_user), data: user_results)
+			end
+
+			@prompts = Hash.new
+			@questions.each do |q|
+				@prompts = @prompts.merge({q.id => q.prompts})
+			end
+		else
+			#error
+			flash[:warning] = "Sorry, there was an unexpected error.  Please try again or contact and administrator."
+			redirect_to current_user
 		end
 	end
 

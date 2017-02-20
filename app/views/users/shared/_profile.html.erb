@@ -3,13 +3,13 @@
 <div class ="profileContainer">
 	<div class ="profileContainerImage">
 		<% if @user.formatted_picture(current_user) %>
-			<%= image_tag @user.image.url(:medium), alt:"User Icon", class: "profile-image" %>
+			<%= image_tag @user.image.url(:medium), alt:"User Icon", class: "profile-image medium-shadow" %>
 		<% elsif @user.gender == "male" %>
-			<%= image_tag "avatar-placeholderM-medium.svg", alt: "User Icon", class: "profile-image" %>
+			<%= image_tag "avatar-placeholderM-medium.svg", alt: "User Icon", class: "profile-image medium-shadow" %>
 		<% elsif @user.gender == "female" %>
-			<%= image_tag "avatar-placeholderF-medium.svg", alt: "User Icon", class: "profile-image" %>
+			<%= image_tag "avatar-placeholderF-medium.svg", alt: "User Icon", class: "profile-image medium-shadow" %>
 		<% else %>
-			<%= image_tag "avatar-placeholder-medium.svg", alt: "User Icon", class: "profile-image" %>
+			<%= image_tag "avatar-placeholder-medium.svg", alt: "User Icon", class: "profile-image medium-shadow" %>
 		<% end %>
 	</div>
 	<div class ="profileContainerContent">
@@ -41,7 +41,7 @@
 <!-- Employer Profile -->
 	<div class ="profileContainer">
 		<div class ="profileContainerImage">
-			<%= image_tag @user.image.url(:medium), alt:"User Icon", class: "profile-image"  %> 
+			<%= image_tag @user.image.url(:medium), alt:"User Icon", class: "profile-image medium-shadow"  %> 
 		</div>
 		<div class ="profileContainerContent">
 			<h2> <%= link_to @user.company_name, @user %></h2>

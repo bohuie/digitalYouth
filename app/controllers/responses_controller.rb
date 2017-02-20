@@ -21,13 +21,14 @@ class ResponsesController < ApplicationController
 		#Record response to database
 		@response.set_data_from_hash(@scores,@question_ids)
 		if !@response.save
-			redirect_to current_user, flash: {danger: "There was an issue saving your response"}
+			redirect_to current_user, flash: {danger: "There was an issue saving your response"} and return
 		end
 		#Record that the user has answered the survey
 		@user.answered_surveys[@survey_id - 1] = true
 		if !@user.save
+			byebug
 			@response.destroy # The survey wasn't marked properly in the user table, response is destroyed.
-			redirect_to current_user, flash: {danger: "There was an issue saving your response"}
+			redirect_to current_user, flash: {danger: "There was an issue saving your response"} and return
 		end
 		redirect_to current_user, flash: {success: "Thanks for answering the survey!"}
 	end

@@ -39,6 +39,10 @@
 							<p>Click on one of the boxes below to fill out a survey to showcase some of your skills.  Each graph shows the skills that an average person has (in blue) and the skills you've indicated (in red).</p>
 					<% else %>
 							<p>Each graph will show an average person's skills (in blue) versus <%= @user.formatted_name(current_user)+"'s "%> skills (in red) if the survey has been completed.  If you wish to see more details about the  kind of skills associated with a graph, click Details.  A gray graph means <%= @user.formatted_name(current_user)%> has not done that survey yet.</p>
+							<% if current_user && current_user.has_role?(:employee) %>
+								<p>You can compare your skill graphs to <%= @user.formatted_name(current_user)+"'s "%> by clicking the button below.</p>
+								<p><%= link_to "Compare Survey Graphs", survey_compare_all_path(js: @user), class: "btn btn-primary" %></p>
+							<% end %>
 					<% end %>
 					<%= render '/users/partials/show_survey_table', user:@user, results:@survey_results %>
 				</div>

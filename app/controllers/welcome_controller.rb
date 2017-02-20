@@ -2,6 +2,10 @@ class WelcomeController < ApplicationController
 
   before_filter :logged_in, only: [:signup_jobseeker, :signup_employer]
   def index
+    if user_signed_in? && current_user.has_role?(:employer)
+      @new_application = PublicActivity::Activity.where(owner_id: current_user.id, is_read: false, key: "job_posting_application.create").take
+      @expired_posting = JobPosting.where("user_id = ? AND close_date < ? ",current_user.id, Date.today).take
+    end
   end
 
   def signup_jobseeker

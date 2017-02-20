@@ -35,7 +35,7 @@ function add_job_posting_skill_fields(association, content){
   if ($('body').hasClass('job_postings')){
     var skills = 0;
     $('#job-skills').children().each(function(){if(this.id.includes("job-posting-skill-")) skills++;});
-    var new_id = skills + 1;
+    var new_id = skills;
     var regexp = new RegExp("new_" + association, "g");
     $('#job-skills').append(content.replace(regexp, new_id));
   }

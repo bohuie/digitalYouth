@@ -7,6 +7,7 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string  :first_name
       t.string  :last_name
       t.attachment :image
+      t.string  :gender
 
       #social media
       t.string  :github
@@ -30,7 +31,8 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string  :province
 
       #Bio info
-      t.string  :bio
+      t.text    :bio
+      t.string  :summary
 
       #Survey tracking - survey_id-1 maps to each spot in the array
       t.boolean :answered_surveys, array: true, default: [false, false, false, false, false, false, false, false, false, false, false, false]
@@ -60,6 +62,11 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string   :unlock_token # Only if unlock strategy is :email or :both
       t.datetime :locked_at
 
+
+      ## Privacy
+      t.boolean :show_picture, default: true
+      t.boolean :show_name, default: true
+      t.boolean :show_location, default: true
 
       t.timestamps null: false
     end

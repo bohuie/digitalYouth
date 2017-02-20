@@ -29,6 +29,10 @@
 	max-width: 250px;
 }
 
+.privacy {
+	background-color: WHITESMOKE;
+}
+
 .image-display {
 	width: 150px;
 	height: 150px;
@@ -193,14 +197,8 @@ ul.nav-tabs > li.active > a {
 }
 .profileContainerImage
 {
-	border-radius: 5px;
-	border: 2px solid grey;
-	height: 200px;
-	width: 250px;
 	float: left;
 	padding: 23px;
-	margin: 0 auto;
-	background: #FFFFFF;
 }
 .profileFrame
 {
@@ -218,9 +216,9 @@ ul.nav-tabs > li.active > a {
 }
 .profileContainerContent
 {
-	width: 600px;
-	height: 300px;
-	margin-left: 275px;
+	height: 220px;
+	margin-left: 250px;
+	padding: 23px;
 	//border: 2px solid blue;
 }
 .profileContainerContent input

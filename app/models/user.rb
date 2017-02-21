@@ -203,6 +203,22 @@ class User < ActiveRecord::Base
         end
     end
 
+    def formatted_job(current)
+        if self.show_job || self == current || (current && JobPostingApplication.check_app(self, current))
+            if self.job_title && self.at_company
+                return self.job_title+" at "+self.at_company
+            elsif self.job_title
+                return self.job_title
+            elsif self.at_company
+                return "Working at "+self.at_company
+            else
+                return ""
+            end
+        else
+            return ""
+        end
+    end
+
     def formatted_location(current)
         if self.show_location || self == current || (current && JobPostingApplication.check_app(self, current))
             return self.city + ', ' + self.province

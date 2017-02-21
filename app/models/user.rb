@@ -39,7 +39,7 @@ class User < ActiveRecord::Base
             large: "-gravity center -extent 400x400"
         }
     include DeletableAttachment
-    validates_attachment :image, content_type: { content_type: ["image/jpg", "image/jpeg", "image/png", "image/svg"] }
+    validates_attachment :image, content_type: { content_type: ["image/jpg", "image/jpeg", "image/png"] }
     attr_accessor :crop_x, :crop_y, :crop_w, :crop_h, :new_email
     
     has_attached_file :resume

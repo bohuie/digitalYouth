@@ -47,7 +47,7 @@
         <% if @user.has_role?(:employee) %>
           <div class="row">
             <%= info.input :job_title, wrapper_html: { class: "padding-top-10 padding-left-0 col-md-4 col-sm-4" } %>
-            <%= info.input :at_company, label: "Company", wrapper_html: { class: "padding-top-10 col-md-4 col-sm-4" } %>
+            <%= info.input :current_company, label: "Company", wrapper_html: { class: "padding-top-10 col-md-4 col-sm-4" } %>
             <div class="privacy col-md-4 col-sm-4" style="padding-top: 20px;">
             <p>Display Current Job Position</p>
             <%= info.input :show_job, label: false, as: :radio_buttons, item_wrapper_class: "radio-inline margin-top-0" %>

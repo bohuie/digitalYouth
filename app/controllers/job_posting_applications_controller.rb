@@ -67,7 +67,7 @@ class JobPostingApplicationsController < ApplicationController
 		job_posting = @job_posting_application.job_posting
 		save = @job_posting_application.update(status: JobPostingApplication.get_status_int(params[:status]))
 		if save #Create notification for user
-			@job_posting_application.create_activity :update, owner: @job_posting_application.applicant, parameters: {status: status}
+			@job_posting_application.create_activity :update, owner: @job_posting_application.applicant, parameters: {status: JobPostingApplication.get_status_int(params[:status])}
 			redirect_to applications_job_posting_path(job_posting), flash: {success: "Updated Application Status!"}
 		else
 			flash[:warning] = "Oops, there was an issue in updating that application."

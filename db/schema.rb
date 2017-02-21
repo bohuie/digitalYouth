@@ -308,11 +308,7 @@ ActiveRecord::Schema.define(version: 20170220195627) do
     t.datetime "resume_updated_at"
     t.datetime "birth_date"
     t.string   "job_title"
-<<<<<<< HEAD
-    t.string   "at_company"
-=======
     t.string   "current_company"
->>>>>>> master
     t.boolean  "show_job"
   end
 

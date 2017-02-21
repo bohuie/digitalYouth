@@ -12,6 +12,10 @@
     <%= employee.input :city, required: true, label: 'City. This is used to help job providers find local job seekers.' %>
     <%= employee.input :province, collection: PROVINCES, required: true, label: 'Province. This is used to help job providers find local job seekers.'  %>
     <%= employee.input :postal_code, required: true, label: 'Postal Code.  This will not be displayed on your public profile, but is used for helping find jobs near you.' %>
+
+    <%= employee.input :gender, required: true, collection: GENDERS, as: :radio_buttons, item_wrapper_class: 'radio-inline margin-top-0', wrapper_html: { class: "padding-left-0" } %>
+    <%= employee.input :birth_date, required: true, as: :date, start_year: Date.today.year-15, end_year: Date.today.year-100 %>
+
     <%= hidden_field_tag :role, "employee" %>
 
     <div style="margin-bottom: 15px;"><%= recaptcha_tags %></div>

@@ -1,6 +1,6 @@
 <%= render "users/shared/profile" %>
 <% if current_user.has_role?(:employee) %>
-	<%= render "shared/job_seeker_home_tabs", locals: {active: session[:home_tab]} %>
+	<%= render partial: "shared/job_seeker_tabs", locals: {active: session[:home_tab]} %>
 <% elsif current_user.has_role?(:employer) %>
 	<%= render partial: "shared/employer_tabs", locals: {active: session[:home_tab]} %>
 <% end %>

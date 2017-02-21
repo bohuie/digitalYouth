@@ -126,14 +126,14 @@ Rails.application.routes.draw do
   delete 'reference_redirections/:id' => 'reference_redirections#destroy', as: :delete_reference_redirection
 
   # Survey routes
+  get 'surveys/:title/compare' => 'surveys#compare', as: :compare_survey
+  get 'surveys/:title/compare_to' => 'surveys#compare_to', as: :survey_compare_to
+  get 'surveys/compare_all' => 'surveys#compare_all', as: :survey_compare_all
   get 'surveys' => 'surveys#index'
   get 'surveys/:title' => 'surveys#show', as: :survey
   get 'surveys/:title/edit' => 'surveys#edit', as: :edit_survey
   post 'responses' => 'responses#create'
   patch 'responses' => 'responses#update'
-  get 'surveys/:title/compare' => 'surveys#compare', as: :compare_survey
-
-
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

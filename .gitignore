@@ -33,6 +33,8 @@ config/secrets.yml
 
 .rspec
 
+# Ignore scrapping
+/db/scraping
 
 #Ignore mac .DS_Store
 .DS_Store

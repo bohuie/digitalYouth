@@ -38,11 +38,64 @@
       				<% if current_user == @user %>
 							<p>Click on one of the boxes below to fill out a survey to showcase some of your skills.  Each graph shows the skills that an average person has (in blue) and the skills you've indicated (in red).</p>
 					<% else %>
-							<p>Each graph will show an average person's skills (in blue) versus <%= @user.first_name.titleize+" "+@user.last_name.titleize+"'s "%> skills (in red) if the survey has been completed.  If you wish to see more details about the  kind of skills associated with a graph, click Details.  A gray graph means <%= @user.first_name.titleize+" "+@user.last_name.titleize%> has not done that survey yet.</p>
+							<p>Each graph will show an average person's skills (in blue) versus <%= @user.formatted_name(current_user)+"'s "%> skills (in red) if the survey has been completed.  If you wish to see more details about the  kind of skills associated with a graph, click Details.  A gray graph means <%= @user.formatted_name(current_user)%> has not done that survey yet.</p>
+							<% if current_user && current_user.has_role?(:employee) %>
+								<p>You can compare your skill graphs to <%= @user.formatted_name(current_user)+"'s "%> by clicking the button below.</p>
+								<p><%= link_to "Compare Survey Graphs", survey_compare_all_path(js: @user), class: "btn btn-primary" %></p>
+							<% end %>
 					<% end %>
 					<%= render '/users/partials/show_survey_table', user:@user, results:@survey_results %>
 				</div>
 			</div>
+			<div id="skills" class="<%= skclass %>">
+				<h4><b>Category of Skills</b></h4>
+    			<% if current_user == @user %>
+						<p>Create a new skill by filling out the info below, or view your skills listed below.</p>
+				<% else %>
+						<p>This is a summary of all of <%= @user.formatted_name(current_user)+"'s "%> skills organized by categories they selected.</p>
+				<% end %>
+    			<% if user_signed_in? && @current_user==@user %>
+						<%= simple_form_for @user_skill do |g| %>
+							<div class="row">
+								<%= g.input :name, wrapper_html: { class: 'padding-left-0 col-md-4'} %>
+								<%= g.input :survey_id, required:true, collection: @surveys, prompt: "Select Classification", label: "Associated Survey Skill", wrapper_html: { class: 'col-md-4' } %>
+							</div>
+							<br />
+							<%= g.button :submit, class: "btn btn-primary" %>
+						<% end %>
+					<% end %>
+				<div id="skills">
+					<div class="container">
+						<div class ="row survey-box-row">
+							<div class="col-md-1"></div>
+							<% j=1 %>
+							<% Survey.all.each do |s|%>
+								<div class="col-md-2" style="min-height: 150px">
+									<h5><u><b><%= s.title %></b></u></h5>
+									<% if  @user_skills.where(survey_id: s.id).empty? %>
+										<p>No skills for this category yet</p>
+									<% else%>
+										<ul>
+											<% @user_skills.where(survey_id: s.id).each do |sk| %>
+												<li class="skill alternate">
+													<%= sk.skill.name.titleize %>
+												</li>
+											<% end %>
+										</ul>
+									<% end %>
+								</div>
+								<div class="col-md-1"></div>
+								<% if j % 3 == 0 && j < 12 %>
+									</div>
+									<div class ="row survey-box-row"> 
+										<div class="col-md-1"></div>
+								<% end %>
+								<% j += 1 %>
+							<% end %>
+						</div>
+					</div>
+				</div>
+    		</div>
     		<% if user_signed_in? && @current_user==@user %>
     			<div id="applications" class="<%= apclass %>">
 					<% cnt = 0 %>
@@ -56,7 +109,7 @@
 						<% if j.status != -2 %>
 							<% cnt += 1 %>
 							<div class="row alternate"> 
-								<div class="col-md-5">
+								<div class="padding-left-0 col-md-5">
 									<h4 class="job-application-content">
 										<%= link_to raw("#{j.job_posting.title} (<i>#{j.job_posting.user.company_name}</i>)"), job_posting_application_path(j) %>
 										<br />
@@ -76,7 +129,7 @@
     			<% if current_user == @user %>
 						<p>Click on New Project to create a new one, or view, edit, or delete the projects listed below.  Projects are sorted by their date.</p>
 				<% else %>
-						<p>These are <%= @user.first_name.titleize+" "+@user.last_name.titleize+"'s "%> projects, sorted by their date.</p>
+						<p>These are <%= @user.formatted_name(current_user)+"'s "%> projects, sorted by their date.</p>
 				<% end %>
     			<% if user_signed_in? && @current_user==@user %>
 					<div class="row">
@@ -127,55 +180,6 @@
 					<h3>There are no posted projects yet!</h3>
 				<% end %>
 			</div>
-    		<div id="skills" class="<%= skclass %>">
-				<h4><b>Category of Skills</b></h4>
-    			<% if current_user == @user %>
-						<p>Create a new skill by filling out the info below, or view your skills listed below.</p>
-				<% else %>
-						<p>This is a summary of all of <%= @user.first_name.titleize+" "+@user.last_name.titleize+"'s "%> skills organized by categories they selected.</p>
-				<% end %>
-    			<% if user_signed_in? && @current_user==@user %>
-						<%= simple_form_for @user_skill do |g| %>
-							<div class="row">
-								<div class="col-md-4"><%= g.input :name %>	</div>
-								<div class="col-md-4"><%= g.input :survey_id, required:true, collection: @surveys, prompt: "Select Classification", label: "Associated Survey Skill"%></div>
-							</div>
-							<br />
-							<%= g.button :submit, class: "btn btn-primary" %>
-						<% end %>
-					<% end %>
-				<div id="skills">
-					<div class="container">
-						<div class ="row survey-box-row">
-							<div class="col-md-1"></div>
-							<% j=1 %>
-							<% Survey.all.each do |s|%>
-								<div class="col-md-2" style="min-height: 150px">
-									<h5><u><b><%= s.title %></b></u></h5>
-									<% if  @user_skills.where(survey_id: s.id).empty? %>
-										<p>No skills for this category yet</p>
-									<% else%>
-										<ul>
-											<% @user_skills.where(survey_id: s.id).each do |sk| %>
-												<li class="skill alternate">
-													<%= sk.skill.name.titleize %>
-												</li>
-											<% end %>
-										</ul>
-									<% end %>
-								</div>
-								<div class="col-md-1"></div>
-								<% if j % 3 == 0 && j < 12 %>
-									</div>
-									<div class ="row survey-box-row"> 
-										<div class="col-md-1"></div>
-								<% end %>
-								<% j += 1 %>
-							<% end %>
-						</div>
-					</div>
-				</div>
-    		</div>
 			<div id="references" class="<%= reclass %>">
       			<h4><b>References</b></h4>
 				<% if current_user == @user %>
@@ -183,7 +187,7 @@
 						displayed on your page, Unconfirmed References, references you have not confirmed yet and will not be displayed, and References 
 						Requests, which are requests from other EdgeMap users wanting a reference.</p>
 				<% else %>
-						<p>These are all the references <%= @user.first_name.titleize+" "+@user.last_name.titleize %> has contacted and received.</p>
+						<p>These are all the references <%= @user.formatted_name(current_user) %> has contacted and received.</p>
 				<% end %>
 				<div class = "references" id = "references">
 					<div class="row">
@@ -207,12 +211,10 @@
 													<%= image_tag("avatar-placeholder-small.svg", class: "profile-image") %>
 												<% end %>
 											</div>
-											<div class="col-md-3">
-												<div class="row">
-													<h5><%= r.first_name%> <%= r.last_name %>
-													<br /><%= r.position %>
-													<br /><%= r.company%></h5>
-												</div>
+											<div class="col-md-2">
+												<h5><%= r.first_name%> <%= r.last_name %>
+												<br /><%= r.position %>
+												<br /><%= r.company%></h5>
 											</div>
 											<div class="col-md-4">
 												<div class="row">
@@ -221,7 +223,7 @@
 												</div>
 											</div>
 										<% if user_signed_in? && @current_user==@user %>
-											<div class="col-md-3">
+											<div class="col-md-4">
 												<div style="float:right;">
 													<% if r.referee %>
 														<%= link_to "View", user_path(r.referee), class: "btn btn-primary" %>
@@ -259,12 +261,10 @@
 													<%= image_tag("avatar-placeholder-small.svg", class: "profile-image") %>
 												<% end %>
 											</div>
-											<div class="col-md-3">
-												<div class="row">
-													<h5><%= r.first_name%> <%= r.last_name %>
-													<br /><%= r.position %>
-													<br /><%= r.company%></h5>
-												</div>
+											<div class="col-md-2">
+												<h5><%= r.first_name%> <%= r.last_name %>
+												<br /><%= r.position %>
+												<br /><%= r.company%></h5>
 											</div>
 											<div class="col-md-4">
 												<div class="row">
@@ -272,7 +272,7 @@
 													<h5><%= r.reference_body %></h5>
 												</div>
 											</div>
-											<div class="col-md-3">
+											<div class="col-md-4">
 												<div style="float:right;">
 													<% if r.referee %>
 														<%= link_to "View", user_path(r.referee), class: "btn btn-primary" %>

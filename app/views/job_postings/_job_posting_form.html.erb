@@ -94,10 +94,10 @@
 	</div>
 	<div class="row">
 		<% if  @job_posting.errors.messages[:job_posting_skills] %>
-				<div class="col-md-3 has-error">
+			<div class="col-md-3 has-error">
 				<span class="help-block"><%=  @job_posting.errors.messages[:job_posting_skills][0] %></span>
-				</div>
-			<% end %>
+			</div>
+		<% end %>
 	</div>
 
 	<hr>

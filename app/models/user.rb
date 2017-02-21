@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  	searchkick word_start: [:company_name, :skills, :first_name, :last_name, :city, :province], callbacks: :async
+  	searchkick word_start: [:company_name, :skills, :first_name, :last_name, :city, :province, :job_title, :current_company], callbacks: :async
   	scope :search_import, -> { includes(:roles,:users_roles) }
     after_save :user_reindex
 
@@ -28,23 +28,34 @@ class User < ActiveRecord::Base
             medium: { geometry: "150x150>", :processors => [:cropper] },
             small: { geometry: "100x100>", :processors => [:cropper] },
             thumb: { geometry: "45x45>", :processors => [:cropper] },
+            menu: { geometry: "20x20>", :processors => [:cropper] },
             large: { geometry: "400x400" }
         },
         convert_options: {
             medium: "-gravity center -extent 150x150",
             small: "-gravity center -extent 100x100",
             thumb: "-gravity center -extent 45x45",
+            menu: "-gravity center -extent 20x20",
             large: "-gravity center -extent 400x400"
         }
     include DeletableAttachment
     validates_attachment :image, content_type: { content_type: ["image/jpg", "image/jpeg", "image/png", "image/svg"] }
     attr_accessor :crop_x, :crop_y, :crop_w, :crop_h, :new_email
-    #after_update :reprocess_image, :if => :cropping?
+    
+    has_attached_file :resume
+    validates_attachment_content_type :resume, content_type: [
+        'application/msword',
+        'application/pdf',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/vnd.oasis.opendocument.text'
+      ], message: "must be pdf, .doc, .docx, or .odt type."
 
     validates_format_of :email, :without => TEMP_EMAIL_REGEX, on: :update
     validates :province, presence: true
     validates :city, presence: true
     validates :summary, length: { maximum: 200 }
+    validate  :gender_check
+    validate  :birth_year_check
 
     has_many :job_postings, dependent: :destroy
     has_many :projects, dependent: :destroy
@@ -62,22 +73,39 @@ class User < ActiveRecord::Base
 
     accepts_nested_attributes_for :consent
 
+    def should_index?
+        if self.has_role?(:admin)
+            false
+        else
+            true
+        end
+    end
+
     def search_data
+
         data = Hash.new
-        data[:first_name] = first_name.titleize
-        data[:last_name] = last_name.titleize
+        data[:first_name] = first_name.titleize if self.show_name
+        data[:last_name] = last_name.titleize if self.show_name
         data[:company_name] = company_name.titleize if company_name
-        data[:city] = city.titleize if city
-        data[:province] = province.upcase if province
+        data[:city] = city.titleize if city && self.show_location
+        data[:province] = province.upcase if province && self.show_location
         data[:bio] = bio if bio
         data[:summary] = summary.downcase if summary
         data[:role] = self.roles.first.name if !self.roles.first.nil?
         data[:skills] = self.skills.pluck(:name)
+        data[:job_title] = self.job_title.titleize if self.job_title && self.show_job
+        data[:current_company] = self.current_company.titleize if self.current_company && self.show_job
         return data
 	end
 
     def user_reindex
-        User.reindex if !Rails.env.test?
+        if !Rails.env.test? 
+            self.reindex
+
+            self.projects.each do |p|
+                p.reindex
+            end
+        end
     end
 
     def self.find_for_oauth(auth, signed_in_resource = nil)
@@ -167,5 +195,57 @@ class User < ActiveRecord::Base
 
     def reference_count
         return Reference.where(user_id: self.id).count
+    end
+
+    def formatted_name(current)
+        if self.show_name || self == current || (current && JobPostingApplication.check_app(self, current))
+            return self.first_name + ' ' + self.last_name
+        else
+            return 'Anonymous Job Seeker'
+        end
+    end
+
+    def formatted_job(current)
+        if self.show_job || self == current || (current && JobPostingApplication.check_app(self, current))
+            if self.job_title && self.current_company
+                return self.job_title+" at "+self.current_company
+            elsif self.job_title
+                return self.job_title
+            elsif self.current_company
+                return "Working at "+self.current_company
+            else
+                return ""
+            end
+        else
+            return ""
+        end
+    end
+
+    def formatted_location(current)
+        if self.show_location || self == current || (current && JobPostingApplication.check_app(self, current))
+            return self.city + ', ' + self.province
+        else
+            return 'Secret Location'
+        end
+    end
+
+    def formatted_picture(current)
+        if self.show_picture || self == current || (current && JobPostingApplication.check_app(self, current))
+            return true
+        else
+            return false
+        end
+    end
+
+    def gender_check
+        if self.gender != "male" && self.gender != "female"
+            errors.add(:gender, "must be male or female.")
+        end
+    end
+
+    def birth_year_check
+        if self.birth_date.blank? || self.birth_date > (Date.today - 15.year)
+            errors.add(:birth_date, "must be 15 or older.")
+        end
     end
 end

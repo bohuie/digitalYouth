@@ -34,7 +34,6 @@ class ProjectsController < ApplicationController
 	def edit
 		@project = Project.find(params[:id])
 		@skills = @project.skills
-		@project_skills = ProjectSkill.where(project_id:params[:id]).order(:id)
 		@surveys = Survey.get_title_map
 		@user= @project.user
 	end
@@ -42,28 +41,38 @@ class ProjectsController < ApplicationController
 	def create
 		@user = current_user
 		@project = current_user.projects.build(project_params)
+		@surveys = Survey.get_title_map
 
-		if @project.save && @project.process_skills(params[:project][:project_skills_attributes])
+		if check_fields && @project.save && @project.process_skills(params[:project][:project_skills_attributes])
 			Project.reindex if !Rails.env.test?
-			flash[:success] = "Project successfully created."
 
-			redirect_back_or current_user
+			redirect_to current_user, flash: {success: "Project Created!"}
 		else
-			flash[:danger] = "Please fix the errors below."
-			render 'projects/new'
+			skill = Skill.new
+			@project.project_skills.build(skill: skill)
+			@project_skills = params[:project]["project_skills_attributes"]
+			if flash[:wanring].blank?
+				flash.now[:warning] = "Oops, there was an issue in creating your project."
+			end
+			render 'new'
 		end
 	end
 
 	def update
+		@user = current_user
 		@project = Project.find(params[:id])
-		@skills = @project.skills
+		@surveys = Survey.get_title_map
 		
-		if @project.update_attributes(project_params) && @project.process_skills(params[:project][:project_skills_attributes])
+		if check_fields && @project.update_attributes(project_params) && @project.process_skills(params[:project][:project_skills_attributes])
 			Project.reindex if !Rails.env.test?
-			flash[:success] = "Project successfully updated."
-			redirect_to current_user
+			redirect_to current_user, flash: {success: "Project successfully updated!"}
 		else
-			flash.now[:danger] = "Please fix the errors below."
+			skill = Skill.new
+			@project_skill = ProjectSkill.new(skill: skill)
+			@project_skills = params[:project]["project_skills_attributes"]
+			if flash[:warning].blank?
+				flash.now[:warning] = "Oops, there was an issue in editing your Project."
+			end
 			render 'edit'
 		end
 	end
@@ -95,6 +104,45 @@ class ProjectsController < ApplicationController
 			flash[:warning] = "You can only make changes to your projects."
 			@user = User.find(@project.user_id)
 			redirect_back_or current_user
+		end
+	end
+
+	def check_fields
+		args = params[:project]
+		if args["project_skills_attributes"].nil?
+			@project.errors.add(:project_skills, "must have at least one skill")
+			flash.now[:warning] = "You must enter some skills associated with this project."
+		elsif !args["project_skills_attributes"].nil?
+			destroy = true
+			missing = false
+			args["project_skills_attributes"].each do |index, m|
+				if m["_destroy"] == "false"
+					destroy = false 
+					if m["skill_attributes"]["name"].blank?
+						missing = true 
+						@project.errors[:skill][index.to_i] = {} unless @project.errors[:skill][index.to_i]
+						@project.errors[:skill][index.to_i][:name] = "must have a name."
+					end
+					if m["survey_id"].blank?
+						missing = true 
+						@project.errors[:skill][index.to_i] = {} unless @project.errors[:skill][index.to_i]
+						@project.errors[:skill][index.to_i][:survey_id] = "must select a skill category." 
+					end
+				end
+			end
+			if missing
+				flash.now[:warning] = "You must enter all skill fields."
+			end
+
+			if destroy
+				@project.errors.add(:project_skills, "must have at least one skill")
+				flash.now[:warning] = "You must enter some skills associated with this job." 
+			end
+		end
+		if !flash[:warning].blank?
+			return false 
+		else
+			return true
 		end
 	end
 end

@@ -37,12 +37,24 @@
           <%= info.input :last_name, required: true, wrapper_html: { class: "col-md-4 col-sm-4" } %>
 
           <% if current_user.has_role?(:employee) %>
-            <div class="privacy col-md-4 col-sm-4" style="padding-top: 10px;">
+            <div class="privacy padding-top-10 col-md-4 col-sm-4">
               <p>Display Name</p>
               <%= info.input :show_name, label: false, label_html: { class: "min-width-120" }, as: :radio_buttons,  item_wrapper_class: 'radio-inline margin-top-0' %>
             </div>
           <% end %>
         </div>
+
+        <% if @user.has_role?(:employee) %>
+          <div class="row">
+            <%= info.input :job_title, wrapper_html: { class: "padding-top-10 padding-left-0 col-md-4 col-sm-4" } %>
+            <%= info.input :current_company, label: "Company", wrapper_html: { class: "padding-top-10 col-md-4 col-sm-4" } %>
+            <div class="privacy col-md-4 col-sm-4" style="padding-top: 20px;">
+            <p>Display Current Job Position</p>
+            <%= info.input :show_job, label: false, as: :radio_buttons, item_wrapper_class: "radio-inline margin-top-0" %>
+            </div>
+          </div>
+        <% end %>
+
         <div class="row">
           <%= info.input :street_address, wrapper_html: { class: "padding-top-10 padding-left-0 col-md-8 col-sm-8" }  %>
           <% if current_user.has_role?(:employee) %>

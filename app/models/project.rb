@@ -8,7 +8,7 @@ class Project < ActiveRecord::Base
 	has_many :skills, through: :project_skills
 
 	has_attached_file :image,
-		default_url: 'project-placeholder-:style.svg',
+		default_url: 'default-project-:style.svg',
 		styles: {
 			medium: '200x200',
 			thumb: "45x45#"

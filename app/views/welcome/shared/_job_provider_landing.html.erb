@@ -7,7 +7,7 @@
 	<br />
 	<div class="row">
 		<div class="col-md-12">
-			<%= link_to 'My Profile', user_path(current_user), class: 'signuplink' %>
+			<%= link_to 'My Profile', user_path(current_user), class: 'signuplink', style: "color: white;" %>
 			<ul style="text-align: left;">
 				<% if current_user.bio.blank? %>
 					<li><h4>Your company biography is the first thing job seekers see on your page.  Include some info so they can know more about you.  Update it <%= link_to "here", user_path(current_user), onclick: "setHomeTab('bio')" %> </h4></li>

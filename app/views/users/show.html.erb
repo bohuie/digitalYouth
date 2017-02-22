@@ -256,9 +256,9 @@
 										<div class ="row alternate" id="ref2" style="padding-top:10px; padding-bottom: 10px;">
 											<div class="col-md-2">
 												<% if r.referee %>
-													<%= image_tag r.referee.image.url(:small), alt:"User Icon", class: "profile-image" %>
+													<%= image_tag r.referee.image.url(:small), alt:"User Icon", class: "small-shadow profile-image" %>
 												<% else %>
-													<%= image_tag("avatar-placeholder-small.svg", class: "profile-image") %>
+													<%= image_tag("avatar-placeholder-small.svg", class: "profile-image small-shadow") %>
 												<% end %>
 											</div>
 											<div class="col-md-2">

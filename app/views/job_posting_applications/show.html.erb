@@ -22,7 +22,7 @@
 
 		<div class="row">
 			<div class="padding-left-0 col-md-2">
-				<%= image_tag @job_posting_application.applicant.image.url(:small), class: "image-radius" if !@job_posting_application.applicant.image.nil? %>
+				<%= image_tag @job_posting_application.applicant.image.url(:small), class: "image-radius small-shadow" if !@job_posting_application.applicant.image.nil? %>
 				<h4> <%="#{@job_posting_application.applicant.first_name} #{@job_posting_application.applicant.last_name}"%></h4>
 				<% unless @job_posting_application.applicant.resume.blank? %>
              		<p>Current Resume: <%= link_to @job_posting_application.applicant.resume.original_filename, @job_posting_application.applicant.resume.url, target: '_blank' %></p>
@@ -85,7 +85,7 @@
 
 	<div class="row">
 		<div class="col-md-2">
-			<%= image_tag @job_posting_application.applicant.image.url(:small), class: "image-radius" if !@job_posting_application.applicant.image.nil? %>
+			<%= image_tag @job_posting_application.applicant.image.url(:small), class: "image-radius small-shadow" if !@job_posting_application.applicant.image.nil? %>
 			<h4> <%="#{@job_posting_application.applicant.first_name} #{@job_posting_application.applicant.last_name}"%></h4>
 			<% unless @job_posting_application.applicant.resume.blank? %>
       	 		<p>Current Resume: <%= link_to @job_posting_application.applicant.resume.original_filename, @job_posting_application.applicant.resume.url, target: '_blank' %></p>

@@ -309,7 +309,7 @@ ActiveRecord::Schema.define(version: 20170220195627) do
     t.datetime "birth_date"
     t.string   "job_title"
     t.string   "current_company"
-    t.boolean  "show_job"
+    t.boolean  "show_job",                    default: true
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

@@ -29,7 +29,7 @@ class SearchesController < ApplicationController
 		fields = Array.new
 		where_clause = Hash.new()
 		aggs = Array.new()
-		fields = [:company_name, :skills, :first_name, :last_name, :city, :province,
+		fields = [:company_name, :skills, :first_name, :last_name, :city, :province, :current_company, :job_title,
 			:title, :description, :owner_first, :owner_last, :project_date,
 			:location]
 
@@ -44,7 +44,7 @@ class SearchesController < ApplicationController
 			@toggles = {s:@s.titleize, l:@l} #need to add cc: @cc, pc: @pc for current company and past company	
 			@locations = Array.new
 			@relationships = ["1st","2nd", "Group Members", "3rd + Everyone"]
-			@current_companies = [] # To be implemented
+			#@current_companies = [] # To be implemented
 			@past_companies = [] # To be implemented
 			# Postgres query finds the most popular skill names (restricting length)
 			@pgrec = ActiveRecord::Base.connection.execute("

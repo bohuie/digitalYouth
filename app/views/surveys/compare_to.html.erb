@@ -1,6 +1,10 @@
 <%= render "users/shared/profile" %>
 
-<%= render partial: "shared/job_seeker_tabs", locals: {active: "surveys" } %>
+<% if @user.has_role? :employee %>
+	<%= render partial: "shared/job_seeker_tabs", locals: {active: "surveys" } %>
+<% elsif @user.has_role? :employer %>
+	<%= render partial: "shared/employer_tabs", locals: {active: "survey", survey: true, job: @job_posting.title } %>
+<% end %>
 
 <h4><b>Category: <%=@survey.format_title.html_safe%></b></h4>
 

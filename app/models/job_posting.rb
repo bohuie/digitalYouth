@@ -29,21 +29,21 @@ class JobPosting < ActiveRecord::Base
 
 	def search_data
 		data = Hash.new
-		if close_date > Date.today
-	  	data[:title] = title.titleize
-	  	if self.user_id.nil?
-	  		data[:company_name] = company_name.titleize
-	  	else
-	  		data[:company_name] = self.user.company_name.titleize
-	  	end
-	  	data[:city] = city.titleize
-	  	data[:province] = province.upcase
-	  	data[:job_type] = job_type
-	  	data[:description] = description.titleize
-	  	data[:industry] = job_category_id
-	  	data[:created_at] = created_at
-	  	data[:close_date] = close_date
-	  	data[:skills] = self.skills.pluck(:name)
+		unless self.is_expired?
+	  		data[:title] = title.titleize
+	  		if self.user_id.nil?
+	  			data[:company_name] = company_name.titleize
+	  		else
+	  			data[:company_name] = self.user.company_name.titleize
+		  	end
+		  	data[:city] = city.titleize
+	  		data[:province] = province.upcase
+		  	data[:job_type] = job_type
+		  	data[:description] = description.titleize
+	  		data[:industry] = job_category_id
+		  	data[:created_at] = created_at
+		  	data[:close_date] = close_date
+	  		data[:skills] = self.skills.pluck(:name)
 	  	end
 	  	return data
 	end

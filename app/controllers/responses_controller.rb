@@ -66,6 +66,7 @@ class ResponsesController < ApplicationController
 		@survey_id = Integer(params[:response][:survey_id])
 		@scores = params[:response][:scores]
 		@question_ids = params[:response][:question_ids]
+		
 		if current_user.has_role? :employee
 			@response = Response.find_by(user_id: @user.id, survey_id: @survey_id)
 		elsif current_user.has_role? :employer
@@ -78,7 +79,6 @@ class ResponsesController < ApplicationController
 		end
 		
 		# Update the record
-		@response = Response.find_by(user_id: @user.id, survey_id: @survey_id)
 		@response.set_data_from_hash(@scores,@question_ids)
 		if !@response.save
 			if current_user.has_role? :employee

@@ -14,13 +14,12 @@ class SurveysController < ApplicationController
 		end
 
 		if params[:job_posting]
-			subject = JobPosting.find(params[:job_posting])
-			@user = subject.user
-			name = subject.title
-			data = @survey.get_data(@user, subject)
+			@job_posting = JobPosting.find(params[:job_posting])
+			@user = @job_posting.user
+			name = @job_posting.title
+			data = @survey.get_data(@user, @job_posting)
 		elsif params[:user]
-			subject = User.find(params[:user])
-			@user = subject
+			@user = User.find(params[:user])
 			name = subject.formatted_name(current_user)
 			data = @survey.get_data(@user)
 		end

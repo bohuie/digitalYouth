@@ -105,20 +105,20 @@ ActiveRecord::Schema.define(version: 20170223190930) do
     t.string   "city"
     t.string   "province"
     t.string   "pay_rate"
-    t.decimal  "lower_pay_range", precision: 10, scale: 2
-    t.decimal  "upper_pay_range", precision: 10, scale: 2
+    t.decimal  "lower_pay_range",  precision: 10, scale: 2
+    t.decimal  "upper_pay_range",  precision: 10, scale: 2
     t.string   "link"
     t.string   "posted_by"
     t.integer  "job_type"
     t.text     "description"
     t.date     "open_date"
     t.date     "close_date"
-    t.integer  "views",                                    default: 0,                                                                                    null: false
+    t.integer  "views",                                     default: 0,                                                                                    null: false
     t.integer  "user_id"
     t.integer  "job_category_id"
-    t.datetime "created_at",                                                                                                                              null: false
-    t.datetime "updated_at",                                                                                                                              null: false
-    t.boolean  "answered_survey",                          default: [false, false, false, false, false, false, false, false, false, false, false, false],              array: true
+    t.datetime "created_at",                                                                                                                               null: false
+    t.datetime "updated_at",                                                                                                                               null: false
+    t.boolean  "answered_surveys",                          default: [false, false, false, false, false, false, false, false, false, false, false, false],              array: true
   end
 
   create_table "project_skills", force: :cascade do |t|

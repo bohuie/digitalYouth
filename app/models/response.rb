@@ -48,7 +48,7 @@ class Response < ActiveRecord::Base
 			avg_data.scores.each_with_index do |data, index|
 				avg_data.scores[index] = 0
 			end
-			Response.where("survey_id = ? AND user_id > 0", survey).find_each do |user|
+			Response.where("survey_id = ? AND user_id > 0 AND job_posting_id IS NULL", survey).find_each do |user|
 				user.scores.each_with_index do |score, index|
 					avg_data.scores[index] = avg_data.scores[index] + score
 				end

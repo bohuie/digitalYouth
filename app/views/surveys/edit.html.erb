@@ -3,14 +3,23 @@
 	<div class="col-md-6"> <h2>Category: <%=@survey.format_title.html_safe%></h2> </div>
 </div>
 <div class="row">
-	<div class="col-md-6"><br /><%= link_to 'Go back to My Profile', user_path(current_user) %></div>
+	<% if current_user.has_role? :employee %>
+		<div class="col-md-6"><br /><%= link_to 'Go back to My Profile', user_path(current_user) %></div>
+	<% elsif current_user.has_role? :employer %>
+		<div class="col-md-6"><br /><%= link_to 'Go back to Job Posting', job_posting_path(params[:job_posting]) %></div>
+	<% end %>
 </div>
 <div class="row">
 	<div class="col-md-6"></div>
 	<div class="col-md-6">
+	<% if current_user.has_role? :employee %>
+		<% data_name = " My Results" %>
+	<% elsif current_user.has_role? :employer %>
+		<% data_name = "Ideal Candidate" %>
+	<% end %>
 		<%= column_chart [
 				{name: "Average Job Seeker", data: @average_results},
-				{name: "My Results", data: @survey_results}
+				{name: data_name, data: @survey_results}
 				], height: "200px", min: 0, max: 3, library: { legend: { position: 'top' }, series:{0 => {type: "line"}}, vAxis: { ticks: [{v: 0, f: "None"}, {v: 1, f: "Few"}, {v:2, f:"Half"}, {v: 3, f:"Most"}]}} %>
 	</div>
 </div>
@@ -23,7 +32,7 @@
 
 <%= simple_form_for @response, method: @method do |f| %>
 	<%= f.hidden_field :survey_id, value: @survey.id%>
-
+	<%= f.hidden_field :job_posting_id, value: params[:job_posting] if current_user.has_role? :employer %>
 	<% @initial_id = @questions.first.id %>
 	<% for i in 0..@question_count-1 %>
 		<div class="row row-style" >

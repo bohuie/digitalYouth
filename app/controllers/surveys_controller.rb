@@ -20,7 +20,7 @@ class SurveysController < ApplicationController
 			data = @survey.get_data(@user, @job_posting)
 		elsif params[:user]
 			@user = User.find(params[:user])
-			name = subject.formatted_name(current_user)
+			name = @user.formatted_name(current_user)
 			data = @survey.get_data(@user)
 		end
 

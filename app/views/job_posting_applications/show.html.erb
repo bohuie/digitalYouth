@@ -4,32 +4,38 @@
 	<%= render partial: "shared/job_seeker_tabs", locals: { active: "applications" } %>
 
     <div class="tab-content">
-    	<h4>You application for <%= @job_posting.title %></h4>
+
+    	<h4><b>You application for <%= @job_posting.title %></b></h4>
 		<p>Below you can view your application, and delete it if you so choose.</p>
+
 		<div class="row">
-	  		<div class="col-md-2">
+	  		<div class="padding-left-0 col-md-2">
 			    <%= link_to "View Original Job Posting", job_posting_path(@job_posting.id), class: "btn btn-primary" %>
 			</div>
 		</div>
+		<hr>
 		<div class="row">
-			<div class="col-md-3">
-				<h5>Application Status: <%= @job_posting_application.get_status_string %></h5>
+			<div class="padding-left-0 col-md-3">
+				<h5><b>Application Status: </b><%= @job_posting_application.get_status_string %></h5>
 			</div>
 		</div>
 
 		<div class="row">
-			<div class="col-md-2">
-				<%= image_tag @job_posting_application.applicant.image.url(:small), class: "image-radius" if !@job_posting_application.applicant.image.nil? %>
+			<div class="padding-left-0 col-md-2">
+				<%= image_tag @job_posting_application.applicant.image.url(:small), class: "image-radius small-shadow" if !@job_posting_application.applicant.image.nil? %>
 				<h4> <%="#{@job_posting_application.applicant.first_name} #{@job_posting_application.applicant.last_name}"%></h4>
+				<% unless @job_posting_application.applicant.resume.blank? %>
+             		<p>Current Resume: <%= link_to @job_posting_application.applicant.resume.original_filename, @job_posting_application.applicant.resume.url, target: '_blank' %></p>
+            	<% end %>
 			</div>
 			<div class="col-md-4">
-				<h4>Applicant Message:</h4>
+				<h4><b>Applicant Message:</b></h4>
 				<%= raw("<p>#{@job_posting_application.message}</p>") if !@job_posting_application.message.blank? %>
 			</div>
 			<div class="col-md-6">
 				<p>Below are all the skills required and preferred by <%= @job_posting.user.company_name %> for this job.  A checkmark, <small><span class="glyphicon glyphicon-ok"></span></small>, means you have the skill, and an x, <small><span class="glyphicon glyphicon-remove"></span></small>, means you do not.</p>
 				<% if !@req_skills.empty? %>
-					<h4> Required Skills </h4>
+					<h4><b>Required Skills</b></h4>
 					<ul class="custom-bullet">
 						<%@req_skills.each do |r| %>
 							<% if @user_required_matches.detect { |h| h[:user_skill].skill==r.skill } %>
@@ -42,7 +48,7 @@
 				<% end %>
 
 				<% if !@pref_skills.empty? %>
-					<h4> Preferred Skills </h4>
+					<h4><b>Preferred Skills</b></h4>
 					<ul class="custom-bullet">
 						<%@pref_skills.each do |p| %>
 							<% if @user_preferred_matches.detect { |h| h[:user_skill].skill==p.skill } %>
@@ -60,10 +66,11 @@
 	<div>
 		<%= link_to "Delete", job_posting_application_path(@job_posting_application), data: {confirm: "Are you sure you want to delete this application?"}, method: "delete", class: "btn btn-danger", id: "delete_job_application"%>
 	</div>
+
 <% elsif current_user.has_role? :employer %>
 	<%= render partial: "shared/employer_tabs", locals: { active: "jobs" } %>
 
-	<h4>Application from <%= @job_posting_application.applicant.first_name + " " + @job_posting_application.applicant.last_name %> for <%= @job_posting.title %></h4>
+	<h4><b>Application from <%= @job_posting_application.applicant.first_name + " " + @job_posting_application.applicant.last_name %> for <%= @job_posting.title %></b></h4>
 	<p>Below you can view the application and the entire message they have provided.</p>
 	<div class="row">
   		<div class="col-md-2">
@@ -72,17 +79,20 @@
 	</div>
 	<div class="row">
 		<div class="col-md-3">
-			<h5>Application Status: <%= @job_posting_application.get_status_string %></h5>
+			<h5><b>Application Status: </b><%= @job_posting_application.get_status_string %></h5>
 		</div>
 	</div>
 
 	<div class="row">
 		<div class="col-md-2">
-			<%= image_tag @job_posting_application.applicant.image.url(:small), class: "image-radius" if !@job_posting_application.applicant.image.nil? %>
+			<%= image_tag @job_posting_application.applicant.image.url(:small), class: "image-radius small-shadow" if !@job_posting_application.applicant.image.nil? %>
 			<h4> <%="#{@job_posting_application.applicant.first_name} #{@job_posting_application.applicant.last_name}"%></h4>
+			<% unless @job_posting_application.applicant.resume.blank? %>
+      	 		<p>Current Resume: <%= link_to @job_posting_application.applicant.resume.original_filename, @job_posting_application.applicant.resume.url, target: '_blank' %></p>
+           	<% end %>
 		</div>
 		<div class="col-md-4">
-			<h4>Applicant Message:</h4>
+			<h4><b>Applicant Message:</b></h4>
 			<%= raw("<p>#{@job_posting_application.message}</p>") if !@job_posting_application.message.blank? %>
 		</div>
 		<div class="col-md-6">
@@ -92,7 +102,7 @@
 				<p>Below are the skills required and preferrred for this posting.  A checkmark, <small><span class="glyphicon glyphicon-ok"></span></small>, means <%= @job_posting_application.applicant.first_name %> has the skill, and an x, <small><span class="glyphicon glyphicon-remove"></span></small>, means they do not.</p>
 			<% end %>
 			<% if !@req_skills.empty? %>
-				<h4> Required Skills </h4>
+				<h4><b>Required Skills</b></h4>
 				<ul class="custom-bullet">
 					<%@req_skills.each do |r| %>
 						<% if @user_required_matches.detect { |h| h[:user_skill].skill==r.skill } %>
@@ -105,7 +115,7 @@
 			<% end %>
 
 			<% if !@pref_skills.empty? %>
-				<h4> Preferred Skills </h4>
+				<h4><b>Preferred Skills</b></h4>
 				<ul class="custom-bullet">
 					<%@pref_skills.each do |p| %>
 						<% if @user_preferred_matches.detect { |h| h[:user_skill].skill==p.skill } %>

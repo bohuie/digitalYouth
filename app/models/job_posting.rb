@@ -1,32 +1,49 @@
 class JobPosting < ActiveRecord::Base
 	searchkick word_start: [:location, :company_name, :title, :skills, :description], callbacks: :async
 
+	attr_accessor :yearly_upper_pay_range
+	attr_accessor :hourly_upper_pay_range
+
 	has_many :job_posting_skills, dependent: :destroy
 	has_many :skills, through: :job_posting_skills
 	has_many :job_posting_applications, dependent: :destroy
+	has_many :responses
 	belongs_to :job_category
 	belongs_to :user
 	accepts_nested_attributes_for :job_posting_skills, reject_if: lambda {|a| a[:survey_id].blank?}, allow_destroy: true
 
-	validates :lower_pay_range, presence: true
+	validates :title, presence: { message: 'cannot be empty' }
+	validates :city, presence: { message: 'must have a city' }
+	validates :province, presence: { message: 'must have a province' }
+	validates :description, presence: { message: 'cannot be empty' }
+	validates :open_date, presence: { message: 'cannot be empty' }
+	validates :close_date, presence: { message: 'cannot be empty' }
+	validates :job_category_id, presence: { message: 'cannot be empty' }
+	validates :job_type, presence: { message: 'cannot be empty' }
+	#validate  :validate_skills
+	#validates :job_posting_skills, presence: { message: 'must have valid skills' }
+	
+	#validate :date_check
+	validate :lower_pay
+	validate :pay_check
 
 	def search_data
 		data = Hash.new
-		if close_date > Date.today
-	  	data[:title] = title.titleize
-	  	if self.user_id.nil?
-	  		data[:company_name] = company_name.titleize
-	  	else
-	  		data[:company_name] = self.user.company_name.titleize
-	  	end
-	  	data[:city] = city.titleize
-	  	data[:province] = province.upcase
-	  	data[:job_type] = job_type
-	  	data[:description] = description.titleize
-	  	data[:industry] = job_category_id
-	  	data[:created_at] = created_at
-	  	data[:close_date] = close_date
-	  	data[:skills] = self.skills.pluck(:name)
+		unless self.is_expired?
+	  		data[:title] = title.titleize
+	  		if self.user_id.nil?
+	  			data[:company_name] = company_name.titleize
+	  		else
+	  			data[:company_name] = self.user.company_name.titleize
+		  	end
+		  	data[:city] = city.titleize
+	  		data[:province] = province.upcase
+		  	data[:job_type] = job_type
+		  	data[:description] = description.titleize
+	  		data[:industry] = job_category_id
+		  	data[:created_at] = created_at
+		  	data[:close_date] = close_date
+	  		data[:skills] = self.skills.pluck(:name)
 	  	end
 	  	return data
 	end
@@ -99,6 +116,36 @@ class JobPosting < ActiveRecord::Base
 
 	def get_type_string # Returns a string representation of the job type
 		return JOB_TYPES.key(self.job_type)
+	end
+
+	def date_check
+		if self.close_date <= self.open_date
+			errors.add(:close_date, "must come after open date.")
+		end
+	end
+
+	def lower_pay
+		unless self.lower_pay_range
+			if self.pay_rate == "yearly"
+				errors.add(:yearly_lower_pay_range, "must have a from amount.")
+			else
+				errors.add(:hourly_lower_pay_range, "must have a from amount.")
+			end
+		end
+	end
+
+	def pay_check
+		if !self.upper_pay_range.nil? && self.upper_pay_range < self.lower_pay_range
+			if self.pay_rate == "yearly"
+				errors.add(:yearly_upper_pay_range, "must be greater than the from amount.")
+			else
+				errors.add(:hourly_upper_pay_range, "must be greater than the from amount.")
+			end
+		end
+	end
+
+	def validate_skills
+		errors.add(:job_posting_skills, "must have at least one skill") if self.job_posting_skills.size < 1
 	end
 
 	def compare_skills(user)

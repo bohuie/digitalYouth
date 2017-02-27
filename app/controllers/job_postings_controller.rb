@@ -7,6 +7,7 @@ class JobPostingsController < ApplicationController
 	#before_action :check_fields	 , only: [:create, :update]
 
 	def index # Job Postings landing page
+
 		if params[:user].nil?
 			@job_postings = JobPosting.all.order(views: :desc).limit(10)
 			@reccommended_job_postings = reccomended_jobs
@@ -57,6 +58,9 @@ class JobPostingsController < ApplicationController
 		@pref_skills = JobPostingSkill.where(job_posting_id:params[:id], importance: 1).includes(:skill).order(:id)
 		add_view(@job_posting)
 		@user = @job_posting.user
+		@surveys = Survey.get_title_map
+		@survey_results = Survey.get_table_data(@user, @job_posting)
+		@average_results = Survey.get_average_data
 	end
 
 	def new # Creates the form to make a new job posting
@@ -76,15 +80,15 @@ class JobPostingsController < ApplicationController
 		params[:job_posting][:user_id] = current_user.id
 
 		if params[:job_posting][:pay_rate] == "yearly"
-			params[:job_posting][:lower_pay_range] = params[:job_posting][:lower_pay_range_year]
-			params[:job_posting][:upper_pay_range] = params[:job_posting][:upper_pay_range_year]
-			@year_lower = params[:job_posting][:lower_pay_range_year]
-			@year_upper = params[:job_posting][:upper_pay_range_year]
+			params[:job_posting][:lower_pay_range] = params[:job_posting][:yearly_lower_pay_range]
+			params[:job_posting][:upper_pay_range] = params[:job_posting][:yearly_upper_pay_range]
+			@year_lower = params[:job_posting][:yearly_lower_pay_range]
+			@year_upper = params[:job_posting][:yearly_upper_pay_range]
 		elsif params[:job_posting][:pay_rate] == "hourly"
-			params[:job_posting][:lower_pay_range] = params[:job_posting][:lower_pay_range_hour]
-			params[:job_posting][:upper_pay_range] = params[:job_posting][:upper_pay_range_hour]
-			@hour_lower = params[:job_posting][:lower_pay_range_hour]
-			@hour_upper = params[:job_posting][:upper_pay_range_hour]
+			params[:job_posting][:lower_pay_range] = params[:job_posting][:hourly_lower_pay_range]
+			params[:job_posting][:upper_pay_range] = params[:job_posting][:hourly_upper_pay_range]
+			@hour_lower = params[:job_posting][:hourly_lower_pay_range]
+			@hour_upper = params[:job_posting][:hourly_upper_pay_range]
 		else
 			flash.now[:warning] = "Please select yearly or hourly for pay rate."
 			skip = true
@@ -130,20 +134,19 @@ class JobPostingsController < ApplicationController
 		@categories = JobCategory.all
 		skip = false
 		if params[:job_posting][:pay_rate] == "yearly"
-			params[:job_posting][:lower_pay_range] = params[:job_posting][:lower_pay_range_year]
-			params[:job_posting][:upper_pay_range] = params[:job_posting][:upper_pay_range_year]
-			@year_lower = params[:job_posting][:lower_pay_range_year]
-			@year_upper = params[:job_posting][:upper_pay_range_year]
+			params[:job_posting][:lower_pay_range] = params[:job_posting][:yearly_lower_pay_range]
+			params[:job_posting][:upper_pay_range] = params[:job_posting][:yearly_upper_pay_range]
+			@year_lower = params[:job_posting][:yearly_lower_pay_range]
+			@year_upper = params[:job_posting][:yearly_upper_pay_range]
 		elsif params[:job_posting][:pay_rate] == "hourly"
-			params[:job_posting][:lower_pay_range] = params[:job_posting][:lower_pay_range_hour]
-			params[:job_posting][:upper_pay_range] = params[:job_posting][:upper_pay_range_hour]
-			@hour_lower = params[:job_posting][:lower_pay_range_hour]
-			@hour_upper = params[:job_posting][:upper_pay_range_hour]
+			params[:job_posting][:lower_pay_range] = params[:job_posting][:hourly_lower_pay_range]
+			params[:job_posting][:upper_pay_range] = params[:job_posting][:hourly_upper_pay_range]
+			@hour_lower = params[:job_posting][:hourly_lower_pay_range]
+			@hour_upper = params[:job_posting][:hourly_upper_pay_range]
 		else
 			flash.now[:warning] = "Please select yearly or hourly for pay rate."
 			skip = true
 		end
-
 		if !skip && check_fields && @job_posting.update_attributes(job_posting_params) && @job_posting.process_skills(params[:job_posting]["job_posting_skills_attributes"])
 			redirect_to current_user, flash: {success: "Job Posting Updated!"}
 			JobPosting.reindex if !Rails.env.test?
@@ -152,7 +155,7 @@ class JobPostingsController < ApplicationController
 			@job_posting_skill = JobPostingSkill.new(skill: skill)
 			@jobskills = params[:job_posting]["job_posting_skills_attributes"]
 			if flash[:warning].blank?
-				flash[:warning] = "Oops, there was an issue in editing your Job Posting."
+				flash.now[:warning] = "Oops, there was an issue in editing your Job Posting."
 			end
 			render 'edit'
 		end
@@ -199,7 +202,7 @@ class JobPostingsController < ApplicationController
 
 private
 	def job_posting_params # Restricts parameters
-		params.require(:job_posting).permit(:title, :city, :province, :pay_rate, :lower_pay_range, :upper_pay_range, :link, :job_category_id, :posted_by, :description, :open_date, :close_date, :user_id, :job_type)
+		params.require(:job_posting).permit(:title, :city, :province, :pay_rate, :lower_pay_range, :upper_pay_range, :link, :job_category_id, :posted_by, :description, :open_date, :close_date, :user_id, :job_type, :unit_number, :street_address, :postal_code)
 	end
 
 	def reccomended_jobs
@@ -221,7 +224,10 @@ private
 						  AND time > NOW() - INTERVAL '1 years'
 						").values.flatten # Does not currently take into account the times on each page or much of the age, could order by time spent on a page and limit results
 			corpus = Array.new
-			corpus << viewed_job_postings if !viewed_job_postings.empty?
+			viewed_job_postings.each do |vjp|
+				corpus << vjp unless vjp.to_i == 0 #catches applications pages
+			end
+			#corpus << viewed_job_postings if !viewed_job_postings.empty?
 
 			if !corpus.empty?
 				corpus = JobPosting.find(corpus)
@@ -296,26 +302,40 @@ private
 
 	def check_fields # Performs rigorous checks to ensure that the job posting is valid
 		args = params[:job_posting]
-		
-		if args[:title].blank? || args[:city].blank?  || args[:province].blank? || args[:description].blank? || args[:open_date].blank? || args[:close_date].blank? || args[:job_category_id].blank? || args[:job_type].blank?
-			flash.now[:warning] = "Missing required fields"
-		elsif args[:lower_pay_range].blank?
-			flash.now[:warning] = "Missing From in pay rate"
-		elsif args[:open_date] > args[:close_date]
-			flash.now[:warning] ="Open date must be before close date"
-		elsif args["job_posting_skills_attributes"].nil?
+		if args["job_posting_skills_attributes"].nil?
+			@job_posting.errors.add(:job_posting_skills, "must have at least one skill")
 			flash.now[:warning] = "You must enter some skills associated with this job."
 		elsif !args["job_posting_skills_attributes"].nil?
 			destroy = true
 			missing = false
-			args["job_posting_skills_attributes"].each do |m|
-				missing = true if m[1]["skill_attributes"]["name"].blank?
-				missing = true if m[1]["survey_id"].blank?
-				missing = true if m[1]["importance"].blank?
-				destroy = false if m[1]["_destroy"] == "false"
+			args["job_posting_skills_attributes"].each do |index, m|
+				if m["_destroy"] == "false"
+					destroy = false 
+					if m["skill_attributes"]["name"].blank?
+						missing = true 
+						@job_posting.errors[:skill][index.to_i] = {} unless @job_posting.errors[:skill][index.to_i]
+						@job_posting.errors[:skill][index.to_i][:name] = "must have a name."
+					end
+					if m["survey_id"].blank?
+						missing = true 
+						@job_posting.errors[:skill][index.to_i] = {} unless @job_posting.errors[:skill][index.to_i]
+						@job_posting.errors[:skill][index.to_i][:survey_id] = "must select a skill category." 
+					end
+					if m["importance"].blank?
+						missing = true 
+						@job_posting.errors[:skill][index.to_i] = {} unless @job_posting.errors[:skill][index.to_i]
+						@job_posting.errors[:skill][index.to_i][:importance] = "must select an importance."
+					end
+				end
 			end
-			flash.now[:warning] = "You must enter all skill fields." if missing
-			flash.now[:warning] = "You must enter some skills associated with this job." if destroy
+			if missing
+				flash.now[:warning] = "You must enter all skill fields."
+			end
+
+			if destroy
+				@job_posting.errors.add(:job_posting_skills, "must have at least one skill")
+				flash.now[:warning] = "You must enter some skills associated with this job." 
+			end
 		end
 		if !flash[:warning].blank?
 			return false 

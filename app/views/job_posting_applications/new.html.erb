@@ -2,12 +2,12 @@
 
 <%= render partial: "shared/job_seeker_tabs", locals: { active: "applications" } %>
 
-<h4>Job Posting Application</h4>
+<h4><b>Job Posting Application</b></h4>
 <p> You are Applying for the <strong><%=@job_posting.title%></strong> position at <strong><%=@job_posting.user.company_name %></strong>.</p>
 <p>Below is the application <%=@job_posting.user.company_name %> will see.</p>
 <hr >
 <div>
-<h4>Application from <%= current_user.first_name + " " + current_user.last_name %> for <%= @job_posting.title %></h4>
+<h4><b>Application from <%= current_user.first_name + " " + current_user.last_name %> for <%= @job_posting.title %></h4></b>
 
 	<p>Below you can view the application and the entire message they have provided.</p>
 	<div class="row">
@@ -22,23 +22,26 @@
 
 	<div class="row">
 		<div class="col-md-3">
-			<h5>Application Status: Undetermined</h5>
+			<h5><b>Application Status: </b>Undetermined</h5>
 		</div>
 	</div>
 
 	<div class="row">
 		<div class="col-md-2">
-			<%= image_tag current_user.image.url(:small), class: "image-radius" if !current_user.image.nil? %>
+			<%= image_tag current_user.image.url(:small), class: "image-radius small-shadow" if !current_user.image.nil? %>
 			<h4> <%="#{current_user.first_name} #{current_user.last_name}"%></h4>
+			<% unless @user.resume.blank? %>
+           		<p>Current Resume: <%= link_to @user.resume.original_filename, @user.resume.url, target: '_blank' %></p>
+            <% end %>
 		</div>
 		<div class="col-md-4">
-			<h4>Applicant Message:</h4>
+			<h4><b>Applicant Message:</b></h4>
 			<%= f.input :message, input_html: {rows: "4"}, label: false, wrapper_html: { style: "width: 100%"} %>
 		</div>
 		<div class="col-md-6">
 			<p>Below are all the skills required and preferred by <%= @job_posting.user.company_name %> for this job.  A checkmark, <small><span class="glyphicon glyphicon-ok"></span></small>, means you have the skill, and an x, <small><span class="glyphicon glyphicon-remove"></span></small>, means you do not.</p>
 			<% if !@req_skills.empty? %>
-				<h4> Required Skills </h4>
+				<h4><b>Required Skills</b></h4>
 				<ul class="custom-bullet">
 					<%@req_skills.each do |r| %>
 						<% if @user_required_matches.detect { |h| h[:user_skill].skill==r.skill } %>
@@ -51,7 +54,7 @@
 			<% end %>
 
 			<% if !@pref_skills.empty? %>
-				<h4> Preferred Skills </h4>
+				<h4><b>Preferred Skills</b></h4>
 				<ul class="custom-bullet">
 					<%@pref_skills.each do |p| %>
 						<% if @user_preferred_matches.detect { |h| h[:user_skill].skill==p.skill } %>
@@ -64,7 +67,7 @@
 			<% end %>
 		</div>
 	</div>
-
+	<p><b>Once you have submitted an application, the Job Provider will be able to see your name, location, and profile picture.</b></p>
 	<%= f.button :submit, "Submit", class:"btn btn-primary" %>
 <% end %>
 </div>

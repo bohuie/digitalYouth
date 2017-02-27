@@ -2,8 +2,9 @@
 
 <%= render partial: "shared/employer_tabs", locals: { active: "jobs" } %>
 
-<h4>Job Applications for <%= @job_posting.title %></h4>
-<p>Listed below are all the applicants for <%= @job_posting.title %>.  Here you can view the original job posting or compare all the applicants skills in graphs, by clicking the corresponding buttons.  You can also view their profile by cliking on their name, as well as if they have the position's required or preferred skills, as noted by the checkmarks and x's.  If you would like to read more of the application, click See More.</p>
+<h4><b>Job Applications for <%= @job_posting.title %></b></h4>
+<p>Here, you can view all the job seekers who applied, along with a summary of their skills that match your job description's required and preferred skills.  For example, a required skill with a checkmark means that the job seeker has that skill.  On the otherhand, a required skill with a cross, means that the job seeker is missing the skill.  Once you have decided on the outcome of the application, you can reject, consider, or accept it, so that the job seeker will be notified of your decision.</p>
+<p>You may also wish to compare the job seekers' skills visually in a graph form.</p>
 
 <div class="row margin-left-0">
   <%= link_to "Compare Applicant Skills", compare_applications_path(@job_posting), class: "btn btn-primary" %>
@@ -25,8 +26,8 @@
     <% @job_posting_applications.each do |j| %>
       <tr class="alternate">
         <td>
-          <%= image_tag j.applicant.image.url(:thumb), class: "image-radius" if !j.applicant.image.nil? %>
-          <%= "#{j.applicant.first_name} #{j.applicant.last_name}" %><br />
+          <%= image_tag j.applicant.image.url(:thumb), class: "image-radius thumb-shadow" if !j.applicant.image.nil? %>
+          <%= link_to "#{j.applicant.first_name} #{j.applicant.last_name}", job_posting_application_path(j) %><br />
           <%= j.message.truncate(100) %><%= link_to ' See more.', job_posting_application_path(j) %>
         </td>
         <td>

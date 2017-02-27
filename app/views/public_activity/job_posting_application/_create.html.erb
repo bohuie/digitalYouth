@@ -1,15 +1,16 @@
 <%j = activity.trackable %>
 <div>
-	<%= image_tag j.applicant.image.url(:thumb), alt:"User Icon", class:"image-radius", style: "padding-right: 5px;" %>
-	<div class="text">
-		<%="#{j.applicant.first_name} #{j.applicant.last_name}"%> applied for your 
-		<% if j.job_posting.title.length < 40 %>
-			<%=j.job_posting.title%>
-		<% else %>
-			<%=j.job_posting.title.first(40)%><i>...</i>
-		<% end %>
-		 posting.<br>
-		<%= local_time_ago(activity.created_at) %>
-	</div>
+	<%= image_tag j.applicant.image.url(:thumb), alt:"User Icon", class:"image-radius thumb-shadow", style: "margin-right: 5px;" %>
 </div>
+<div class="text" style="flex:1">
+	<%="#{j.applicant.first_name} #{j.applicant.last_name}"%> applied for your 
+	<% if j.job_posting.title.length < 40 %>
+		<%=j.job_posting.title%>
+	<% else %>
+		<%=j.job_posting.title.first(40)%><i>...</i>
+	<% end %>
+	posting.<br>
+	<%= local_time_ago(activity.created_at) %>
+</div>
+
 <div style="clear:both;"></div>

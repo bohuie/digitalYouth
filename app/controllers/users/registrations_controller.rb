@@ -29,40 +29,27 @@ before_filter :logged_in, only: [:create]
             sign_up(resource_name, resource)
             respond_with resource, location: after_sign_up_path_for(resource)
           else
-            ## Original
             set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}."
-            ## Custom
-            #flash[:success]= "An email has been sent for confirmation.  Please fill out the consent form below."
-            ## End
             expire_data_after_sign_in!
-            ## Original routing
             respond_with resource, location: after_inactive_sign_up_path_for(resource)
-            ## Custom
-            #if params[:role] == 'employee'
-            #  redirect_to adult_consent_path id: @user.id
-            #elsif params[:role] =='employer'
-            #  redirect_to business_consent_path id: @user.id
-            #else
-            #end
-            ## End
           end
         else
-           if params[:role] == 'employee'
-          clean_up_passwords resource
-          set_minimum_password_length
-          @job_seeker = @user
-          @job_seeker.build_consent(consent_params)
-          render template: "welcome/signup_employee" and return
-        elsif params[:role] =='employer'
-          clean_up_passwords resource
-          set_minimum_password_length
-          @employer = @user
-          @employer.build_consent(consent_params)
-          render template: "welcome/signup_employer" and return
-        else
-           flash[:danger] = "There was an error.  Please try again later, or contact an administrator."
-        redirect_to root_path
-        end
+          if params[:role] == 'employee'
+            clean_up_passwords resource
+            set_minimum_password_length
+            @job_seeker = @user
+            @job_seeker.build_consent(consent_params)
+            render template: "welcome/signup_jobseeker" and return
+          elsif params[:role] =='employer'
+            clean_up_passwords resource
+            set_minimum_password_length
+            @employer = @user
+            @employer.build_consent(consent_params)
+            render template: "welcome/signup_employer" and return
+          else
+            flash[:danger] = "There was an error.  Please try again later, or contact an administrator."
+            redirect_to root_path
+          end
         end
       else
         if params[:role] == 'employee'
@@ -70,7 +57,7 @@ before_filter :logged_in, only: [:create]
           set_minimum_password_length
           @job_seeker = @user
           @job_seeker.build_consent(consent_params)
-          render template: "welcome/signup_employee" and return
+          render template: "welcome/signup_jobseeker" and return
         elsif params[:role] =='employer'
           clean_up_passwords resource
           set_minimum_password_length
@@ -78,16 +65,16 @@ before_filter :logged_in, only: [:create]
           @employer.build_consent(consent_params)
           render template: "welcome/signup_employer" and return
         else
-           flash[:danger] = "There was an error.  Please try again later, or contact an administrator."
-        redirect_to root_path
+          flash[:danger] = "There was an error.  Please try again later, or contact an administrator."
+          redirect_to root_path
         end
       end
     else
-      flash[:warning] = "Please redo the Captcha"
+      flash.now[:warning] = "Please redo the Captcha"
       if params[:role] == 'employee'
         @job_seeker = @user
         @job_seeker.build_consent(consent_params)
-        render template: "welcome/signup_employee" and return
+        render template: "welcome/signup_jobseeker" and return
       elsif params[:role] =='employer'
         @employer = @user
         @employer.build_consent(consent_params)
@@ -153,7 +140,7 @@ before_filter :logged_in, only: [:create]
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:role, :first_name, :last_name, :company_name, :postal_code, :city, :province])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:role, :first_name, :last_name, :company_name, :postal_code, :city, :province, :gender, :birth_date])
   end
 
   # If you have extra params to permit, append them to the sanitizer.
@@ -164,7 +151,7 @@ before_filter :logged_in, only: [:create]
   private
   def logged_in
     if user_signed_in?
-      redirect_to current_user
+      redirect_to root_path
     end
   end
 

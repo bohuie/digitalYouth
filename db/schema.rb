@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161101211017) do
+ActiveRecord::Schema.define(version: 20170223190930) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,22 +99,26 @@ ActiveRecord::Schema.define(version: 20161101211017) do
   create_table "job_postings", force: :cascade do |t|
     t.string   "title"
     t.string   "company_name"
+    t.string   "street_address"
+    t.string   "unit_number"
+    t.string   "postal_code"
     t.string   "city"
     t.string   "province"
     t.string   "pay_rate"
-    t.decimal  "lower_pay_range", precision: 10, scale: 2
-    t.decimal  "upper_pay_range", precision: 10, scale: 2
+    t.decimal  "lower_pay_range",  precision: 10, scale: 2
+    t.decimal  "upper_pay_range",  precision: 10, scale: 2
     t.string   "link"
     t.string   "posted_by"
     t.integer  "job_type"
     t.text     "description"
     t.date     "open_date"
     t.date     "close_date"
-    t.integer  "views",                                    default: 0, null: false
+    t.integer  "views",                                     default: 0,                                                                                    null: false
     t.integer  "user_id"
     t.integer  "job_category_id"
-    t.datetime "created_at",                                           null: false
-    t.datetime "updated_at",                                           null: false
+    t.datetime "created_at",                                                                                                                               null: false
+    t.datetime "updated_at",                                                                                                                               null: false
+    t.boolean  "answered_surveys",                          default: [false, false, false, false, false, false, false, false, false, false, false, false],              array: true
   end
 
   create_table "project_skills", force: :cascade do |t|
@@ -193,13 +197,16 @@ ActiveRecord::Schema.define(version: 20161101211017) do
   end
 
   create_table "responses", force: :cascade do |t|
-    t.integer  "scores",                    array: true
-    t.integer  "question_ids",              array: true
+    t.integer  "scores",                      array: true
+    t.integer  "question_ids",                array: true
     t.integer  "user_id"
     t.integer  "survey_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.integer  "job_posting_id"
   end
+
+  add_index "responses", ["job_posting_id"], name: "index_responses_on_job_posting_id", using: :btree
 
   create_table "roles", force: :cascade do |t|
     t.string   "name"
@@ -263,6 +270,7 @@ ActiveRecord::Schema.define(version: 20161101211017) do
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
+    t.string   "gender"
     t.string   "github"
     t.string   "linkedin"
     t.string   "twitter"
@@ -276,7 +284,8 @@ ActiveRecord::Schema.define(version: 20161101211017) do
     t.string   "encrypted_postal_code_iv"
     t.string   "city"
     t.string   "province"
-    t.string   "bio"
+    t.text     "bio"
+    t.string   "summary"
     t.boolean  "answered_surveys",            default: [false, false, false, false, false, false, false, false, false, false, false, false],              array: true
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -292,8 +301,19 @@ ActiveRecord::Schema.define(version: 20161101211017) do
     t.integer  "failed_attempts",             default: 0,                                                                                    null: false
     t.string   "unlock_token"
     t.datetime "locked_at"
+    t.boolean  "show_picture",                default: true
+    t.boolean  "show_name",                   default: true
+    t.boolean  "show_location",               default: true
     t.datetime "created_at",                                                                                                                 null: false
     t.datetime "updated_at",                                                                                                                 null: false
+    t.string   "resume_file_name"
+    t.string   "resume_content_type"
+    t.integer  "resume_file_size"
+    t.datetime "resume_updated_at"
+    t.datetime "birth_date"
+    t.string   "job_title"
+    t.string   "current_company"
+    t.boolean  "show_job",                    default: true
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
@@ -342,4 +362,5 @@ ActiveRecord::Schema.define(version: 20161101211017) do
 
   add_foreign_key "consents", "users"
   add_foreign_key "identities", "users"
+  add_foreign_key "responses", "job_postings"
 end

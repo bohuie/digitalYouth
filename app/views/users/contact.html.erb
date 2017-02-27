@@ -2,13 +2,13 @@
 
 <%= render partial: "shared/job_seeker_tabs", locals: {active: "surveys" } %>
 
-<h4>Contact <%= @user.first_name %> <%= @user.last_name %></h4>
+<h4><b>Contact <%= @user.formatted_name(current_user) %></b></h4>
 <p>Fill out the contact form below to send a message.  Your email will be provided so they can contact you back.  Please include a message below, and customize the subject line if you so choose.</p>
 
 <%= simple_form_for :contact, {url: email_user_path } do |f| %>
 	<div class="row">
 		<div class="col-md-6">
-			<%= f.input :subject, input_html: { value: "#{current_user.company_name} would like to talk to #{@user.first_name} #{@user.last_name}."}, wrapper_html: { class: "row margin-left-0", style: "padding-top: 5px;" } %>
+			<%= f.input :subject, input_html: { value: "#{current_user.company_name} would like to talk to you."}, wrapper_html: { class: "row margin-left-0", style: "padding-top: 5px;" } %>
 			<%= f.input :email, input_html: { value: current_user.email }, label: "Contact Email.", wrapper_html: { class: "row margin-left-0 " } %>
 		</div>
 		<div class="col-md-6">

@@ -29,22 +29,9 @@ before_filter :logged_in, only: [:create]
             sign_up(resource_name, resource)
             respond_with resource, location: after_sign_up_path_for(resource)
           else
-            ## Original
             set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}."
-            ## Custom
-            #flash[:success]= "An email has been sent for confirmation.  Please fill out the consent form below."
-            ## End
             expire_data_after_sign_in!
-            ## Original routing
             respond_with resource, location: after_inactive_sign_up_path_for(resource)
-            ## Custom
-            #if params[:role] == 'employee'
-            #  redirect_to adult_consent_path id: @user.id
-            #elsif params[:role] =='employer'
-            #  redirect_to business_consent_path id: @user.id
-            #else
-            #end
-            ## End
           end
         else
           if params[:role] == 'employee'
@@ -164,7 +151,7 @@ before_filter :logged_in, only: [:create]
   private
   def logged_in
     if user_signed_in?
-      redirect_to current_user
+      redirect_to root_path
     end
   end
 

@@ -1,6 +1,6 @@
 <%= render "users/shared/profile" %>
 
-<%= render partial: "shared/employer_tabs", locals: { active: "jobs" } %>
+<%= render partial: "shared/employer_tabs", locals: { active: "title", job: @job_posting.title, survey: true } %>
 
 <% if @job_posting.is_expired? %>
 	<% if (user_signed_in? && current_user.id == @job_posting.user_id) || (user_signed_in? && current_user.has_role?(:admin))%>
@@ -10,5 +10,21 @@
 		<%= render 'shared/dismissable_alert', msg:"This job posting is expired.", type: "warning" %>
 	<% end %>
 <% else %>
-	<%= render 'job_postings/job_posting' %>
+	<div class="tab-content">
+		<div id="survey" class="tab-pane fade">
+			<h4>Ideal Candidate</h4>
+			<% if current_user == @user %>
+				<p>Fill out these surveys so potential Job Seekers can get an idea of how they compare to your "ideal candidate".</p>
+			<% elsif user_signed_in? && current_user.has_role?(:employee) %>
+				<p>Here you can compare yourself to see how your skill surveys measure up to what <%= @user.company_name %> is looking for.</p>
+				<p><%= link_to "Compare Survey Graphs", survey_compare_all_path(jp: @job_posting), class: "btn btn-primary" %></p>
+			<% else %>
+				<p>Here you can view the ideal candidate <%= @user.company_name %> is looking for.</p>
+			<% end %>
+			<%= render '/users/partials/show_survey_table', user:@user, results:@survey_results %>
+		</div>
+		<div id="title" class="tab-pane fade in active">
+			<%= render 'job_postings/job_posting' %>
+		</div>
+	</div>
 <% end %>

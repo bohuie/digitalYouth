@@ -58,6 +58,9 @@ class JobPostingsController < ApplicationController
 		@pref_skills = JobPostingSkill.where(job_posting_id:params[:id], importance: 1).includes(:skill).order(:id)
 		add_view(@job_posting)
 		@user = @job_posting.user
+		@surveys = Survey.get_title_map
+		@survey_results = Survey.get_table_data(@user, @job_posting)
+		@average_results = Survey.get_average_data
 	end
 
 	def new # Creates the form to make a new job posting

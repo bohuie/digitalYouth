@@ -3,19 +3,49 @@
 <% if user_signed_in? && @current_user==@user %>
 	<% if active == "jobs" %>
 		<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("about","<%=user_path(current_user)%>");><a data-toggle="tab" href="#about">ABOUT US</a></li> 
-   		<li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("jobs","<%=user_path(current_user)%>");><a data-toggle="tab" href="#jobs">JOBS</a></li>
-   	<% else %>
-   		<li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("about","<%=user_path(current_user)%>");><a data-toggle="tab" href="#about">ABOUT US</a></li> 
-   		<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("jobs","<%=user_path(current_user)%>");><a data-toggle="tab" href="#jobs">JOBS</a></li>
-   	<% end %>
+   	<li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("jobs","<%=user_path(current_user)%>");><a data-toggle="tab" href="#jobs">JOBS</a></li>
+   <% elsif active == "title" && defined?(job) && !job.blank? %>
+      <% if defined?(survey) && survey %>
+         <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#survey">IDEAL CANDIDATE</a></li>
+      <% end %>
+      <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=""><a data-toggle="tab" href="#title"><%= job.upcase %></a></li>
+      <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("about","<%=user_path(current_user)%>");><a data-toggle="tab" href="#about">ABOUT US</a></li> 
+      <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("jobs","<%=user_path(current_user)%>");><a data-toggle="tab" href="#jobs">JOBS</a></li>
+   <% elsif active == "survey" && defined?(survey) && !survey.blank? %>
+      <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=""><a data-toggle="tab" href="#">IDEAL CANDIDATE</a></li>
+      <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=""><a data-toggle="tab" href="#"><%= job.upcase %></a></li>
+      <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("about","<%=user_path(current_user)%>");><a data-toggle="tab" href="#about">ABOUT US</a></li> 
+      <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("jobs","<%=user_path(current_user)%>");><a data-toggle="tab" href="#jobs">JOBS</a></li>
+   <% else %>
+   	<li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("about","<%=user_path(current_user)%>");><a data-toggle="tab" href="#about">ABOUT US</a></li>
+   	<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("jobs","<%=user_path(current_user)%>");><a data-toggle="tab" href="#jobs">JOBS</a></li>
+   <% end %>
 <% else %>
 	<% if active == "jobs" %>
+      <% if defined?(survey) && survey %>
+         <li><a href="#survey">IDEAL CANDIDATE</a></li>
+      <% end %>
 		<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("about","<%=user_path(@user)%>");><a data-toggle="tab" href="#about">ABOUT US</a></li> 
-   		<li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("jobs","<%=user_path(@user)%>");><a data-toggle="tab" href="#jobs">JOBS</a></li>
-	<% else %>
-   		<li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("about","<%=user_path(@user)%>");><a data-toggle="tab" href="#about">ABOUT US</a></li> 
-   		<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("jobs","<%=user_path(@user)%>");><a data-toggle="tab" href="#jobs">JOBS</a></li>
-   	<% end %>
+   	<li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("jobs","<%=user_path(@user)%>");><a data-toggle="tab" href="#jobs">JOBS</a></li>
+	<% elsif active == "title" && defined?(job) && !job.blank? %>
+      <% if defined?(survey) && survey %>
+         <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#survey">IDEAL CANDIDATE</a></li>
+      <% end %>
+      <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=""><a data-toggle="tab" href="#title"><%= job.upcase %></a></li>
+      <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("about","<%=user_path(@user)%>");><a data-toggle="tab" href="#about">ABOUT US</a></li> 
+      <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("jobs","<%=user_path(@user)%>");><a data-toggle="tab" href="#jobs">JOBS</a></li>
+   <% elsif active == "survey" && defined?(survey) && !survey.blank? %>
+      <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=""><a data-toggle="tab" href="#">IDEAL CANDIDATE</a></li>
+      <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=""><a data-toggle="tab" href="#"><%= job.upcase %></a></li>
+      <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("about","<%=user_path(@user)%>");><a data-toggle="tab" href="#about">ABOUT US</a></li> 
+      <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("jobs","<%=user_path(@user)%>");><a data-toggle="tab" href="#jobs">JOBS</a></li>
+   <% else %>
+      <% if defined?(survey) && survey %>
+         <li><a href="#survey">IDEAL CANDIDATE</a></li>
+      <% end %>
+   	<li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("about","<%=user_path(@user)%>");><a data-toggle="tab" href="#about">ABOUT US</a></li> 
+   	<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("jobs","<%=user_path(@user)%>");><a data-toggle="tab" href="#jobs">JOBS</a></li>
+	<% end %>
 <% end %>
 </ul>
 </div>

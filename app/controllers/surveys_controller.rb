@@ -20,7 +20,11 @@ class SurveysController < ApplicationController
 			data = @survey.get_data(@user, @job_posting)
 		elsif params[:user]
 			@user = User.find(params[:user])
-			name = @user.formatted_name(current_user)
+			if @user == current_user
+				name = "Me"
+			else
+				name = @user.formatted_name(current_user)
+			end
 			data = @survey.get_data(@user)
 		end
 
@@ -146,7 +150,7 @@ class SurveysController < ApplicationController
 
 			user_results = Survey.get_table_data(current_user)
 			user_results.each do |index, results|
-				@survey_results[index].push(name: current_user.formatted_name(current_user), data: results)
+				@survey_results[index].push(name: "Me", data: results)
 			end
 		elsif !params[:js].blank?
 			#compare to another job seeker
@@ -159,7 +163,7 @@ class SurveysController < ApplicationController
 
 			user_results = Survey.get_table_data(current_user)
 			user_results.each do |index, results|
-				@survey_results[index].push(name: current_user.formatted_name(current_user), data: results)
+				@survey_results[index].push(name: "Me", data: results)
 			end
 
 			@user = User.find(params[:js])
@@ -201,7 +205,7 @@ class SurveysController < ApplicationController
 
 			@survey_results.push(name: "Average Job Seeker", data: @survey.get_average_data)
 			@survey_results.push(name: @job_posting.title, data: @survey.get_data(@user, @job_posting.id))
-			@survey_results.push(name: current_user.formatted_name(current_user), data: @survey.get_data(current_user)) unless current_user.has_role? :employer
+			@survey_results.push(name: "Me", data: @survey.get_data(current_user)) unless current_user.has_role? :employer
 		elsif !params[:js].blank?
 			#compare to another job seeker
 			@user = User.find(params[:js])
@@ -215,7 +219,7 @@ class SurveysController < ApplicationController
 
 			user_results = @survey.get_data(current_user)
 			if user_results
-				@survey_results.push(name: current_user.formatted_name(current_user), data: user_results)
+				@survey_results.push(name: "Me", data: user_results)
 			end
 
 			user_results = @survey.get_data(@user)
@@ -227,11 +231,6 @@ class SurveysController < ApplicationController
 			flash[:warning] = "Sorry, there was an unexpected error.  Please try again or contact and administrator."
 			redirect_to current_user
 		end
-	end
-
-	def compare_job
-		
-
 	end
 
 private

@@ -1,6 +1,6 @@
 <div class="container" id="profileButtons">
 <ul class="nav nav-tabs profileButtonContent">
-<% path = ', ' + path if defined?(path) && !path.blank? %>
+<% path = ',"' + path+'"' if defined?(path) && !path.blank? %>
 <% if user_signed_in? && current_user==@user %>
     <% if active == "applications" %>
         <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("surveys"<%= path %>);><a data-toggle="tab" href="#surveys">SKILL SURVEYS</a></li>

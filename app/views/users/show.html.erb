@@ -334,7 +334,7 @@
   		<% aclass = "tab-pane fade" %>
     	<% jclass = "tab-pane fade" %>
 		<% if user_signed_in? && current_user==@user %>
-			<%= render "users/shared/employer_home_tabs" %>
+			<%= render partial: "shared/employer_tabs", locals: {active: session[:home_tab]} %>
   			<% if session[:home_tab] == "jobs" %>
   				<% jclass = jclass + " in active" %>
   			<% else %>

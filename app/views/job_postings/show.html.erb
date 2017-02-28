@@ -1,6 +1,28 @@
 <%= render "users/shared/profile" %>
 
-<%= render partial: "shared/employer_tabs", locals: { active: "title", job: @job_posting.title, survey: true } %>
+<% if user_signed_in? && current_user == @user %>
+	<% if session[:home_tab]== "survey" %>
+		<% active="survey" %>
+		<% suclass = "tab-pane fade in active" %>
+		<% poclass = "tab-pane fade" %>
+	<% else %>
+		<% active="posting" %>
+		<% suclass = "tab-pane fade" %>
+		<% poclass = "tab-pane fade in active" %>
+	<% end %>
+<% else %>
+	<% if session[:nav_tab]== "survey" %>
+		<% active="survey" %>
+		<% suclass = "tab-pane fade in active" %>
+		<% poclass = "tab-pane fade" %>
+	<% else %>
+		<% active="posting" %>
+		<% suclass = "tab-pane fade" %>
+		<% poclass = "tab-pane fade in active" %>
+	<% end %>
+<% end %>
+
+<%= render partial: "shared/employer_tabs", locals: { active: active, job: @job_posting.title, survey: true, path: user_path(@user) } %>
 
 <% if @job_posting.is_expired? %>
 	<% if (user_signed_in? && current_user.id == @job_posting.user_id) || (user_signed_in? && current_user.has_role?(:admin))%>
@@ -11,7 +33,7 @@
 	<% end %>
 <% else %>
 	<div class="tab-content">
-		<div id="survey" class="tab-pane fade">
+		<div id="survey" class="<%=suclass%>">
 			<h4>Ideal Candidate</h4>
 			<% if current_user == @user %>
 				<p>Fill out these surveys so potential Job Seekers can get an idea of how they compare to your "ideal candidate".</p>
@@ -23,7 +45,7 @@
 			<% end %>
 			<%= render '/users/partials/show_survey_table', user:@user, results:@survey_results %>
 		</div>
-		<div id="title" class="tab-pane fade in active">
+		<div id="posting" class="<%=poclass%>">
 			<%= render 'job_postings/job_posting' %>
 		</div>
 	</div>

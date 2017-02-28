@@ -7,7 +7,7 @@
     	<% skclass = "tab-pane fade" %>
     	<% reclass = "tab-pane fade" %>
     <% if user_signed_in? && current_user==@user %>
-		<%= render "users/shared/job_seeker_home_tabs" %>			
+		<%= render partial: "shared/job_seeker_tabs", locals: {active: session[:home_tab]} %>			
   		<% if session[:home_tab] == "applications" && user_signed_in? && current_user==@user %>
   			<% apclass = apclass + " in active" %>
   		<% elsif session[:home_tab] == "projects" && current_user==@user %>

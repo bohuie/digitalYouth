@@ -3,7 +3,7 @@ class JobPostingsController < ApplicationController
 	before_action :authenticate_user!, except: [:show, :index]
 	before_action :check_employer, except: [:show, :index,:refresh,:refresh_process]
 	before_action :check_admin	 , only: [:refresh,:refresh_process]
-	before_action :job_owner	 , only: [:edit, :update, :destroy, :applications, :compare]
+	before_action :job_owner	 , only: [:edit, :update, :destroy, :compare]
 	#before_action :check_fields	 , only: [:create, :update]
 
 	def index # Job Postings landing page
@@ -14,22 +14,6 @@ class JobPostingsController < ApplicationController
 		else
 			@job_postings = JobPosting.where(user_id: params[:user])
 			@company = User.find(params[:user])
-		end
-	end
-
-	def applications
-		@user = current_user
-		@job_posting = JobPosting.find(params[:id])
-		@req_skills  = JobPostingSkill.where(job_posting_id:@job_posting.id, importance: 2).includes(:skill).order(:id)
-		@pref_skills = JobPostingSkill.where(job_posting_id:@job_posting.id, importance: 1).includes(:skill).order(:id)
-		@job_posting_applications = @job_posting.job_posting_applications.where("status > ? ", -1)
-		@applicant_skills = Hash.new
-		@job_posting_applications.each do |j|
-			skills = @job_posting.compare_skills(j.applicant)
-			user_skill_matches = skills[:user_skill_matches]
-			@applicant_skills[j.applicant.id] = Hash.new
-			@applicant_skills[j.applicant.id][:required] = user_skill_matches.select{ |a| a[:importance]==2 }
-			@applicant_skills[j.applicant.id][:preferred] = user_skill_matches.select{ |a| a[:importance]==1 }
 		end
 	end
 
@@ -61,6 +45,18 @@ class JobPostingsController < ApplicationController
 		@surveys = Survey.get_title_map
 		@survey_results = Survey.get_table_data(@user, @job_posting)
 		@average_results = Survey.get_average_data
+
+		if current_user == @user 
+			@job_posting_applications = @job_posting.job_posting_applications.where("status > ? ", -1)
+			@applicant_skills = Hash.new
+			@job_posting_applications.each do |j|
+				skills = @job_posting.compare_skills(j.applicant)
+				user_skill_matches = skills[:user_skill_matches]
+				@applicant_skills[j.applicant.id] = Hash.new
+				@applicant_skills[j.applicant.id][:required] = user_skill_matches.select{ |a| a[:importance]==2 }
+				@applicant_skills[j.applicant.id][:preferred] = user_skill_matches.select{ |a| a[:importance]==1 }
+			end
+		end
 	end
 
 	def new # Creates the form to make a new job posting

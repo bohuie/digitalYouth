@@ -1,52 +1,51 @@
 <%= render "users/shared/profile" %>
 
+
+<% poclass = "tab-pane fade" %>
+<% suclass = "tab-pane fade" %>
+<% apclass = "tab-pane fade" %>
+
 <% if user_signed_in? && current_user == @user %>
 	<% if session[:home_tab]== "survey" %>
-		<% active="survey" %>
-		<% suclass = "tab-pane fade in active" %>
-		<% poclass = "tab-pane fade" %>
+		<% active = "survey" %>
+		<% suclass = suclass + " in active" %>
+	<% elsif session[:home_tab]== "applicants" %>
+		<% active = "applicants" %>
+		<% apclass = apclass + " in active" %>
 	<% else %>
-		<% active="posting" %>
-		<% suclass = "tab-pane fade" %>
-		<% poclass = "tab-pane fade in active" %>
+		<% active = "posting" %>
+		<% poclass = poclass + " in active" %>
 	<% end %>
 <% else %>
 	<% if session[:nav_tab]== "survey" %>
 		<% active="survey" %>
-		<% suclass = "tab-pane fade in active" %>
-		<% poclass = "tab-pane fade" %>
+		<% suclass = suclass + " in active" %>
 	<% else %>
 		<% active="posting" %>
-		<% suclass = "tab-pane fade" %>
-		<% poclass = "tab-pane fade in active" %>
+		<% poclass = poclass + " in active" %>
 	<% end %>
 <% end %>
 
-<%= render partial: "shared/employer_tabs", locals: { active: active, job: @job_posting.title, survey: true, path: user_path(@user) } %>
-
-<% if @job_posting.is_expired? %>
-	<% if (user_signed_in? && current_user.id == @job_posting.user_id) || (user_signed_in? && current_user.has_role?(:admin))%>
-		<%= render 'shared/dismissable_alert', msg:"This job posting is expired. It will no longer be visible to other users.", type: "warning" %>
-		<%= render 'job_postings/job_posting' %>
-	<% else %>
+<%= render partial: "shared/employer_tabs", locals: { active: active, job: @job_posting, user_path: user_path(@user) } %>
+<div class="tab-content">
+	<% if @job_posting.is_expired? && !(user_signed_in? && current_user.id == @job_posting.user_id) || (user_signed_in? && current_user.has_role?(:admin)) %>
 		<%= render 'shared/dismissable_alert', msg:"This job posting is expired.", type: "warning" %>
-	<% end %>
-<% else %>
-	<div class="tab-content">
+	<% else %>
+		<% if @job_posting.is_expired? && (user_signed_in? && current_user.id == @job_posting.user_id) || (user_signed_in? && current_user.has_role?(:admin))%>
+			<%= render 'shared/dismissable_alert', msg:"This job posting is expired. It will no longer be visible to other users.", type: "warning" %>
+		<% end %>
+		<% if current_user == @user %>
+			<div id="applicants" class="<%=apclass%>">
+				<%= render 'job_postings/job_posting_applicants' %>
+			</div>
+		<% end %>
 		<div id="survey" class="<%=suclass%>">
 			<h4>Ideal Candidate</h4>
-			<% if current_user == @user %>
-				<p>Fill out these surveys so potential Job Seekers can get an idea of how they compare to your "ideal candidate".</p>
-			<% elsif user_signed_in? && current_user.has_role?(:employee) %>
-				<p>Here you can compare yourself to see how your skill surveys measure up to what <%= @user.company_name %> is looking for.</p>
-				<p><%= link_to "Compare Survey Graphs", survey_compare_all_path(jp: @job_posting), class: "btn btn-primary" %></p>
-			<% else %>
-				<p>Here you can view the ideal candidate <%= @user.company_name %> is looking for.</p>
-			<% end %>
+			<p>Fill out these surveys so potential Job Seekers can get an idea of how they compare to your "ideal candidate".</p>
 			<%= render '/users/partials/show_survey_table', user:@user, results:@survey_results %>
 		</div>
 		<div id="posting" class="<%=poclass%>">
 			<%= render 'job_postings/job_posting' %>
 		</div>
-	</div>
-<% end %>
+	<% end %>
+</div>

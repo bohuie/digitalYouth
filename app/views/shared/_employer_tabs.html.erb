@@ -1,46 +1,69 @@
 <div class="container" id="profileButtons">
-<ul class="nav nav-tabs profileButtonContent">
-<% path = ',"' + path + '"' if defined?(path) && !path.blank? %>
-<% if user_signed_in? && @current_user==@user %>
-	<% if active == "jobs" %>
-		<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("about"<%= path %>);><a data-toggle="tab" href="#about">ABOUT US</a></li> 
-   	<li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("jobs"<%= path %>);><a data-toggle="tab" href="#jobs">JOBS</a></li>
-   <% elsif active == "posting" && defined?(job) && !job.blank? %>
-      <% if defined?(survey) && survey %>
-         <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);onmousedown=setHomeTab("survey");><a data-toggle="tab" href="#survey">IDEAL CANDIDATE</a></li>
+   <ul class="nav nav-tabs profileButtonContent">
+
+      <% if @user.has_role? :employee %>
+
+      <% elsif @user.has_role? :employer %>
+         <!--
+         ##User - Job Provider
+            ##General/Common Tabs for All
+               ##variable is user_path
+               ##About Us
+               ##Jobs
+            ##Posting Tabs
+               ##variable is posting_path 
+               ##variable job is conditional for these tabs
+               ##Applicants
+               ##Survey/Ideal Candidate
+               ##Posting Info
+         -->
+         <!-- preprocess variables -->
+         <% user_path = defined?(user_path) && !user_path.blank? ? ',"' + user_path + '"' : ''%>
+         <% posting_path = defined?(posting_path) && !posting_path.blank? ? ',"' + posting_path + '"' : ''%>
+
+         <!-- setup pre and post suffix -->
+         <% pre = user_signed_in? && @current_user==@user ? "setHomeTab(" : "setNavTab(" %>
+         <% post = ");" %>
+
+         <!-- Setup class-active variables -->
+         <% aboutClass = "" %>
+         <% jobClass = "" %>
+         <% idealClass = "" %>
+         <% postingClass = "" %>
+         <% appClass = "" %>
+
+         <% if active == "jobs" %>
+            <% jobClass = "class=active" %>
+         <% elsif active == "posting" && defined?(job) %>
+            <% postingClass = "class=active" %>
+         <% elsif active == "survey" && defined?(job)  %>
+            <% idealClass = "class=active" %>
+         <% elsif active == "applicants" && defined?(job) %>
+            <% appClass = "class=active" %>
+         <% else %>
+            <% aboutClass = "class=active" %>
+         <% end %>
+
+         <!-- Display Tabs -->
+         <% if defined?(job) %>
+            <% if current_user == @user && current_user == job.user %>
+               <li <%= appClass %> onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=<%= pre+"\'applicants\'"+posting_path+post%>>
+                  <a data-toggle="tab" href="#applicants">APPLICANTS</a>
+               </li>
+            <% end %>
+            <li <%= idealClass %> onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);onmousedown=<%= pre+"\'survey\'"+posting_path+post%>>
+               <a data-toggle="tab" href="#survey">IDEAL CANDIDATE</a>
+            </li>
+            <li <%= postingClass %> onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=<%= pre+"\'posting\'"+posting_path+post%>>
+               <a data-toggle="tab" href="#posting"><%= job.title.upcase %></a>
+            </li>
+         <% end %>
+         <li <%= aboutClass %> onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=<%= pre+"\'about\'"+user_path+post%>>
+            <a data-toggle="tab" href="#about">ABOUT US</a>
+         </li> 
+         <li <%= jobClass %> onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=<%= pre+"\'jobs\'"+user_path+post%>>
+            <a data-toggle="tab" href="#jobs">JOBS</a>
+         </li>
       <% end %>
-      <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("posting");><a data-toggle="tab" href="#posting"><%= job.upcase %></a></li>
-      <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("about"<%= path %>);><a data-toggle="tab" href="#about">ABOUT US</a></li> 
-      <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("jobs"<%= path %>);><a data-toggle="tab" href="#jobs">JOBS</a></li>
-   <% elsif active == "survey" && defined?(survey) && !survey.blank? %>
-      <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("survey");><a data-toggle="tab" href="#survey">IDEAL CANDIDATE</a></li>
-      <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=""><a data-toggle="tab" href="#posting"><%= job.upcase %></a></li>
-      <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("about");><a data-toggle="tab" href="#about">ABOUT US</a></li> 
-      <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("jobs"<%= path %>);><a data-toggle="tab" href="#jobs">JOBS</a></li>
-   <% else %>
-   	<li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("about"<%= path %>);><a data-toggle="tab" href="#about">ABOUT US</a></li>
-   	<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("jobs"<%= path %>);><a data-toggle="tab" href="#jobs">JOBS</a></li>
-   <% end %>
-<% else %>
-	<% if active == "jobs" %>
-		<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("about"<%= path %>);><a data-toggle="tab" href="#about">ABOUT US</a></li> 
-   	<li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("jobs"<%= path %>);><a data-toggle="tab" href="#jobs">JOBS</a></li>
-	<% elsif active == "posting" && defined?(job) && !job.blank? %>
-      <% if defined?(survey) && survey %>
-         <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);onmousedown=setNavTab("survey"<%= path %>);><a data-toggle="tab" href="#survey">IDEAL CANDIDATE</a></li>
-      <% end %>
-      <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("posting"<%= path %>);><a data-toggle="tab" href="#posting"><%= job.upcase %></a></li>
-      <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("about"<%= path %>);><a data-toggle="tab" href="#about">ABOUT US</a></li> 
-      <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("jobs"<%= path %>);><a data-toggle="tab" href="#jobs">JOBS</a></li>
-   <% elsif active == "survey" && defined?(survey) && !survey.blank? %>
-      <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("survey"<%= path %>);><a data-toggle="tab" href="#survey">IDEAL CANDIDATE</a></li>
-      <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("posting"<%= path %>);><a data-toggle="tab" href="#posting"><%= job.upcase %></a></li>
-      <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("about"<%= path %>);><a data-toggle="tab" href="#about">ABOUT US</a></li> 
-      <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("jobs"<%= path %>);><a data-toggle="tab" href="#jobs">JOBS</a></li>
-   <% else %>
-   	<li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("about"<%= path %>);><a data-toggle="tab" href="#about">ABOUT US</a></li> 
-   	<li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("jobs"<%= path %>);><a data-toggle="tab" href="#jobs">JOBS</a></li>
-	<% end %>
-<% end %>
-</ul>
+   </ul>
 </div>

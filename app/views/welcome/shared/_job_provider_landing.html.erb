@@ -28,7 +28,7 @@
 					<% elsif @expired_posting.job_posting_applications.blank? %>
 						<li><h4>You have a job posting that has expired and has no applicants.  You can extend it <%= link_to "here", edit_job_posting_path(@expired_posting) %></h4></li>
 					<% else %>
-						<li><h4>You have a job posting that has expired and has some applicants.  You can look at them <%= link_to "here", applications_job_posting_path(@expired_posting) %></h4></li>
+						<li><h4>You have a job posting that has expired and has some applicants.  You can look at them <%= link_to 'here', '#', onclick: "setHomeTab(\'applicants\',\'"+job_posting_path(@expired_posting)+"\');", data: { toggle: "tab" } %></h4></li>
 					<% end %>
 				<% end %>
 			</ul>

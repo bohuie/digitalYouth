@@ -87,7 +87,6 @@ Rails.application.routes.draw do
   get 'job_postings/:id/compare' => 'job_postings#compare', as: :compare_applications
 
   # Job Posting Application routes
-  get 'job_posting_applications' => 'job_posting_applications#index'
   get 'job_posting_applications/new' => 'job_posting_applications#new', as: :new_job_posting_application
   get 'job_posting_application/:id' => 'job_posting_applications#show', as: :job_posting_application
   post 'job_posting_applications' => 'job_posting_applications#create'
@@ -124,7 +123,6 @@ Rails.application.routes.draw do
 
   # Survey routes
   get 'surveys/:title/compare' => 'surveys#compare', as: :compare_survey
-  get 'surveys/:title/compare_job/:id' => 'surveys#compare_job', as: :compare_job_survey
   get 'surveys/:title/compare_to' => 'surveys#compare_to', as: :survey_compare_to
   get 'surveys/compare_all' => 'surveys#compare_all', as: :survey_compare_all
   get 'surveys' => 'surveys#index'

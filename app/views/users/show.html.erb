@@ -334,20 +334,25 @@
   		<% aclass = "tab-pane fade" %>
     	<% jclass = "tab-pane fade" %>
 		<% if user_signed_in? && current_user==@user %>
-			<%= render partial: "shared/employer_tabs", locals: {active: session[:home_tab]} %>
   			<% if session[:home_tab] == "jobs" %>
+  				<% active = "jobs" %>
   				<% jclass = jclass + " in active" %>
   			<% else %>
+  				<% active = "about" %>
   				<% aclass = aclass + " in active" %>
   			<% end %>
 		<% else %>
-			<%= render partial: "shared/employer_tabs", locals: {active: session[:nav_tab]} %>
   			<% if session[:nav_tab] == "jobs" %>
+  				<% active = "jobs" %>
   				<% jclass = jclass + " in active" %>
   			<% else %>
+  				<% active = "about" %>
   				<% aclass = aclass + " in active" %>
   			<% end %>
 		<% end %>
+
+		<%= render partial: "shared/site_tabs", locals: {active: active} %>
+
 		<div class="tab-content profileButtonContent">
 
 			<div id="about" class="<%= aclass %>">

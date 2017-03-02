@@ -26,7 +26,7 @@
 	<% end %>
 <% end %>
 
-<%= render partial: "shared/employer_tabs", locals: { active: active, job: @job_posting, user_path: user_path(@user) } %>
+<%= render partial: "shared/site_tabs", locals: { active: active, job: @job_posting, user_path: user_path(@user) } %>
 <div class="tab-content">
 	<% if @job_posting.is_expired? && !(user_signed_in? && current_user.id == @job_posting.user_id) || (user_signed_in? && current_user.has_role?(:admin)) %>
 		<%= render 'shared/dismissable_alert', msg:"This job posting is expired.", type: "warning" %>

@@ -271,7 +271,7 @@ private
 
 	def check_employer # Checks current user is an employer
 		if !current_user.has_role? :employer
-			flash[:warning] = 'You are not an employer!'
+			flash[:warning] = 'You must be a job provider to do that action.'
 			redirect_back_or current_user
 		end
 	end

@@ -1,10 +1,13 @@
 <div class="container" id="profileButtons">
    <ul class="nav nav-tabs profileButtonContent">
 
+      <!-- include tab for employers to contact employees -->
       <% if @user.has_role? :employee %>
 
       <% elsif @user.has_role? :employer %>
          <!--
+         ## Example
+         render partial: "shared/employer_tabs", locals: { active: 'posting', job: @job_posting, user_path: user_path(@user) }
          ##User - Job Provider
             ##General/Common Tabs for All
                ##variable is user_path
@@ -16,6 +19,8 @@
                ##Applicants
                ##Survey/Ideal Candidate
                ##Posting Info
+            ##New Posting Tab
+              ## variable new_job is conditional for these tabs
          -->
          <!-- preprocess variables -->
          <% user_path = defined?(user_path) && !user_path.blank? ? ',"' + user_path + '"' : ''%>
@@ -32,11 +37,13 @@
          <% postingClass = "" %>
          <% appClass = "" %>
 
-         <% if active == "jobs" %>
+         <% if active == "new_job" %>
+            <!-- To ensure no other actives get through -->
+         <% elsif active == "jobs" %>
             <% jobClass = "class=active" %>
          <% elsif active == "posting" && defined?(job) %>
             <% postingClass = "class=active" %>
-         <% elsif active == "survey" && defined?(job)  %>
+         <% elsif active == "ideal" && defined?(job)  %>
             <% idealClass = "class=active" %>
          <% elsif active == "applicants" && defined?(job) %>
             <% appClass = "class=active" %>
@@ -45,23 +52,28 @@
          <% end %>
 
          <!-- Display Tabs -->
+         <% if active == "new_job" %>
+            <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);>
+               <a data-toggle="tab" href="#">NEW JOB POSTING</a>
+            </li>
+         <% end %>
          <% if defined?(job) %>
             <% if current_user == @user && current_user == job.user %>
-               <li <%= appClass %> onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=<%= pre+"\'applicants\'"+posting_path+post%>>
+               <li <%= appClass %> onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=<%= pre+"\'applicants\'"+posting_path+post%>>
                   <a data-toggle="tab" href="#applicants">APPLICANTS</a>
                </li>
             <% end %>
-            <li <%= idealClass %> onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);onmousedown=<%= pre+"\'survey\'"+posting_path+post%>>
-               <a data-toggle="tab" href="#survey">IDEAL CANDIDATE</a>
+            <li <%= idealClass %> onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=<%= pre+"\'ideal\'"+posting_path+post%>>
+               <a data-toggle="tab" href="#ideal">IDEAL CANDIDATE</a>
             </li>
-            <li <%= postingClass %> onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=<%= pre+"\'posting\'"+posting_path+post%>>
+            <li <%= postingClass %> onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=<%= pre+"\'posting\'"+posting_path+post%>>
                <a data-toggle="tab" href="#posting"><%= job.title.upcase %></a>
             </li>
          <% end %>
-         <li <%= aboutClass %> onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=<%= pre+"\'about\'"+user_path+post%>>
+         <li <%= aboutClass %> onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=<%= pre+"\'about\'"+user_path+post%>>
             <a data-toggle="tab" href="#about">ABOUT US</a>
          </li> 
-         <li <%= jobClass %> onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=<%= pre+"\'jobs\'"+user_path+post%>>
+         <li <%= jobClass %> onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=<%= pre+"\'jobs\'"+user_path+post%>>
             <a data-toggle="tab" href="#jobs">JOBS</a>
          </li>
       <% end %>

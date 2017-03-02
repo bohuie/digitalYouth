@@ -41,9 +41,11 @@ class SurveysController < ApplicationController
 	end
 
 	def edit
+		@user = current_user
 		# Fetch Survey data
 		if params[:job_posting]
-			if JobPosting.find(params[:job_posting]).user != current_user
+			@job_posting = JobPosting.find(params[:job_posting])
+			if @job_posting.user != current_user
 				flash[:warning] = "You must own that job posting to edit the survey results."
 				redirect_to current_user and return
 			end
@@ -106,6 +108,8 @@ class SurveysController < ApplicationController
 	end
 
 	def compare
+		@user = current_user
+
 		@survey = Survey.find_by(title: params[:title])
 		if @survey.nil?
 			flash[:warning] = "Sorry, we couldn't find that survey."
@@ -116,6 +120,7 @@ class SurveysController < ApplicationController
 		@survey_results = Array.new
 
 		@survey_results.push(name: "Average Job Seeker", data: @survey.get_average_data)
+		@survey_results.push(name: "Ideal Candidate", data: @survey.get_data(@user, @job_posting))
 
 		@job_posting_applications = @job_posting.job_posting_applications.where("status > ? ", -1)
 		@job_posting_applications.each do |j|

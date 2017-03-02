@@ -27,6 +27,12 @@ class JobPostingsController < ApplicationController
 			@survey_results[index] = Array.new if @survey_results[index].nil?
 			@survey_results[index].push(name: "Average Job Seeker", data: avg)
 		end
+
+		ideal_results = Survey.get_table_data(@user, @job_posting)
+		ideal_results.each do |index, results|
+			@survey_results[index].push(name: 'Ideal Candidate', data: results)
+		end
+		
 		@job_posting_applications.each do |j|
 			user_results = Survey.get_table_data(j.applicant)
 			user_results.each do |index, results|

@@ -1,8 +1,13 @@
 <%= render "users/shared/profile" %>
 
 <% if current_user.has_role? :employee %>
-	<%= render partial: "shared/job_seeker_tabs", locals: { active: "applications", path: user_path(@user) } %>
+	<%= render partial: "shared/site_tabs", locals: { active: "applications", user_path: user_path(@user) } %>
+<% elsif current_user.has_role? :employer %>
+	<%= render partial: "shared/site_tabs", locals: { active: 'applicants', job: @job_posting, posting_path: job_posting_path(@job_posting), user_path: user_path(@user) } %>
+<% end %>
+	
 
+<% if current_user.has_role? :employee %>
     <div class="tab-content">
 
     	<h4><b>You application for <%= @job_posting.title %></b></h4>
@@ -68,8 +73,6 @@
 	</div>
 
 <% elsif current_user.has_role? :employer %>
-	<%= render partial: "shared/site_tabs", locals: { active: 'applicants', job: @job_posting, posting_path: job_posting_path(@job_posting), user_path: user_path(@user) } %>
-
 	<h4><b>Application from <%= @job_posting_application.applicant.first_name + " " + @job_posting_application.applicant.last_name %> for <%= @job_posting.title %></b></h4>
 	<p>Below you can view the application and the entire message they have provided.</p>
 	<div class="row">

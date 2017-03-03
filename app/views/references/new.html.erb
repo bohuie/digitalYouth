@@ -1,6 +1,6 @@
 <% if user_signed_in? %>
 	<%= render "users/shared/profile" %>
-	<%= render partial: "shared/job_seeker_tabs", locals: {active: "references", path: user_path(@user) } %>
+	<%= render partial: "shared/site_tabs", locals: {active: "references", user_path: user_path(@user) } %>
 <% else %>
 	<div class="row">
 		<div class="col-md-12" style="min-height:150px; background-color: #1397ce; margin-top:-20px;">

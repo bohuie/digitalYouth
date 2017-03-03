@@ -6,31 +6,41 @@
     	<% prclass = "tab-pane fade" %>
     	<% skclass = "tab-pane fade" %>
     	<% reclass = "tab-pane fade" %>
-    <% if user_signed_in? && current_user==@user %>
-		<%= render partial: "shared/job_seeker_tabs", locals: {active: session[:home_tab]} %>			
-  		<% if session[:home_tab] == "applications" && user_signed_in? && current_user==@user %>
+    <% if user_signed_in? && current_user==@user %>		
+  		<% if session[:home_tab] == "applications" %>
+  			<% active = "applications" %>
   			<% apclass = apclass + " in active" %>
-  		<% elsif session[:home_tab] == "projects" && current_user==@user %>
+  		<% elsif session[:home_tab] == "projects" %>
+  			<% active = "projects" %>
   			<% prclass = prclass + " in active" %>
-  		<% elsif session[:home_tab] == "skills" && current_user==@user %>
+  		<% elsif session[:home_tab] == "skills" %>
+  			<% active = "skills" %>
   			<% skclass = skclass + " in active" %>
-  		<% elsif session[:home_tab] == "references" && current_user==@user %>
+  		<% elsif session[:home_tab] == "references" %>
+  			<% active = "references" %>
   			<% reclass = reclass + " in active" %>
   		<% else %>
+  			<% active = "surveys" %>
   			<% suclass = suclass + " in active" %>
   		<% end %>
-  	<% else %>
-			<%= render partial: "shared/job_seeker_tabs", locals: {active: session[:nav_tab]} %>			
+  	<% else %>	
   		<% if session[:nav_tab] == "projects" %>
+  			<% active = "projects" %>
   			<% prclass = prclass + " in active" %>
   		<% elsif session[:nav_tab] == "skills"  %>
+  			<% active = "skills" %>
   			<% skclass = skclass + " in active" %>
   		<% elsif session[:nav_tab] == "references" %>
+  			<% active = "references" %>
   			<% reclass = reclass + " in active" %>
   		<% else %>
+  			<% active = "surveys" %>
   			<% suclass = suclass + " in active" %>
   		<% end %>
   	<% end %>
+
+  	<%= render partial: "shared/site_tabs", locals: {active: active} %>
+
   		<div class="tab-content profileButtonContent">
     		<div id="surveys" class= "<%= suclass %>">
       			<div class = "survey-table" id= "survey-table">
@@ -41,7 +51,7 @@
 							<p>Each graph will show an average person's skills (in blue) versus <%= @user.formatted_name(current_user)+"'s "%> skills (in red) if the survey has been completed.  If you wish to see more details about the  kind of skills associated with a graph, click Details.  A gray graph means <%= @user.formatted_name(current_user)%> has not done that survey yet.</p>
 							<% if current_user && current_user.has_role?(:employee) %>
 								<p>You can compare your skill graphs to <%= @user.formatted_name(current_user)+"'s "%> by clicking the button below.</p>
-								<p><%= link_to "Compare Survey Graphs", survey_compare_all_path(js: @user), class: "btn btn-primary" %></p>
+								<p><%= link_to "Compare Skill Graphs to Me", survey_compare_all_path(js: @user), class: "btn btn-primary" %></p>
 							<% end %>
 					<% end %>
 					<%= render '/users/partials/show_survey_table', user:@user, results:@survey_results %>

@@ -1,9 +1,9 @@
 <%= render "users/shared/profile" %>
 
 <% if @user.has_role? :employee %>
-	<%= render partial: "shared/job_seeker_tabs", locals: {active: "surveys" } %>
+	<%= render partial: "shared/site_tabs", locals: {active: "surveys", user_path: user_path(@user) } %>
 <% elsif @user.has_role? :employer %>
-	<%= render partial: "shared/site_tabs", locals: {active: "survey", survey: true, job: @job_posting.title } %>
+	<%= render partial: "shared/site_tabs", locals: {active: "survey", survey: true, job: @job_posting, posting_path: job_posting_path(@job_posting), user_path: user_path(@user) } %>
 <% end %>
 
 <h4><b>Category: <%=@survey.format_title.html_safe%></b></h4>

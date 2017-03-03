@@ -28,12 +28,12 @@ body.welcome li {
 }
 
 .btn-sq:active, .btn-sq:focus, .btn-sq:target, .btn-sq:hover{
-	background-color: #89bcf4 !important;
+	background-color: #719ac8 !important;
 	color: #646464 !important;
 	border-color: #646464 !important;
 }
 .btn-sq {
-	background-color: #e0fbff !important;
+	background-color: #89bcf4 !important;
 	color: #646464 !important;
 	border-color: #646464 !important;
 }
@@ -75,6 +75,7 @@ body.welcome.index nav.navbar {
 	height: calc(100% - 65px);
 	top: 41px;
 	color: #207699;
+	opacity: 0.9;
 }
 
 .signupbox a {

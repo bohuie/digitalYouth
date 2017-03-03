@@ -62,9 +62,10 @@ function rendering(toRender)
 function setHomeTab(value, url)
 {
 	if (typeof(value)==='undefined') value = "surveys";
-
+	
 	if (typeof(url)==='undefined'){
-		$.ajax({
+
+	$.ajax({
 		url: '/users/home_tab',
 		data: {home_tab: value},
 		type: 'post',
@@ -107,12 +108,12 @@ function setNavTab(value, url)
 
 	if (typeof(url)==='undefined'){
 		$.ajax({
-		url: '/users/nav_tab',
-		data: {nav_tab: value},
-		type: 'post',
-		beforeSend: function(jqXHR, settings) {
-        	jqXHR.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
-    	}
+			url: '/users/nav_tab',
+			data: {nav_tab: value},
+			type: 'post',
+			beforeSend: function(jqXHR, settings) {
+        		jqXHR.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+    		}
 		})
 		.done(function(response) {
   			// Do something with the response
@@ -123,16 +124,16 @@ function setNavTab(value, url)
 	}
 	else {
 		$.ajax({
-		url: '/users/nav_tab',
-		data: {
-			nav_tab: value,
-			redirect: url
-		},
-		dataType: "script",
-		type: 'post',
-		beforeSend: function(jqXHR, settings) {
-        	jqXHR.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
-    	}
+			url: '/users/nav_tab',
+			data: {
+				nav_tab: value,
+				redirect: url
+			},
+			dataType: "script",
+			type: 'post',
+			beforeSend: function(jqXHR, settings) {
+        		jqXHR.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+    		}
 		})
 		.done(function(response) {
   			// Do something with the response

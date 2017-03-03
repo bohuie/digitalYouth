@@ -25,7 +25,7 @@
 		<% end %>
 	<% end %>
 <% elsif current_user.has_role? :employer %>
-	<%= render partial: "shared/employer_tabs", locals: { active: "jobs" } %>
+	<%= render partial: "shared/site_tabs", locals: { active: "jobs" } %>
 	<% last_posting = -1 %>
 	<%@job_posting_applications.each do |j|%>
 		<% if j.status != -2 %>

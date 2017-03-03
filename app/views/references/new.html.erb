@@ -1,19 +1,15 @@
 <% if user_signed_in? %>
 	<%= render "users/shared/profile" %>
-	<% if current_user.has_role? :employee %>
-		<%= render partial: "shared/job_seeker_tabs", locals: {active: "references" } %>
-	<% else %>
-		<%= render partial: "shared/employer_tabs" %>
-	<% end %>
+	<%= render partial: "shared/site_tabs", locals: {active: "references", user_path: user_path(@user) } %>
 <% else %>
-	<div class="row">
-		<div class="col-md-12" style="min-height:150px; background-color: #1397ce; margin-top:-20px;">
-			<h3 style="color:white; vertical-align: middle; padding-top: 60px;">Want to learn more about EdgeMap and what it has to offer?  Check us out <%= link_to 'here', welcome_index_path, style:"color:white;" %></h3>
+	<div class="padding-15 row">
+		<div class="learn-more col-md-12">
+			<h3 class="learn-text">Want to learn more about EdgeMap and what it has to offer?  Check us out <%= link_to 'here', welcome_index_path, style:"color:white;" %></h3>
 		</div>
 	</div>
 <% end %>
 
-<div class ="row alternate" style="padding-top:10px; padding-bottom: 10px;">
+<div class ="padding-30 row">
 	<div class="col-md-2">
 		<%= image_tag @referUser.image(:small), alt:"User Icon", class: "profile-image small-shadow" %>
 	</div>
@@ -52,7 +48,7 @@
 		<div class="col-md-6">
 			<%= r.input :first_name, required: true, input_html: {value: @reference_link.first_name}%>
 			<%= r.input :last_name, input_html: {value: @reference_link.last_name} %>
-			<%= r.input :reference_body, required: true%>
+			<%= r.input :reference_body, required: true, wrapper_html: { class: 'padding-left-0' } %>
 		</div>
 		<div class="col-md-6">
 			<%= r.input :company, required: true %>

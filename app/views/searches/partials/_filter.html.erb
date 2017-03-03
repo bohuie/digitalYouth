@@ -1,5 +1,5 @@
 <% formatted_name = name.downcase.tr(" ", "_") %>
-	<b><%= name %></b>
+	<div class="filter-header"><b><%= name %></b></div>
 	<div id="<%=formatted_name%>" >
 	<p><%= link_to	radio_button("search", name, 'All', {checked: active_search('All',params[key])})+" All", search_path(all_path_hash(@toggles,@query,@type,@filters,formatted_name,key)), class: "search-text #{active_search('All', params[key])}" %></p>
 	<%filter_values.each do |v|%>
@@ -18,4 +18,4 @@
 		</div>
 	<% end %>
 </div>
-<hr>
+<div class="padding-10"></div>

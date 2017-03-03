@@ -1,6 +1,6 @@
 <%= render "users/shared/profile" %>
 
-<%= render partial: "shared/job_seeker_tabs", locals: {active: "projects" } %>
+<%= render partial: "shared/site_tabs", locals: {active: "projects", user_path: user_path(@user) } %>
 
 <h4><b>Edit your Project.</b></h4>
 <p>Feel free to update your project below and update as necessary.</p>

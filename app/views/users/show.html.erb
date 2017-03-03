@@ -6,31 +6,41 @@
     	<% prclass = "tab-pane fade" %>
     	<% skclass = "tab-pane fade" %>
     	<% reclass = "tab-pane fade" %>
-    <% if user_signed_in? && current_user==@user %>
-		<%= render "users/shared/job_seeker_home_tabs" %>			
-  		<% if session[:home_tab] == "applications" && user_signed_in? && current_user==@user %>
+    <% if user_signed_in? && current_user==@user %>		
+  		<% if session[:home_tab] == "applications" %>
+  			<% active = "applications" %>
   			<% apclass = apclass + " in active" %>
-  		<% elsif session[:home_tab] == "projects" && current_user==@user %>
+  		<% elsif session[:home_tab] == "projects" %>
+  			<% active = "projects" %>
   			<% prclass = prclass + " in active" %>
-  		<% elsif session[:home_tab] == "skills" && current_user==@user %>
+  		<% elsif session[:home_tab] == "skills" %>
+  			<% active = "skills" %>
   			<% skclass = skclass + " in active" %>
-  		<% elsif session[:home_tab] == "references" && current_user==@user %>
+  		<% elsif session[:home_tab] == "references" %>
+  			<% active = "references" %>
   			<% reclass = reclass + " in active" %>
   		<% else %>
+  			<% active = "surveys" %>
   			<% suclass = suclass + " in active" %>
   		<% end %>
-  	<% else %>
-			<%= render partial: "shared/job_seeker_tabs", locals: {active: session[:nav_tab]} %>			
+  	<% else %>	
   		<% if session[:nav_tab] == "projects" %>
+  			<% active = "projects" %>
   			<% prclass = prclass + " in active" %>
   		<% elsif session[:nav_tab] == "skills"  %>
+  			<% active = "skills" %>
   			<% skclass = skclass + " in active" %>
   		<% elsif session[:nav_tab] == "references" %>
+  			<% active = "references" %>
   			<% reclass = reclass + " in active" %>
   		<% else %>
+  			<% active = "surveys" %>
   			<% suclass = suclass + " in active" %>
   		<% end %>
   	<% end %>
+
+  	<%= render partial: "shared/site_tabs", locals: {active: active} %>
+
   		<div class="tab-content profileButtonContent">
     		<div id="surveys" class= "<%= suclass %>">
       			<div class = "survey-table" id= "survey-table">
@@ -41,7 +51,7 @@
 							<p>Each graph will show an average person's skills (in blue) versus <%= @user.formatted_name(current_user)+"'s "%> skills (in red) if the survey has been completed.  If you wish to see more details about the  kind of skills associated with a graph, click Details.  A gray graph means <%= @user.formatted_name(current_user)%> has not done that survey yet.</p>
 							<% if current_user && current_user.has_role?(:employee) %>
 								<p>You can compare your skill graphs to <%= @user.formatted_name(current_user)+"'s "%> by clicking the button below.</p>
-								<p><%= link_to "Compare Survey Graphs", survey_compare_all_path(js: @user), class: "btn btn-primary" %></p>
+								<p><%= link_to "Compare Skill Graphs to Me", survey_compare_all_path(js: @user), class: "btn btn-primary" %></p>
 							<% end %>
 					<% end %>
 					<%= render '/users/partials/show_survey_table', user:@user, results:@survey_results %>
@@ -334,41 +344,46 @@
   		<% aclass = "tab-pane fade" %>
     	<% jclass = "tab-pane fade" %>
 		<% if user_signed_in? && current_user==@user %>
-			<%= render "users/shared/employer_home_tabs" %>
   			<% if session[:home_tab] == "jobs" %>
+  				<% active = "jobs" %>
   				<% jclass = jclass + " in active" %>
   			<% else %>
+  				<% active = "about" %>
   				<% aclass = aclass + " in active" %>
   			<% end %>
 		<% else %>
-			<%= render partial: "shared/employer_tabs", locals: {active: session[:nav_tab]} %>
   			<% if session[:nav_tab] == "jobs" %>
+  				<% active = "jobs" %>
   				<% jclass = jclass + " in active" %>
   			<% else %>
+  				<% active = "about" %>
   				<% aclass = aclass + " in active" %>
   			<% end %>
 		<% end %>
+
+		<%= render partial: "shared/site_tabs", locals: {active: active} %>
+
 		<div class="tab-content profileButtonContent">
 
 			<div id="about" class="<%= aclass %>">
 				<div class="row">
-					<div class="col-md-12">
+					<div class="padding-left-0 col-md-12">
 						<h4><b>About <%= @user.company_name %></b></h4>
 					</div>
 				</div>
 				<% if user_signed_in? && current_user == @user %>
 					<div class="row">
-						<div class="col-md-12">
+						<div class="padding-left-0 col-md-12">
 							<p>Feel free to update your company bio and public message below.</p>
 						</div>
 					</div>
 					<%= simple_form_for @user do |u| %>
 						<div class="row">
-							<%= u.input :bio, as: :text, input_html: {cols: 50, rows: 7}, wrapper_html: { class: "padding-left-15 col-md-8" }, label_html: { class: "padding-left-0" } %>
+							<%= u.input :bio, as: :text, input_html: {cols: 50, rows: 7}, wrapper_html: { class: "padding-left-0 col-md-8" }, label_html: { class: "padding-left-0" } %>
 						</div>
 						<br />
 						<div class="row">
-							<div class="col-md-2">
+							<div class="padding-left-0 col-md-2">
 								<%= u.submit "Update Bio", name: 'bio', class: "btn btn-primary" %>
 							</div>
 						</div>
@@ -426,7 +441,7 @@
 								<% if user_signed_in? && current_user == @user %>
 									<%= link_to "Edit Posting", edit_job_posting_path(j), class: "btn btn-warning"%>
 									<% application_count = j.job_posting_applications.where(status:0..Float::INFINITY).count %>
-									<%= link_to raw("Applications <span class=\"badge\">#{application_count.to_s}</span>"), applications_job_posting_path(j), class: "btn btn-success"%>						
+									<%= link_to raw("Applications <span class=\"badge\">#{application_count.to_s}</span>"), '#', class: "btn btn-success", onclick: "setHomeTab(\'applicants\',\'"+job_posting_path(j)+"\');" %>						
 									<%= link_to "Delete", job_posting_path(j), method: "delete", data: {confirm: "Are you sure you want to delete this posting?"}, class: "btn btn-danger"%>
 								<% end %>
 							</div>

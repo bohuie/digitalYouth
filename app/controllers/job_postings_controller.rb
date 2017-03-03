@@ -3,7 +3,7 @@ class JobPostingsController < ApplicationController
 	before_action :authenticate_user!, except: [:show, :index]
 	before_action :check_employer, except: [:show, :index,:refresh,:refresh_process]
 	before_action :check_admin	 , only: [:refresh,:refresh_process]
-	before_action :job_owner	 , only: [:edit, :update, :destroy, :applications, :compare]
+	before_action :job_owner	 , only: [:edit, :update, :destroy, :compare]
 	#before_action :check_fields	 , only: [:create, :update]
 
 	def index # Job Postings landing page
@@ -17,22 +17,6 @@ class JobPostingsController < ApplicationController
 		end
 	end
 
-	def applications
-		@user = current_user
-		@job_posting = JobPosting.find(params[:id])
-		@req_skills  = JobPostingSkill.where(job_posting_id:@job_posting.id, importance: 2).includes(:skill).order(:id)
-		@pref_skills = JobPostingSkill.where(job_posting_id:@job_posting.id, importance: 1).includes(:skill).order(:id)
-		@job_posting_applications = @job_posting.job_posting_applications.where("status > ? ", -1)
-		@applicant_skills = Hash.new
-		@job_posting_applications.each do |j|
-			skills = @job_posting.compare_skills(j.applicant)
-			user_skill_matches = skills[:user_skill_matches]
-			@applicant_skills[j.applicant.id] = Hash.new
-			@applicant_skills[j.applicant.id][:required] = user_skill_matches.select{ |a| a[:importance]==2 }
-			@applicant_skills[j.applicant.id][:preferred] = user_skill_matches.select{ |a| a[:importance]==1 }
-		end
-	end
-
 	def compare
 		@user = current_user
 		@job_posting = JobPosting.find(params[:id])
@@ -43,6 +27,12 @@ class JobPostingsController < ApplicationController
 			@survey_results[index] = Array.new if @survey_results[index].nil?
 			@survey_results[index].push(name: "Average Job Seeker", data: avg)
 		end
+
+		ideal_results = Survey.get_table_data(@user, @job_posting)
+		ideal_results.each do |index, results|
+			@survey_results[index].push(name: 'Ideal Candidate', data: results)
+		end
+		
 		@job_posting_applications.each do |j|
 			user_results = Survey.get_table_data(j.applicant)
 			user_results.each do |index, results|
@@ -58,6 +48,21 @@ class JobPostingsController < ApplicationController
 		@pref_skills = JobPostingSkill.where(job_posting_id:params[:id], importance: 1).includes(:skill).order(:id)
 		add_view(@job_posting)
 		@user = @job_posting.user
+		@surveys = Survey.get_title_map
+		@survey_results = Survey.get_table_data(@user, @job_posting)
+		@average_results = Survey.get_average_data
+
+		if current_user == @user 
+			@job_posting_applications = @job_posting.job_posting_applications.where("status > ? ", -1)
+			@applicant_skills = Hash.new
+			@job_posting_applications.each do |j|
+				skills = @job_posting.compare_skills(j.applicant)
+				user_skill_matches = skills[:user_skill_matches]
+				@applicant_skills[j.applicant.id] = Hash.new
+				@applicant_skills[j.applicant.id][:required] = user_skill_matches.select{ |a| a[:importance]==2 }
+				@applicant_skills[j.applicant.id][:preferred] = user_skill_matches.select{ |a| a[:importance]==1 }
+			end
+		end
 	end
 
 	def new # Creates the form to make a new job posting
@@ -266,7 +271,7 @@ private
 
 	def check_employer # Checks current user is an employer
 		if !current_user.has_role? :employer
-			flash[:warning] = 'You are not an employer!'
+			flash[:warning] = 'You must be a job provider to do that action.'
 			redirect_back_or current_user
 		end
 	end

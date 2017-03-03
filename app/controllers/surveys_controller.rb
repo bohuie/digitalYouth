@@ -140,40 +140,34 @@ class SurveysController < ApplicationController
 		if !params[:jp].blank?
 			#compare to a job posting
 			@survey_results = Array.new
-			average_results = Survey.get_average_data
-			average_results.each do |index, avg|
-				@survey_results[index] = Array.new if @survey_results[index].nil?
-				@survey_results[index].push(name: "Average Job Seeker", data: avg)
-			end
 
 			@job_posting = JobPosting.find(params[:jp])
 			@user = @job_posting.user
 			jp_results = Survey.get_table_data(@user, @job_posting)
 			jp_results.each do |index, results|
+				@survey_results[index] = Array.new if @survey_results[index].nil?
 				@survey_results[index].push(name: @job_posting.title, data: results)
 			end
 
 			user_results = Survey.get_table_data(current_user)
 			user_results.each do |index, results|
+				@survey_results[index] = Array.new if @survey_results[index].nil?
 				@survey_results[index].push(name: "Me", data: results)
 			end
 		elsif !params[:js].blank?
 			#compare to another job seeker
 			@survey_results = Array.new
-			average_results = Survey.get_average_data
-			average_results.each do |index, avg|
-				@survey_results[index] = Array.new if @survey_results[index].nil?
-				@survey_results[index].push(name: "Average Job Seeker", data: avg)
-			end
 
 			user_results = Survey.get_table_data(current_user)
 			user_results.each do |index, results|
+				@survey_results[index] = Array.new if @survey_results[index].nil?
 				@survey_results[index].push(name: "Me", data: results)
 			end
 
 			@user = User.find(params[:js])
 			user_results = Survey.get_table_data(@user)
 			user_results.each do |index, results|
+				@survey_results[index] = Array.new if @survey_results[index].nil?
 				@survey_results[index].push(name: @user.formatted_name(current_user), data: results)
 			end
 		else
@@ -208,7 +202,6 @@ class SurveysController < ApplicationController
 				redirect_to current_user and return
 			end
 
-			@survey_results.push(name: "Average Job Seeker", data: @survey.get_average_data)
 			@survey_results.push(name: @job_posting.title, data: @survey.get_data(@user, @job_posting.id))
 			@survey_results.push(name: "Me", data: @survey.get_data(current_user)) unless current_user.has_role? :employer
 		elsif !params[:js].blank?
@@ -219,8 +212,6 @@ class SurveysController < ApplicationController
 				flash[:warning] = "Sorry, we couldn't find that job seeker."
 				redirect_to current_user and return
 			end
-
-			@survey_results.push(name: "Average Job Seeker", data: @survey.get_average_data)
 
 			user_results = @survey.get_data(current_user)
 			if user_results

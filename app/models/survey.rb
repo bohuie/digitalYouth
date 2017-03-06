@@ -23,8 +23,12 @@ class Survey < ActiveRecord::Base
 		return title_string
 	end
 
-	def get_data(user)
-		data = Response.find_by(user_id: user.id, survey_id: self.id)
+	def get_data(user, job_posting = '')
+		if job_posting.blank?
+			data = Response.find_by(user_id: user.id, survey_id: self.id)
+		else
+			data = Response.find_by(user_id: user.id, survey_id: self.id, job_posting_id: job_posting)
+		end
 		if(data)
 			return data.get_data_map
 		else
@@ -45,9 +49,13 @@ class Survey < ActiveRecord::Base
 		return rtn
 	end
 
-	def self.get_table_data(user)
+	def self.get_table_data(user, job_posting = '')
 		surveys = Survey.all
-		responses = user.responses
+		if job_posting.blank?
+			responses = user.responses
+		else
+			responses = job_posting.responses
+		end
 		survey_results = Hash.new
 		if !responses.empty?
 			responses.each do |r| #performs 12 queries

@@ -8,7 +8,7 @@ class Project < ActiveRecord::Base
 	has_many :skills, through: :project_skills
 
 	has_attached_file :image,
-		default_url: 'project-placeholder-:style.svg',
+		default_url: 'default-project-:style.svg',
 		styles: {
 			medium: '200x200',
 			thumb: "45x45#"
@@ -23,11 +23,12 @@ class Project < ActiveRecord::Base
 	def search_data
 		data = Hash.new
 	  	data[:title] = title.titleize
-	  	data[:description] = description.titleize
+	  	data[:description] = description
 	  	data[:owner_first] = self.user.first_name.titleize if self.user.show_name
 	  	data[:owner_last] = self.user.last_name.titleize if self.user.show_name
 	  	data[:created_at] = created_at
 	  	data[:skills] = self.skills.pluck(:name)
+	  	data[:project_date] = self.project_date
 	  	return data
 	end
 

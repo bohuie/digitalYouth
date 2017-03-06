@@ -32,6 +32,12 @@ html, body
 	font-family: Geneva
 	min-height: 700px
 	height: 100%
+
+.tab-content > .tab-pane:not(.active)
+	display: block !important
+	height: 0 !important
+	overflow-y: hidden !important
+
 .wrapper
 	min-height: 100%
 	height: auto !important
@@ -46,7 +52,7 @@ html, body
 
 .menu-image
 	float: left
-	padding: 0px 10px
+	margin: 0px 10px
 
 .menu-name
 	width: 105px
@@ -86,6 +92,7 @@ hr.gray-1
 	height: 100px !important
 	font-size: 14px
 	padding: 6px
+	border-radius: 20px
 
 .btn-sq-sm
 	width: 50px !important
@@ -102,6 +109,9 @@ hr.gray-1
 	border-bottom: none
 	padding-bottom: 10px
 
+.padding-0
+	padding: 0px !important
+
 .padding-5
 	padding: 5px !important
 
@@ -113,8 +123,12 @@ hr.gray-1
 	padding-top: 10px !important
 	padding-bottom: 10px !important
 
+.padding-30
+	padding-top: 30px !important
+	padding-bottom: 30px !important
+
 .padding-top-10
-	padding-top: 10px
+	padding-top: 10px !important
 
 .padding-top-80
 	padding-top: 80px

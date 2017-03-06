@@ -7,6 +7,7 @@ class JobPosting < ActiveRecord::Base
 	has_many :job_posting_skills, dependent: :destroy
 	has_many :skills, through: :job_posting_skills
 	has_many :job_posting_applications, dependent: :destroy
+	has_many :responses
 	belongs_to :job_category
 	belongs_to :user
 	accepts_nested_attributes_for :job_posting_skills, reject_if: lambda {|a| a[:survey_id].blank?}, allow_destroy: true
@@ -28,21 +29,21 @@ class JobPosting < ActiveRecord::Base
 
 	def search_data
 		data = Hash.new
-		if close_date > Date.today
-	  	data[:title] = title.titleize
-	  	if self.user_id.nil?
-	  		data[:company_name] = company_name.titleize
-	  	else
-	  		data[:company_name] = self.user.company_name.titleize
-	  	end
-	  	data[:city] = city.titleize
-	  	data[:province] = province.upcase
-	  	data[:job_type] = job_type
-	  	data[:description] = description.titleize
-	  	data[:industry] = job_category_id
-	  	data[:created_at] = created_at
-	  	data[:close_date] = close_date
-	  	data[:skills] = self.skills.pluck(:name)
+		unless self.is_expired?
+	  		data[:title] = title.titleize
+	  		if self.user_id.nil?
+	  			data[:company_name] = company_name.titleize
+	  		else
+	  			data[:company_name] = self.user.company_name.titleize
+		  	end
+		  	data[:city] = city.titleize
+	  		data[:province] = province.upcase
+		  	data[:job_type] = job_type
+		  	data[:description] = description.titleize
+	  		data[:industry] = job_category_id
+		  	data[:created_at] = created_at
+		  	data[:close_date] = close_date
+	  		data[:skills] = self.skills.pluck(:name)
 	  	end
 	  	return data
 	end

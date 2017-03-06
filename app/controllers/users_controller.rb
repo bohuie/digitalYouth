@@ -171,7 +171,6 @@ respond_to :html, :json
 
   	def home_tab
   		session[:home_tab] = params[:home_tab]
-  		
   		if params.key?(:redirect)
   			respond_to do |format|
   				format.js { render js: "window.location = '#{params[:redirect]}'" }
@@ -181,7 +180,6 @@ respond_to :html, :json
 
   	def nav_tab
   		session[:nav_tab] = params[:nav_tab]
- 
   		if params.key?(:redirect)
   			respond_to do |format|
   				format.js { render js: "window.location = '#{params[:redirect]}'" }
@@ -205,7 +203,7 @@ respond_to :html, :json
 	end
 
 	def personal_params
-		params.require(:user).permit(:first_name, :last_name, :street_address, :city, :province, :postal_code, :image, :delete_image, :company_name, :summary, :gender, :birth_year, :show_name, :show_location, :show_picture, :resume)
+		params.require(:user).permit(:first_name, :last_name, :street_address, :city, :province, :postal_code, :image, :delete_image, :company_name, :summary, :gender, :birth_date, :show_name, :show_location, :show_picture, :resume, :job_title, :current_company, :show_job)
 	end
 
 	def email_params

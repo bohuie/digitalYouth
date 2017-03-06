@@ -17,9 +17,6 @@ Rails.application.routes.draw do
   post 'consent/create' => 'consent#create'
   patch 'consent/update/:id' => 'consent#update'
 
-  # Settings
-  get 'settings/consent' => 'settings#consent', as: :consent_settings
-
   # Searches
   get 'search' => 'searches#index'
   get 'search/:id' => 'searches#navigate', as: :search_nav
@@ -52,7 +49,6 @@ Rails.application.routes.draw do
 
  #devise_for :users
   #resources :users, only: :show, as: :user
-  get 'users' => 'users#index'
   get '/users/:id' => 'users#show', as: :user
   get '/users/:id/edit' => 'users#edit', as: :edit_user
   patch '/users/:id' => 'users#update'
@@ -85,12 +81,8 @@ Rails.application.routes.draw do
   delete 'job_postings/:id' => 'job_postings#destroy'
   post 'job_postings' => 'job_postings#create'
   get 'job_postings/:id/compare' => 'job_postings#compare', as: :compare_applications
-  resources :job_postings do
-    get 'applications', on: :member
-  end
 
   # Job Posting Application routes
-  get 'job_posting_applications' => 'job_posting_applications#index'
   get 'job_posting_applications/new' => 'job_posting_applications#new', as: :new_job_posting_application
   get 'job_posting_application/:id' => 'job_posting_applications#show', as: :job_posting_application
   post 'job_posting_applications' => 'job_posting_applications#create'
@@ -98,7 +90,6 @@ Rails.application.routes.draw do
   delete 'job_posting_application/:id' => 'job_posting_applications#destroy'
 
   # Project routes
-  get 'projects' => 'projects#index'
   get 'projects/new' => 'projects#new', as: :new_project
   get 'projects/:id' => 'projects#show', as: :project
   get 'projects/:id/edit' => 'projects#edit', as: :edit_project
@@ -114,8 +105,6 @@ Rails.application.routes.draw do
   post 'project_skills' => 'project_skills#create'
 
   # Reference routes
-  get 'references' => 'references#index'
-  get 'reference/:id' => 'references#show', as: :reference
   get 'references/refer' => 'references#email', as: :email_reference
   get 'references/new/:id' => 'references#new', as: :new_reference
   post 'references/refer' => 'references#send_mail', as: :reference_emails
@@ -126,14 +115,14 @@ Rails.application.routes.draw do
   delete 'reference_redirections/:id' => 'reference_redirections#destroy', as: :delete_reference_redirection
 
   # Survey routes
+  get 'surveys/:title/compare' => 'surveys#compare', as: :compare_survey
+  get 'surveys/:title/compare_to' => 'surveys#compare_to', as: :survey_compare_to
+  get 'surveys/compare_all' => 'surveys#compare_all', as: :survey_compare_all
   get 'surveys' => 'surveys#index'
   get 'surveys/:title' => 'surveys#show', as: :survey
   get 'surveys/:title/edit' => 'surveys#edit', as: :edit_survey
   post 'responses' => 'responses#create'
   patch 'responses' => 'responses#update'
-  get 'surveys/:title/compare' => 'surveys#compare', as: :compare_survey
-
-
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -1,6 +1,6 @@
 <%= render "users/shared/profile" %>
 
-<%= render partial: "shared/employer_tabs", locals: { active: "jobs" } %>
+<%= render partial: "shared/site_tabs", locals: { active: 'applicants', job: @job_posting, posting_path: job_posting_path(@job_posting), user_path: user_path(@user) } %>
 
 <h4><b>Applicant Skill Survey Comparison for <%= @job_posting.title %></b></h4>
 <p>Below are the 12 skill graphs.  Each user, that has completed the surveys, has their results displayed.  

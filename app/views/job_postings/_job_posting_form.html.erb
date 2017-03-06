@@ -73,7 +73,6 @@
 
 	<%id=0%>
 	<div id="job-skills" class="row">
-	<%byebug%>
 		<% if @jobskills.nil? %>
 			<%= f.simple_fields_for :job_posting_skills do |builder| %>
 				<%= render 'job_postings/job_posting_skill_fields', id: id, f: builder %>

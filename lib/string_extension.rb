@@ -3,7 +3,11 @@ class String
     def titleize
         self.capitalize!  # capitalize the first word in case it is part of the no words array
         words_no_cap = ["and", "or", "the", "over", "to", "the", "a", "but"]
+<<<<<<< HEAD
         words_all_cap = ["html", "css", "sdk", "os", ".net", "html5", "sql", "xml", "json"]
+=======
+        words_all_cap = ["html", "css", "os"]
+>>>>>>> master
         phrase = self.split(" ").map {|word| 
             if words_no_cap.include?(word) 
                 word

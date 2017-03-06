@@ -23,7 +23,11 @@
 		<div class="col-md-3">
 			<%= f.input :image, as: :file, wrapper_html: { class: 'margin-all-0 row' } %>
 			<div class="margin-all-0 row" id="target">
-				<%= image_tag @project.image.url(:medium) %>
+				<% if @project.image.blank? %>
+					<%= image_tag "default-project-medium.svg" %>
+				<% else %>
+					<%= image_tag @project.image.url(:medium) %>
+				<% end %>
 			</div>
 		</div>
 		<div class="col-md-9" style="min-height: 260px;">

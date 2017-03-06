@@ -59,6 +59,11 @@ begin
 	skill39= Skill.create(name: 'mobile development')
 	skill40= Skill.create(name: '.net framework')
 	skill41= Skill.create(name: 'jquery')
+	skill42= Skill.create(name: 'vmware')
+	skill43= Skill.create(name: 'azure')
+	skill44= Skill.create(name: 'sql server')
+	skill45= Skill.create(name: 'saas platform')
+	skill46= Skill.create(name: 'eclipse')
 
 
 	#--- Job Seekers for testing ---#
@@ -281,19 +286,19 @@ begin
 
 	jobposting7 = JobPosting.create(title: 'Digital Marketing Project Coordinator', city: "Kelowna", province: "BC", pay_rate: "yearly", lower_pay_range: 70000, upper_pay_range: 90000, posted_by:"Seed File", job_type: 0,
 				  description: 'Looking for a Digital Marketing Project Coordinator to effectively manage multiple digital campaigns and develop ongoing marketing strategies.', open_date: Date.today-10, close_date: Date.today+13,
-				  job_category_id: 12, user_id: user11.id, created_at:Date.today-7)
+				  job_category_id: 12, user_id: user12.id, created_at:Date.today-7)
 
 	jobposting8 = JobPosting.create(title: 'Drupal Developer', city: "Vernon", province: "BC", pay_rate: "hourly", lower_pay_range: 24.25, upper_pay_range: 27.00, posted_by:"Seed File", job_type: 0,
 				  description: 'Here’s what we really want, someone who can code like it’s their native tongue but still talk to our crew comfortably and sometimes even the odd client.', open_date: Date.today-10, close_date: Date.today+10,
-				  job_category_id: 12, user_id: user11.id, created_at:Date.today-7)
+				  job_category_id: 12, user_id: user12.id, created_at:Date.today-7)
 
 	jobposting9 = JobPosting.create(title: 'Digital Media and Marketing Lead ', city: "Penticton", province: "BC", pay_rate: "yearly", lower_pay_range: 55000, upper_pay_range: 65000, posted_by:"Seed File", job_type: 0,
 				  description: 'Our primary focus will be on digital marketing, social media – website management and content creation that drives sales and engagement..', open_date: Date.today-10, close_date: Date.today+10,
-				  job_category_id: 12, user_id: user11.id, created_at:Date.today-7)
+				  job_category_id: 12, user_id: user12.id, created_at:Date.today-7)
 
 	jobposting10= JobPosting.create(title: 'Digital Marketing Specialist ', city: "Penticton", province: "BC", pay_rate: "hourly", lower_pay_range: 18.50, upper_pay_range: 25.00, posted_by:"Seed File", job_type: 0,
 				  description: 'Your main responsibilities will include working with a set list of client SEO accounts, engaging in social media activity, continuously analyzing keyword ranking progress, advertising activity, and developing strategies as needed.', open_date: Date.today-10, close_date: Date.today+10,
-				  job_category_id: 12, user_id: user11.id, created_at:Date.today-7)
+				  job_category_id: 12, user_id: user12.id, created_at:Date.today-7)
 
 	JobPostingSkill.create(job_posting_id: jobposting6.id, skill_id:skill4.id, importance:2, survey_id:5)
 	JobPostingSkill.create(job_posting_id: jobposting6.id, skill_id:skill5.id, importance:1, survey_id:5)
@@ -330,7 +335,7 @@ begin
 
 	jobposting11= JobPosting.create(title: 'Content Director / Community Manager', city: "Penticton", province: "BC", pay_rate: "hourly", lower_pay_range: 28.25	, posted_by:"Seed File", job_type: 0,
 				  description: 'create business listings, ePages and blog posts and advertisements', open_date: Date.today-10, close_date: Date.today+10,
-				  job_category_id: 12, user_id: user11.id, created_at:Date.today-7)
+				  job_category_id: 12, user_id: user13.id, created_at:Date.today-7)
 
 	JobPostingSkill.create(job_posting_id: jobposting11.id, skill_id:skill16.id, importance:2, survey_id:6)
 	JobPostingSkill.create(job_posting_id: jobposting11.id, skill_id:skill28.id, importance:2, survey_id:10)
@@ -340,7 +345,7 @@ begin
 
 	jobposting12= JobPosting.create(title: 'Multi-Media Producer', city: "Kelowna", province: "BC", pay_rate: "hourly", lower_pay_range: 18.25, upper_pay_range: 27.00, posted_by:"Seed File", job_type: 0,
 				  description: 'We are looking for a multi-media producer with strong digital media production and communication skills, customer service orientation, and creativity.', open_date: Date.today-10, close_date: Date.today+10,
-				  job_category_id: 12, user_id: user11.id, created_at:Date.today-7)
+				  job_category_id: 12, user_id: user13.id, created_at:Date.today-7)
 
 	JobPostingSkill.create(job_posting_id: jobposting12.id, skill_id:skill8.id, importance:2, survey_id:4)
 	JobPostingSkill.create(job_posting_id: jobposting12.id, skill_id:skill37.id, importance:2, survey_id:7)
@@ -349,33 +354,33 @@ begin
 
 	jobposting13= JobPosting.create(title: 'Technical Support Analyst', city: "Vernon", province: "BC", pay_rate: "hourly", lower_pay_range: 18.50, upper_pay_range: 25.00, posted_by:"Seed File", job_type: 0,
 				  description: 'Our client requires a technical support analyst. As a key member of the Support team, you will be primarily responsible for providing first and second level technical, desktop, and application support to users.', open_date: Date.today-10, close_date: Date.today+10,
-				  job_category_id: 12, user_id: user11.id, created_at:Date.today-7)
+				  job_category_id: 12, user_id: user13.id, created_at:Date.today-7)
 
-	JobPostingSkill.create(job_posting_id: jobposting10.id, skill_id:skill8.id, importance:2, survey_id:4)
-	JobPostingSkill.create(job_posting_id: jobposting10.id, skill_id:skill21.id, importance:2, survey_id:6)
-	JobPostingSkill.create(job_posting_id: jobposting10.id, skill_id:skill36.id, importance:2, survey_id:6)
-	JobPostingSkill.create(job_posting_id: jobposting10.id, skill_id:skill32.id, importance:2, survey_id:3)
-	JobPostingSkill.create(job_posting_id: jobposting10.id, skill_id:skill35.id, importance:1, survey_id:6)
+	JobPostingSkill.create(job_posting_id: jobposting13.id, skill_id:skill8.id, importance:2, survey_id:4)
+	JobPostingSkill.create(job_posting_id: jobposting13.id, skill_id:skill21.id, importance:2, survey_id:6)
+	JobPostingSkill.create(job_posting_id: jobposting13.id, skill_id:skill36.id, importance:2, survey_id:6)
+	JobPostingSkill.create(job_posting_id: jobposting13.id, skill_id:skill32.id, importance:2, survey_id:3)
+	JobPostingSkill.create(job_posting_id: jobposting13.id, skill_id:skill35.id, importance:1, survey_id:6)
 
-	jobposting14= JobPosting.create(title: 'Digital Marketing Specialist ', city: "Penticton", province: "BC", pay_rate: "hourly", lower_pay_range: 18.50, upper_pay_range: 25.00, posted_by:"Seed File", job_type: 0,
-				  description: 'Your main responsibilities will include working with a set list of client SEO accounts, engaging in social media activity, continuously analyzing keyword ranking progress, advertising activity, and developing strategies as needed.', open_date: Date.today-10, close_date: Date.today+10,
-				  job_category_id: 12, user_id: user11.id, created_at:Date.today-7)
+	jobposting14= JobPosting.create(title: 'System Administrator', city: "Penticton", province: "BC", pay_rate: "hourly", lower_pay_range: 22.50, upper_pay_range: 25.00, posted_by:"Seed File", job_type: 0,
+				  description: 'The position requires a candidate that will participate in the design, configuration, and deployment of several technical projects. The successful candidate must be have deep knowledge in a wide variety of IT technologies, be a self-starter, be customer service oriented, and be passionate about technology. This position will be for 6 months with option to extend.', open_date: Date.today-10, close_date: Date.today+10,
+				  job_category_id: 12, user_id: user13.id, created_at:Date.today-7)
 
-	JobPostingSkill.create(job_posting_id: jobposting10.id, skill_id:skill8.id, importance:2, survey_id:4)
-	JobPostingSkill.create(job_posting_id: jobposting10.id, skill_id:skill21.id, importance:2, survey_id:6)
-	JobPostingSkill.create(job_posting_id: jobposting10.id, skill_id:skill36.id, importance:2, survey_id:6)
-	JobPostingSkill.create(job_posting_id: jobposting10.id, skill_id:skill32.id, importance:2, survey_id:3)
-	JobPostingSkill.create(job_posting_id: jobposting10.id, skill_id:skill35.id, importance:1, survey_id:6)
+	JobPostingSkill.create(job_posting_id: jobposting14.id, skill_id:skill41.id, importance:2, survey_id:1)
+	JobPostingSkill.create(job_posting_id: jobposting14.id, skill_id:skill42.id, importance:2, survey_id:1)
+	JobPostingSkill.create(job_posting_id: jobposting14.id, skill_id:skill43.id, importance:2, survey_id:1)
+	JobPostingSkill.create(job_posting_id: jobposting14.id, skill_id:skill44.id, importance:2, survey_id:1)
+	JobPostingSkill.create(job_posting_id: jobposting14.id, skill_id:skill34.id, importance:1, survey_id:1)
 
-	jobposting15= JobPosting.create(title: 'Digital Marketing Specialist ', city: "Kelowna", province: "BC", pay_rate: "hourly", lower_pay_range: 18.50, upper_pay_range: 25.00, posted_by:"Seed File", job_type: 0,
-				  description: 'Your main responsibilities will include working with a set list of client SEO accounts, engaging in social media activity, continuously analyzing keyword ranking progress, advertising activity, and developing strategies as needed.', open_date: Date.today-10, close_date: Date.today+10,
-				  job_category_id: 12, user_id: user11.id, created_at:Date.today-7)
+	jobposting15= JobPosting.create(title: 'Java Developer', city: "Kelowna", province: "BC", pay_rate: "hourly", lower_pay_range: 19.50, upper_pay_range: 23.00, posted_by:"Seed File", job_type: 0,
+				  description: 'This developer will work with a team of frontend and backend developers in a fast-paced agile environment and interface with other product team members to implement new features in short customer-ready release cycles.', open_date: Date.today-10, close_date: Date.today+10,
+				  job_category_id: 12, user_id: user13.id, created_at:Date.today-7)
 
-	JobPostingSkill.create(job_posting_id: jobposting10.id, skill_id:skill8.id, importance:2, survey_id:4)
-	JobPostingSkill.create(job_posting_id: jobposting10.id, skill_id:skill21.id, importance:2, survey_id:6)
-	JobPostingSkill.create(job_posting_id: jobposting10.id, skill_id:skill36.id, importance:2, survey_id:6)
-	JobPostingSkill.create(job_posting_id: jobposting10.id, skill_id:skill32.id, importance:2, survey_id:3)
-	JobPostingSkill.create(job_posting_id: jobposting10.id, skill_id:skill35.id, importance:1, survey_id:6)
+	JobPostingSkill.create(job_posting_id: jobposting15.id, skill_id:skill26.id, importance:2, survey_id:3)
+	JobPostingSkill.create(job_posting_id: jobposting15.id, skill_id:skill10.id, importance:2, survey_id:3)
+	JobPostingSkill.create(job_posting_id: jobposting15.id, skill_id:skill24.id, importance:2, survey_id:3)
+	JobPostingSkill.create(job_posting_id: jobposting15.id, skill_id:skill45.id, importance:2, survey_id:3)
+	JobPostingSkill.create(job_posting_id: jobposting15.id, skill_id:skill46.id, importance:1, survey_id:3)
 
 	user14 = User.new(first_name: 'Daisy', last_name: 'Fitzpatrick', email: 'Daisy@Fitzpatrick.com', password: 'password', password_confirmation: 'password', city: 'Vernon', province: 'BC', image: File.new("#{Rails.root}/app/assets/images/user14.jpg"), gender: "female",
 		company_name: 'EOG ResourcesInc.')

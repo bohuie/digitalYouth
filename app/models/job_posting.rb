@@ -135,7 +135,7 @@ class JobPosting < ActiveRecord::Base
 	end
 
 	def pay_check
-		if !self.upper_pay_range.nil? && self.upper_pay_range < self.lower_pay_range
+		if !self.lower_pay_range.blank? && !self.upper_pay_range.nil? && self.upper_pay_range < self.lower_pay_range
 			if self.pay_rate == "yearly"
 				errors.add(:yearly_upper_pay_range, "must be greater than the from amount.")
 			else

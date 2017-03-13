@@ -39,7 +39,7 @@ class ConsentController < ApplicationController
   		
   		if @consent.update_attributes(consent_params)
   			flash[:success] = "Thank you for updating your consent settings."
-  			redirect_back_or consent_settings_path
+  			redirect_back_or settings_consent_path
   		else
   			flash.now[:danger] = "An error occured. Please contact an administrator."
   			redirect_back_or

@@ -7,7 +7,11 @@
 <% end %>
 
 <h4><b>Compare Skill Survey Graphs</b></h4>
-<p>Here you can quickly compare your skill graph with <%= @user.formatted_name(current_user)+"'s "%>.  If you want to see more info about each graph, click Details.</p>
+<% if @user.has_role? :employee %>
+	<p>Here you can quickly compare your skill graph with <%= @user.formatted_name(current_user)+"'s "%>.  If you want to see more info about each graph, click Details.</p>
+<% elsif @user.has_role? :employer %>
+	<p>Here you can view the 'ideal candidate' <%= @user.company_name %> is looking for.  If you want to see more info about each graph, click Details.</p>
+<% end %>
 <% i=1 %>
 <div class="row">
 	<% Survey.all.each do |s|%>

@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  	searchkick word_start: [:company_name, :skills, :first_name, :last_name, :city, :province], callbacks: :async
+  	searchkick word_start: [:company_name, :skills, :first_name, :last_name, :city, :province, :job_title, :current_company], callbacks: :async
   	scope :search_import, -> { includes(:roles,:users_roles) }
     after_save :user_reindex
 
@@ -39,7 +39,7 @@ class User < ActiveRecord::Base
             large: "-gravity center -extent 400x400"
         }
     include DeletableAttachment
-    validates_attachment :image, content_type: { content_type: ["image/jpg", "image/jpeg", "image/png", "image/svg"] }
+    validates_attachment :image, content_type: { content_type: ["image/jpg", "image/jpeg", "image/png"] }
     attr_accessor :crop_x, :crop_y, :crop_w, :crop_h, :new_email
     
     has_attached_file :resume
@@ -93,6 +93,8 @@ class User < ActiveRecord::Base
         data[:summary] = summary.downcase if summary
         data[:role] = self.roles.first.name if !self.roles.first.nil?
         data[:skills] = self.skills.pluck(:name)
+        data[:job_title] = self.job_title.titleize if self.job_title && self.show_job
+        data[:current_company] = self.current_company.titleize if self.current_company && self.show_job
         return data
 	end
 
@@ -200,6 +202,22 @@ class User < ActiveRecord::Base
             return self.first_name + ' ' + self.last_name
         else
             return 'Anonymous Job Seeker'
+        end
+    end
+
+    def formatted_job(current)
+        if self.show_job || self == current || (current && JobPostingApplication.check_app(self, current))
+            if self.job_title && self.current_company
+                return self.job_title+" at "+self.current_company
+            elsif self.job_title
+                return self.job_title
+            elsif self.current_company
+                return "Working at "+self.current_company
+            else
+                return ""
+            end
+        else
+            return ""
         end
     end
 

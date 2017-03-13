@@ -4,10 +4,18 @@
 	<% onclick="" %>
 	<% Survey.all.each do |s|%>
 		<% css_class = "col-md-2 survey-box" %>
-		<% css_class += " unanswered" if !user.answered_surveys[i - 1] %>
+		<% if user.has_role? :employee %>
+			<% css_class += " unanswered" if !user.answered_surveys[i - 1] %>
+		<% else %>
+			<% css_class += " unanswered" if !@job_posting.answered_surveys[i - 1] %>
+		<% end %>
 		<% div_onclick="" %>
 		<% if user_signed_in? && current_user==user && !user.answered_surveys[i - 1] %>
-			<% div_onclick = "window.location = '#{edit_survey_path(s.title)}'" %>
+			<% if current_user.has_role? :employee %>
+				<% div_onclick = "window.location = '#{edit_survey_path(s.title)}'" %>
+			<% else %>
+				<% div_onclick = "window.location = '#{edit_survey_path(s.title, job_posting: @job_posting.id)}'" %>
+			<% end %>
 		<% end %>
 		<div class ="<%= css_class %>" onclick="<%=raw div_onclick %>">
 			<h5><%= s.format_title.html_safe %></h5>
@@ -15,10 +23,18 @@
 				{name: "Average Job Seeker", data: @average_results[i]},
 				{name: "My Results", data: results[i], library: {style: {opacity: "0.2"}}}
 				], height: "100px", min: 0, max: 3, library: { legend: { position: 'none' }, vAxis: { textPosition: 'none' }, hAxis: {textPosition: 'none'}, series:{0 => {type: "line"}}} %>
-			<% if user.answered_surveys[i - 1] && user_signed_in? && current_user==user%>
-				<%= link_to "Update", edit_survey_path(s.title) %>
-			<% elsif user.answered_surveys[i - 1] %>
-				<%= link_to "Details", survey_path(s.title, user: user.id) %>
+			<% if user_signed_in? && current_user==user%>
+				<% if current_user.has_role?(:employee) && user.answered_surveys[i - 1] %>
+					<%= link_to "Update", edit_survey_path(s.title) %>
+				<% elsif current_user.has_role?(:employer) && @job_posting.answered_surveys[i - 1] %>
+					<%= link_to "Update", edit_survey_path(s.title, job_posting: @job_posting.id) %>
+				<% end %>
+			<% else %>
+			 	<% if user.has_role?(:employee) && user.answered_surveys[i - 1] %>
+					<%= link_to "Details", survey_path(s.title, user: user.id) %>
+				<% elsif user.has_role?(:employer) && @job_posting.answered_surveys[i - 1] %>
+					<%= link_to "Details", survey_path(s.title, job_posting: @job_posting.id) %>
+				<% end %>
 			<% end %>
 		</div>
 		<div class="col-md-1"></div>

@@ -1,8 +1,12 @@
+<%= render "users/shared/profile" %>
+
+<%= render partial: "shared/site_tabs", locals: { active: 'applicants', job: @job_posting, posting_path: job_posting_path(@job_posting), user_path: user_path(@user) } %>
+
 <div class="row">
 	<div class="col-md-6"><h2>Category: <%=@survey.format_title.html_safe%></h2> </div>
 </div>
 <div class="row">
-	<div class="col-md-6"><br /><%= link_to 'Go back to compare applicants', compare_applications_path(@job_posting) %></div>
+	<div class="col-md-6"><br /><%= link_to 'Go back to comparing applicant graphs', compare_applications_path(@job_posting) %></div>
 </div>
 
 <%= render partial: "surveys/display", locals: { survey_results: @survey_results, survey_title: @survey.title } %>

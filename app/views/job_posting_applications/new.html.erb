@@ -1,6 +1,6 @@
 <%= render "users/shared/profile" %>
 
-<%= render partial: "shared/job_seeker_tabs", locals: { active: "applications" } %>
+<%= render partial: "shared/site_tabs", locals: { active: "applications", user_path: user_path(@user) } %>
 
 <h4><b>Job Posting Application</b></h4>
 <p> You are Applying for the <strong><%=@job_posting.title%></strong> position at <strong><%=@job_posting.user.company_name %></strong>.</p>
@@ -28,7 +28,7 @@
 
 	<div class="row">
 		<div class="col-md-2">
-			<%= image_tag current_user.image.url(:small), class: "image-radius" if !current_user.image.nil? %>
+			<%= image_tag current_user.image.url(:small), class: "image-radius small-shadow" if !current_user.image.nil? %>
 			<h4> <%="#{current_user.first_name} #{current_user.last_name}"%></h4>
 			<% unless @user.resume.blank? %>
            		<p>Current Resume: <%= link_to @user.resume.original_filename, @user.resume.url, target: '_blank' %></p>

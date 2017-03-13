@@ -48,7 +48,7 @@ class WelcomeController < ApplicationController
   private
   def logged_in
     if user_signed_in?
-      redirect_to current_user
+      redirect_to root_path
     end
   end
 end

@@ -38,10 +38,10 @@
           </li>
 
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle padding-5" data-toggle="dropdown"><%= image_tag current_user.image.url(:menu), alt:"User Icon", class: "profile-image" %>Me<span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle padding-5" data-toggle="dropdown"><%= image_tag current_user.image.url(:menu), alt:"User Icon", class: "profile-image menu-shadow" %>Me<span class="caret"></span></a>
             <ul class="dropdown-menu padding-10" role="menu">
               <li class="menu-profile">
-                <%= image_tag current_user.image.url(:thumb), alt:"User Icon", class: "profile-image menu-image" %>
+                <%= image_tag current_user.image.url(:thumb), alt:"User Icon", class: "profile-image menu-image thumb-shadow" %>
                 <div class="menu-name">
                   <% if current_user.has_role?(:employee) %>
                     <%= current_user.first_name+" "+current_user.last_name %><br /><%= link_to "View Profile", user_path(current_user) %>

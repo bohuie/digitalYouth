@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   before_action :notification_bar
   after_action :store_location
   around_filter :catch_not_found
-  after_filter :ahoy_track
+  after_filter :ahoy_track, :user_activity
 
   def notification_bar
     if user_signed_in?
@@ -53,6 +53,10 @@ class ApplicationController < ActionController::Base
     rescue ActiveRecord::RecordNotFound
       flash[:alert] = "There was an error with your search.  Please try again later, or contact an administrator."
       redirect_back_or root_url
+  end
+
+  def user_activity
+    current_user.try :touch
   end
 
 protected

@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-respond_to :html, :json
+
+	respond_to :html, :json
 
 	before_action :authenticate_user!, except: [:show, :index, :nav_tab] #ignore home_tab, only done when it is the current user and logged in
 	before_action :profile_owner, only: [:edit, :update, :destroy]

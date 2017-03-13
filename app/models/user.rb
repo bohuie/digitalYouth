@@ -1,6 +1,9 @@
 class User < ActiveRecord::Base
   	searchkick word_start: [:company_name, :skills, :first_name, :last_name, :city, :province, :job_title, :current_company], callbacks: :async
+
   	scope :search_import, -> { includes(:roles,:users_roles) }
+    scope :online, lambda{ where("updated_at > ?", 10.minutes.ago) }
+
     after_save :user_reindex
 
     attr_encrypted :street_address, key: ENV["ADDRESS_KEY"]

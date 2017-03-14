@@ -428,7 +428,7 @@
 						<div id="postings" class="padding-top-10 alternate row">
 							<div class="col-md-2">
 								<%= link_to "#{j.title}\n", job_posting_path(j) %><br />
-								<%= raw(j.get_type_string+"<br />") if !j.job_type.nil? %>
+								<%= raw(j.get_type_string+"<br />") if !j.job_type.nil? && !j.get_type_string.nil? %>
 								<p><%= j.city %>, <%=j.province %></p>
 							</div>
 							<div class="col-md-4">

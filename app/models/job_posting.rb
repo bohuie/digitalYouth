@@ -31,8 +31,8 @@ class JobPosting < ActiveRecord::Base
 		data = Hash.new
 		unless self.is_expired?
 	  		data[:title] = title.titleize
-	  		if self.user_id.nil?
-	  			data[:company_name] = company_name.titleize
+	  		unless self.company_name.nil?
+	  			data[:company_name] = self.company_name.titleize
 	  		else
 	  			data[:company_name] = self.user.company_name.titleize
 		  	end

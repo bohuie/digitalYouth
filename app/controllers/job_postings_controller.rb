@@ -8,7 +8,7 @@ class JobPostingsController < ApplicationController
 
 	def index # Job Postings landing page
 
-		if params[:user].nil?
+		if current_user.has_role? :employee
 			@job_postings = JobPosting.all.order(views: :desc).limit(10)
 			@reccommended_job_postings = reccomended_jobs
 		else
@@ -209,6 +209,7 @@ private
 
 	def reccomended_jobs
 		if user_signed_in? && current_user.has_role?(:employee)
+			
 			# Viewed Job Postings Query:
 			#  Does not currently take into account the time spent on a page, or the age of the view
 			#  Limits the views to be newer than a year
@@ -223,13 +224,12 @@ private
 						WHERE name = '$view_end' 
 						  AND visit_id IN (SELECT visit_id FROM ahoy_events WHERE user_id = #{current_user.id})
 						  AND properties ->> 'page' LIKE '/job_postings/%'
-						  AND time > NOW() - INTERVAL '1 years'
 						").values.flatten # Does not currently take into account the times on each page or much of the age, could order by time spent on a page and limit results
 			corpus = Array.new
 			viewed_job_postings.each do |vjp|
 				corpus << vjp unless vjp.to_i == 0 #catches applications pages
 			end
-			#corpus << viewed_job_postings if !viewed_job_postings.empty?
+			corpus << viewed_job_postings if !viewed_job_postings.empty?
 
 			if !corpus.empty?
 				corpus = JobPosting.find(corpus)
@@ -241,13 +241,12 @@ private
 				
 				# Add the list of user_skills the user has entered to the corpus
 				# Can be removed if needed. Added to try to make the recommendations closer to the users potential preferences
-				corpus_arr.push(current_user.skills.pluck(:name))
-				
+				#corpus_arr.push(current_user.skills.pluck(:name))
+byebug
 				results = JobPosting.search more_like_this: {
-									fields: [:title,:company_name,:location,:pay_range,:link,:posted_by,:job_type,:description,:open_date,:close_date,:job_category_id],
+									fields: [:industry],
 									like: corpus_arr,
-									min_term_freq: 1,
-									stop_words: get_stop_word_array
+									min_term_freq: 1
 						        }, per_page: 10
 			end
 

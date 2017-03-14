@@ -65,6 +65,11 @@ begin
 	skill45= Skill.create(name: 'saas platform')
 	skill46= Skill.create(name: 'eclipse')
 
+	user0 = User.new(id: 0, first_name: 'Seed', last_name: 'Data', email: 'seed@data.com', password: 'password', password_confirmation: 'password', company_name: "Seed Data")
+	user0.add_role :employer
+	user0.skip_confirmation!
+	user0.save(validate: false)
+
 
 	#--- Job Seekers for testing ---#
 	#Creating a user with some info
@@ -253,7 +258,6 @@ begin
 	JobPostingSkill.create(job_posting_id: jobposting2.id, skill_id:skill1.id, importance:2, survey_id:5)
 	JobPostingSkill.create(job_posting_id: jobposting2.id, skill_id:skill2.id, importance:2, survey_id:6)
 
-<<<<<<< HEAD
 	JobPostingSkill.create(job_posting_id: jobposting3.id, skill_id:skill23.id, importance:2, survey_id:3)
 	JobPostingSkill.create(job_posting_id: jobposting3.id, skill_id:skill24.id, importance:2, survey_id:3)
 	JobPostingSkill.create(job_posting_id: jobposting3.id, skill_id:skill25.id, importance:2, survey_id:3)
@@ -275,10 +279,7 @@ begin
 	JobPostingSkill.create(job_posting_id: jobposting5.id, skill_id:skill31.id, importance:2, survey_id:11)
 	JobPostingSkill.create(job_posting_id: jobposting5.id, skill_id:skill32.id, importance:1, survey_id:3)
 
-	user12 = User.new(first_name: 'Mikella', last_name: 'Sims', email: 'Mikella@Sims.com', password: 'password', password_confirmation: 'password', city: 'Penticton', province: 'BC', image: File.new("#{Rails.root}/app/assets/images/user12.png"), gender: "female",
-=======
 	user12 = User.new(first_name: 'Mikella', last_name: 'Sims', email: 'Mikella@Sims.com', password: 'password', password_confirmation: 'password', city: 'Penticton', province: 'BC', image: File.new("#{Rails.root}/app/assets/images/user12.png"), gender: "female", birth_date: "1987-06-16",
->>>>>>> master
 		company_name: 'Dean Foods Company')
 	user12.add_role :employer
 	user12.skip_confirmation!
@@ -337,7 +338,6 @@ begin
 	user13.save
 	user13.create_consent(answer: 1, name: "Gomana Reid", date_signed: Date.today, consent_type: 2)
 
-<<<<<<< HEAD
 	jobposting11= JobPosting.create(title: 'Content Director / Community Manager', city: "Penticton", province: "BC", pay_rate: "hourly", lower_pay_range: 28.25	, posted_by:"Seed File", job_type: 0,
 				  description: 'create business listings, ePages and blog posts and advertisements', open_date: Date.today-10, close_date: Date.today+10,
 				  job_category_id: 12, user_id: user13.id, created_at:Date.today-7)
@@ -387,10 +387,7 @@ begin
 	JobPostingSkill.create(job_posting_id: jobposting15.id, skill_id:skill45.id, importance:2, survey_id:3)
 	JobPostingSkill.create(job_posting_id: jobposting15.id, skill_id:skill46.id, importance:1, survey_id:3)
 
-	user14 = User.new(first_name: 'Daisy', last_name: 'Fitzpatrick', email: 'Daisy@Fitzpatrick.com', password: 'password', password_confirmation: 'password', city: 'Vernon', province: 'BC', image: File.new("#{Rails.root}/app/assets/images/user14.jpg"), gender: "female",
-=======
 	user14 = User.new(first_name: 'Daisy', last_name: 'Fitzpatrick', email: 'Daisy@Fitzpatrick.com', password: 'password', password_confirmation: 'password', city: 'Vernon', province: 'BC', image: File.new("#{Rails.root}/app/assets/images/user14.jpg"), gender: "female", birth_date: "1997-02-18",
->>>>>>> master
 		company_name: 'EOG ResourcesInc.')
 	user14.add_role :employer
 	user14.skip_confirmation!

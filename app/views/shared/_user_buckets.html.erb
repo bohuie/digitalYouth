@@ -1,0 +1,62 @@
+
+	<% if current_user.has_role? :employee %>
+		<% @user_bucket.each do |bucket| %>
+					<% case bucket[0] %>
+					<% when :new_user_project %>
+						<li style="margin: 10px 0px;">Need some help learning how to showcase your <%= link_to "projects?", bucket[1] %></li>
+					<% when :new_user_survey %>
+						<li style="margin: 10px 0px;">Need some help learning how to showcase your <%= link_to "skill surveys?", bucket[1] %></li>
+					<% when :new_user_compare_other %>
+						<li style="margin: 10px 0px;">Did you know, you can compare <%= link_to "yourself to other job seekers?", bucket[1] %></li>
+					<% when :new_user_compare_job %>
+						<li style="margin: 10px 0px;">Did you know, you can compare <%= link_to "yourself to an 'ideal candidate' of a job posting?", bucket[1] %></li>
+					<% when :empty_survey %>
+						<li style="margin: 10px 0px;">It seems you haven't answer all your <%= link_to "skill surveys", edit_survey_path(bucket[1]) %>.</li>
+					<% when :old_survey %>
+						<li style="margin: 10px 0px;">It can be helpful to <%= link_to "update", edit_survey_path(bucket[1]) %> your surveys once in a while.</li>
+					<% when :user_skill %>
+						<li style="margin: 10px 0px;">The most popular Job Seeker skill on EdgeMap is <%= bucket[1].titleize %>.</li>
+					<% when :job_skill %>
+						<li style="margin: 10px 0px;">The most demanded skill by Job Providers on EdgeMap is <%= bucket[1].titleize %>.</li>
+					<% when :online %>
+						<li style="margin: 10px 0px;"><%= I18n.t('users', count: bucket[1]) %> online right now.</li>
+					<% when :unconfirmed %>
+						<li style="margin: 10px 0px;">You have some unconfirmed references.  If everything checks out, <%= link_to "confirm", user_path(current_user), onclick: "setHomeTab('references')" %> them so Job Providers can learn more about you.</li>
+					<% when :low_references %>
+						<li style="margin: 10px 0px;">References are a great way for Job Providers to learn more about you, try <%= link_to "requesting some", email_reference_path %>.</li>
+					<% else %>
+						<li style="margin: 10px 0px;"><%= link_to bucket[0], bucket[1] %></li>
+					<% end %>
+				<% end %>
+	<% elsif current_user.has_role? :employer %>
+		<% @user_bucket.each do |bucket| %>
+					<% case bucket[0] %>
+					<% when :new_user_survey %>
+						<li style="margin: 10px 0px;">Did you know, you can view a job seekers' skills in a <%= link_to "graph form, and find common language for what it means?", bucket[1] %></li>
+					<% when :new_user_contact %>
+						<li style="margin: 10px 0px;">Did you know, if you find an interesting job seeker, you can <%= link_to "contact them?", bucket[1] %></li>
+					<% when :new_user_views %>
+						<li style="margin: 10px 0px;">Did you know, you can see how many people <%= link_to "have viewed your job posting?", bucket[1] %></li>
+					<% when :new_user_compare %>
+						<li style="margin: 10px 0px;">Did you know, you can <%= link_to "compare applicants of a job in a graphical way?", bucket[1] %></li>
+					<% when :new_user_search %>
+						<li style="margin: 10px 0px;">Did you know, you can <%= link_to "search for job seekers based on their location?", bucket[1] %></li>
+					<% when :bio %>
+						<li style="margin: 10px 0px;">Your company biography is the first thing job seekers see on your page.  Include some info so they can know more about you.  Update it <%= link_to "here", user_path(current_user), onclick: "setHomeTab('bio')" %> </li>
+					<% when :new_app %>
+						<%= link_to 'App', '#', onclick: "window.location='"+show_trackable_path(bucket[1])+"'" %>
+					<% when :user_skill %>
+						<li style="margin: 10px 0px;">The most popular Job Seeker skill on EdgeMap is <%= bucket[1].titleize %>.</li>
+					<% when :job_skill %>
+						<li style="margin: 10px 0px;">The most demanded skill by Job Providers on EdgeMap is <%= bucket[1].titleize %>.</li>
+					<% when :online %>
+						<li style="margin: 10px 0px;"><%= I18n.t('users', count: bucket[1]) %> online right now.</li>
+					<% when :expired_blank %>
+						<li style="margin: 10px 0px;">You have a job posting that has expired and has no applicants.  You can extend it <%= link_to "here", edit_job_posting_path(bucket[1]) %></li>
+					<% when :expired_with_apps %>
+						<li style="margin: 10px 0px;">You have a job posting that has expired and has some applicants.  You can look at them <%= link_to 'here', '#', onclick: "setHomeTab(\'applicants\',\'"+job_posting_path(bucket[1])+"\');", data: { toggle: "tab" } %></li>
+					<% else %>
+						<li style="margin: 10px 0px;"><%= link_to bucket[0], bucket[1] %></li>
+					<% end %>
+				<% end %>
+	<% end %>

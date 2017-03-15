@@ -64,6 +64,7 @@ class UsersController < ApplicationController
 	end
 
 	def edit
+		@user_bucket = user_bucket(4)
 		@user = User.find(params[:id])
 	end
 

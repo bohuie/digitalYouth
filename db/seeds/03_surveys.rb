@@ -276,7 +276,6 @@ survey8_prompt10 = Prompt.create(question_id: question29.id, prompt: 'Identify r
 
 survey8_prompt11 = Prompt.create(question_id: question30.id, prompt: 'Apply methods to reduce inventory, accounts receivable, and keep capital expenditure under control')
 survey8_prompt12 = Prompt.create(question_id: question30.id, prompt: 'Understand and manage types of investments and costs for investment decisions')
-<<<<<<< HEAD
 survey8_prompt13 = Prompt.create(question_id: question30.id, prompt: 'Forecast the budget')
 survey8_prompt14 = Prompt.create(question_id: question30.id, prompt: 'Forecast resource usage')
 
@@ -286,17 +285,6 @@ survey8_prompt17 = Prompt.create(question_id: question31.id, prompt: 'Create sim
 survey8_prompt18 = Prompt.create(question_id: question31.id, prompt: 'Plan organization\'s short and long term financial goals')
 survey8_prompt19 = Prompt.create(question_id: question31.id, prompt: 'Calculate breakeven point')
 survey8_prompt20 = Prompt.create(question_id: question31.id, prompt: 'Conduct budget variation analysis')
-=======
-survey8_prompt13 = Prompt.create(question_id: question31.id, prompt: 'Forecast the budget')
-survey8_prompt14 = Prompt.create(question_id: question31.id, prompt: 'Forecast resource usage')
-
-survey8_prompt15 = Prompt.create(question_id: question31.id, prompt: 'Develop pricing strategies')
-survey8_prompt16 = Prompt.create(question_id: question30.id, prompt: 'Compare different pricing techniques')
-survey8_prompt17 = Prompt.create(question_id: question31.id, prompt: 'Create simulations to demonstrate scenarios')
-survey8_prompt18 = Prompt.create(question_id: question31.id, prompt: 'Plan organization\'s short and long term financial goals')
-survey8_prompt19 = Prompt.create(question_id: question30.id, prompt: 'Calculate breakeven point')
-survey8_prompt20 = Prompt.create(question_id: question30.id, prompt: 'Conduct budget variation analysis')
->>>>>>> master
 
 #Survey 9: - Presentation
 survey9_prompt1 = Prompt.create(question_id: question32.id, prompt: 'Open a new presentation document')
@@ -361,21 +349,12 @@ survey10_prompt25 = Prompt.create(question_id: question39.id, prompt: 'Using or 
 
 #Survey 11: Social Media 
 survey11_prompt1 = Prompt.create(question_id: question40.id, prompt: 'Read posts')
-<<<<<<< HEAD
 survey11_prompt2 = Prompt.create(question_id: question40.id, prompt: 'Follow others')
 survey11_prompt3 = Prompt.create(question_id: question40.id, prompt: 'Subscribe to groups and forums')
 survey11_prompt4 = Prompt.create(question_id: question40.id, prompt: 'Like/favourite content')
 survey11_prompt5 = Prompt.create(question_id: question40.id, prompt: 'Comment on blogs or other content')
 survey11_prompt6 = Prompt.create(question_id: question40.id, prompt: 'Respond to comments')
 survey11_prompt7 = Prompt.create(question_id: question40.id, prompt: 'Tag pictures and videos')
-=======
-survey11_prompt2 = Prompt.create(question_id: question41.id, prompt: 'Follow others')
-survey11_prompt3 = Prompt.create(question_id: question41.id, prompt: 'Subscribe to groups and forums')
-survey11_prompt4 = Prompt.create(question_id: question40.id, prompt: 'Like/favourite content')
-survey11_prompt5 = Prompt.create(question_id: question40.id, prompt: 'Comment on blogs or other content')
-survey11_prompt6 = Prompt.create(question_id: question40.id, prompt: 'Respond to comments')
-survey11_prompt7 = Prompt.create(question_id: question41.id, prompt: 'Tag pictures and videos')
->>>>>>> master
 survey11_prompt8 = Prompt.create(question_id: question40.id, prompt: 'Post pictures and videos')
 survey11_prompt9 = Prompt.create(question_id: question40.id, prompt: 'Post updates')
 
@@ -383,15 +362,9 @@ survey11_prompt10 = Prompt.create(question_id: question41.id, prompt: 'Check new
 survey11_prompt11 = Prompt.create(question_id: question41.id, prompt: 'Create social media accounts')
 survey11_prompt12 = Prompt.create(question_id: question41.id, prompt: 'Update account')
 survey11_prompt13 = Prompt.create(question_id: question41.id, prompt: 'Participate in online question and answering forums')
-<<<<<<< HEAD
 survey11_prompt14 = Prompt.create(question_id: question41.id, prompt: 'Share and curate content')
 survey11_prompt15 = Prompt.create(question_id: question41.id, prompt: 'Network with others')
 survey11_prompt16 = Prompt.create(question_id: question41.id, prompt: 'Create a blog and blog content')
-=======
-survey11_prompt14 = Prompt.create(question_id: question40.id, prompt: 'Share and curate content')
-survey11_prompt15 = Prompt.create(question_id: question40.id, prompt: 'Network with others')
-survey11_prompt16 = Prompt.create(question_id: question40.id, prompt: 'Create a blog and blog content')
->>>>>>> master
 survey11_prompt17 = Prompt.create(question_id: question41.id, prompt: 'Create public forum on specific topics')
 
 survey11_prompt18 = Prompt.create(question_id: question42.id, prompt: 'Solicit user feedback')

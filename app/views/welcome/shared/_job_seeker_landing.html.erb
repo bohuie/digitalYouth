@@ -9,34 +9,9 @@
 		<div class="col-md-12">
 			<%= link_to 'My Profile', user_path(current_user), class: 'signuplink', style: "color: white;" %>
 			<ul style="text-align: left;">
-				<% @user_bucket.each do |bucket| %>
-					<% case bucket[0] %>
-					<% when :new_user_project %>
-						<li><h4>Need some help learning how to showcase your <%= link_to "projects?", bucket[1] %></h4></li>
-					<% when :new_user_survey %>
-						<li><h4>Need some help learning how to showcase your <%= link_to "skill surveys?", bucket[1] %></h4></li>
-					<% when :new_user_compare_other %>
-						<li><h4>Did you know, you can compare <%= link_to "yourself to other job seekers?", bucket[1] %></h4></li>
-					<% when :new_user_compare_job %>
-						<li><h4>Did you know, you can compare <%= link_to "yourself to an 'ideal candidate' of a job posting?", bucket[1] %></h4></li>
-					<% when :empty_survey %>
-						<li><h4>It seems you haven't answer all your <%= link_to "skill surveys", edit_survey_path(bucket[1]) %>.</h4></li>
-					<% when :old_survey %>
-						<li><h4>It can be helpful to <%= link_to "update", edit_survey_path(bucket[1]) %> your surveys once in a while.</h4></li>
-					<% when :user_skill %>
-						<li><h4>The most popular Job Seeker skill on EdgeMap is <%= bucket[1].titleize %>.</h4></li>
-					<% when :job_skill %>
-						<li><h4>The most demanded skill by Job Providers on EdgeMap is <%= bucket[1].titleize %>.</h4></li>
-					<% when :online %>
-						<li><h4><%= I18n.t('users', count: bucket[1]) %> online right now.</h4></li>
-					<% when :unconfirmed %>
-						<li><h4>You have some unconfirmed references.  If everything checks out, <%= link_to "confirm", user_path(current_user), onclick: "setHomeTab('references')" %> them so Job Providers can learn more about you.</h4></li>
-					<% when :low_references %>
-						<li><h4>References are a great way for Job Providers to learn more about you, try <%= link_to "requesting some", email_reference_path %>.</h4></li>
-					<% else %>
-						<li><h4><%= link_to bucket[0], bucket[1] %></h4></li>
-					<% end %>
-				<% end %>
+				<h4>
+					<%= render 'shared/user_buckets' %>
+				</h4>
 			</ul>
 		</div>
 	</div>

@@ -18,6 +18,10 @@ class UsersController < ApplicationController
 
 		@surveys = Survey.get_title_map
 
+		if user_signed_in? && @user == current_user
+			@user_bucket = user_bucket(4)
+		end
+
 		if @user.has_role? :employee
 			@projects = @user.projects.order('project_date DESC')
 			@references = Reference.where(user_id: @user.id, confirmed: true)

@@ -7,6 +7,7 @@ class JobPosting < ActiveRecord::Base
 	has_many :job_posting_skills, dependent: :destroy
 	has_many :skills, through: :job_posting_skills
 	has_many :job_posting_applications, dependent: :destroy
+	has_many :responses
 	belongs_to :job_category
 	belongs_to :user
 	accepts_nested_attributes_for :job_posting_skills, reject_if: lambda {|a| a[:survey_id].blank?}, allow_destroy: true
@@ -28,9 +29,8 @@ class JobPosting < ActiveRecord::Base
 
 	def search_data
 		data = Hash.new
-		if close_date > Date.today
-	  	data[:title] = title.titleize
-	  	if self.user_id.nil?
+ 		data[:title] = title.titleize
+ 		if self.user_id.nil?
 	  		data[:company_name] = company_name.titleize
 	  	else
 	  		data[:company_name] = self.user.company_name.titleize
@@ -43,7 +43,7 @@ class JobPosting < ActiveRecord::Base
 	  	data[:created_at] = created_at
 	  	data[:close_date] = close_date
 	  	data[:skills] = self.skills.pluck(:name)
-	  	end
+	  	data[:expired] = self.is_expired?
 	  	return data
 	end
 
@@ -134,7 +134,7 @@ class JobPosting < ActiveRecord::Base
 	end
 
 	def pay_check
-		if !self.upper_pay_range.nil? && self.upper_pay_range < self.lower_pay_range
+		if !self.lower_pay_range.blank? && !self.upper_pay_range.nil? && self.upper_pay_range < self.lower_pay_range
 			if self.pay_rate == "yearly"
 				errors.add(:yearly_upper_pay_range, "must be greater than the from amount.")
 			else

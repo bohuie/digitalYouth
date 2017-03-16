@@ -1,16 +1,28 @@
 <%= render "users/shared/profile" %>
 
-<%= render partial: "shared/job_seeker_tabs", locals: {active: "surveys" } %>
+<% if @user.has_role? :employee %>
+	<%= render partial: "shared/site_tabs", locals: {active: "surveys", user_path: user_path(@user) } %>
+<% elsif @user.has_role? :employer %>
+	<%= render partial: "shared/site_tabs", locals: {active: "survey", survey: true, job: @job_posting, posting_path: job_posting_path(@job_posting), user_path: user_path(@user) } %>
+<% end %>
 
 <h4><b>Compare Skill Survey Graphs</b></h4>
-<p>Here you can quickly compare your skill graph with <%= @user.formatted_name(current_user)+"'s "%>.  If you want to see more info about each graph, click Details.</p>
+<% if @user.has_role? :employee %>
+	<p>Here you can quickly compare your skill graph with <%= @user.formatted_name(current_user)+"'s "%>.  If you want to see more info about each graph, click Details.</p>
+<% elsif @user.has_role? :employer %>
+	<p>Here you can view the 'ideal candidate' <%= @user.company_name %> is looking for.  If you want to see more info about each graph, click Details.</p>
+<% end %>
 <% i=1 %>
 <div class="row">
 	<% Survey.all.each do |s|%>
 		<div class="compare-box col-md-5">
 			<h5><%= s.format_title.html_safe %></h5>
-			<%= column_chart @survey_results[i], min: 0, max: 3, library: { legend: { position: "right" }, chartArea: {left: 10, bottom: 20, width: '70%', height: '80%'}, series:{0 => {type: "line"}}} %>
-			<%= link_to "Details", survey_compare_to_path(s.title, js: params[:js]) %>
+			<%= column_chart @survey_results[i], min: 0, max: 3, library: { legend: { position: "right" }, chartArea: {left: 10, bottom: 20, width: '70%', height: '80%'}} %>
+			<% if @user.has_role? :employee %>
+				<%= link_to "Details", survey_compare_to_path(s.title, js: params[:js]) %>
+			<% elsif @user.has_role? :employer %>
+				<%= link_to "Details", survey_compare_to_path(s.title, jp: params[:jp]) %>
+			<% end %>
 		</div>
 		<% if i % 2 == 0 %>
 			</div><div class="row">

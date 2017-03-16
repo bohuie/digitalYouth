@@ -31,10 +31,16 @@ class JobPostingApplicationsController < ApplicationController
 		@user_required_matches = @user_skill_matches.select{ |a| a[:importance]==2 }
 		@user_preferred_matches = @user_skill_matches.select{ |a| a[:importance]==1 }
 		@user = current_user
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 	end
 
 	def new # Displays the forum to create an application
 		@user = current_user
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 		@job_posting = JobPosting.find(params[:job_posting])
 		@req_skills  = JobPostingSkill.where(job_posting_id:@job_posting.id, importance: 2).includes(:skill).order(:id)
 		@pref_skills = JobPostingSkill.where(job_posting_id:@job_posting.id, importance: 1).includes(:skill).order(:id)
@@ -51,6 +57,10 @@ class JobPostingApplicationsController < ApplicationController
 	end
 
 	def create # Creates the application
+		@user = current_user
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 		params[:job_posting_application][:applicant_id] = current_user.id
 		@job_posting_application = JobPostingApplication.new(job_posting_application_params)
 		if @job_posting_application.save
@@ -64,14 +74,18 @@ class JobPostingApplicationsController < ApplicationController
 	end
 
 	def update # Set the status to the value matching the parameter
+		@user = current_user
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 		job_posting = @job_posting_application.job_posting
 		save = @job_posting_application.update(status: JobPostingApplication.get_status_int(params[:status]))
 		if save #Create notification for user
-			@job_posting_application.create_activity :update, owner: @job_posting_application.applicant, parameters: {status: status}
-			redirect_to applications_job_posting_path(job_posting), flash: {success: "Updated Application Status!"}
+			@job_posting_application.create_activity :update, owner: @job_posting_application.applicant, parameters: {status: JobPostingApplication.get_status_int(params[:status])}
+			redirect_to job_posting_path(job_posting), flash: {success: "Updated Application Status!"}
 		else
 			flash[:warning] = "Oops, there was an issue in updating that application."
-			redirect_back_or job_posting_application_path(params[:id])
+			redirect_to job_posting_application_path(params[:id])
 		end
 	end
 
@@ -83,14 +97,14 @@ class JobPostingApplicationsController < ApplicationController
 				redirect_to current_user, flash: {success: "Deleted Application!"}
 			else
 				flash[:warning] = "Oops, there was an issue in deleting that application."
-				redirect_back_or 
+				redirect_to job_posting_application_path(params[:id])
 			end
 		elsif @job_posting_application.update(status: -2) # "delete" an application that has been considered/looked at destroy notifications
 			PublicActivity::Activity.where(trackable_id:(params[:id]),trackable_type:controller_path.classify).each {|a| a.destroy}
 			redirect_to current_user, flash: {success: "Deleted Application!"}
 		else
 			flash[:warning] = "Oops, there was an issue in deleting that application."
-			redirect_back_or 
+			redirect_to job_posting_application_path(params[:id])
 		end
 	end
 
@@ -102,7 +116,7 @@ private
 	def check_employee # Checks current user is an employee
 		if !current_user.has_role? :employee
 			flash[:warning] = 'You are not an employee!'
-			redirect_back_or current_user
+			redirect_to current_user
 		end
 	end
 
@@ -110,7 +124,7 @@ private
 		@job_posting_application = JobPostingApplication.find(params[:id])
 		if @job_posting_application.company_id!=current_user.id and @job_posting_application.applicant_id!=current_user.id
 			flash[:danger] = 'Action denied. You are not associated with this application'
-			redirect_back_or current_user
+			redirect_to current_user
 		else
 			return @job_posting_application
 		end
@@ -120,7 +134,7 @@ private
 		@job_posting_application = JobPostingApplication.find(params[:id])
 		if @job_posting_application.applicant_id != current_user.id
 			flash[:danger] = 'Action denied. You must be the applicant.'
-			redirect_back_or current_user
+			redirect_to current_user
 		else
 			return @job_posting_application
 		end
@@ -130,7 +144,7 @@ private
 		@job_posting_application = JobPostingApplication.find(params[:id])
 		if @job_posting_application.company_id != current_user.id
 			flash[:danger] = 'Action denied. You must be the company associated with this application.'
-			redirect_back_or current_user
+			redirect_to current_user
 		else
 			return @job_posting_application
 		end

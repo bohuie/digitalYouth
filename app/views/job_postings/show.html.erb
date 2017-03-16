@@ -1,14 +1,57 @@
 <%= render "users/shared/profile" %>
 
-<%= render partial: "shared/employer_tabs", locals: { active: "jobs" } %>
 
-<% if @job_posting.is_expired? %>
-	<% if (user_signed_in? && current_user.id == @job_posting.user_id) || (user_signed_in? && current_user.has_role?(:admin))%>
-		<%= render 'shared/dismissable_alert', msg:"This job posting is expired. It will no longer be visible to other users.", type: "warning" %>
-		<%= render 'job_postings/job_posting' %>
+<% poclass = "tab-pane fade" %>
+<% suclass = "tab-pane fade" %>
+<% apclass = "tab-pane fade" %>
+
+<% if user_signed_in? && current_user == @user %>
+	<% if session[:home_tab]== "survey" %>
+		<% active = "survey" %>
+		<% suclass = suclass + " in active" %>
+	<% elsif session[:home_tab]== "applicants" %>
+		<% active = "applicants" %>
+		<% apclass = apclass + " in active" %>
 	<% else %>
-		<%= render 'shared/dismissable_alert', msg:"This job posting is expired.", type: "warning" %>
+		<% active = "posting" %>
+		<% poclass = poclass + " in active" %>
 	<% end %>
 <% else %>
-	<%= render 'job_postings/job_posting' %>
+	<% if session[:nav_tab]== "survey" %>
+		<% active="survey" %>
+		<% suclass = suclass + " in active" %>
+	<% else %>
+		<% active="posting" %>
+		<% poclass = poclass + " in active" %>
+	<% end %>
 <% end %>
+
+<%= render partial: "shared/site_tabs", locals: { active: active, job: @job_posting, user_path: user_path(@user) } %>
+
+<div class="tab-content">
+	<% if @job_posting.is_expired? && !(user_signed_in? && current_user.id == @job_posting.user_id) || (user_signed_in? && current_user.has_role?(:admin)) %>
+		<%= render 'shared/dismissable_alert', msg:"This job posting is expired.", type: "warning" %>
+	<% elsif @job_posting.is_expired? && (user_signed_in? && current_user.id == @job_posting.user_id) || (user_signed_in? && current_user.has_role?(:admin))%>
+		<%= render 'shared/dismissable_alert', msg:"This job posting is expired. It will no longer be visible to other users.", type: "warning" %>
+	<% end %>
+	<% if current_user == @user %>
+		<div id="applicants" class="<%=apclass%>">
+			<%= render 'job_postings/job_posting_applicants' %>
+		</div>
+	<% end %>
+	<div id="survey" class="<%=suclass%>">
+		<h4>Ideal Candidate</h4>
+		<% if user_signed_in? && current_user.id == @job_posting.user_id %>
+			<p>Fill out these surveys so potential Job Seekers can get an idea of how they compare to your "ideal candidate".</p>
+		<% else %>
+			<p>Below, you can view what an ideal candidates' skill survey graphs would look like.</p>
+			<% if user_signed_in? && (current_user.has_role? :employee) %>
+				<p><%= link_to 'Compare Skill Graphs to Me', survey_compare_all_path(jp: @job_posting.id), class: "btn btn-primary" %></p>
+			<% end %>
+		<% end %>
+		<%= render '/users/partials/show_survey_table', user:@user, results:@survey_results %>
+	</div>
+	<div id="posting" class="<%=poclass%>">
+		<%= render 'job_postings/job_posting' %>
+	</div>
+</div>

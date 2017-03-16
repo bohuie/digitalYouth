@@ -20,6 +20,7 @@ class SearchesController < ApplicationController
 		@pc= params[:pc].nil? ? "" : params[:pc] #past_company - not implemented
 		@r = params[:r].nil?  ? "" : params[:r]  #relationship - not implemented
 		@s = params[:s].nil?  ? "" : params[:s].titleize  #skills
+		@de= params[:de].nil? ? "" : params[:de] #All jobs vs Active (ignore expired), Date Expired
 		@jt= params[:jt].nil? ? "" : params[:jt] #job_type
 		@dp= params[:dp].nil? ? "" : params[:dp] #date_posted
 		@pd= params[:pd].nil? ? "" : params[:pd] #project_date
@@ -97,7 +98,7 @@ class SearchesController < ApplicationController
 
 		when "JobPostings" # Searches JobPosting, filters location, company, dateposted, industry, job type, skills.
 			idxs=[JobPosting.searchkick_index.name]
-			@toggles = {l: @l, c: @c.titleize, dp: @dp, i: @i.titleize, jt: @jt.titleize, s:@s.titleize}
+			@toggles = {l: @l, c: @c.titleize, dp: @dp, i: @i.titleize, jt: @jt.titleize, s:@s.titleize, de: @de}
 			aggs = [:location, :company, :industry, :job_type, :skills, :created_at]
 			# Postgres query finds the most popular company names joining between the two places the name can exist
 			@pgrec = ActiveRecord::Base.connection.execute("
@@ -134,6 +135,7 @@ class SearchesController < ApplicationController
 			locs.each do |l| 
 				@locations.push(l[0].titleize+', '+l[1].upcase)
 			end
+			@expired = ['Active Postings Only']
 			@dates_posted = ["Past Day", "Past Week","Past Month"]
 			@industries = JobCategory.all.pluck(:name)
 			@job_types = JOB_TYPES.keys
@@ -172,6 +174,8 @@ class SearchesController < ApplicationController
 					where_clause[:relationship]=@r if !@r.blank?
 				when "skills"
 					where_clause[:skills]=@s if !@s.blank?
+				when "date_expired"
+					where_clause[:expired] = false if !@de.blank?
 				when "job_type"
 					where_clause[:job_type]=JOB_TYPES[@jt] if !@jt.blank?
 				when "date_posted"

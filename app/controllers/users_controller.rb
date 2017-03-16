@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-respond_to :html, :json
+
+	respond_to :html, :json
 
 	before_action :authenticate_user!, except: [:show, :index, :nav_tab] #ignore home_tab, only done when it is the current user and logged in
 	before_action :profile_owner, only: [:edit, :update, :destroy]
@@ -14,6 +15,9 @@ respond_to :html, :json
 	def show
 
 		@user = User.find(params[:id])
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 
 		@surveys = Survey.get_title_map
 
@@ -60,10 +64,12 @@ respond_to :html, :json
 
 	def edit
 		@user = User.find(params[:id])
+		@user_buckets = user_bucket(4)
 	end
 
 	def update
 		@user = User.find(params[:id])
+		@user_buckets = user_bucket(4)
 		if params.include?(:personal)
 			if @user.update_attributes(personal_params)
 				flash[:success] = "Personal Info successfully updated."
@@ -171,7 +177,6 @@ respond_to :html, :json
 
   	def home_tab
   		session[:home_tab] = params[:home_tab]
-  		
   		if params.key?(:redirect)
   			respond_to do |format|
   				format.js { render js: "window.location = '#{params[:redirect]}'" }
@@ -181,7 +186,6 @@ respond_to :html, :json
 
   	def nav_tab
   		session[:nav_tab] = params[:nav_tab]
- 
   		if params.key?(:redirect)
   			respond_to do |format|
   				format.js { render js: "window.location = '#{params[:redirect]}'" }

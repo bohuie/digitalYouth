@@ -1,12 +1,11 @@
 <% path="searches/partials/filter"%>
-<% unless params[:t].blank? %> <hr> <% end %>
 <%= render path, name: "Locations"		, key: :l, filter_values: @locations, current_values: @l, input: true 			if !@toggles[:l].nil?  %>
 <%= render path, name: "Current Company", key: :cc,filter_values: @current_companies, current_values: @cc, input: true  if !@toggles[:cc].nil? %>
 <%= render path, name: "Company"	 	, key: :c, filter_values: @companies, current_values: @c, input: true 			if !@toggles[:c].nil?  %>
-<%= render path, name: "Industry"	 	, key: :i, filter_values: @industries, current_values: @i 						if !@toggles[:i].nil?  %>
 <%= render path, name: "Past Company"	, key: :pc,filter_values: @past_companies, current_values: @pc, input: true 	if !@toggles[:pc].nil? %>
 <%= render path, name: "Skills"		 	, key: :s, filter_values: @skills, current_values: @s, input: true 				if !@toggles[:s].nil?  %>
+<%= render path, name: "Date Expired"	, key: :de,filter_values: @expired, current_values: @de							if !@toggles[:de].nil? %>
 <%= render path, name: "Job Type"	 	, key: :jt,filter_values: @job_types, current_values: @jt 						if !@toggles[:jt].nil? %>
-<%= render path, name: "Relationship"	, key: :r, filter_values: @relationships, current_values: @r if !@toggles[:r].nil? && user_signed_in?  %>
-<%= render path, name: "Date Posted", key: :dp, filter_values: @dates_posted, current_values: @dp, input: true if !@toggles[:dp].nil? %>
-<%= render path, name: "Project Date", key: :pd, filter_values: @project_date, current_values: @pd, input: true if !@toggles[:pd].nil? %>
+<%= render path, name: "Relationship"	, key: :r, filter_values: @relationships, current_values: @r 					if !@toggles[:r].nil? && user_signed_in?  %>
+<%= render path, name: "Date Posted"	, key: :dp, filter_values: @dates_posted, current_values: @dp, input: true 		if !@toggles[:dp].nil? %>
+<%= render path, name: "Project Date"	, key: :pd, filter_values: @project_date, current_values: @pd, input: true 		if !@toggles[:pd].nil? %>

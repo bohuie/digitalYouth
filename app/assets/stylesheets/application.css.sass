@@ -32,6 +32,12 @@ html, body
 	font-family: Geneva
 	min-height: 700px
 	height: 100%
+
+.tab-content > .tab-pane:not(.active)
+	display: block !important
+	height: 0 !important
+	overflow-y: hidden !important
+
 .wrapper
 	min-height: 100%
 	height: auto !important
@@ -46,7 +52,7 @@ html, body
 
 .menu-image
 	float: left
-	padding: 0px 10px
+	margin: 0px 10px
 
 .menu-name
 	width: 105px
@@ -116,6 +122,10 @@ hr.gray-1
 .padding-10
 	padding-top: 10px !important
 	padding-bottom: 10px !important
+
+.padding-30
+	padding-top: 30px !important
+	padding-bottom: 30px !important
 
 .padding-top-10
 	padding-top: 10px !important

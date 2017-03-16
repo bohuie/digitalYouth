@@ -25,7 +25,7 @@
 		<% end %>
 	<% end %>
 <% elsif current_user.has_role? :employer %>
-	<%= render partial: "shared/employer_tabs", locals: { active: "jobs" } %>
+	<%= render partial: "shared/site_tabs", locals: { active: "jobs" } %>
 	<% last_posting = -1 %>
 	<%@job_posting_applications.each do |j|%>
 		<% if j.status != -2 %>
@@ -42,7 +42,7 @@
 				<div class="col-md-4">
 					<div class="row">
 						<div class="col-md-3">
-							<%= image_tag j.applicant.image.url(:thumb), class: "image-radius" if !j.applicant.image.nil? %>
+							<%= image_tag j.applicant.image.url(:thumb), class: "image-radius thumb-shadow" if !j.applicant.image.nil? %>
 						</div>
 						<%= link_to "#{j.applicant.first_name} #{j.applicant.last_name}", job_posting_application_path(j) %>
 						<small class="job-application-content"><span class=" label label-<%=j.get_bootstrap_status%>"><%="#{j.get_status_string}"%></span></small>

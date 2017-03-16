@@ -16,7 +16,8 @@ class SearchesController < ApplicationController
 		@l = params[:l].nil?  ? "" : format_location(params[:l])  #location
 		@i = params[:i].nil?  ? "" : params[:i]  		  #industry
 		@c = params[:c].nil?  ? "" : params[:c].titleize  #company
-		@cc= params[:cc].nil? ? "" : params[:cc] #current_company - not implemented
+		@cc= params[:cc].nil? ? "" : params[:cc].titleize #current_company
+		@j = params[:j].nil?  ? "" : params[:j].titleize #job_title
 		@pc= params[:pc].nil? ? "" : params[:pc] #past_company - not implemented
 		@r = params[:r].nil?  ? "" : params[:r]  #relationship - not implemented
 		@s = params[:s].nil?  ? "" : params[:s].titleize  #skills
@@ -42,7 +43,7 @@ class SearchesController < ApplicationController
 		when "People" # Searches User model, just employees, current + past company, skills, (and should have location and relationship) 
 			idxs=[User.searchkick_index.name]
 			where_clause[:role]="employee"
-			@toggles = {s:@s.titleize, l:@l} #need to add cc: @cc, pc: @pc for current company and past company	
+			@toggles = {s:@s.titleize, l:@l, cc:@cc.titleize, j:@j.titleize} #need to add cc: @cc, pc: @pc for current company and past company	
 			@locations = Array.new
 			@relationships = ["1st","2nd", "Group Members", "3rd + Everyone"]
 			#@current_companies = [] # To be implemented
@@ -63,6 +64,9 @@ class SearchesController < ApplicationController
 			locs.each do |l| 
 				@locations.push(l[0].titleize+', '+l[1].upcase)
 			end
+
+			@current_companies = User.where.not(current_company: nil, show_job: false).group(:current_company).order("COUNT(id)").limit(5).pluck(:current_company).map!(&:titleize)
+			@job_titles = User.where.not(job_title: nil, show_job: false).group(:job_title).order("COUNT(id)").limit(5).pluck(:job_title).map!(&:titleize)
 
 		when "Companies" # Searches User model, just employers, filters location (and should have industry)
 			idxs=[User.searchkick_index.name]
@@ -164,8 +168,9 @@ class SearchesController < ApplicationController
 						#where_clause[:user_id]=ids if !ids.blank?
 					end
 				when "current_company"
-					# To be implemented
 					where_clause[:current_company]=@cc if !@cc.blank?
+				when "job_title"
+					where_clause[:job_title]=@j if !@j.blank?
 				when "past_company"
 					# To be implemented
 					where_clause[:past_company]=@pc if !@pc.blank?

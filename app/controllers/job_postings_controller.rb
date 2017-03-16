@@ -19,6 +19,9 @@ class JobPostingsController < ApplicationController
 
 	def compare
 		@user = current_user
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 		@job_posting = JobPosting.find(params[:id])
 		@job_posting_applications = @job_posting.job_posting_applications.where("status > ? ", -1)
 		@survey_results = Array.new
@@ -48,6 +51,9 @@ class JobPostingsController < ApplicationController
 		@pref_skills = JobPostingSkill.where(job_posting_id:params[:id], importance: 1).includes(:skill).order(:id)
 		add_view(@job_posting)
 		@user = @job_posting.user
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 		@surveys = Survey.get_title_map
 		@survey_results = Survey.get_table_data(@user, @job_posting)
 		@average_results = Survey.get_average_data
@@ -72,10 +78,16 @@ class JobPostingsController < ApplicationController
 		@surveys = Survey.get_title_map
 		@categories = JobCategory.all
 		@user = current_user
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 	end
 
 	def create # Creates a new job posting and skills
 		@user = current_user
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 		@surveys = Survey.get_title_map
 		@categories = JobCategory.all
 		skip = false
@@ -116,6 +128,9 @@ class JobPostingsController < ApplicationController
 		@surveys = Survey.get_title_map
 		@categories = JobCategory.all
 		@user = current_user
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 		job_posting = JobPosting.find(params[:id])
 		if job_posting.pay_rate == "yearly"
 			@year_lower = job_posting.lower_pay_range
@@ -132,6 +147,9 @@ class JobPostingsController < ApplicationController
 
 	def update # Updates the job posting
 		@user = current_user
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 		@surveys = Survey.get_title_map
 		@categories = JobCategory.all
 		skip = false

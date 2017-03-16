@@ -10,6 +10,9 @@ class NotificationsController < ApplicationController
 		@notifications = get_notifications.paginate(page: params[:page], per_page: 20)
 		@notifications_count = @notifications.count
 		@user = current_user
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 	end
 
 	def show # Get 5 notifications first, then get one and offset the page

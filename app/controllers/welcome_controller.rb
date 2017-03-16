@@ -6,8 +6,10 @@ class WelcomeController < ApplicationController
       @new_application = PublicActivity::Activity.where(owner_id: current_user.id, is_read: false, key: "job_posting_application.create").take
       @expired_posting = JobPosting.where("user_id = ? AND close_date < ? ",current_user.id, Date.today).take
     end
-
-    @user_bucket = user_bucket
+    if user_signed_in?
+      @user = current_user
+      @user_buckets = user_bucket
+    end
   end
 
   def signup_jobseeker

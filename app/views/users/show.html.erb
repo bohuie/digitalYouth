@@ -67,7 +67,7 @@
     			<% if user_signed_in? && @current_user==@user %>
 						<%= simple_form_for @user_skill do |g| %>
 							<div class="row">
-								<%= g.input :name, wrapper_html: { class: 'padding-left-0 col-md-4'} %>
+								<%= g.input :name, required:true, wrapper_html: { class: 'padding-left-0 col-md-4'} %>
 								<%= g.input :survey_id, required:true, collection: @surveys, prompt: "Select Classification", label: "Associated Survey Skill", wrapper_html: { class: 'col-md-4' } %>
 							</div>
 							<br />

@@ -44,7 +44,7 @@
                 <%= image_tag current_user.image.url(:thumb), alt:"User Icon", class: "profile-image menu-image thumb-shadow" %>
                 <div class="menu-name">
                   <% if current_user.has_role?(:employee) %>
-                    <%= current_user.first_name+" "+current_user.last_name %><br /><%= link_to "View Profile", user_path(current_user) %>
+                    <%= (current_user.first_name+" "+current_user.last_name).truncate(20) %><br /><%= link_to "View Profile", user_path(current_user) %>
                   <% elsif current_user.has_role?(:employer) %>
                     <%= current_user.company_name %><br /><%= link_to "View Profile", user_path(current_user) %>
                   <% end %>

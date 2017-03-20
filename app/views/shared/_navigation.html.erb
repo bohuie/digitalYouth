@@ -64,9 +64,11 @@
             </ul>
           </li>
         <% else %>
-          <div class="login-menu">
-            <%= link_to 'Login', new_user_session_path, class: "btn btn-info", style: 'color: #FFFFFF;' %>
-          </div>
+          <li>
+            <div class="login-menu">
+              <%= link_to 'Login', new_user_session_path, class: "btn btn-info", style: 'color: #FFFFFF;' %>
+            </div>
+          </li>
         <% end %>
       </ul>
     </div>

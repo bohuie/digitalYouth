@@ -1,6 +1,9 @@
 include ActionDispatch::TestProcess
 
 FactoryGirl.define do
+  factory :message do
+    
+  end
   factory :consent do
     user nil
     answer 1

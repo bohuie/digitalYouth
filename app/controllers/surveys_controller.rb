@@ -27,7 +27,9 @@ class SurveysController < ApplicationController
 			end
 			data = @survey.get_data(@user)
 		end
-
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 		@survey_results = Array.new
 
 		@survey_results.push(name: "Average Job Seeker", data: @survey.get_average_data)
@@ -42,6 +44,9 @@ class SurveysController < ApplicationController
 
 	def edit
 		@user = current_user
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 		# Fetch Survey data
 		if params[:job_posting]
 			@job_posting = JobPosting.find(params[:job_posting])
@@ -109,6 +114,9 @@ class SurveysController < ApplicationController
 
 	def compare
 		@user = current_user
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 
 		@survey = Survey.find_by(title: params[:title])
 		if @survey.nil?
@@ -175,6 +183,9 @@ class SurveysController < ApplicationController
 			flash[:warning] = "Sorry, there was an unexpected error.  Please try again or contact and administrator."
 			redirect_to current_user
 		end
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 	end
 
 	def compare_to
@@ -226,6 +237,9 @@ class SurveysController < ApplicationController
 			#error
 			flash[:warning] = "Sorry, there was an unexpected error.  Please try again or contact and administrator."
 			redirect_to current_user
+		end
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
 		end
 	end
 

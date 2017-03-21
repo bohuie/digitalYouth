@@ -64,7 +64,7 @@
 	</div>
 </div>
 <% if !@job_posting.user.nil? %>
-	<% if (!user_signed_in?)||(user_signed_in? && current_user.has_role?(:employee)) %>
+	<% if (!user_signed_in?)||(user_signed_in? && current_user.has_role?(:employee)) && !@job_posting.is_expired? %>
 		<%= link_to "Apply Now", new_job_posting_application_path(job_posting: @job_posting), class: "btn btn-success" %>
 	<% end %>
 <% else %>

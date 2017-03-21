@@ -9,6 +9,17 @@
     margin: -1px;
 }
 
+.bulletin-board{
+	padding: 25px 10px 0px 5px;
+	background:asset-url("bulletin.svg");
+	background-size: 500px 250px;
+	height: 250px;
+	width: 500px;
+	display:inline-block;
+	float: right;
+	margin: 0px 0px 20px 0px;
+}
+
 .btn-fake {
 	background-image: linear-gradient(to bottom, #E6E6E6, #E6E6E6) !important;
 	border: none !important;
@@ -86,7 +97,7 @@ ul.nav-tabs > li.active > a {
 	text-align:center;
 	border-style: solid;
     border-width: 2px;
-    margin:-1px 0 0 -1px;
+    margin: 20px 0px !important;
 }
 
 .unanswered{
@@ -231,9 +242,9 @@ ul.nav-tabs > li.active > a {
 .profileContainerContent
 {
 	height: 220px;
-	margin-left: 250px;
 	padding: 23px;
-	//border: 2px solid blue;
+	display:inline-block;
+	width: calc(100% - 196px - 600px);
 }
 .profileContainerContent input
 {
@@ -354,6 +365,7 @@ ul.nav-tabs > li.active > a {
     margin-top: 10px;
     margin-left: 25px;
     margin-bottom: -40px;
+    min-width: 196px;
 }
 .profileButtonResume
 {

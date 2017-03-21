@@ -17,6 +17,10 @@
 #   runner "AnotherModel.prune_old_records"
 # end
 
-every 1.day at: '12:01 am', :roles => [:db] do
+every 1.day, at: '12:01 am', :roles => [:db] do
 	runner "Response.compute_averages"
+end
+
+every 1.day, at: '12:06 am' do
+	rake 'searchkick:reindex CLASS=JobPosting' 
 end

@@ -21,6 +21,10 @@
       <% end %>
 
       <ul class="nav navbar-nav navbar-right">
+        <li><a href='/search?utf8=✓&q=&t=JobPostings'>Job Postings</a></li>
+        <li><%= link_to 'About us', about_us_path %></li>
+        <li><%= link_to 'Contact Us', contact_us_path %></li>
+
         <% if user_signed_in? %>
           <li class="dropdown">                                   
             <%= link_to show_notifications_path, html_options = 
@@ -44,7 +48,7 @@
                 <%= image_tag current_user.image.url(:thumb), alt:"User Icon", class: "profile-image menu-image thumb-shadow" %>
                 <div class="menu-name">
                   <% if current_user.has_role?(:employee) %>
-                    <%= current_user.first_name+" "+current_user.last_name %><br /><%= link_to "View Profile", user_path(current_user) %>
+                    <%= (current_user.first_name+" "+current_user.last_name).truncate(20) %><br /><%= link_to "View Profile", user_path(current_user) %>
                   <% elsif current_user.has_role?(:employer) %>
                     <%= current_user.company_name %><br /><%= link_to "View Profile", user_path(current_user) %>
                   <% end %>
@@ -60,9 +64,11 @@
             </ul>
           </li>
         <% else %>
-          <div class="login-menu">
-            <%= link_to 'Login', new_user_session_path, class: "btn btn-info", style: 'color: #FFFFFF;' %>
-          </div>
+          <li>
+            <div class="login-menu">
+              <%= link_to 'Login', new_user_session_path, class: "btn btn-info", style: 'color: #FFFFFF;' %>
+            </div>
+          </li>
         <% end %>
       </ul>
     </div>

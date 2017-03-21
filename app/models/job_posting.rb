@@ -29,6 +29,7 @@ class JobPosting < ActiveRecord::Base
 
 	def search_data
 		data = Hash.new
+<<<<<<< HEAD
 		unless self.is_expired?
 	  		data[:title] = title.titleize
 	  		unless self.company_name.nil?
@@ -44,7 +45,23 @@ class JobPosting < ActiveRecord::Base
 		  	data[:created_at] = created_at
 		  	data[:close_date] = close_date
 	  		data[:skills] = self.skills.pluck(:name)
+=======
+ 		data[:title] = title.titleize
+ 		if self.user_id.nil?
+	  		data[:company_name] = company_name.titleize
+	  	else
+	  		data[:company_name] = self.user.company_name.titleize
+>>>>>>> master
 	  	end
+	  	data[:city] = city.titleize
+	  	data[:province] = province.upcase
+	  	data[:job_type] = job_type
+	  	data[:description] = description.titleize
+	  	data[:industry] = job_category_id
+	  	data[:created_at] = created_at
+	  	data[:close_date] = close_date
+	  	data[:skills] = self.skills.pluck(:name)
+	  	data[:expired] = self.is_expired?
 	  	return data
 	end
 
@@ -135,7 +152,7 @@ class JobPosting < ActiveRecord::Base
 	end
 
 	def pay_check
-		if !self.upper_pay_range.nil? && self.upper_pay_range < self.lower_pay_range
+		if !self.lower_pay_range.blank? && !self.upper_pay_range.nil? && self.upper_pay_range < self.lower_pay_range
 			if self.pay_rate == "yearly"
 				errors.add(:yearly_upper_pay_range, "must be greater than the from amount.")
 			else

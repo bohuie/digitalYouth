@@ -1,9 +1,8 @@
 <div class ="row survey-box-row">
-	<div class="col-md-1"></div>
 	<% i=1 %>
 	<% onclick="" %>
 	<% Survey.all.each do |s|%>
-		<% css_class = "col-md-2 survey-box" %>
+		<% css_class = "col-md-3 survey-box" %>
 		<% if user.has_role? :employee %>
 			<% css_class += " unanswered" if !user.answered_surveys[i - 1] %>
 		<% else %>
@@ -37,12 +36,12 @@
 				<% end %>
 			<% end %>
 		</div>
-		<div class="col-md-1"></div>
+		<div class="col-md-1" style="padding: 0px;"></div>
 		<% if i % 3 == 0 && i < 12 %>
 			</div>
 
 			<div class ="row survey-box-row"> 
-			<div class="col-md-1"></div>
+			
 		<% end %>
 		<% i += 1 %>
 	<% end %>

@@ -12,46 +12,28 @@ class JobPosting < ActiveRecord::Base
 	belongs_to :user
 	accepts_nested_attributes_for :job_posting_skills, reject_if: lambda {|a| a[:survey_id].blank?}, allow_destroy: true
 
-	validates :title, presence: { message: 'cannot be empty' }
-	validates :city, presence: { message: 'must have a city' }
-	validates :province, presence: { message: 'must have a province' }
-	validates :description, presence: { message: 'cannot be empty' }
-	validates :open_date, presence: { message: 'cannot be empty' }
-	validates :close_date, presence: { message: 'cannot be empty' }
-	validates :job_category_id, presence: { message: 'cannot be empty' }
-	validates :job_type, presence: { message: 'cannot be empty' }
+	validates :title, presence: { message: 'cannot be empty' }, unless: "user_id==0"
+	validates :city, presence: { message: 'must have a city' }, unless: "user_id==0"
+	validates :province, presence: { message: 'must have a province' }, unless: "user_id==0"
+	validates :description, presence: { message: 'cannot be empty' }, unless: "user_id==0"
+	validates :open_date, presence: { message: 'cannot be empty' }, unless: "user_id==0"
+	validates :close_date, presence: { message: 'cannot be empty' }, unless: "user_id==0"
+	validates :job_category_id, presence: { message: 'cannot be empty' }, unless: "user_id==0"
+	validates :job_type, presence: { message: 'cannot be empty' }, unless: "user_id==0"
 	#validate  :validate_skills
 	#validates :job_posting_skills, presence: { message: 'must have valid skills' }
 	
 	#validate :date_check
-	validate :lower_pay
-	validate :pay_check
+	validate :lower_pay, unless: "user_id==0"
+	validate :pay_check, unless: "user_id==0"
 
 	def search_data
 		data = Hash.new
-<<<<<<< HEAD
-		unless self.is_expired?
-	  		data[:title] = title.titleize
-	  		unless self.company_name.nil?
-	  			data[:company_name] = self.company_name.titleize
-	  		else
-	  			data[:company_name] = self.user.company_name.titleize
-		  	end
-		  	data[:city] = city.titleize
-	  		data[:province] = province.upcase
-		  	data[:job_type] = job_type
-		  	data[:description] = description.titleize
-	  		data[:industry] = job_category_id
-		  	data[:created_at] = created_at
-		  	data[:close_date] = close_date
-	  		data[:skills] = self.skills.pluck(:name)
-=======
  		data[:title] = title.titleize
  		if self.user_id.nil?
 	  		data[:company_name] = company_name.titleize
 	  	else
 	  		data[:company_name] = self.user.company_name.titleize
->>>>>>> master
 	  	end
 	  	data[:city] = city.titleize
 	  	data[:province] = province.upcase

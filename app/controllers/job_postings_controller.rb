@@ -331,17 +331,17 @@ byebug
 				if m["_destroy"] == "false"
 					destroy = false 
 					if m["skill_attributes"]["name"].blank?
-						missing = true 
+						#missing = true 
 						@job_posting.errors[:skill][index.to_i] = {} unless @job_posting.errors[:skill][index.to_i]
 						@job_posting.errors[:skill][index.to_i][:name] = "must have a name."
 					end
 					if m["survey_id"].blank?
-						missing = true 
+						#missing = true 
 						@job_posting.errors[:skill][index.to_i] = {} unless @job_posting.errors[:skill][index.to_i]
 						@job_posting.errors[:skill][index.to_i][:survey_id] = "must select a skill category." 
 					end
 					if m["importance"].blank?
-						missing = true 
+						#missing = true 
 						@job_posting.errors[:skill][index.to_i] = {} unless @job_posting.errors[:skill][index.to_i]
 						@job_posting.errors[:skill][index.to_i][:importance] = "must select an importance."
 					end

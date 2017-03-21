@@ -132,13 +132,9 @@ Rails.application.routes.draw do
   get 'about_us' => 'welcome#about_us', as: :about_us
   get 'lost_email' => 'welcome#lost_email', as: :lost_email
   post 'lost_email' => 'welcome#send_lost_email', as: :send_lost_email
-<<<<<<< HEAD
-  root 'welcome#index', as: :root
-=======
   get 'contact_us' => 'welcome#contact_us', as: :contact_us
   post 'contact_us' => 'welcome#send_contact_us', as: :send_contact_us
   root 'welcome#index'
->>>>>>> master
 
   get '*path' => redirect('/')
 

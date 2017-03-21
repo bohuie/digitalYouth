@@ -128,8 +128,11 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
+  get 'about_us' => 'welcome#about_us', as: :about_us
   get 'lost_email' => 'welcome#lost_email', as: :lost_email
   post 'lost_email' => 'welcome#send_lost_email', as: :send_lost_email
+  get 'contact_us' => 'welcome#contact_us', as: :contact_us
+  post 'contact_us' => 'welcome#send_contact_us', as: :send_contact_us
   root 'welcome#index'
 
   get '*path' => redirect('/')

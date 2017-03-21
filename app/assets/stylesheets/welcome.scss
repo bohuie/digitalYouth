@@ -18,6 +18,11 @@ body.welcome li {
 	border-radius: 4px !important;
 }
 
+.about-image {
+	width: 150px;
+	height: 150px;
+}
+
 .landing{
 	background-image:asset-url("homepage.svg"), linear-gradient(to bottom, #89bcf4 0%, #89bcf4 100%), linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 100%);
 	background-clip: content-box, padding-box;
@@ -36,6 +41,12 @@ body.welcome li {
 	background-color: #f8f8f8 !important;
 	color: #646464 !important;
 	border-color: #646464 !important;
+}
+
+.user-footer {
+	min-height: 41px;
+	color: white;
+	padding-top: 10px !important;
 }
 
 .description{

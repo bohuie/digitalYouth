@@ -12,6 +12,10 @@ class WelcomeController < ApplicationController
     end
   end
 
+  def about_us
+
+  end
+
   def signup_jobseeker
     @job_seeker = User.new
     @job_seeker.build_consent
@@ -20,6 +24,39 @@ class WelcomeController < ApplicationController
   def signup_employer
     @employer = User.new
     @employer.build_consent
+  end
+
+  def contact_us
+    @message = Message.new
+    if user_signed_in?
+      @user = current_user
+      @user_buckets = user_bucket(4)
+    end
+  end
+
+  def send_contact_us
+    @message = Message.new(message_params)
+    if user_signed_in?
+      @user = current_user
+      @user_buckets = user_bucket(4)
+    end
+
+    if @message.valid?
+      if ContactMailer.contact_us(@message.email,@message.name, @message.content).deliver_now
+        flash["notice"] = "Thank you for your message."
+        if user_signed_in?
+          redirect_to current_user
+        else
+          redirect_to root_path
+        end
+      else
+        flash[:error] = "Your request couldn't be sent."
+        render 'contact_us'
+      end
+    else
+      flash[:error] = "There was an error.  Please fill out all fields and try again."
+      render 'contact_us'
+    end
   end
 
   def lost_email
@@ -54,5 +91,9 @@ class WelcomeController < ApplicationController
     if user_signed_in?
       redirect_to root_path
     end
+  end
+
+  def message_params
+    params.require(:message).permit(:name, :email, :content)
   end
 end

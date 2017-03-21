@@ -92,7 +92,7 @@
         <% if current_user.has_role? :employee %>
           <div class="row">
             <div class="padding-top-10 padding-left-0 col-md-8 col-sm-8">
-              <%= info.input :resume, as: :file, label: "Upload Private Resume", input_html: {style: 'display: inline;'} %>
+              <%= info.input :resume, as: :file, label: "Upload Private Resume.  Must be .pdf, .doc, .docx, or .odt type.", input_html: {style: 'display: inline;'} %>
               <% unless @user.resume.blank? %>
                 <p>Current Resume: <%= link_to @user.resume.original_filename, @user.resume.url, target: '_blank' %></p>
               <% end %>

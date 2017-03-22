@@ -1,7 +1,8 @@
 <div class="row">
-	<div class="padding-left-0 col-md-4">
+	<div class="padding-left-0 col-md-6">
 		<h4>
-			<b><%= @job_posting.title %></b>
+			<b><%= @job_posting.title %></b><br/>
+			<%= @job_posting.company_name ? @job_posting.company_name : @job_posting.user.company_name %>
 		</h4>
 		<p>
 			<% unless @job_posting.unit_number.blank? %>
@@ -45,8 +46,8 @@
 		<p><%= raw("Check out this link <a href=\"http://#{@job_posting.link}\">#{@job_posting.link}</a><br>") if !@job_posting.link.blank? %></p>
 		<p>Posted On: <%= local_date(@job_posting.created_at)%></p>
 	</div>
-	<div class="col-md-2"></div>
-	<div class="col-md-4">
+	<div class="col-md-1"></div>
+	<div class="col-md-5">
 		<% if !@req_skills.empty? %>
 			<h4><b>Required Skills</b></h4>
 			<ul><%@req_skills.each do |r| %>

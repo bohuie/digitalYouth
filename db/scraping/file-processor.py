@@ -172,18 +172,26 @@ def check_string(string):
 	string = string.replace("\n\n\n", "\n")
 	string = string.replace("\n\n", "\n")
 
-	string = string.replace(u'\xa0',u' ')
-	string = string.replace(u'\u2018','\'')
-	string = string.replace(u'\u2019','\'')
+	string = string.replace(u'\u2010','-')
 	string = string.replace(u'\u2011','-')
 	string = string.replace(u'\u2013','-')
 	string = string.replace(u'\u2014','-')
+	string = string.replace(u'\u2018','\'')
+	string = string.replace(u'\u2019','\'')
 	string = string.replace(u'\u201c','\'')
 	string = string.replace(u'\u201d','\'')
-	string = string.replace(u'\u2026','...')
-	string = string.replace(u'\xae','') #Registered Symbol
 	string = string.replace(u'\u2022','') #Bullet Point
+	string = string.replace(u'\u2026','...')
+	string = string.replace(u'\u2028','')
+	string = string.replace(u'\u202f',' ')
+	string = string.replace(u'\u2122','(tm)')
+	string = string.replace(u'\u3000',' ')
+	string = string.replace(u'\uf0d8','')
+	string = string.replace(u'\x97','') 
+	string = string.replace(u'\xae','') #Registered Symbol
+	string = string.replace(u'\xa0',u' ')
 	string = string.replace(u'\xab','<<')
+	string = string.replace(u'\xad','-')
 	string = string.replace(u'\xb7','.')
 	string = string.replace(u'\xbb','>>')
 	string = string.replace(u'\xbf','?')
@@ -214,6 +222,8 @@ def check_string(string):
 	string = string.replace(u'\xf9','') #u with acute accent
 	string = string.replace('\\','/')
 	string = string.replace(u'\uf0a7','')
+	string = string.replace(u'\uf0b7','')
+	string = string.replace(u'\uf0d2','')
 
 	if string.endswith('/') or string.endswith(';'):
 		return string[:-1]
@@ -298,7 +308,7 @@ def endProgress():
 
 
 # ---------------------------------------
-path = os.path.realpath(__file__).strip(__file__)
+path = "/"+os.path.realpath(__file__).strip(__file__)
 os.chdir(path)
 print("----------- File Processor -----------\n")
 print("Ensure the path below contains the file processor and the '/data/categories' folder containing files to process:")
@@ -367,13 +377,19 @@ for cdir in catdirs:
 
 
 print("Concatenating data..")
-postings_string = stringifyList(array_names[2]+" = JobPosting.create([", JOBPOSTINGS, ",\n", "])")
+postings_string = stringifyList("[", JOBPOSTINGS, ",\n", "].each_with_index do |attributes, index|\n")
 skills_string = stringifyList("arr = [", SKILLS, ",\n", "]\n")
 jobskills_string = stringifyList(array_names[4]+" = JobPostingSkill.create([", JOBPOSTINGSKILLS, ",\n", "])")
 
 print("Writing to file..")
 
-file.write(postings_string+"\n\n")
+file.write("jps = Array.new\n")
+file.write("user = User.find(0)\n")
+file.write(postings_string)
+file.write("jp = user.job_postings.new(attributes)\n")
+file.write("jp.save(validate: false)\n")
+file.write("jps[index] = jp\n")
+file.write("end\n\n")
 file.write(array_names[3]+" = []\n")
 file.write(skills_string+"\n")
 file.write("arr.each do |a|\n")

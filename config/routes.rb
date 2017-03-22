@@ -72,6 +72,7 @@ Rails.application.routes.draw do
 
   # Job Posting routes
   #get 'job_postings' => 'job_postings#index'
+  get 'job_postings' => 'job_postings#index'
   get 'job_postings/new' => 'job_postings#new', as: :new_job_posting
   get 'job_postings/refresh' => 'job_postings#refresh', as: :refresh_job_posting
   post 'job_postings/refresh' => 'job_postings#refresh_process', as: :refresh_job_posting_process

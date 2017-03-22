@@ -1,14 +1,14 @@
 <%= simple_form_for @job_posting do |f| %>
 	<div class="row">
 
-		<%= f.input :title, required: true, wrapper_html: { class: "col-md-6" } %>
+		<%= f.input :title, wrapper_html: { class: "col-md-6" } %>
 
-		<%= f.input :city, required: true, wrapper_html: { class: "col-md-3" } %>
+		<%= f.input :city, wrapper_html: { class: "col-md-3" } %>
 
 		<% if @job_posting.province.nil? %>
-			<%= f.input :province, required: true, collection: PROVINCES, prompt: "Select Province", wrapper_html: { class: "col-md-3" } %>
+			<%= f.input :province, collection: PROVINCES, prompt: "Select Province", wrapper_html: { class: "col-md-3" } %>
 		<% else %>
-			<%= f.input :province, required: true, collection: PROVINCES, selected: @job_posting.province, wrapper_html: { class: "col-md-3" } %>
+			<%= f.input :province, collection: PROVINCES, selected: @job_posting.province, wrapper_html: { class: "col-md-3" } %>
 		<% end %>
 	</div>
 
@@ -25,22 +25,22 @@
 
 	<div class="row">
 		<% if !@job_posting.job_category.nil? %>
-			<%= f.input :job_category_id, required: true, label: "NAICS Industry Category", collection: @categories, selected: @job_posting.job_category.id, wrapper_html: { class: "col-md-6" } %>
+			<%= f.input :job_category_id, label: "NAICS Industry Category", collection: @categories, selected: @job_posting.job_category.id, wrapper_html: { class: "col-md-6" } %>
 		<% else %>
-			<%= f.input :job_category_id, required: true, label: "NAICS Industry Category", collection: @categories, prompt: "Select Category", wrapper_html: { class: "col-md-6" } %>
+			<%= f.input :job_category_id, label: "NAICS Industry Category", collection: @categories, prompt: "Select Category", wrapper_html: { class: "col-md-6" } %>
 		<% end %>
 
 		<% if !@job_posting.job_type.nil? %>
-			<%= f.input :job_type, required: true, label: "Work Type", collection: JOB_TYPES, selected: @job_posting.job_type, wrapper_html: { class: "col-md-6" } %>
+			<%= f.input :job_type, label: "Work Type", collection: JOB_TYPES, selected: @job_posting.job_type, wrapper_html: { class: "col-md-6" } %>
 		<% else %>
-			<%= f.input :job_type, required: true, label: "Work Type", collection: JOB_TYPES, prompt: "Select Work Type", wrapper_html: { class: "col-md-6" } %>
+			<%= f.input :job_type, label: "Work Type", collection: JOB_TYPES, prompt: "Select Work Type", wrapper_html: { class: "col-md-6" } %>
 		<% end %>
 	</div>
 	<div class="row">
 		<% if @job_posting.pay_rate.nil? %>
-			<%= f.input :pay_rate, collection: PAY_RATES, required: true, checked:"yearly", as: :radio_buttons, item_wrapper_tag: "div", item_wrapper_class: ( "error-height" if @job_posting.errors[:yearly_upper_pay_range].any? || @job_posting.errors[:yearly_lower_pay_range].any?), wrapper_html: { class: "pay-rate-width margin-bottom-0 col-md-1" } %>
+			<%= f.input :pay_rate, collection: PAY_RATES, checked:"yearly", as: :radio_buttons, item_wrapper_tag: "div", item_wrapper_class: ( "error-height" if @job_posting.errors[:yearly_upper_pay_range].any? || @job_posting.errors[:yearly_lower_pay_range].any?), wrapper_html: { class: "pay-rate-width margin-bottom-0 col-md-1" } %>
 		<% else %>
-			<%= f.input :pay_rate, collection: PAY_RATES, required: true, selected: @job_posting.pay_rate, as: :radio_buttons, item_wrapper_tag: "div", item_wrapper_class: ( "error-height" if @job_posting.errors[:yearly_upper_pay_range].any? || @job_posting.errors[:yearly_lower_pay_range].any?), wrapper_html: { class: "pay-rate-width margin-bottom-0 col-md-1" } %>
+			<%= f.input :pay_rate, collection: PAY_RATES, selected: @job_posting.pay_rate, as: :radio_buttons, item_wrapper_tag: "div", item_wrapper_class: ( "error-height" if @job_posting.errors[:yearly_upper_pay_range].any? || @job_posting.errors[:yearly_lower_pay_range].any?), wrapper_html: { class: "pay-rate-width margin-bottom-0 col-md-1" } %>
 		<% end %>
 		<div class="col-md-6">
 			<div class="row">
@@ -59,12 +59,12 @@
 	</div>
 
 	<div class="row">
-		<%= f.input :open_date, as: :string, required: true, input_html: {type: :date, id: "open-date"}, wrapper_html: { class: "col-md-3" } %>
+		<%= f.input :open_date, as: :string, input_html: {type: :date, id: "open-date"}, wrapper_html: { class: "col-md-3" } %>
 
-		<%= f.input :close_date, as: :string, required: true, input_html: {type: :date, id: "close-date"}, wrapper_html: { class: "col-md-3" } %>
+		<%= f.input :close_date, as: :string, input_html: {type: :date, id: "close-date"}, wrapper_html: { class: "col-md-3" } %>
 	</div>
 	<div class="row">
-		<%= f.input :description, required: true, as: :text, input_html: {rows: "4"}, wrapper_html: { class: "padding-left-15 col-md-12" }%>
+		<%= f.input :description, as: :text, input_html: {rows: "4"}, wrapper_html: { class: "padding-left-15 col-md-12" }%>
 	</div>
 
 	<hr class="margin-top-10 gray-1">

@@ -15,12 +15,11 @@ class UsersController < ApplicationController
 	def show
 
 		@user = User.find(params[:id])
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 
 		@surveys = Survey.get_title_map
-
-		if user_signed_in? && @user == current_user
-			@user_bucket = user_bucket(4)
-		end
 
 		if @user.has_role? :employee
 			@projects = @user.projects.order('project_date DESC')
@@ -65,10 +64,12 @@ class UsersController < ApplicationController
 
 	def edit
 		@user = User.find(params[:id])
+		@user_buckets = user_bucket(4)
 	end
 
 	def update
 		@user = User.find(params[:id])
+		@user_buckets = user_bucket(4)
 		if params.include?(:personal)
 			if @user.update_attributes(personal_params)
 				flash[:success] = "Personal Info successfully updated."
@@ -127,6 +128,7 @@ class UsersController < ApplicationController
 		elsif params.include?(:bio)
 			if @user.update_attributes(bio_params)
 				flash[:success] = "Bio updated."
+				redirect_to user_path and return
 			else
 				flash[:danger] = "There was an error updating your bio.  Please check all fields are completed properly."
 				render 'edit' and return

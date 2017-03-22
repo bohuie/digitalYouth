@@ -33,7 +33,12 @@
 </div>
 
 <h4>Your Reference</h4>
-<p>You are giving a reference to <%= @referUser.first_name %> <%= @referUser.last_name %>.  Please fill out the form below, and thank you for your time.</p>
+<p>
+	You are giving a reference to <%= @referUser.first_name %> <%= @referUser.last_name %>.  Please fill out the form below, and thank you for your time.
+	<% if user_signed_in? %>
+		By completing this reference, you allow other users to see your name and picture on <%= @referUser.first_name %> <%= @referUser.last_name %>'s profile.  If you have set your security settings otherwise, your info will still be unavailable in other places, but visible on <%= @referUser.first_name %> <%= @referUser.last_name %>'s profile.
+	<% end %>
+</p>
 	<%if !user_signed_in?%>
 	<p><% if User.find_by(email: @reference_link.email.downcase) != nil%>
 			Hey we can see you have a <%=ENV['HOST_NAME']%> account<br>

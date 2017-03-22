@@ -31,10 +31,16 @@ class JobPostingApplicationsController < ApplicationController
 		@user_required_matches = @user_skill_matches.select{ |a| a[:importance]==2 }
 		@user_preferred_matches = @user_skill_matches.select{ |a| a[:importance]==1 }
 		@user = current_user
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 	end
 
 	def new # Displays the forum to create an application
 		@user = current_user
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 		@job_posting = JobPosting.find(params[:job_posting])
 		@req_skills  = JobPostingSkill.where(job_posting_id:@job_posting.id, importance: 2).includes(:skill).order(:id)
 		@pref_skills = JobPostingSkill.where(job_posting_id:@job_posting.id, importance: 1).includes(:skill).order(:id)
@@ -51,6 +57,10 @@ class JobPostingApplicationsController < ApplicationController
 	end
 
 	def create # Creates the application
+		@user = current_user
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 		params[:job_posting_application][:applicant_id] = current_user.id
 		@job_posting_application = JobPostingApplication.new(job_posting_application_params)
 		if @job_posting_application.save
@@ -64,6 +74,10 @@ class JobPostingApplicationsController < ApplicationController
 	end
 
 	def update # Set the status to the value matching the parameter
+		@user = current_user
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 		job_posting = @job_posting_application.job_posting
 		save = @job_posting_application.update(status: JobPostingApplication.get_status_int(params[:status]))
 		if save #Create notification for user

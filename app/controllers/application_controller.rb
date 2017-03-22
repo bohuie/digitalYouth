@@ -78,15 +78,15 @@ class ApplicationController < ActionController::Base
         while (ind < weight)
           # Create Projects
           #if current_user.projects.count == 0
-            user_bucket << [:new_user_project, "https://youtu.be/s32XxXlbLzQ"]
+            user_bucket << [:new_user_project, "https://youtu.be/VyKTGBCtUks?list=PL9tO6C1pzlUmHp3JDoTYetpWCV1vCXRwn"]
           #end
           #unless current_user.answered_surveys.include? true
-            user_bucket << [ :new_user_survey, "https://youtu.be/1LBzhqRXbLE"]
+            user_bucket << [ :new_user_survey, "https://youtu.be/zaiOkJSDwkM?list=PL9tO6C1pzlUmHp3JDoTYetpWCV1vCXRwn"]
           #end
 
-          user_bucket << [:new_user_compare_other, "https://youtu.be/7RrBlU9XkFg"]
+          user_bucket << [:new_user_compare_other, "https://youtu.be/toecYbprHC0?list=PL9tO6C1pzlUmHp3JDoTYetpWCV1vCXRwn"]
 
-          user_bucket << [:new_user_compare_job, "https://youtu.be/jAT5-2d-pSM"]
+          user_bucket << [:new_user_compare_job, "https://youtu.be/RhZtlkxpsis?list=PL9tO6C1pzlUmHp3JDoTYetpWCV1vCXRwn"]
           ind += 1
         end
 
@@ -156,15 +156,15 @@ class ApplicationController < ActionController::Base
 
         ind = 0
         while (ind < weight)
-          user_bucket << [:new_user_survey, ""]
+          user_bucket << [:new_user_survey, "https://youtu.be/2ZpXlirkGAI?list=PL9tO6C1pzlUmUIFmkFTm_PzEC3WTj--Qc"]
 
-          user_bucket << [:new_user_contact, ""]
+          user_bucket << [:new_user_contact, "https://youtu.be/dvM28EJREoQ?list=PL9tO6C1pzlUmUIFmkFTm_PzEC3WTj--Qc"]
 
-          user_bucket << [:new_user_views, ""]
+          user_bucket << [:new_user_views, "https://youtu.be/Og3W2xFB0gE?list=PL9tO6C1pzlUmUIFmkFTm_PzEC3WTj--Qc"]
 
-          user_bucket << [:new_user_compare, ""]
+          user_bucket << [:new_user_compare, "https://youtu.be/4HLlBQP5kN8?list=PL9tO6C1pzlUmUIFmkFTm_PzEC3WTj--Qc"]
 
-          user_bucket << [:new_user_search, ""]
+          user_bucket << [:new_user_search, "https://youtu.be/qhrh-IXDnn4?list=PL9tO6C1pzlUmUIFmkFTm_PzEC3WTj--Qc"]
 
           ind += 1
         end

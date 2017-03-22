@@ -7,7 +7,6 @@
 	<br />
 	<div class="row">
 		<div class="col-md-12">
-			<%= link_to 'My Profile', user_path(current_user), class: 'signuplink', style: "color: white;" %>
 			<ul style="text-align: left;">
 				<h4>
 					<%= render 'shared/user_buckets' %>
@@ -16,7 +15,7 @@
 		</div>
 	</div>
 	<br />
-	<div class="footerbox row">
-		<h5>Already a member? <a href="users/sign_in" style="">Login</a></h5>
+	<div class="footerbox row user-footer">
+			<%= link_to 'Go To My Profile', user_path(current_user) %>
 	</div>
 </div>

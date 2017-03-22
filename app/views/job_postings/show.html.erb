@@ -31,29 +31,27 @@
 <div class="tab-content">
 	<% if @job_posting.is_expired? && !(user_signed_in? && current_user.id == @job_posting.user_id) || (user_signed_in? && current_user.has_role?(:admin)) %>
 		<%= render 'shared/dismissable_alert', msg:"This job posting is expired.", type: "warning" %>
-	<% else %>
-		<% if @job_posting.is_expired? && (user_signed_in? && current_user.id == @job_posting.user_id) || (user_signed_in? && current_user.has_role?(:admin))%>
-			<%= render 'shared/dismissable_alert', msg:"This job posting is expired. It will no longer be visible to other users.", type: "warning" %>
-		<% end %>
-		<% if current_user == @user %>
-			<div id="applicants" class="<%=apclass%>">
-				<%= render 'job_postings/job_posting_applicants' %>
-			</div>
-		<% end %>
-		<div id="survey" class="<%=suclass%>">
-			<h4>Ideal Candidate</h4>
-			<% if user_signed_in? && current_user.id == @job_posting.user_id %>
-				<p>Fill out these surveys so potential Job Seekers can get an idea of how they compare to your "ideal candidate".</p>
-			<% else %>
-				<p>Below, you can view what an ideal candidates' skill survey graphs would look like.</p>
-				<% if user_signed_in? && (current_user.has_role? :employee) %>
-					<p><%= link_to 'Compare Skill Graphs to Me', survey_compare_all_path(jp: @job_posting.id), class: "btn btn-primary" %></p>
-				<% end %>
-			<% end %>
-			<%= render '/users/partials/show_survey_table', user:@user, results:@survey_results %>
-		</div>
-		<div id="posting" class="<%=poclass%>">
-			<%= render 'job_postings/job_posting' %>
+	<% elsif @job_posting.is_expired? && (user_signed_in? && current_user.id == @job_posting.user_id) || (user_signed_in? && current_user.has_role?(:admin))%>
+		<%= render 'shared/dismissable_alert', msg:"This job posting is expired. It will no longer be visible to other users.", type: "warning" %>
+	<% end %>
+	<% if current_user == @user %>
+		<div id="applicants" class="<%=apclass%>">
+			<%= render 'job_postings/job_posting_applicants' %>
 		</div>
 	<% end %>
+	<div id="survey" class="<%=suclass%>">
+		<h4>Ideal Candidate</h4>
+		<% if user_signed_in? && current_user.id == @job_posting.user_id %>
+			<p>Fill out these surveys so potential Job Seekers can get an idea of how they compare to your "ideal candidate".</p>
+		<% else %>
+			<p>Below, you can view what an ideal candidates' skill survey graphs would look like.</p>
+			<% if user_signed_in? && (current_user.has_role? :employee) %>
+				<p><%= link_to 'Compare Skill Graphs to Me', survey_compare_all_path(jp: @job_posting.id), class: "btn btn-primary" %></p>
+			<% end %>
+		<% end %>
+		<%= render '/users/partials/show_survey_table', user:@user, results:@survey_results %>
+	</div>
+	<div id="posting" class="<%=poclass%>">
+		<%= render 'job_postings/job_posting' %>
+	</div>
 </div>

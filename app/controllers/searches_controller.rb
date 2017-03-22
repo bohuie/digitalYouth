@@ -16,10 +16,12 @@ class SearchesController < ApplicationController
 		@l = params[:l].nil?  ? "" : format_location(params[:l])  #location
 		@i = params[:i].nil?  ? "" : params[:i]  		  #industry
 		@c = params[:c].nil?  ? "" : params[:c].titleize  #company
-		@cc= params[:cc].nil? ? "" : params[:cc] #current_company - not implemented
+		@cc= params[:cc].nil? ? "" : params[:cc].titleize #current_company
+		@j = params[:j].nil?  ? "" : params[:j].titleize #job_title
 		@pc= params[:pc].nil? ? "" : params[:pc] #past_company - not implemented
 		@r = params[:r].nil?  ? "" : params[:r]  #relationship - not implemented
 		@s = params[:s].nil?  ? "" : params[:s].titleize  #skills
+		@de= params[:de].nil? ? "" : params[:de] #All jobs vs Active (ignore expired), Date Expired
 		@jt= params[:jt].nil? ? "" : params[:jt] #job_type
 		@dp= params[:dp].nil? ? "" : params[:dp] #date_posted
 		@pd= params[:pd].nil? ? "" : params[:pd] #project_date
@@ -41,7 +43,7 @@ class SearchesController < ApplicationController
 		when "People" # Searches User model, just employees, current + past company, skills, (and should have location and relationship) 
 			idxs=[User.searchkick_index.name]
 			where_clause[:role]="employee"
-			@toggles = {s:@s.titleize, l:@l} #need to add cc: @cc, pc: @pc for current company and past company	
+			@toggles = {s:@s.titleize, l:@l, cc:@cc.titleize, j:@j.titleize} #need to add cc: @cc, pc: @pc for current company and past company	
 			@locations = Array.new
 			@relationships = ["1st","2nd", "Group Members", "3rd + Everyone"]
 			#@current_companies = [] # To be implemented
@@ -62,6 +64,9 @@ class SearchesController < ApplicationController
 			locs.each do |l| 
 				@locations.push(l[0].titleize+', '+l[1].upcase)
 			end
+
+			@current_companies = User.where.not(current_company: nil, show_job: false).group(:current_company).order("COUNT(id)").limit(5).pluck(:current_company).map!(&:titleize)
+			@job_titles = User.where.not(job_title: nil, show_job: false).group(:job_title).order("COUNT(id)").limit(5).pluck(:job_title).map!(&:titleize)
 
 		when "Companies" # Searches User model, just employers, filters location (and should have industry)
 			idxs=[User.searchkick_index.name]
@@ -97,7 +102,7 @@ class SearchesController < ApplicationController
 
 		when "JobPostings" # Searches JobPosting, filters location, company, dateposted, industry, job type, skills.
 			idxs=[JobPosting.searchkick_index.name]
-			@toggles = {l: @l, c: @c.titleize, dp: @dp, i: @i.titleize, jt: @jt.titleize, s:@s.titleize}
+			@toggles = {l: @l, c: @c.titleize, dp: @dp, i: @i.titleize, jt: @jt.titleize, s:@s.titleize, de: @de}
 			aggs = [:location, :company, :industry, :job_type, :skills, :created_at]
 			# Postgres query finds the most popular company names joining between the two places the name can exist
 			@pgrec = ActiveRecord::Base.connection.execute("
@@ -134,6 +139,7 @@ class SearchesController < ApplicationController
 			locs.each do |l| 
 				@locations.push(l[0].titleize+', '+l[1].upcase)
 			end
+			@expired = ['Active Postings Only']
 			@dates_posted = ["Past Day", "Past Week","Past Month"]
 			@industries = JobCategory.all.pluck(:name)
 			@job_types = JOB_TYPES.keys
@@ -162,8 +168,9 @@ class SearchesController < ApplicationController
 						#where_clause[:user_id]=ids if !ids.blank?
 					end
 				when "current_company"
-					# To be implemented
 					where_clause[:current_company]=@cc if !@cc.blank?
+				when "job_title"
+					where_clause[:job_title]=@j if !@j.blank?
 				when "past_company"
 					# To be implemented
 					where_clause[:past_company]=@pc if !@pc.blank?
@@ -172,6 +179,8 @@ class SearchesController < ApplicationController
 					where_clause[:relationship]=@r if !@r.blank?
 				when "skills"
 					where_clause[:skills]=@s if !@s.blank?
+				when "date_expired"
+					where_clause[:expired] = false if !@de.blank?
 				when "job_type"
 					where_clause[:job_type]=JOB_TYPES[@jt] if !@jt.blank?
 				when "date_posted"

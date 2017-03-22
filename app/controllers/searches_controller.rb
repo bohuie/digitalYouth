@@ -97,12 +97,12 @@ class SearchesController < ApplicationController
 					LIMIT 5")
 			@skills = Array.new
 			@pgrec.each do |s| @skills.push(s["name"].titleize) end
-
 			@project_date = ["Past Month","Past 6 Months", "Past Year"]
 
 		when "JobPostings" # Searches JobPosting, filters location, company, dateposted, industry, job type, skills.
 			idxs=[JobPosting.searchkick_index.name]
 			@toggles = {l: @l, c: @c.titleize, dp: @dp, i: @i.titleize, jt: @jt.titleize, s:@s.titleize, de: @de}
+			
 			aggs = [:location, :company, :industry, :job_type, :skills, :created_at]
 			# Postgres query finds the most popular company names joining between the two places the name can exist
 			@pgrec = ActiveRecord::Base.connection.execute("
@@ -120,7 +120,7 @@ class SearchesController < ApplicationController
 							ORDER BY cnt DESC
 							LIMIT 5) As tbl")
 			@companies = Array.new
-			@pgrec.each do |p| @companies.push(p["company_name"].titleize) end
+			@pgrec.each do |p| @companies.push(p["company_name"].titleize) unless p["company_name"].titleize =="Seed Data" end
 
 			# Postgres query finds the most popular skill names (restricting length)
 			@pgrec = ActiveRecord::Base.connection.execute("
@@ -137,7 +137,7 @@ class SearchesController < ApplicationController
 			@locations = Array.new
 			locs = JobPosting.all.group(:city, :province).order("COUNT(id) DESC").limit(5).pluck(:city, :province)
 			locs.each do |l| 
-				@locations.push(l[0].titleize+', '+l[1].upcase)
+				@locations.push(l[0].titleize+','+l[1].upcase)
 			end
 			@expired = ['Active Postings Only']
 			@dates_posted = ["Past Day", "Past Week","Past Month"]
@@ -152,8 +152,12 @@ class SearchesController < ApplicationController
 				case f
 				when "locations"
 					#if @type == "Companies"
+					if is_province(@l)
+						where_clause[:province] = @l
+					else
 						where_clause[:city] = @l.split(',')[0].strip
 						where_clause[:province] = @l.split(',')[1].strip unless @l.split(',')[1].blank?
+					end
 				#	else
 				#		where_clause[:location] = @l if !@l.blank?
 				#	end
@@ -267,9 +271,19 @@ private
 			arr = arr.collect(&:strip)
 			if arr.length == 2
 				return arr[0].titleize+", "+arr[1].upcase
+			elsif  is_province(arr[0]) #filter is just province
+				return arr[0].upcase
 			else
 				return arr[0].titleize
 			end
+		end
+	end
+
+	def is_province(loc)
+		if !PROVINCES[loc.upcase].blank?
+			return true
+		else
+			return false
 		end
 	end
 end

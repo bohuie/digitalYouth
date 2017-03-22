@@ -17,7 +17,7 @@
 					<% when :user_skill %>
 						<li style="margin: 10px 0px;">The most popular Job Seeker skill on EdgeMap is <%= bucket[1].titleize %>.</li>
 					<% when :job_skill %>
-						<li style="margin: 10px 0px;">The most demanded skill by Job Providers on EdgeMap is <%= bucket[1].titleize %>.</li>
+						<li style="margin: 10px 0px;">The most sought after skill by Job Providers on EdgeMap is <%= bucket[1].titleize %>.</li>
 					<% when :online %>
 						<li style="margin: 10px 0px;"><%= I18n.t('users', count: bucket[1]) %> online right now.</li>
 					<% when :unconfirmed %>
@@ -48,7 +48,7 @@
 					<% when :user_skill %>
 						<li style="margin: 10px 0px;">The most popular Job Seeker skill on EdgeMap is <%= bucket[1].titleize %>.</li>
 					<% when :job_skill %>
-						<li style="margin: 10px 0px;">The most demanded skill by Job Providers on EdgeMap is <%= bucket[1].titleize %>.</li>
+						<li style="margin: 10px 0px;">The most sought after skill by Job Providers on EdgeMap is <%= bucket[1].titleize %>.</li>
 					<% when :online %>
 						<li style="margin: 10px 0px;"><%= I18n.t('users', count: bucket[1]) %> online right now.</li>
 					<% when :expired_blank %>

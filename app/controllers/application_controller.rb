@@ -123,11 +123,11 @@ class ApplicationController < ActionController::Base
         #Useful Links - Increase array up to 8 size to ensure there is enough list items - Ensure at least 2 random links
         length = user_bucket.length
         links = Array.new
-        links[0] = ["Tips for first job", "https://www.livecareer.com/quintessential/teen-first-job"]
-        links[1] = ["Common interview questions", "http://careers.workopolis.com/advice/the-most-commonly-asked-job-interview-questions-and-how-to-answer-them/"]
-        links[2] = ["Tips for a cover letter", "https://www.themuse.com/advice/how-to-write-a-cover-letter-31-tips-you-need-to-know"]
-        links[3] = ["Prepare for the interview", "http://www.relaunchyourcareer.co.uk/job-interviews/six-secrets-to-doing-well-at-interview/"]
-        links[4] = ["Interview tips", "https://biginterview.com/blog/2015/02/how-to-sell-yourself-in-an-interview.html"]
+        links[0] = ["Recommended Reading - Tips for first job", "https://www.livecareer.com/quintessential/teen-first-job"]
+        links[1] = ["Recommended Reading - Common interview questions", "http://careers.workopolis.com/advice/the-most-commonly-asked-job-interview-questions-and-how-to-answer-them/"]
+        links[2] = ["Recommended Reading - Tips for a cover letter", "https://www.themuse.com/advice/how-to-write-a-cover-letter-31-tips-you-need-to-know"]
+        links[3] = ["Recommended Reading - Prepare for the interview", "http://www.relaunchyourcareer.co.uk/job-interviews/six-secrets-to-doing-well-at-interview/"]
+        links[4] = ["Recommended Reading - Interview tips", "https://biginterview.com/blog/2015/02/how-to-sell-yourself-in-an-interview.html"]
         if length < 6 # 8-2, ensure 2 random links
           fillers = links.sample(6-length)
         else
@@ -207,11 +207,11 @@ class ApplicationController < ActionController::Base
         #Useful Links - Increase array up to 8 size to ensure there is enough list items - Ensure at least 2 random links
         length = user_bucket.length
         links = Array.new
-        links[0] = ["Tips for Millenials in the workspace", "http://www.businessknowhow.com/manage/millenials.htm"]
-        links[1] = ["Millenial traits", "https://business.linkedin.com/talent-solutions/blog/2013/12/8-millennials-traits-you-should-know-about-before-you-hire-them"]
-        links[2] = ["What Millenials want", "http://wallstreetinsanity.com/15-important-qualities-millennials-look-for-where-they-work/"]
-        links[3] = ["Motivating employees", "https://businesscollective.com/37-ideas-for-motivating-your-employees/"]
-        links[4] = ["Employee retension", "http://hr.blr.com/whitepapers/Staffing-Training/Employee-Turnover/Strategies-for-Retaining-Employees-and-Minimizing-"]
+        links[0] = ["Recommended Reading - Tips for Millenials in the workspace", "http://www.businessknowhow.com/manage/millenials.htm"]
+        links[1] = ["Recommended Reading - Millenial traits", "https://business.linkedin.com/talent-solutions/blog/2013/12/8-millennials-traits-you-should-know-about-before-you-hire-them"]
+        links[2] = ["Recommended Reading - What Millenials want", "http://wallstreetinsanity.com/15-important-qualities-millennials-look-for-where-they-work/"]
+        links[3] = ["Recommended Reading - Motivating employees", "https://businesscollective.com/37-ideas-for-motivating-your-employees/"]
+        links[4] = ["Recommended Reading - Employee retension", "http://hr.blr.com/whitepapers/Staffing-Training/Employee-Turnover/Strategies-for-Retaining-Employees-and-Minimizing-"]
         if length < 6 # 8-2, ensure 2 random links
           fillers = links.sample(6-length)
         else

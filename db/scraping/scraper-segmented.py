@@ -64,7 +64,7 @@ def progStr(amount,total):
 		return ' '+str(prog)+'%'
 	return str(prog)+'%'
 # ---------------------------------------
-path = os.path.realpath(__file__).strip(__file__)
+path = "/"+os.path.realpath(__file__).strip(__file__)
 make_dir(path, "data")
 path = path + "/data"
 os.chdir(path)

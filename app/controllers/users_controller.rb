@@ -128,6 +128,7 @@ class UsersController < ApplicationController
 		elsif params.include?(:bio)
 			if @user.update_attributes(bio_params)
 				flash[:success] = "Bio updated."
+				redirect_to user_path and return
 			else
 				flash[:danger] = "There was an error updating your bio.  Please check all fields are completed properly."
 				render 'edit' and return

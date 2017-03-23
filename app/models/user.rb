@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  	searchkick word_start: [:company_name, :skills, :first_name, :last_name, :city, :province, :job_title, :current_company], callbacks: :async
+  	searchkick text_middle: [:company_name, :skills, :first_name, :last_name, :city, :province, :job_title, :current_company], callbacks: :async
 
   	scope :search_import, -> { includes(:roles,:users_roles) }
     scope :online, lambda{ where("updated_at > ?", 10.minutes.ago) }

@@ -1,5 +1,5 @@
 class JobPosting < ActiveRecord::Base
-	searchkick word_start: [:location, :company_name, :title, :skills, :description], callbacks: :async
+	searchkick text_middle: [:province, :city, :company_name, :title, :skills, :description], callbacks: :async
 
 	attr_accessor :yearly_upper_pay_range
 	attr_accessor :hourly_upper_pay_range
@@ -30,13 +30,13 @@ class JobPosting < ActiveRecord::Base
 	def search_data
 		data = Hash.new
  		data[:title] = title.titleize
- 		if self.user_id.nil?
+ 		if self.user_id == 0
 	  		data[:company_name] = company_name.titleize
 	  	else
 	  		data[:company_name] = self.user.company_name.titleize
 	  	end
-	  	data[:city] = city.titleize
-	  	data[:province] = province.upcase
+	  	data[:city] = city.titleize.strip
+	  	data[:province] = province.upcase.strip
 	  	data[:job_type] = job_type
 	  	data[:description] = description.titleize
 	  	data[:industry] = job_category_id

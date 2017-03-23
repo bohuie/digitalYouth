@@ -55,7 +55,11 @@ class UsersController < ApplicationController
 			end 
 
 		elsif @user.has_role? :employer
+			if user_signed_in? && current_user == @user
+				@job_postings = @user.job_postings.order(title: :asc, province: :asc, city: :asc, id: :asc)
+			else
 			@job_postings = @user.job_postings;
+		end
 			if user_signed_in? && current_user.id == @user.id
 				@job_posting = current_user.job_postings.build
 			end

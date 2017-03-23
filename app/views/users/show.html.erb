@@ -83,7 +83,7 @@
 								<div class="col-md-2" style="min-height: 150px">
 									<h5><u><b><%= s.title %></b></u></h5>
 									<% if  @user_skills.where(survey_id: s.id).empty? %>
-										<p>No skills for this category yet</p>
+										<p>No skills yet</p>
 									<% else%>
 										<ul>
 											<% @user_skills.where(survey_id: s.id).each do |sk| %>

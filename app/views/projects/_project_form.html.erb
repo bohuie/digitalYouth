@@ -21,7 +21,7 @@
 <%= simple_form_for @project do |f| %>
 	<div class="row">
 		<div class="col-md-3">
-			<%= f.input :image, as: :file, wrapper_html: { class: 'margin-all-0 row' } %>
+			<%= f.input :image, as: :file, wrapper_html: { class: 'margin-all-0 row' }, label: "Image.  Must be .jpg, .jpeg, or .png." %>
 			<div class="margin-all-0 row" id="target">
 				<% if @project.image.blank? %>
 					<%= image_tag "default-project-medium.svg" %>

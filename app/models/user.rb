@@ -65,14 +65,15 @@ class User < ActiveRecord::Base
     has_many :references, dependent: :destroy
     has_many :reference_redirections, dependent: :destroy
     has_many :responses
-    has_many :job_posting_applications, dependent: :destroy
+    has_many :applicant_job_posting_applications, dependent: :destroy, class_name: "JobPostingApplication", foreign_key: "applicant_id"
+    has_many :company_job_posting_applications, dependent: :destroy, class_name: "JobPostingApplication", foreign_key: "company_id"
     has_many :identities
       
     has_many :user_skills, dependent: :destroy
     accepts_nested_attributes_for :user_skills
     has_many :skills, through: :user_skills
 
-    has_one  :consent
+    has_one  :consent, dependent: :destroy
 
     accepts_nested_attributes_for :consent
 

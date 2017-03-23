@@ -217,7 +217,7 @@ class SearchesController < ApplicationController
 		@results = User.search @query, 
 				 index_name: idxs,
 				 fields: fields,
-				 match: :word_start,
+				 match: :text_middle,
 				 operator: "or", 
 				 track: {user_id:@usr,search_type:@type},
 				 where: where_clause,

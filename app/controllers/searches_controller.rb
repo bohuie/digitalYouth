@@ -105,18 +105,35 @@ class SearchesController < ApplicationController
 			
 			aggs = [:location, :company, :industry, :job_type, :skills, :created_at]
 			# Postgres query finds the most popular company names joining between the two places the name can exist
+			unless @l.blank?
+				if is_province(@l)
+					loc_string = "AND (job_postings.province IS NULL OR job_postings.province = "+@l+")"
+				else
+					loc_string = "AND (job_postings.city IS NULL OR job_postings.city = '"+@l.split(',')[0].strip.titleize+"') "
+					loc_string += "AND (job_postings.province IS NULL OR job_postings.province = '"+@l.split(',')[1].strip.upcase+"')" unless @l.split(',')[1].blank?
+				end
+			else
+				loc_string = ""
+			end
+
+			unless @s.blank?
+				skill_string = "AND ( skills.name = '"+@s+"') "
+			else
+				skill_string = ""
+			end
+			
 			@pgrec = ActiveRecord::Base.connection.execute("
-							SELECT company_name FROM(
+							SELECT company_name  FROM(
 							(SELECT users.company_name, COUNT(job_postings.id) AS cnt
-							FROM job_postings, users 
+							FROM job_postings, users, job_posting_skills, skills 
 							WHERE job_postings.user_id = users.id 
-							AND (job_postings.user_id IS NOT NULL) 
+							AND job_postings.user_id IS NOT NULL 
 							GROUP BY users.company_name)
 							UNION
 							(SELECT job_postings.company_name, COUNT(job_postings.id) AS cnt
-							FROM job_postings 
-							WHERE job_postings.company_name IS NOT NULL
-							GROUP BY job_postings.company_name  )
+								FROM job_postings
+								WHERE job_postings.company_name IS NOT NULL 
+								GROUP BY job_postings.company_name   )
 							ORDER BY cnt DESC
 							LIMIT 5) As tbl")
 			@companies = Array.new
@@ -156,7 +173,7 @@ class SearchesController < ApplicationController
 						where_clause[:province] = @l
 					else
 						where_clause[:city] = @l.split(',')[0].strip
-						where_clause[:province] = @l.split(',')[1].strip unless @l.split(',')[1].blank?
+						where_clause[:province] = @l.split(',')[1].strip.upcase unless @l.split(',')[1].blank?
 					end
 				#	else
 				#		where_clause[:location] = @l if !@l.blank?

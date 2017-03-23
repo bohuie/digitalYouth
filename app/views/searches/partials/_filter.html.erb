@@ -9,9 +9,11 @@
 	<% end %>
 
 	<% if local_assigns[:input] == true %>
-		<button class="btn btn-default btn-xs" onclick="hideUnHide('btn-<%=formatted_name%>','input-<%=formatted_name%>')" id="btn-<%=formatted_name%>">
-			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
-		</button> 
+		<% unless name == "Date Posted" || name == "Project Date" %>
+			<button class="btn btn-default btn-xs" onclick="hideUnHide('btn-<%=formatted_name%>','input-<%=formatted_name%>')" id="btn-<%=formatted_name%>">
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
+			</button> 
+		<% end %>
 		<div class="input-group input-group-sm">
 			<%= text_field_tag key,'', class: 'form-control', placeholder: name, onchange: "filterInputChange('input-#{formatted_name}','#{key}','#{name.downcase}')", 
 				style:"display:none", id:"input-#{formatted_name}"%>

@@ -1,5 +1,5 @@
 class Project < ActiveRecord::Base
-	searchkick word_start: [:title, :description, :owner_first, :owner_last, :skills], callbacks: :async
+	searchkick text_middle: [:title, :description, :owner_first, :owner_last, :skills], callbacks: :async
 
 	belongs_to :user
 

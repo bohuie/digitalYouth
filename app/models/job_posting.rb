@@ -38,7 +38,7 @@ class JobPosting < ActiveRecord::Base
 	  	data[:city] = city.titleize.strip
 	  	data[:province] = province.upcase.strip
 	  	data[:job_type] = job_type
-	  	data[:description] = description.titleize
+	  	#data[:description] = description.titleize
 	  	data[:industry] = job_category_id
 	  	data[:created_at] = created_at
 	  	data[:close_date] = close_date

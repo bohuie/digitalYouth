@@ -60,7 +60,7 @@ class SearchesController < ApplicationController
 			@skills = Array.new
 			@pgrec.each do |s| @skills.push(s["name"].titleize) end
 
-			locs = User.where.not(province: nil).group(:province,:city).order("COUNT(id)").limit(5).pluck(:city, :province)
+			locs = User.where("province IS NOT NULL AND company_name IS NULL").group(:province,:city).order("COUNT(id)").limit(5).pluck(:city, :province)
 			locs.each do |l| 
 				@locations.push(l[0].titleize+', '+l[1].upcase)
 			end
@@ -75,7 +75,7 @@ class SearchesController < ApplicationController
 			aggs = [:location, :industry]
 
 			@locations = Array.new
-			locs = User.where.not(province: nil).group(:province,:city).order("COUNT(id)").limit(5).pluck(:city, :province)
+			locs = User.where("province IS NOT NULL AND company_name IS NOT NULL").group(:province,:city).order("COUNT(id)").limit(5).pluck(:city, :province)
 			locs.each do |l| 
 				@locations.push(l[0].titleize+', '+l[1].upcase)
 			end

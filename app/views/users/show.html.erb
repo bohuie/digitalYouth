@@ -58,6 +58,7 @@
 				</div>
 			</div>
 			<div id="skills" class="<%= skclass %>">
+				<%= link_to 'Edit/Delete', edit_all_user_skill_path, class: "btn btn-primary" %>
 				<h4><b>Category of Skills</b></h4>
     			<% if current_user == @user %>
 						<p>Create a new skill by filling out the info below, or view your skills listed below.</p>

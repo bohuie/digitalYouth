@@ -6,9 +6,9 @@ JOB_TYPES = {"Full Time" => 0,"Part Time" => 1,"Contract" => 2,"Casual" => 3,
 
 PAY_RATES = {"Yearly" => "yearly", "Hourly" => "hourly"}.freeze
 
-SURVEYS = { 0 => "General Computing", 1 => "Internet and Networks", 2 => "Programming", 3 => "Word Processing", 
-			4 => "Spreadsheet", 5 => "Online Communication and Collaboration", 6 => "Time, Project, People", 
-			7 => "Money", 8 => "Presentation", 9 => " Multimedia", 10 => "Social Media", 11 => "21st Century Skills" }.freeze
+SURVEYS = { 1 => "General Computing", 2 => "Internet and Networks", 3 => "Programming", 4 => "Word Processing", 
+			5 => "Spreadsheet", 6 => "Online Communication and Collaboration", 7 => "Time, Project, People", 
+			8 => "Money", 9 => "Presentation", 10 => " Multimedia", 11 => "Social Media", 12 => "21st Century Skills" }.freeze
 
 GENDERS = { "Male" => "male", "Female" => "female"}.freeze
 

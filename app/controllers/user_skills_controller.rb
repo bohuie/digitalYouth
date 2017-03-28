@@ -21,6 +21,15 @@ class UserSkillsController < ApplicationController
 		@user_skills = @user.user_skills.order(:survey_id)
 	end
 
+	def update_all
+		@user = current_user
+		@user_buckets = user_bucket(4)
+		@user_skills = params["user_skills"]
+		@user_skills.each do |user_skill|
+			#skill = Skill.find
+		end
+	end
+
 	def create
 		@skill = Skill.find_or_create_by(name: params[:user_skill][:name].titleize)
 		@user_skill = current_user.user_skills.create(skill_id: @skill.id, survey_id: params[:user_skill][:survey_id])
@@ -37,11 +46,18 @@ class UserSkillsController < ApplicationController
 
 	def destroy
 		user_skill = UserSkill.find(params[:id])
-		if user_skill.delete
-			flash[:success] = "That skill has been removed from your skill section."
-			redirect_to edit_all_user_skill_path
+		project_skill = ProjectSkill.joins(:project).where(projects: {user_id:user_skill.user_id}).where(skill_id:user_skill.skill_id, survey_id: user_skill.survey_id)
+		
+		if project_skill.blank?
+			if user_skill.delete
+				flash[:success] = "That skill has been removed from your skill section."
+				redirect_to edit_all_user_skill_path
+			else
+				flash[:warning] = 'There was an error deleting that skill.  Please try again later or contact an administrator.'
+				redirect_to edit_all_user_skill_path
+			end
 		else
-			flash[:warning] = 'There was an error deleting that skill.  Please try again later or contact an administrator.'
+			flash[:warning] = "A project contains that skill.  Please delete or update it."
 			redirect_to edit_all_user_skill_path
 		end
 	end

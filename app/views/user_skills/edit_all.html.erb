@@ -1,7 +1,7 @@
 <%= render "users/shared/profile" %>
 
 <%= render partial: "shared/site_tabs", locals: {active: "skills", user_path: user_path(@user) } %>
-<%= form_tag update_all_user_skill_path do %>
+<%= form_tag update_all_user_skill_path, method: :patch do %>
 	<h4>Edit or Delete Skills</h4>
 	<b>Here you can edit your user skills or delete them if necessary.</b><br />
 	<div class="padding-10">

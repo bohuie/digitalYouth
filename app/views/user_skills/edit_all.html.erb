@@ -3,7 +3,7 @@
 <%= render partial: "shared/site_tabs", locals: {active: "skills", user_path: user_path(@user) } %>
 <%= form_tag update_all_user_skill_path, method: :patch do %>
 	<h4>Edit or Delete Skills</h4>
-	<b>Here you can edit your user skills or delete them if necessary.</b><br />
+	<b>Here you can edit your skills or delete them if necessary.  You must make changes to skills in projects first before you can update their name, or delete them from the project before you can remove them from here.</b><br />
 	<div class="padding-10">
 		<%= submit_tag "Update Changes", class: "btn btn-primary" %>
 	</div>

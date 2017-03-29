@@ -65,9 +65,11 @@ Rails.application.routes.draw do
 
 
   # User-skill routes
-  get '/user_skills/:id' => 'user_skills#show', as: :user_skill
   get '/user_skills/:id/edit' => 'user_skills#edit', as: :edit_user_skill
+  get '/user_skills/edit_all' => 'user_skills#edit_all', as: :edit_all_user_skill
+  patch '/user_skills/update_all' => 'user_skills#update_all', as: :update_all_user_skill
   patch '/user_skills/:id' => 'user_skills#update'
+  delete '/user_skills/:id' => 'user_skills#destroy', as: :delete_user_skill
   post '/user_skills' => 'user_skills#create'
 
   # Job Posting routes

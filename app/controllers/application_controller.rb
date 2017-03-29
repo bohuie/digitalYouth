@@ -92,7 +92,7 @@ class ApplicationController < ActionController::Base
 
         # Check for unanswered surveys
         if current_user.answered_surveys.include? false && (!current_user.answered_surveys.include? true) ## if none of them have been answered
-          user_bucket << [:empty_survey, SURVEYS[current_user.answered_surveys.index(false)]] 
+          user_bucket << [:empty_survey, SURVEYS[current_user.answered_surveys.index(false) + 1]] ## Account for off-by-one index error due to Array(0) vs DB(1) indexing
         end
 
         #Most Common User Skill

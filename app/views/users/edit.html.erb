@@ -1,11 +1,11 @@
 <%= render "users/shared/profile" %>
 
 <div class="container" id="profileButtons">
-  <ul class="nav nav-tabs profileButtonContent">
-    <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#personal">User Info</a></li>
-    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#email">Change Email</a></li>
-    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#password">Change Password</a></li>
-    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#media">Social Media</a></li>
+  <ul class="nav nav-tabs profileButtonContent" style="width:100%">
+    <li style="min-width: calc(25% - 6px)" class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#personal">User Info</a></li>
+    <li style="min-width: calc(25% - 6px)" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#email">Change Email</a></li>
+    <li style="min-width: calc(25% - 6px)" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#password">Change Password</a></li>
+    <li style="min-width: calc(25% - 6px)" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#media">Social Media</a></li>
   </ul>
   <div class="tab-content profileButtonContent">
     <div id="personal" class="tab-pane fade in active">

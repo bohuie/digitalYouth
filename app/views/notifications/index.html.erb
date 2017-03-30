@@ -5,7 +5,7 @@
 	<%= render partial: "shared/employer_tabs", locals: {active: session[:home_tab]} %>
 <% end %>
 
-<div class="col-lg-6">
+<div class="col-md-10">
 	<ul id="index-notifs" style="list-style-type: none;">
 	  	<%= render 'shared/notifications', :local_activities => @notifications %>
 	  	<img id="ajax-loading" class="loading-image" src="<%=asset_path('loading.gif')%>" alt="Loading.." style="visibility:hidden;">
@@ -17,16 +17,20 @@
 	</ul>
 </div>
 <% if @notifications_count > 1 %>
-	<div class="col-lg-1">
-		<%= link_to delete_all_notifications_path, remote: true, method: "delete", data: {confirm: "Are you sure you want to delete all notifications?"}, id:"del-all" do %>
-			<span class="glyphicon glyphicon-trash"></span>
-		<% end %>
+	<div class="col-md-2">
+		<p>
+			<%= link_to delete_all_notifications_path, remote: true, method: "delete", data: {confirm: "Are you sure you want to delete all notifications?"}, id:"del-all" do %>
+				<span class="glyphicon glyphicon-trash"></span> Delete All
+			<% end %>
+		</p>
 
-		<%= link_to update_all_notifications_path, remote: true, method: "patch", id:"upd-all" do %>
-			<span class="glyphicon glyphicon-ok"></span>
-		<% end %>
+		<p>
+			<%= link_to update_all_notifications_path, remote: true, method: "patch", id:"upd-all" do %>
+				<span class="glyphicon glyphicon-ok"></span> Mark All Read
+			<% end %>
+		</p>
 
-		<p id="index-notif-counter"><%= @notifications_count%></p>
+		<!--<p id="index-notif-counter"><%= @notifications_count%></p>-->
 	</div>
 <% end %>
 

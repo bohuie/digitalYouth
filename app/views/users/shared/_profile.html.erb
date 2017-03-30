@@ -46,10 +46,16 @@
 			<div style="margin-top:10px;"><%= link_to 'Contact '+@user.formatted_name(current_user), contact_user_path(@user), class: "btn btn-primary" %></div>
 		<% end %>
 	</div>
+	<% if user_signed_in? && @user == current_user %>
+		<div class="bulletin-board">
+		<ul>
+			<%= render 'shared/user_buckets' %>
+		</div>
+		<% end %>
 </div>
 <% elsif @user.has_role? :employer %>
 <!-- Employer Profile -->
-	<div class ="profileContainer">
+	<div class ="profileContainer row">
 		<div class ="profileContainerImage">
 			<% if defined? edit %>
 				<div class="profile-image fix-display medium-shadow">
@@ -78,6 +84,12 @@
 			</h5>
 			<h5><%= @user.summary %></h5>
 		</div>
+		<% if user_signed_in? && @user == current_user %>
+		<div class="bulletin-board">
+		<ul>
+			<%= render 'shared/user_buckets' %>
+		</div>
+		<% end %>
 	</div>
 <% else %>
 	<!-- admin -->

@@ -7,6 +7,9 @@ class ResponsesController < ApplicationController
 	def create
 		# Fetch data from params
 		@user = current_user
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 		@survey_id = Integer(params[:response][:survey_id])
 		@scores = params[:response][:scores]
 		@question_ids = params[:response][:question_ids]
@@ -63,6 +66,9 @@ class ResponsesController < ApplicationController
 	def update
 		# Fetch data from params
 		@user = current_user
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 		@survey_id = Integer(params[:response][:survey_id])
 		@scores = params[:response][:scores]
 		@question_ids = params[:response][:question_ids]

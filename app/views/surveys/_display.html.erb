@@ -1,6 +1,10 @@
 <div class="row">
 	<div class="col-md-8">
-		<%= column_chart survey_results, min: 0, max: 3, library: { legend: { position: "top" }, chartArea: {left: 50, bottom: 20, width: '100%', height: '80%'}, series:{0 => {type: "line"}}, vAxis: { ticks: [{v: 0, f: "None"}, {v: 1, f: "Few"}, {v:2, f:"Half"}, {v: 3, f:"Most"}]}} %>
+		<% if survey_results[0][:name]=="Average Job Seeker" %>
+			<%= column_chart survey_results, min: 0, max: 3, library: { legend: { position: "top" }, chartArea: {left: 50, bottom: 20, width: '100%', height: '80%'}, series:{0 => {type: "line"}}, vAxis: { ticks: [{v: 0, f: "None"}, {v: 1, f: "Few"}, {v:2, f:"Half"}, {v: 3, f:"Most"}]}} %>
+		<% else %>
+			<%= column_chart survey_results, min: 0, max: 3, library: { legend: { position: "top" }, chartArea: {left: 50, bottom: 20, width: '100%', height: '80%'}, vAxis: { ticks: [{v: 0, f: "None"}, {v: 1, f: "Few"}, {v:2, f:"Half"}, {v: 3, f:"Most"}]}} %>
+		<% end %>
 	</div>
 </div>
 <br />

@@ -8,4 +8,12 @@ class ContactMailer < ApplicationMailer
 		@message = message
 		mail(from: email, subject: "Lost Username")
 	end
+
+	def contact_us (email, name, message)
+
+		@contact_email = email
+		@name = name
+		@message = message
+		mail(from: email, subject: @name + " would like to contact you.")
+	end
 end

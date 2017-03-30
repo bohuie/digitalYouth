@@ -65,15 +65,15 @@
 						<p>This is a summary of all of <%= @user.formatted_name(current_user)+"'s "%> skills organized by categories they selected.</p>
 				<% end %>
     			<% if user_signed_in? && @current_user==@user %>
-						<%= simple_form_for @user_skill do |g| %>
-							<div class="row">
-								<%= g.input :name, wrapper_html: { class: 'padding-left-0 col-md-4'} %>
-								<%= g.input :survey_id, required:true, collection: @surveys, prompt: "Select Classification", label: "Associated Survey Skill", wrapper_html: { class: 'col-md-4' } %>
-							</div>
-							<br />
-							<%= g.button :submit, class: "btn btn-primary" %>
-						<% end %>
+					<%= simple_form_for @user_skill do |g| %>
+						<div class="row">
+							<%= g.input :name, required:true, wrapper_html: { class: 'padding-left-0 col-md-4'} %>
+							<%= g.input :survey_id, required:true, collection: @surveys, prompt: "Select Classification", label: "Associated Survey Skill", wrapper_html: { class: 'col-md-4' } %>
+						</div>
+						<br />
+						<p><%= g.button :submit, class: "btn btn-primary" %> <%= link_to 'Edit/Delete Skills', edit_all_user_skill_path, class: "btn btn-warning" %></p>
 					<% end %>
+				<% end %>
 				<div id="skills">
 					<div class="container">
 						<div class ="row survey-box-row">
@@ -83,7 +83,7 @@
 								<div class="col-md-2" style="min-height: 150px">
 									<h5><u><b><%= s.title %></b></u></h5>
 									<% if  @user_skills.where(survey_id: s.id).empty? %>
-										<p>No skills for this category yet</p>
+										<p>No skills yet</p>
 									<% else%>
 										<ul>
 											<% @user_skills.where(survey_id: s.id).each do |sk| %>
@@ -428,7 +428,7 @@
 						<div id="postings" class="padding-top-10 alternate row">
 							<div class="col-md-2">
 								<%= link_to "#{j.title}\n", job_posting_path(j) %><br />
-								<%= raw(j.get_type_string+"<br />") if !j.job_type.nil? %>
+								<%= raw(j.get_type_string+"<br />") if !j.job_type.nil? && !j.get_type_string.nil? %>
 								<p><%= j.city %>, <%=j.province %></p>
 							</div>
 							<div class="col-md-4">

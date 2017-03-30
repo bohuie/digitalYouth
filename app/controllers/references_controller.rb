@@ -31,6 +31,9 @@ class ReferencesController < ApplicationController
 
 	def email # Page for form to send an email
 		@user = current_user
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 		@url = ""
 		loop do
 			@url = SecureRandom.urlsafe_base64(10)
@@ -55,6 +58,9 @@ class ReferencesController < ApplicationController
 
 	def new # Form to create a new reference
 		@user = current_user
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 		@reference_redirection = ReferenceRedirection.find_by(reference_url: params[:id])
 		@reference_link = ReferenceRedirection.where(reference_url: params[:id])
 		if !@reference_link.empty?

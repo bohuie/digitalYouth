@@ -12,7 +12,9 @@ class ProjectsController < ApplicationController
 			@user = current_user
 			@projects = current_user.projects
 		end
-
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 		if user_signed_in? && current_user.id == @user.id
 			@project = Project.new
 		end
@@ -24,11 +26,17 @@ class ProjectsController < ApplicationController
 		project_skills.skill = Skill.new
 		@surveys = Survey.get_title_map
 		@user = current_user
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 	end
 
 	def show
 		@project = Project.find(params[:id])
 		@user = @project.user
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 	end
 
 	def edit
@@ -36,10 +44,16 @@ class ProjectsController < ApplicationController
 		@skills = @project.skills
 		@surveys = Survey.get_title_map
 		@user= @project.user
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 	end
 
 	def create
 		@user = current_user
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 		@project = current_user.projects.build(project_params)
 		@surveys = Survey.get_title_map
 
@@ -60,6 +74,9 @@ class ProjectsController < ApplicationController
 
 	def update
 		@user = current_user
+		if user_signed_in? && @user == current_user
+			@user_buckets = user_bucket(4)
+		end
 		@project = Project.find(params[:id])
 		@surveys = Survey.get_title_map
 		

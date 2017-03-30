@@ -65,13 +65,16 @@ Rails.application.routes.draw do
 
 
   # User-skill routes
-  get '/user_skills/:id' => 'user_skills#show', as: :user_skill
   get '/user_skills/:id/edit' => 'user_skills#edit', as: :edit_user_skill
+  get '/user_skills/edit_all' => 'user_skills#edit_all', as: :edit_all_user_skill
+  patch '/user_skills/update_all' => 'user_skills#update_all', as: :update_all_user_skill
   patch '/user_skills/:id' => 'user_skills#update'
+  delete '/user_skills/:id' => 'user_skills#destroy', as: :delete_user_skill
   post '/user_skills' => 'user_skills#create'
 
   # Job Posting routes
   #get 'job_postings' => 'job_postings#index'
+  get 'job_postings' => 'job_postings#index'
   get 'job_postings/new' => 'job_postings#new', as: :new_job_posting
   get 'job_postings/refresh' => 'job_postings#refresh', as: :refresh_job_posting
   post 'job_postings/refresh' => 'job_postings#refresh_process', as: :refresh_job_posting_process
@@ -128,8 +131,11 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
+  get 'about_us' => 'welcome#about_us', as: :about_us
   get 'lost_email' => 'welcome#lost_email', as: :lost_email
   post 'lost_email' => 'welcome#send_lost_email', as: :send_lost_email
+  get 'contact_us' => 'welcome#contact_us', as: :contact_us
+  post 'contact_us' => 'welcome#send_contact_us', as: :send_contact_us
   root 'welcome#index'
 
   get '*path' => redirect('/')

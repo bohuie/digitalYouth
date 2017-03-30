@@ -1,22 +1,22 @@
 <%= render "users/shared/profile" %>
 <% if current_user.has_role?(:employee) %>
-	<%= render partial: "shared/job_seeker_tabs", locals: {active: session[:home_tab]} %>
+	<%= render partial: "shared/site_tabs", locals: {active: "notification", user_path: user_path(@user)} %>
 <% elsif current_user.has_role?(:employer) %>
-	<%= render partial: "shared/employer_tabs", locals: {active: session[:home_tab]} %>
+	<%= render partial: "shared/site_tabs", locals: {active: "notification", user_path: user_path(@user)} %>
 <% end %>
 
-<div class="col-md-10">
-	<ul id="index-notifs" style="list-style-type: none;">
+<div class="padding-side-3 col-md-10">
+	<ul id="index-notifs" style="list-style-type: none;" class="padding-0">
 	  	<%= render 'shared/notifications', :local_activities => @notifications %>
 	  	<img id="ajax-loading" class="loading-image" src="<%=asset_path('loading.gif')%>" alt="Loading.." style="visibility:hidden;">
 	  	<div class="center-text">
-	  	<%= link_to notifications_path, remote: true, method: "get", id:"load-more", style:"display:none" do %>
-			<span class="glyphicon glyphicon-refresh"></span>
-		<% end %>
+	  		<%= link_to notifications_path, remote: true, method: "get", id:"load-more", style:"display:none" do %>
+				<span class="glyphicon glyphicon-refresh"></span>
+			<% end %>
 		</div>
 	</ul>
 </div>
-<% if @notifications_count > 1 %>
+<% if @notifications_count > 0 %>
 	<div class="col-md-2">
 		<p>
 			<%= link_to delete_all_notifications_path, remote: true, method: "delete", data: {confirm: "Are you sure you want to delete all notifications?"}, id:"del-all" do %>

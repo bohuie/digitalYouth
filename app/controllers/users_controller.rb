@@ -139,7 +139,7 @@ class UsersController < ApplicationController
 			end
 		elsif params.include?(:crop)
 			if @user.update_attributes(crop_params)
-				@user.reprocess_image
+				@user.image.reprocess!
 				flash[:success] = "Profile Image updated."
 			else
 				flash[:danger] = "There was an error cropping your photo.  Please try again or contact an administrator."

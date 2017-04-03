@@ -7,7 +7,7 @@
       $('#cropbox').Jcrop({
         onChange: update_crop,
         onSelect: update_crop,
-        setSelect: [0, 0, 500, 500],
+        setSelect: [0, 0, 400, 400],
         aspectRatio: 1
       });
     });
@@ -21,6 +21,7 @@
         marginLeft: '-' + Math.round(rx * coords.x) + 'px',
         marginTop: '-' + Math.round(ry * coords.y) + 'px'
       });
+
       var ratio = <%= @user.image_geometry(:original).width %> / <%= @user.image_geometry(:large).width %>; 
       $('#crop_x').val(Math.floor(coords.x * ratio));
       $('#crop_y').val(Math.floor(coords.y * ratio));

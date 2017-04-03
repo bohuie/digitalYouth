@@ -71,6 +71,11 @@ class UsersController < ApplicationController
 		@user_buckets = user_bucket(4)
 	end
 
+	def crop
+		@user = User.find(params[:id])
+		@user_buckets = user_bucket(4)
+	end
+
 	def update
 		@user = User.find(params[:id])
 		@user_buckets = user_bucket(4)
@@ -78,7 +83,7 @@ class UsersController < ApplicationController
 			if @user.update_attributes(personal_params)
 				flash[:success] = "Personal Info successfully updated."
 				unless params[:user][:image].blank?
-					render action: 'crop' and return
+					redirect_to action: 'crop' and return
 				end
 			else
 				flash[:danger] = "Unable to update your info, please check all fields are completed properly."

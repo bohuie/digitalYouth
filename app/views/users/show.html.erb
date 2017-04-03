@@ -432,7 +432,7 @@
 								<p><%= j.city %>, <%=j.province %></p>
 							</div>
 							<div class="col-md-4">
-								<%= j.job_category.name %><br />
+								<%= j.job_category.name if !j.job_category.blank? %><br />
 								<%= raw("Open date: #{j.open_date.strftime('%B %d, %Y')}<br>")   if !j.open_date.blank? %>
 								<%= raw("Close date: #{j.close_date.strftime('%B %d, %Y')}<br>") if !j.close_date.blank? %>
 							</div>

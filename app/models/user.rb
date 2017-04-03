@@ -28,18 +28,20 @@ class User < ActiveRecord::Base
     has_attached_file :image,
         default_url: 'avatar-placeholder-:style.svg',
         styles: { 
-            medium: { geometry: "150x150>", :processors => [:cropper] },
-            small: { geometry: "100x100>", :processors => [:cropper] },
-            thumb: { geometry: "45x45>", :processors => [:cropper] },
-            menu: { geometry: "20x20>", :processors => [:cropper] },
-            large: { geometry: "400x400" }
+            medium: { geometry: "150x150^", :processors => [:cropper] },
+            small: { geometry: "100x100^", :processors => [:cropper] },
+            thumb: { geometry: "45x45^", :processors => [:cropper] },
+            menu: { geometry: "20x20^", :processors => [:cropper] },
+            original: { geometry: "400x400>^"},
+            large: { geometry: "400x400", :processors => [:cropper] }
         },
         convert_options: {
-            medium: "-gravity center -extent 150x150",
-            small: "-gravity center -extent 100x100",
-            thumb: "-gravity center -extent 45x45",
-            menu: "-gravity center -extent 20x20",
-            large: "-gravity center -extent 400x400"
+#            medium: "-gravity center",# -extent 150x150",
+ #           small: "-gravity center",# -extent 100x100",
+  #          thumb: "-gravity center",# -extent 45x45",
+   #         menu: "-gravity center",# -extent 20x20",
+            original: "-gravity center -extent 400x400",
+            large: "-gravity center",# -extent 400x400"
         }
     include DeletableAttachment
     validates_attachment :image, content_type: { content_type: ["image/jpg", "image/jpeg", "image/png"] }

@@ -49,6 +49,7 @@ Rails.application.routes.draw do
 
  #devise_for :users
   #resources :users, only: :show, as: :user
+  get '/users/:id/crop' => 'users#crop'
   get '/users/:id' => 'users#show', as: :user
   get '/users/:id/edit' => 'users#edit', as: :edit_user
   patch '/users/:id' => 'users#update'

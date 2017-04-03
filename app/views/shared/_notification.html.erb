@@ -1,6 +1,10 @@
 <% options = get_read_options(activity)%>
 <% notification_id = "notification-" +activity.id.to_s %>
+<% if spacing %>
 <li id="<%=notification_id%>" class="<%=options[0]%> alternate margin-top-5">
+<% else %>
+<li id="<%=notification_id%>" class="<%=options[0]%> alternate">
+<% end %>
 	<div class="notif-inside">
 		<div class="content" onclick="window.location='<%=show_trackable_path(activity)%>'">
 			<div style="display:flex;"><%= render_activity activity %></div>

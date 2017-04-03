@@ -7,7 +7,7 @@
 
 <div class="padding-side-3 col-md-10">
 	<ul id="index-notifs" style="list-style-type: none;" class="padding-0">
-	  	<%= render 'shared/notifications', :local_activities => @notifications %>
+	  	<%= render 'shared/notifications', :local_activities => @notifications, spacing: true %>
 	  	<img id="ajax-loading" class="loading-image" src="<%=asset_path('loading.gif')%>" alt="Loading.." style="visibility:hidden;">
 	  	<div class="center-text">
 	  		<%= link_to notifications_path, remote: true, method: "get", id:"load-more", style:"display:none" do %>

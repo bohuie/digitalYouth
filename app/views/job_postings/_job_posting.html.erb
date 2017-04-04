@@ -43,7 +43,7 @@
 		<p><%= raw("Open date: #{@job_posting.open_date.strftime('%B %d, %Y')}<br>")   if !@job_posting.open_date.blank? %>
 		   <%= raw("Close date: #{@job_posting.close_date.strftime('%B %d, %Y')}<br>") if !@job_posting.close_date.blank? %>
 		</p>
-		<p><%= raw("Check out this link <a href=\"http://#{@job_posting.link}\">#{@job_posting.link}</a><br>") if !@job_posting.link.blank? %></p>
+		<p><%= raw("To Apply, check out this link <a href=\"http://#{@job_posting.link}\">#{@job_posting.link}</a><br>") if !@job_posting.link.blank? %></p>
 		<p>Posted On: <%= local_date(@job_posting.created_at)%></p>
 	</div>
 	<div class="col-md-1"></div>

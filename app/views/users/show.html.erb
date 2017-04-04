@@ -161,21 +161,36 @@
 									<h2><%= p.title %></h2>
 									<p><%= p.description %></p>
 									<% index = 1 %>
-									<% if !@skills[p.id].empty? %>
-										<p>Skills associated with this project:</p>
-										<div class="row">
-											<div class="col-md-12">
-												<% @skills[p.id].each do |s| %>
-													<% if index < @skills[p.id].length %>
-														<%= s.name.titleize+", " %>
-														<% index = index+1 %>
-													<% else %>
-														<%= s.name.titleize %>
-													<% end %>
-												<% end %>
-											</div>
-										</div>
-									<% end %>
+									<% if !p.skills.empty? %>
+			<p>Skills associated with this project:</p>
+			<ul>
+				<% if p.skills.count > 4 %>
+					<% index = 0 %>
+					<% p.skills.each do |s| %>
+						<% if index % 2 == 0 %>
+							<div class="row">
+								<div class="col-md-6">
+									<li><%=s.name%></li>
+									<% index += 1 %>
+								</div>
+						<% else %>
+								<div class="col-md-6">
+									<li><%=s.name%></li>
+									<% index += 1 %>
+								</div>
+							</div>
+						<% end %>
+					<% end %>
+					<% if index %2 == 1%>
+						</div> <!-- close off the row above when odd number of skills -->
+					<% end %>
+				<% else %>
+					<% p.skills.each do |s| %>
+						<li><%=s.name%></li>
+					<% end %>
+				<% end %>
+			</ul>
+		<% end %>
 								</div>
 								<% if user_signed_in? && @current_user==@user %>
 									<div class="col-md-3">

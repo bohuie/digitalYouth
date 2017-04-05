@@ -104,7 +104,7 @@ class ApplicationController < ActionController::Base
         #Most Common Job Posting Skill
         job_skill = JobPostingSkill.group(:skill_id).order('count_id DESC').limit(1).count(:id)
         if job_skill
-          user_bucket << [:job_skill, Skill.find(job_skill.keys[0]).name]
+          #user_bucket << [:job_skill, Skill.find(job_skill.keys[0]).name]
         end
 
         #Number of users online ##change to total number of JS and JP
@@ -188,7 +188,7 @@ class ApplicationController < ActionController::Base
         #Most Common Job Posting Skill
         job_skill = JobPostingSkill.group(:skill_id).order('count_id DESC').limit(1).count(:id)
         if job_skill
-          user_bucket << [:job_skill, Skill.find(job_skill.keys[0]).name]
+          #user_bucket << [:job_skill, Skill.find(job_skill.keys[0]).name]
         end
 
         #Number of users online

@@ -28,9 +28,9 @@
 	</div>
 </div>
 <div class="row row-style-top">
-	<div class="col-md-4 col-style"></div>
+	<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-style"></div>
 		<% @score_meanings.each do |sm|%>
-			<div class="col-lg-2 col-style"><%=sm%></div>
+			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 col-style"><%=sm%></div>
 		<% end %>
 </div>
 
@@ -40,7 +40,7 @@
 	<% @initial_id = @questions.first.id %>
 	<% for i in 0..@question_count-1 %>
 		<div class="row row-style" >
-			<div class="col-lg-4 col-style">
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-style">
 				<% @question = @questions.find_by(id: @initial_id + i) %>
 				<h3> <%= @question.classification %> </h3>
 				<ul>
@@ -55,7 +55,7 @@
 			 	collection: @collection_array,
 			 	label_method: :last, 
 				value_method: :first, 
- 				item_wrapper_class: 'col-lg-2 col-style margin-all-0',
+ 				item_wrapper_class: 'col-xs-2 col-sm-2 col-md-2 col-lg-2 col-style margin-all-0',
  				item_label_class: 'center',
  				label: false,
  				checked: @values_array[i]

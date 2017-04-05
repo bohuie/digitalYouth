@@ -12,8 +12,8 @@
 .bulletin-board{
 	padding: 25px 10px 0px 5px;
 	background:asset-url("bulletin.svg");
-	background-size: 500px 250px;
-	height: 250px;
+	background-size: cover;
+	min-height: 250px;
 	width: 500px;
 	display:inline-block;
 	float: right;

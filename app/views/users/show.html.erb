@@ -67,8 +67,8 @@
     			<% if user_signed_in? && @current_user==@user %>
 					<%= simple_form_for @user_skill do |g| %>
 						<div class="row">
-							<%= g.input :name, required:true, wrapper_html: { class: 'padding-left-0 col-md-4'} %>
-							<%= g.input :survey_id, required:true, collection: @surveys, prompt: "Select Classification", label: "Associated Survey Skill", wrapper_html: { class: 'col-md-4' } %>
+							<%= g.input :name, required:true, wrapper_html: { class: 'padding-left-0 col-sm-4 col-md-4'} %>
+							<%= g.input :survey_id, required:true, collection: @surveys, prompt: "Select Classification", label: "Associated Survey Skill", wrapper_html: { class: 'padding-left-0 col-sm-4 col-md-4' } %>
 						</div>
 						<br />
 						<p><%= g.button :submit, class: "btn btn-primary" %> <%= link_to 'Edit/Delete Skills', edit_all_user_skill_path, class: "btn btn-warning" %></p>
@@ -76,11 +76,11 @@
 				<% end %>
 				<div id="skills">
 					<div class="container">
-						<div class ="row survey-box-row">
-							<div class="col-md-1"></div>
+						<div class ="row">
 							<% j=1 %>
 							<% Survey.all.each do |s|%>
-								<div class="col-md-2" style="min-height: 150px">
+								<div class="col-xs-2 visible-xs"></div>
+								<div class="col-xs-8 col-sm-5 col-md-3" style="min-height: 150px">
 									<h5><u><b><%= s.title %></b></u></h5>
 									<% if  @user_skills.where(survey_id: s.id).empty? %>
 										<p>No skills yet</p>
@@ -94,11 +94,11 @@
 										</ul>
 									<% end %>
 								</div>
-								<div class="col-md-1"></div>
-								<% if j % 3 == 0 && j < 12 %>
-									
-										<div class="col-md-1"></div>
+								<div class="col-xs-2 col-sm-1 col-md-1"></div>
+								<% if j % 2 == 0 %>
+								<div class = "clearfix visible-sm "></div>
 								<% end %>
+								<div class = "clearfix visible-xs "></div>
 								<% j += 1 %>
 							<% end %>
 						</div>

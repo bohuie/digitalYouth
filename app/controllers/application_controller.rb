@@ -221,6 +221,39 @@ class ApplicationController < ActionController::Base
         fillers.each do |filler|
           user_bucket << [filler[0], filler[1]]
         end
+      #Admin
+      else 
+        user_bucket = Array.new
+
+        #Most Common User Skill
+        user_skill = UserSkill.group(:skill_id).order('count_id DESC').limit(1).count(:id)
+        if user_skill
+          user_bucket << [:user_skill, Skill.find(user_skill.keys[0]).name]
+        end
+
+        #Most Common Job Posting Skill
+        job_skill = JobPostingSkill.group(:skill_id).order('count_id DESC').limit(1).count(:id)
+        if job_skill
+          #user_bucket << [:job_skill, Skill.find(job_skill.keys[0]).name]
+        end
+
+        #Useful Links - Increase array up to 8 size to ensure there is enough list items - Ensure at least 2 random links
+        length = user_bucket.length
+        links = Array.new
+        links[0] = ["Recommended Reading - Tips for first job", "https://www.livecareer.com/quintessential/teen-first-job"]
+        links[1] = ["Recommended Reading - Common interview questions", "http://careers.workopolis.com/advice/the-most-commonly-asked-job-interview-questions-and-how-to-answer-them/"]
+        links[2] = ["Recommended Reading - Tips for a cover letter", "https://www.themuse.com/advice/how-to-write-a-cover-letter-31-tips-you-need-to-know"]
+        links[3] = ["Recommended Reading - Prepare for the interview", "http://www.relaunchyourcareer.co.uk/job-interviews/six-secrets-to-doing-well-at-interview/"]
+        links[4] = ["Recommended Reading - Interview tips", "https://biginterview.com/blog/2015/02/how-to-sell-yourself-in-an-interview.html"]
+        if length < 6 # 8-2, ensure 2 random links
+          fillers = links.sample(6-length)
+        else
+          fillers = links.sample(2)
+        end
+
+        fillers.each do |filler|
+          user_bucket << [filler[0], filler[1]]
+        end
       end
 
       items = Array.new

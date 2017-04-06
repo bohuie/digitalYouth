@@ -1,0 +1,29 @@
+
+<div class="display-flex col-md-2">
+	<% if result.user %>
+		<%= image_tag result.user.image.url(:thumb), alt:"Job Posting Icon", class: "thumb-shadow profile-image align-center" %>
+	<% else %>
+		<%= image_tag "avatar-placeholder-thumb.svg", alt:"Job Posting Icon", class: "thumb-shadow profile-image align-center" %>
+	<% end %>
+</div>
+<div class="col-md-10">
+	<div class="row">
+		<b><%= "#{result.title}" %></b>
+	</div>
+	<div class="row gray-text">
+		<%= result.company_name ? "#{result.company_name}" : "#{result.user.company_name}" %>
+	</div>
+	<div class="row gray-text">
+		<% if !result.city.blank? && !result.province.blank? %>
+			<%= "#{result.city}, #{result.province}" %>
+		<% elsif !result.city.blank? %>
+			<%= "#{result.city}" %>
+		<% elsif !result.province.blank? %>
+			<%= "#{result.province}" %>
+		<% else %>
+		<% end %>
+	</div>
+	<div class="row gray-text">
+		<%= "#{result.description}".truncate(200) %>
+	</div>
+</div>

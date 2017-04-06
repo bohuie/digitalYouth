@@ -1,0 +1,92 @@
+// Place all the styles related to the Notifications controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.notif-image{
+	height: 50px;
+	width: 50px;
+	float: left;
+	padding-right: 5px;
+	padding-top: 5px;
+}
+
+.notif-bar{
+	width:350px;
+	padding-top: 1px;
+}
+
+#notif-list{
+	overflow-y:auto;
+	overflow-x:hidden;
+	max-height:300px;
+
+	//Should style the scroll bar too
+}
+
+.notification{
+	border: 1px solid lightgrey;
+	padding: 2px 5px 2px 5px;
+	height: 65px;
+	min-width: 310px;
+}
+
+.notif-inside{
+	padding: 2px 5px 2px 5px;
+}
+
+.text {
+	float:left;
+	padding-left:5px;
+}
+
+.read {
+	@extend .notification;
+}
+
+.unread{
+	@extend .notification;
+	background-color: #edeef3;
+}
+
+.options{
+	float:right;
+}
+
+.content{
+	float:left;
+	width:95%;
+}
+
+.center-text{
+	text-align:center;
+}
+
+.loading-image{
+	display: block;
+    margin: 0 auto;
+    height: 20px; 
+    width: 20px;
+}
+
+.notifications-bell{
+	color: black;
+   -webkit-text-fill-color: transparent;
+   -webkit-text-stroke-width: 1px;
+   -webkit-text-stroke-color: black;
+}
+
+.notifications-counter {
+  position: absolute;
+  top: 5px;
+  right: 9px;
+  background-color: #e13737;
+  color: white;
+  border-radius: 3px;
+  padding: 0px 2px 0px 2px;
+}
+.notification-reference {
+   height: 50px;
+   width: 50px;
+   float: left;
+   padding-right: 5px;
+}

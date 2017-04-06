@@ -1,0 +1,13 @@
+<%r = activity.trackable %>
+<div>
+	<% if r.referee.nil? %>
+		<img src="<%=asset_path('avatar-placeholder-thumb.svg')%>" alt="User Icon" style="float: left;  margin-right: 5px;" class="thumb-shadow image-radius">
+	<% else %>
+		<%= image_tag r.referee.image.url(:thumb), alt:"User Icon", class:"image-radius thumb-shadow", style: "float:left;  margin-right: 5px;" %>
+	<% end %>
+</div>
+<div class="text">
+	<%= "#{r.first_name} #{r.last_name}"%> gave you a reference!<br>
+	<%= local_time_ago(activity.created_at) %>
+</div>
+<div style="clear:both;"></div>

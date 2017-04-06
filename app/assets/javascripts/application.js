@@ -11,7 +11,14 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery.turbolinks
 //= require jquery_ujs
-//= require turbolinks
-//= require bootstrap-sprockets
+//= require jquery-ui/autocomplete
+//= require bootstrap-sprockets 
+//= require bootstrap-table
+//= require chartkick 
+//= require local_time
+//= require ahoy
+//= require turbolinks 
+//= require_tree ./lib
 //= require_tree .

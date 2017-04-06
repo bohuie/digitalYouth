@@ -1,0 +1,175 @@
+<div class="container padding-0" id="profileButtons">
+   <ul class="nav nav-tabs profileButtonContent navigation-style" style="width:100%">
+
+      <!-- include tab for employers to contact employees -->
+      <% if @user.has_role? :employee %>
+         <!--
+         ## Example
+         render partial: "shared/site_tabs", locals: { active: 'references', user_path: user_path(@user) }
+         ##User - Job Provider
+            ##General/Common Tabs for All
+               ##variable is user_path
+               ##Skill Surveys
+               ##Skills
+               ##Applications (Only seeable by page owner)
+               ##Projects
+               ##References
+         ##Cases to ask Ash - Project (new/edt), Reference request (both requesting and doing)
+         -->
+
+         <!-- preprocess variables -->
+         <% user_path = defined?(user_path) && !user_path.blank? ? ',"' + user_path + '"' : ''%>
+
+         <!-- setup pre and post suffix -->
+         <% pre = user_signed_in? && @current_user==@user ? "setHomeTab(" : "setNavTab(" %>
+         <% post = ");" %>
+
+         <!-- Setup class-active variables -->
+         <% surveyClass = "" %>
+         <% skillClass = "" %>
+         <% appClass = "" %>
+         <% projectClass = "" %>
+         <% refClass = "" %>
+         <% notifClass = "" %>
+         <!-- Count variable -->
+         <% tabCount = user_signed_in? && @current_user==@user ? 5 : 4 %> <!-- logged in owners have App tab, so total is 5 -->
+
+         <% if active == "contact" %>
+            <!-- To ensure no other actives get through -->
+            <% tabCount += 1 %> <!-- Contact Tab -->
+         <% elsif active == "notification" %>
+            <% notifClass = "class=active" %>
+            <% tabCount += 1 %> <!-- Notification Tab -->
+         <% elsif active == "skills" %>
+            <% skillClass = "class=active" %>
+         <% elsif active == "applications" %>
+            <% appClass = "class=active" %>
+         <% elsif active == "projects" %>
+            <% projectClass = "class=active" %>
+         <% elsif active == "references" %>
+            <% refClass = "class=active" %>
+         <% else %>
+            <% surveyClass = "class=active" %>
+         <% end %>
+
+         <% if active == "contact" %>
+            <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); style="min-width: calc(<%= 100/tabCount %>% - 6px)">
+               <a data-toggle="tab" href="#">CONTACT</a>
+            </li>
+         <% end %>
+         <% if active == "notification" %>
+            <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); style="min-width: calc(<%= 100/tabCount %>% - 6px)">
+               <a data-toggle="tab" href="#">NOTIFICATIONS</a>
+            </li>
+         <% end %>
+         <li <%= surveyClass %> onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=<%= pre+"\'surveys\'"+user_path+post%> style="min-width: calc(<%= 100/tabCount %>% - 6px)">
+            <a data-toggle="tab" href="#surveys">SKILL SURVEYS</a>
+         </li>
+         <li <%= skillClass %> onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=<%= pre+"\'skills\'"+user_path+post%> style="min-width: calc(<%= 100/tabCount %>% - 6px)">
+            <a data-toggle="tab" href="#skills">SKILLS</a>
+         </li>
+         <% if user_signed_in? && current_user == @user %>
+            <li <%= appClass %> onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=<%= pre+"\'applications\'"+user_path+post%> style="min-width: calc(<%= 100/tabCount %>% - 6px)">
+               <a data-toggle="tab" href="#applications">JOB APPLICATIONS</a>
+            </li>
+         <% end %>
+         <li <%= projectClass %> onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=<%= pre+"\'projects\'"+user_path+post%> style="min-width: calc(<%= 100/tabCount %>% - 6px)">
+            <a data-toggle="tab" href="#projects">PROJECTS</a>
+         </li>
+         <li <%= refClass %> onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=<%= pre+"\'references\'"+user_path+post%> style="min-width: calc(<%= 100/tabCount %>% - 6px)">
+            <a data-toggle="tab" href="#references">REFERENCES</a>
+         </li>
+
+      <% elsif @user.has_role? :employer %>
+         <!--
+         ## Example
+         render partial: "shared/site_tabs", locals: { active: 'posting', job: @job_posting, user_path: user_path(@user) }
+         ##User - Job Provider
+            ##General/Common Tabs for All
+               ##variable is user_path
+               ##About Us
+               ##Jobs
+            ##Posting Tabs
+               ##variable is posting_path 
+               ##variable job is conditional for these tabs
+               ##Applicants (Only seeable by job posting owner)
+               ##Survey/Ideal Candidate
+               ##Posting Info
+            ##New Posting Tab
+              ## variable new_job is conditional for these tabs
+         -->
+         <!-- preprocess variables -->
+         <% user_path = defined?(user_path) && !user_path.blank? ? ',"' + user_path + '"' : ''%>
+         <% posting_path = defined?(posting_path) && !posting_path.blank? ? ',"' + posting_path + '"' : ''%>
+
+         <!-- setup pre and post suffix -->
+         <% pre = user_signed_in? && @current_user==@user ? "setHomeTab(" : "setNavTab(" %>
+         <% post = ");" %>
+
+         <!-- Setup class-active variables -->
+         <% aboutClass = "" %>
+         <% jobClass = "" %>
+         <% surveyClass = "" %>
+         <% postingClass = "" %>
+         <% appClass = "" %>
+         <% notifClass = "" %>
+         <!-- Count variable -->
+         <% tabCount = 2 %> <!-- Job Providers default to 2 -->
+         <% if defined?(job) %>
+            <% if user_signed_in? && current_user == @user && current_user == job.user %>
+               <% tabCount += 1 %> <!-- Applicants tab -->
+            <% end %>
+            <% tabCount += 1 %> <!-- Ideal tab -->
+            <% tabCount += 1 %> <!-- Job tab -->
+         <% end %>
+         <% if active == "new_job" %>
+            <!-- To ensure no other actives get through -->
+            <% tabCount += 1 %>
+         <% elsif active == "notification" %>
+            <% notifClass = "class=active" %>
+            <% tabCount += 1 %> <!-- Notification Tab -->
+         <% elsif active == "jobs" %>
+            <% jobClass = "class=active" %>
+         <% elsif active == "posting" && defined?(job) %>
+            <% postingClass = "class=active" %>
+         <% elsif active == "survey" && defined?(job)  %>
+            <% surveyClass = "class=active" %>
+         <% elsif active == "applicants" && defined?(job) %>
+            <% appClass = "class=active" %>
+         <% else %>
+            <% aboutClass = "class=active" %>
+         <% end %>
+
+         <!-- Display Tabs -->
+         <% if active == "new_job" %>
+            <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); style="min-width: calc(<%= 100/tabCount %>% - 6px)">
+               <a data-toggle="tab" href="#">NEW JOB POSTING</a>
+            </li>
+         <% end %>
+         <% if active == "notification" %>
+            <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); style="min-width: calc(<%= 100/tabCount %>% - 6px)">
+               <a data-toggle="tab" href="#">NOTIFICATIONS</a>
+            </li>
+         <% end %>
+         <% if defined?(job) %>
+            <% if user_signed_in? && current_user == @user && current_user == job.user %>
+               <li <%= appClass %> onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=<%= pre+"\'applicants\'"+posting_path+post%> style="min-width: calc(<%= 100/tabCount %>% - 6px)">
+                  <a data-toggle="tab" href="#applicants">APPLICANTS</a>
+               </li>
+            <% end %>
+            <li <%= surveyClass %> onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=<%= pre+"\'survey\'"+posting_path+post%> style="min-width: calc(<%= 100/tabCount %>% - 6px)">
+               <a data-toggle="tab" href="#survey">IDEAL CANDIDATE</a>
+            </li>
+            <li <%= postingClass %> onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=<%= pre+"\'posting\'"+posting_path+post%> style="min-width: calc(<%= 100/tabCount %>% - 6px)">
+               <a data-toggle="tab" href="#posting"><%= job.title.upcase.truncate(20) %></a>
+            </li>
+         <% end %>
+         <li <%= aboutClass %> onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=<%= pre+"\'about\'"+user_path+post%> style="min-width: calc(<%= 100/tabCount %>% - 6px)">
+            <a data-toggle="tab" href="#about">ABOUT US</a>
+         </li> 
+         <li <%= jobClass %> onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=<%= pre+"\'jobs\'"+user_path+post%> style="min-width: calc(<%= 100/tabCount %>% - 6px)">
+            <a data-toggle="tab" href="#jobs">JOBS</a>
+         </li>
+      <% end %>
+   </ul>
+</div>

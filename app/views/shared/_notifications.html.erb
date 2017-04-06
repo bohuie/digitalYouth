@@ -1,0 +1,13 @@
+<% if !local_activities.empty? %>
+	<% for activity in local_activities %>
+		<% next if check_and_remove(activity) %>
+		<% if defined?(spacing) && spacing %>
+			<%= render '/shared/notification', activity: activity, spacing: true %>
+		<% else %>
+			<%= render '/shared/notification', activity: activity, spacing: false %>
+		<% end %>
+	<% end %>
+<% else %>
+	<li class="center-text"> You have no notifications! </li>
+<% end %>
+

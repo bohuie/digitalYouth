@@ -1,0 +1,45 @@
+<div class="row">
+	<div class="col-md-2"></div>
+	<div class="col-md-2">
+		<a onClick="document.getElementById('t').value='All'; document.getElementById('search').submit();"class="btn btn-sq btn-primary"><%= image_tag("World_Icon.svg", size: "64x64") %><br /><p>All</p></a>
+	</div>
+	<div class="col-md-2">
+		<a onClick="document.getElementById('t').value='People'; document.getElementById('search').submit();" class="btn btn-sq btn-primary"><%= image_tag("People_Icon.svg", size: "64x64") %><br /><p>People</p></a>
+	</div>
+	<div class="col-md-2">
+		<a onClick="document.getElementById('t').value='Companies'; document.getElementById('search').submit();" class="btn btn-sq btn-primary"><%= image_tag("Companies_Icon.svg", size: "64x64") %><br /><p>Companies</p></a>
+	</div>
+	<div class="col-md-2">
+		<a onClick="document.getElementById('t').value='Projects'; document.getElementById('search').submit();" class="btn btn-sq btn-primary"><%= image_tag("Projects_Icon.svg", size: "64x64") %><br /><p>Projects</p></a>
+	</div>
+	<div class="col-md-2">
+		<a onClick="document.getElementById('t').value='JobPostings'; document.getElementById('search').submit();" class="btn btn-sq btn-primary"><%= image_tag("JobPosting_Icon.svg", size: "64x64") %><br /><p>Job Postings</p></a>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-2 search-sidebar">
+		<%= render "searches/partials/filters" %>
+	</div>
+
+	<div class="col-md-10 search">
+		<% if !@results.blank? %>
+			<p><%=raw("Search results for #{@query}<br>") if !@query.blank?%>
+			<%= pluralize(@results.total_entries, "result") %></p>
+			<input id="total-results" type="hidden" value="<%=@results.total_entries%>"> 
+			<div id="results">
+				<%= render "searches/partials/results", results: @results, query: @query %>
+				<img id="ajax-loading" class="loading-image" src="<%=asset_path('loading.gif')%>" alt="Loading.." style="visibility:hidden;">
+			</div>
+			<%= link_to search_path, remote: true, method: "get", id:"load-more" do %>
+				<span class="glyphicon glyphicon-refresh"></span>
+			<% end %>
+		<% else %>
+			<% if @query.blank? %>
+				<p>No results found.</p>
+			<% else %>
+				<p>No results found for <%=@query%>.</p>
+			<% end %>
+		<% end %>
+	</div>
+</div>

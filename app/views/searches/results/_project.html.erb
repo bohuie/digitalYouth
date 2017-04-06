@@ -1,0 +1,15 @@
+
+<div class="display-flex col-md-2">
+	<%= image_tag result.image.url(:thumb), alt:"Project Icon", class: "profile-image align-center thumb-shadow" %>
+</div>
+<div class="col-md-10">
+	<div class="row">
+		<b><%= "#{result.title}" %></b>
+	</div>
+	<div class="row gray-text">
+		<%= result.user.formatted_name(current_user) %>
+	</div>
+	<div class="row gray-text">
+		<%= "#{result.description}" %>
+	</div>
+</div>

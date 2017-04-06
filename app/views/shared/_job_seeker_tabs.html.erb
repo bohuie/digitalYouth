@@ -1,0 +1,68 @@
+<div class="container" id="profileButtons">
+<ul class="nav nav-tabs profileButtonContent">
+<% path = ',"' + path+'"' if defined?(path) && !path.blank? %>
+<% if user_signed_in? && current_user==@user %>
+    <% if active == "applications" %>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("surveys"<%= path %>);><a data-toggle="tab" href="#surveys">SKILL SURVEYS</a></li>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("skills"<%= path %>);><a data-toggle="tab" href="#skills">SKILLS</a></li>
+        <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("applications"<%= path %>);><a data-toggle="tab" href="#applications">JOB APPLICATIONS</a></li>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("projects"<%= path %>);><a data-toggle="tab" href="#projects">PROJECTS</a></li>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("references"<%= path %>);><a data-toggle="tab" href="#references">REFERENCES</a></li>
+
+    <% elsif active == "projects" %>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("surveys"<%= path %>);><a data-toggle="tab" href="#surveys">SKILL SURVEYS</a></li>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("skills"<%= path %>);><a data-toggle="tab" href="#skills">SKILLS</a></li>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("applications"<%= path %>);><a data-toggle="tab" href="#applications">JOB APPLICATIONS</a></li>
+        <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("projects"<%= path %>);><a data-toggle="tab" href="#projects">PROJECTS</a></li>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("references"<%= path %>);><a data-toggle="tab" href="#references">REFERENCES</a></li>
+
+    <% elsif active == "skills" %>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("surveys"<%= path %>);><a data-toggle="tab" href="#surveys">SKILL SURVEYS</a></li>
+        <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("skills"<%= path %>);><a data-toggle="tab" href="#skills">SKILLS</a></li>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("applications"<%= path %>);><a data-toggle="tab" href="#applications">JOB APPLICATIONS</a></li>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("projects"<%= path %>);><a data-toggle="tab" href="#projects">PROJECTS</a></li>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("references"<%= path %>);><a data-toggle="tab" href="#references">REFERENCES</a></li>
+
+    <% elsif active == "references" %>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("surveys"<%= path %>);><a data-toggle="tab" href="#surveys">SKILL SURVEYS</a></li>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("skills"<%= path %>);><a data-toggle="tab" href="#skills">SKILLS</a></li>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("applications"<%= path %>);><a data-toggle="tab" href="#applications">JOB APPLICATIONS</a></li>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("projects"<%= path %>);><a data-toggle="tab" href="#projects">PROJECTS</a></li>
+        <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("references"<%= path %>);><a data-toggle="tab" href="#references">REFERENCES</a></li>
+
+    <% else %> <!-- Surveys -->
+        <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("surveys"<%= path %>);><a data-toggle="tab" href="#surveys">SKILL SURVEYS</a></li>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("skills"<%= path %>);><a data-toggle="tab" href="#skills">SKILLS</a></li>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("applications"<%= path %>);><a data-toggle="tab" href="#applications">JOB APPLICATIONS</a></li>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("projects"<%= path %>);><a data-toggle="tab" href="#projects">PROJECTS</a></li>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setHomeTab("references"<%= path %>);><a data-toggle="tab" href="#references">REFERENCES</a></li>
+    <% end %>
+<% else %>
+
+    <% if active == "projects" %>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("surveys"<%= path %>);><a data-toggle="tab" href="#surveys">SKILL SURVEYS</a></li>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("skills"<%= path %>);><a data-toggle="tab" href="#skills">SKILLS</a></li>
+        <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("projects"<%= path %>);><a data-toggle="tab" href="#projects">PROJECTS</a></li>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("references"<%= path %>);><a data-toggle="tab" href="#references">REFERENCES</a></li>
+
+    <% elsif active == "skills" %>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("surveys"<%= path %>);><a data-toggle="tab" href="#surveys">SKILL SURVEYS</a></li>
+        <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("skills"<%= path %>);><a data-toggle="tab" href="#skills">SKILLS</a></li>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("projects"<%= path %>);><a data-toggle="tab" href="#projects">PROJECTS</a></li>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("references"<%= path %>);><a data-toggle="tab" href="#references">REFERENCES</a></li>
+
+    <% elsif active == "references" %>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("surveys"<%= path %>);><a data-toggle="tab" href="#surveys">SKILL SURVEYS</a></li>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("skills"<%= path %>);><a data-toggle="tab" href="#skills">SKILLS</a></li>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("projects"<%= path %>);><a data-toggle="tab" href="#projects">PROJECTS</a></li>
+        <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("references"<%= path %>);><a data-toggle="tab" href="#references">REFERENCES</a></li>
+
+    <% else %> <!-- Surveys -->
+        <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("surveys"<%= path %>);><a data-toggle="tab" href="#surveys">SKILL SURVEYS</a></li>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("skills"<%= path %>);><a data-toggle="tab" href="#skills">SKILLS</a></li>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("projects"<%= path %>);><a data-toggle="tab" href="#projects">PROJECTS</a></li>
+        <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onmousedown=setNavTab("references"<%= path %>);><a data-toggle="tab" href="#references">REFERENCES</a></li>
+    <% end %>
+<% end %>
+</ul>
+</div>

@@ -1,0 +1,29 @@
+// Place all the styles related to the JobPostingApplications controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+.job-application-content{
+	cursor: default;
+}
+
+ .custom-bullet li{
+    display:block;
+ }
+.custom-bullet li.yes::before{
+    content: "\e013";
+    font-family: 'Glyphicons Halflings';
+    font-size: 9px;
+    float: left;
+    margin-top: 4px;
+    margin-left: -17px;
+    }
+
+    .custom-bullet li.no::before{
+    content: "\e014";
+    font-family: 'Glyphicons Halflings';
+    font-size: 9px;
+    float: left;
+    margin-top: 4px;
+    margin-left: -17px;
+    }

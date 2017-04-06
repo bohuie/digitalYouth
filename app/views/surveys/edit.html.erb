@@ -1,0 +1,71 @@
+<%= render "users/shared/profile" %>
+<% if @user.has_role? :employee %>
+	<%= render partial: "shared/site_tabs", locals: { active: 'survey', user_path: user_path(@user) } %>
+<% elsif @user.has_role? :employer %>
+	<%= render partial: "shared/site_tabs", locals: { active: 'survey', job: @job_posting, posting_path: job_posting_path(@job_posting), user_path: user_path(@user) } %>
+<% end %>
+
+<div class="row">
+	<div class="col-md-6"> <h2>Category: <%=@survey.format_title.html_safe%></h2> </div>
+</div>
+<div class="row">
+	<% if current_user.has_role? :employee %>
+		<div class="col-md-6"><br /><%= link_to 'Go back to My Profile', user_path(current_user) %></div>
+	<% end %>
+</div>
+<div class="row">
+	<div class="col-md-6"></div>
+	<div class="col-md-6">
+	<% if current_user.has_role? :employee %>
+		<% data_name = "Me" %>
+	<% elsif current_user.has_role? :employer %>
+		<% data_name = "Ideal Candidate" %>
+	<% end %>
+		<%= column_chart [
+				{name: "Average Job Seeker", data: @average_results},
+				{name: data_name, data: @survey_results}
+				], height: "200px", min: 0, max: 3, library: { legend: { position: 'top' }, series:{0 => {type: "line"}}, vAxis: { ticks: [{v: 0, f: "None"}, {v: 1, f: "Few"}, {v:2, f:"Half"}, {v: 3, f:"Most"}]}} %>
+	</div>
+</div>
+<div class="row row-style-top">
+	<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-style"></div>
+		<% @score_meanings.each do |sm|%>
+			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 col-style"><%=sm%></div>
+		<% end %>
+</div>
+
+<%= simple_form_for @response, method: @method do |f| %>
+	<%= f.hidden_field :survey_id, value: @survey.id%>
+	<%= f.hidden_field :job_posting_id, value: params[:job_posting] if current_user.has_role? :employer %>
+	<% @initial_id = @questions.first.id %>
+	<% for i in 0..@question_count-1 %>
+		<div class="row row-style" >
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-style">
+				<% @question = @questions.find_by(id: @initial_id + i) %>
+				<h3> <%= @question.classification %> </h3>
+				<ul>
+					<% @question.prompts.each do |p| %>
+						<li> <%= p.prompt %> </li>
+					<% end %>
+				</ul>
+			</div>
+											
+			<%= f.input_field "scores[#{i}]",
+			 	as: :radio_buttons,
+			 	collection: @collection_array,
+			 	label_method: :last, 
+				value_method: :first, 
+ 				item_wrapper_class: 'col-xs-2 col-sm-2 col-md-2 col-lg-2 col-style margin-all-0',
+ 				item_label_class: 'center',
+ 				label: false,
+ 				checked: @values_array[i]
+ 			%>
+			<%= f.hidden_field "question_ids[#{i}]", value: @question.id %>
+		</div>
+	<% end %>
+	<%= f.button :submit, 'Submit', class: "btn btn-primary" %>
+<% end %>
+
+
+
+

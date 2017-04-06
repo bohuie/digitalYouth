@@ -1,0 +1,23 @@
+<% formatted_name = name.downcase.tr(" ", "_") %>
+	<div class="filter-header"><b><%= name %></b></div>
+	<div id="<%=formatted_name%>" >
+	<p><%= link_to	radio_button("search", name, 'All', {checked: active_search('All',params[key])})+" All", search_path(all_path_hash(@toggles,@query,@type,@filters,formatted_name,key)), class: "search-text #{active_search('All', params[key])}" %></p>
+	<%filter_values.each do |v|%>
+		<% path_hash = get_path_hash(@toggles,@query,@type,@filters,formatted_name) %>
+		<% path_hash[key] = v %>
+		<p><%= link_to radio_button("search", name, v, {checked: active_search(v,params[key])})+" "+v, search_path(path_hash), class: "search-text #{active_search(v,params[key])}" %></p>
+	<% end %>
+
+	<% if local_assigns[:input] == true %>
+		<% unless name == "Date Posted" || name == "Project Date" %>
+			<button class="btn btn-default btn-xs" onclick="hideUnHide('btn-<%=formatted_name%>','input-<%=formatted_name%>')" id="btn-<%=formatted_name%>">
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
+			</button> 
+		<% end %>
+		<div class="input-group input-group-sm">
+			<%= text_field_tag key,'', class: 'form-control', placeholder: name, onchange: "filterInputChange('input-#{formatted_name}','#{key}','#{name.downcase}')", 
+				style:"display:none", id:"input-#{formatted_name}"%>
+		</div>
+	<% end %>
+</div>
+<div class="padding-10"></div>

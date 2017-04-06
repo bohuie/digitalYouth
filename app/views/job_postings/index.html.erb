@@ -1,0 +1,22 @@
+<% if @company.nil? %>
+	<h3> Job Postings </h3>
+<% else %>
+	<% if user_signed_in? && @company.id == current_user.id%>
+		<h3> Your Job Postings </h3><br>
+		<%= link_to "Create a New Posting", new_job_posting_path, class: "btn btn-primary" %><br>
+	<% else %>
+		<h3> Job Postings for <%= @company.company_name%> </h3>
+	<% end %>
+<% end %>
+<br>
+<% @job_postings.each do |j| %>
+	<%= link_to "#{j.title}\n", job_posting_path(j), class: "btn btn-primary" %><br>
+<% end %>
+
+<% if !@reccommended_job_postings.blank? %>
+	<br>
+	<h3> Reccommended Job Postings </h3><br>
+	<% @reccommended_job_postings.each do |j| %>
+		<%= link_to "#{j.title}\n", job_posting_path(j) %><br>
+	<% end %>
+<% end %>

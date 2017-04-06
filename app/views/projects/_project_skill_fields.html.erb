@@ -1,0 +1,55 @@
+
+<% if defined?(project_skill).nil? %>
+	<div class="row margin-left-0" id="project-skill-<%=id%>">
+		<%= f.input :id, as: :hidden %>
+		<%= f.simple_fields_for :skill do |builder| %>
+			<div class="col-md-3"><%= builder.input :name, label: "Skill", input_html: {onclick:"skill_autocomplete('#{id}')", id: "skill-name-#{id}"}, required: false %></div>
+		<% end %>
+		<div class="col-md-6"><%= f.input :survey_id, collection: @surveys, prompt: "Select Classification", label: "Associated Survey Skill"%></div>
+		<div class="col-md-1">
+			<%= f.input :_destroy, as: :hidden, input_html: {id: "project-skill-destroy-#{id}"}%>
+			<span class="glyphicon glyphicon-remove" onclick="remove_project_skill('<%=id%>')"></span>
+		</div>
+	</div>
+<% else %>
+
+	<% if @project.errors.messages[:skill] && @project.errors.messages[:skill][id] %>
+		<% has_error = true %>
+	<% else %>
+		<% has_error = false %>
+	<% end %>
+	<% style = "display:none;" if project_skill["_destroy"]=="true" %>
+	<div class="row margin-left-0" id="project-skill-<%=id%>" style=<%=style%> >
+		<%= f.input :id, as: :hidden, input_html: { value: project_skill[:id] } %>
+		<%= f.simple_fields_for '[skill_attributes]' do |builder| %>
+			<div class="col-md-3">
+				<% if has_error && @project.errors.messages[:skill][id][:name]  %>
+					<%= builder.input :name, label: "Skill", input_html: {onclick:"skill_autocomplete('#{id}')", id: "skill-name-#{id}", value: project_skill[:skill_attributes][:name]}, wrapper_html: { class: "has-error" }, required: false %>
+					<div class="has-error">
+						<div class="help-block">
+							<%=  @project.errors.messages[:skill][id][:name]%>
+						</div>
+					</div>
+				<% else %>
+					<%= builder.input :name, label: "Skill", input_html: {onclick:"skill_autocomplete('#{id}')", id: "skill-name-#{id}", value: project_skill[:skill_attributes][:name]}, required: false %>
+				<% end %>
+			</div>
+		<% end %>
+		<div class="col-md-6">
+			<% if has_error && @project.errors.messages[:skill][id][:survey_id]  %>
+				<%= f.input :survey_id, selected: project_skill[:survey_id], collection: @surveys, prompt: "Select Classification", label: "Associated Survey Skill", wrapper_html: { class: "has-error" }, required: false %>
+				<div class="has-error">
+					<div class="help-block">
+						<%=  @project.errors.messages[:skill][id][:survey_id] %>
+					</div>
+				</div>
+			<% else %>
+				<%= f.input :survey_id, selected: project_skill[:survey_id], collection: @surveys, prompt: "Select Classification", label: "Associated Survey Skill", required: false %>
+			<% end %>
+		</div>
+		<div class="col-md-1">
+			<%= f.input :_destroy, as: :hidden, input_html: {id: "project-skill-destroy-#{id}", value: project_skill["_destroy"]}%>
+			<span class="glyphicon glyphicon-remove" onclick="remove_project_skill('<%=id%>')"></span>
+		</div>
+	</div>
+<% end %>

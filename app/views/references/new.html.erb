@@ -1,0 +1,65 @@
+<% if user_signed_in? %>
+	<%= render "users/shared/profile" %>
+	<%= render partial: "shared/site_tabs", locals: {active: "references", user_path: user_path(@user) } %>
+<% else %>
+	<div class="padding-15 row">
+		<div class="learn-more col-md-12">
+			<h3 class="learn-text">Want to learn more about EdgeMap and what it has to offer?  Check us out <%= link_to 'here', welcome_index_path, style:"color:white;" %></h3>
+		</div>
+	</div>
+<% end %>
+
+<div class ="padding-30 row">
+	<div class="col-md-2">
+		<%= image_tag @referUser.image(:small), alt:"User Icon", class: "profile-image small-shadow" %>
+	</div>
+	<div class="col-md-3">
+		<div class="row">
+			<h5><%= @referUser.first_name%> <%= @referUser.last_name %></h5>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="row">
+			<h5>Message:</h5>
+			<h5><%= @reference_redirection.message %></h5>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div style="float:right;">
+			<%= link_to "View", user_path(@referUser), class: "btn btn-primary"%>
+			<%= link_to "Delete", delete_reference_redirection_path(@reference_redirection), method: :delete, data: {confirm: "Are you sure you want to delete this request?"}, class: "btn btn-danger" %>
+		</div>
+	</div>
+</div>
+
+<h4>Your Reference</h4>
+<p>
+	You are giving a reference to <%= @referUser.first_name %> <%= @referUser.last_name %>.  Please fill out the form below, and thank you for your time.
+	<% if user_signed_in? %>
+		By completing this reference, you allow other users to see your name and picture on <%= @referUser.first_name %> <%= @referUser.last_name %>'s profile.  If you have set your security settings otherwise, your info will still be unavailable in other places, but visible on <%= @referUser.first_name %> <%= @referUser.last_name %>'s profile.
+	<% end %>
+</p>
+	<%if !user_signed_in?%>
+	<p><% if User.find_by(email: @reference_link.email.downcase) != nil%>
+			Hey we can see you have a <%=ENV['HOST_NAME']%> account<br>
+			Please <%= link_to "sign in", new_user_session_path %> and then fill in this form
+		<% else %>
+			If you have a <%=ENV['HOST_NAME']%> account please <%= link_to "sign in", new_user_session_path %> and then fill in this form
+		<% end %>
+	</p>
+	<% end %>
+<%= simple_form_for @reference do |r| %>
+	<div class="row">
+		<div class="col-md-6">
+			<%= r.input :first_name, required: true, input_html: {value: @reference_link.first_name}%>
+			<%= r.input :last_name, input_html: {value: @reference_link.last_name} %>
+			<%= r.input :reference_body, required: true, wrapper_html: { class: 'padding-left-0' } %>
+		</div>
+		<div class="col-md-6">
+			<%= r.input :company, required: true %>
+			<%= r.input :position, required: true %>
+		</div>
+</div>
+		<%= recaptcha_tags %><br>
+		<%= r.button :submit, class: "btn btn-primary" %>
+	<% end -%>

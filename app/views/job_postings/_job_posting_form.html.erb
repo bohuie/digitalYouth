@@ -1,0 +1,109 @@
+<%= simple_form_for @job_posting do |f| %>
+	<div class="row">
+
+		<%= f.input :title, wrapper_html: { class: "col-md-6" } %>
+
+		<%= f.input :city, wrapper_html: { class: "col-md-3" } %>
+
+		<% if @job_posting.province.nil? %>
+			<%= f.input :province, collection: PROVINCES, prompt: "Select Province", wrapper_html: { class: "col-md-3" } %>
+		<% else %>
+			<%= f.input :province, collection: PROVINCES, selected: @job_posting.province, wrapper_html: { class: "col-md-3" } %>
+		<% end %>
+	</div>
+
+	<div class="row">
+
+		<%= f.input :unit_number, wrapper_html: { class: "unit-width col-md-1" } %>
+
+		<%= f.input :street_address, wrapper_html: { class: "street-width col-md-6" } %>
+
+		<%= f.input :postal_code, wrapper_html: { class: "col-md-3" } %>
+	</div>
+
+	<hr class="margin-top-10 gray-2">
+
+	<div class="row">
+		<% if !@job_posting.job_category.nil? %>
+			<%= f.input :job_category_id, label: "NAICS Industry Category", collection: @categories, selected: @job_posting.job_category.id, wrapper_html: { class: "col-md-6" } %>
+		<% else %>
+			<%= f.input :job_category_id, label: "NAICS Industry Category", collection: @categories, prompt: "Select Category", wrapper_html: { class: "col-md-6" } %>
+		<% end %>
+
+		<% if !@job_posting.job_type.nil? %>
+			<%= f.input :job_type, label: "Work Type", collection: JOB_TYPES, selected: @job_posting.job_type, wrapper_html: { class: "col-md-6" } %>
+		<% else %>
+			<%= f.input :job_type, label: "Work Type", collection: JOB_TYPES, prompt: "Select Work Type", wrapper_html: { class: "col-md-6" } %>
+		<% end %>
+	</div>
+	<div class="row">
+		<% if @job_posting.pay_rate.nil? %>
+			<%= f.input :pay_rate, collection: PAY_RATES, checked:"yearly", as: :radio_buttons, item_wrapper_tag: "div", item_wrapper_class: ( "error-height" if @job_posting.errors[:yearly_upper_pay_range].any? || @job_posting.errors[:yearly_lower_pay_range].any?), wrapper_html: { class: "pay-rate-width margin-bottom-0 col-md-1" } %>
+		<% else %>
+			<%= f.input :pay_rate, collection: PAY_RATES, selected: @job_posting.pay_rate, as: :radio_buttons, item_wrapper_tag: "div", item_wrapper_class: ( "error-height" if @job_posting.errors[:yearly_upper_pay_range].any? || @job_posting.errors[:yearly_lower_pay_range].any?), wrapper_html: { class: "pay-rate-width margin-bottom-0 col-md-1" } %>
+		<% end %>
+		<div class="col-md-6">
+			<div class="row">
+				<div class="col-md-12"><b>A Starting amount (From) is required for your chosen pay rate.</b></div></div>
+			<div class="row">
+				<%= f.input :yearly_lower_pay_range, as: :decimal, label: "From", label_html: { class: "pay-label" }, input_html: { class: "pay-input", value: number_with_precision(@year_lower, precision: 2)}, wrapper_html: { class: "margin-bottom-5 col-md-6" } %>
+
+				<%= f.input :yearly_upper_pay_range, as: :decimal, label: "To", label_html: { class: "pay-label" }, error_html: { style: "display:inline;", id: "yearly" }, input_html: { class: "pay-input", value: number_with_precision(@year_upper, precision: 2)}, wrapper_html: { class: "margin-bottom-5 col-md-6" } %>
+			</div>
+			<div class="row">
+				<%= f.input :hourly_lower_pay_range, as: :decimal, label: "From", label_html: { class: "pay-label" }, input_html: { class: "pay-input", value: number_with_precision(@hour_lower, precision: 2)}, wrapper_html: { class: "col-md-6" } %>
+
+				<%= f.input :hourly_upper_pay_range, as: :decimal, label: "To", label_html: { class: "pay-label" }, input_html: { class: "pay-input", value: number_with_precision(@hour_upper, precision: 2)}, wrapper_html: { class: "col-md-6" }  %>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<%= f.input :open_date, as: :string, input_html: {type: :date, id: "open-date"}, wrapper_html: { class: "col-md-3" } %>
+
+		<%= f.input :close_date, as: :string, input_html: {type: :date, id: "close-date"}, wrapper_html: { class: "col-md-3" } %>
+	</div>
+	<div class="row">
+		<%= f.input :description, as: :text, input_html: {rows: "4"}, wrapper_html: { class: "padding-left-15 col-md-12" }%>
+	</div>
+
+	<hr class="margin-top-10 gray-1">
+
+	<p><b>Please complete all fields for each skill.</b></p>
+
+	<%id=0%>
+	<div id="job-skills" class="row">
+		<% if @jobskills.nil? %>
+			<%= f.simple_fields_for :job_posting_skills do |builder| %>
+				<%= render 'job_postings/job_posting_skill_fields', id: id, f: builder %>
+				<%id=id+1%>
+			<% end%>
+		<% else %>
+			<% @jobskills.each do |js| %>
+				<%= f.simple_fields_for '[job_posting_skills_attributes]', index: id do |builder| %>
+					<%= render 'job_postings/job_posting_skill_fields', id: id, f: builder, jobskill: js[1] %>
+					<%id=id+1%>
+				<% end %>
+			<% end %>
+		<% end %>
+	</div>
+	<div class="row">
+		<div class="col-md-3">
+			<%= link_to_add_job_posting_skill_fields "Add Skill", f, "btn btn-primary " %>
+		</div>
+	</div>
+	<div class="row">
+		<% if  @job_posting.errors.messages[:job_posting_skills] %>
+			<div class="col-md-3 has-error">
+				<span class="help-block"><%=  @job_posting.errors.messages[:job_posting_skills][0] %></span>
+			</div>
+		<% end %>
+	</div>
+
+	<hr>
+
+	<div class="row">
+		<%= f.input :link, wrapper_html: { class: "col-md-6" }, label: "Web URL" %>
+	</div>
+	<%= f.button :submit, class: "btn btn-primary" %>
+<% end %>

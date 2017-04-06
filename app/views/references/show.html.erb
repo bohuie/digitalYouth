@@ -1,0 +1,11 @@
+<%= link_to "References", references_path %>
+<% r = @reference %>
+<h3><%= r.first_name%> <%= r.last_name %></h3>
+<h4><%= r.company%>: <%= r.position %></h4>
+<h6>Contact: Email: <%= r.email %>, Phone: <%= r.phone_number %></h6>
+<p><%= r.reference_body %></p>
+<% if @reference.confirmed%>
+	<%= link_to "Unconfirm", update_reference_path(r), method: "patch", class: "btn btn-warning" %> <%= link_to "Delete", delete_reference_path(r), data: {confirm: "Are you sure you want to delete this reference?"}, method: "delete", class: "btn btn-danger" %>
+<% else %>
+	<%= link_to "Confirm", update_reference_path(r), method: "patch", class: "btn btn-success" %> <%= link_to "Delete", delete_reference_path(r), data: {confirm: "Are you sure you want to delete this reference?"}, method: "delete", class: "btn btn-danger" %> 
+<% end %>

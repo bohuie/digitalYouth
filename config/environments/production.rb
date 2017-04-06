@@ -1,6 +1,31 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+
+  config.action_mailer.default_url_options = { host: 'edgemap.ok.ubc.ca' }
+
+  #config.action_mailer.default_url_options = {:host => 'localhost:3000'}
+
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.delivery_method = :sendmail
+  config.action_mailer.sendmail_settings = {
+
+    location: '/usr/sbin/sendmail',
+    arguments: '-i -t'
+  } 
+  config.action_mailer.default_options = {
+    from: 'edge.map@ubc.ca',
+    reply_to: 'edge.map@ubc.ca',
+    user_name: 'edge.map@ubc.ca'
+  }
+
+  Recaptcha.configure do |config|
+    config.site_key  = ENV['RECAPTCHA_PUBLIC_KEY']
+    config.secret_key = ENV['RECAPTCHA_PRIVATE_KEY']
+    # Uncomment the following line if you are using a proxy server:
+    # config.proxy = 'http://myproxy.com.au:8080'
+  end
+
   # Code is not reloaded between requests.
   config.cache_classes = true
 

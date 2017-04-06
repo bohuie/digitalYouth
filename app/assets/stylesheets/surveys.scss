@@ -1,0 +1,33 @@
+// Place all the styles related to the Surveys controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.center{
+	position: absolute;
+    top: calc(50% - 12px);
+    left: calc(50% - 13px);
+    height: 50%;
+    width: 50%;
+}
+
+.row-style{
+	border-style: solid;
+	border-width: 1px 0px 0px 0px;
+	display: -webkit-flex;
+}
+
+.row-style-top{
+	display: -webkit-flex;
+}
+
+.col-style{
+	border-style: solid;
+	border-width: 0px 1px 0px 0px;
+}
+
+h2{
+	margin: 3px 0px 2px 0px !important;
+}
+h3{
+	margin: 0px !important;
+}

@@ -1,0 +1,59 @@
+<div class="row">
+	<h4>Today's data</h4>
+	<div class="col-md-4">
+		<h4>Visits by Hour <i>(UTC)</i></h4>
+		<%= line_chart Visit.where(started_at: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day).group_by_hour_of_day(:started_at, format:"%l%P").count %>
+	</div>
+
+	<div class="col-md-4">
+		<h4>Operating System</h4>
+		<%= pie_chart Visit.where(started_at: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day).group(:os).count %>
+	</div>
+
+	<div class="col-md-4">
+		<h4>Location</h4>
+		<%= geo_chart Visit.where(started_at: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day).select(:latitude, :longitude) %>
+	</div>
+</div>
+
+<div class="row">
+	<h4>Week's data</h4>
+	<div class="col-md-4">
+		<h4>Visits by Day</h4>
+		<%= line_chart Visit.where(started_at: Time.zone.now.at_beginning_of_week..Time.zone.now.at_beginning_of_week+7.days).group_by_day_of_week(:started_at, format:"%A").count %>
+	</div>
+
+	<div class="col-md-4">
+		<h4>Operating System</h4>
+		<%= pie_chart Visit.where(started_at: Time.zone.now.at_beginning_of_week..Time.zone.now.at_beginning_of_week+7.days).group(:os).count %>
+	</div>
+
+	<div class="col-md-4">
+		<h4>Location</h4>
+		<%= geo_chart Visit.where(started_at: Time.zone.now.at_beginning_of_week..Time.zone.now.at_beginning_of_week+7.days).select(:latitude, :longitude) %>
+	</div>
+</div>
+
+<div class="row">
+	<h4>All Time</h4>
+	<div class="col-md-4">
+		<h4>Visits by date</h4>
+		<%= line_chart Visit.group_by_day(:started_at).count %>
+	</div>
+
+	<div class="col-md-4">
+		<h4>Operating System</h4>
+		<%= pie_chart Visit.group(:os).count %>
+	</div>
+
+	<div class="col-md-4">
+		<h4>Location</h4>
+		<%= geo_chart Visit.all.select(:latitude, :longitude) %>
+	</div>
+</div>
+
+<hr>
+<h4>Visits</h4>
+<% @visits.each do |v| %>
+ <%= link_to "#{v.visit_token} -- #{v.started_at}", analytics_report_path(v.id) %>
+<% end %>

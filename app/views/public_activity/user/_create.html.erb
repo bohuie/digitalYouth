@@ -1,0 +1,9 @@
+<%u = activity.trackable %>
+<div>
+	<%= image_tag u.image.url(:thumb), alt:"User Icon", class:"image-radius thumb-shadow", style: "float:left;" %>
+</div>
+<div class="text">
+	Hi <%= u.first_name%>, Welcome to <%=request.host.titlecase%>!<br>
+	<%= local_time_ago(activity.created_at) %>
+</div>
+<div style="clear:both;"></div>

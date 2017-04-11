@@ -31,12 +31,16 @@
          <% projectClass = "" %>
          <% refClass = "" %>
          <% notifClass = "" %>
+         <% contactUsClass = "" %>
          <!-- Count variable -->
          <% tabCount = user_signed_in? && @current_user==@user ? 5 : 4 %> <!-- logged in owners have App tab, so total is 5 -->
 
          <% if active == "contact" %>
             <!-- To ensure no other actives get through -->
             <% tabCount += 1 %> <!-- Contact Tab -->
+         <% elsif active == "contact_us" %>
+            <% contactUsClass = "class=active" %>
+            <% tabCount += 1 %> <!-- Notification Tab -->
          <% elsif active == "notification" %>
             <% notifClass = "class=active" %>
             <% tabCount += 1 %> <!-- Notification Tab -->
@@ -55,6 +59,11 @@
          <% if active == "contact" %>
             <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); style="min-width: calc(<%= 100/tabCount %>% - 6px)">
                <a data-toggle="tab" href="#">CONTACT</a>
+            </li>
+         <% end %>
+         <% if active == "contact_us" %>
+            <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); style="min-width: calc(<%= 100/tabCount %>% - 6px)">
+               <a data-toggle="tab" href="#">CONTACT US</a>
             </li>
          <% end %>
          <% if active == "notification" %>

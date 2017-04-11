@@ -13,11 +13,13 @@
 	padding: 25px 10px 0px 5px;
 	background:asset-url("bulletin.svg");
 	background-size: cover;
+	background-color: #fef069;
 	min-height: 250px;
 	width: 500px;
 	display:inline-block;
 	float: right;
 	margin: 0px 0px 20px 0px;
+	box-shadow: 3px 3px 1px #888888;
 }
 
 .btn-fake {

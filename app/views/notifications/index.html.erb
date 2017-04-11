@@ -5,7 +5,7 @@
 	<%= render partial: "shared/site_tabs", locals: {active: "notification", user_path: user_path(@user)} %>
 <% end %>
 
-<div class="padding-side-3 col-md-10">
+<div class="padding-side-3 col-xs-12 col-sm-9 col-md-10">
 	<ul id="index-notifs" style="list-style-type: none;" class="padding-0">
 	  	<%= render 'shared/notifications', :local_activities => @notifications, spacing: true %>
 	  	<img id="ajax-loading" class="loading-image" src="<%=asset_path('loading.gif')%>" alt="Loading.." style="visibility:hidden;">
@@ -17,7 +17,7 @@
 	</ul>
 </div>
 <% if @notifications_count > 0 %>
-	<div class="col-md-2">
+	<div class="visible-sm visible-md visible-lg col-sm-3 col-md-2">
 		<p>
 			<%= link_to delete_all_notifications_path, remote: true, method: "delete", data: {confirm: "Are you sure you want to delete all notifications?"}, id:"del-all" do %>
 				<span class="glyphicon glyphicon-trash"></span> Delete All

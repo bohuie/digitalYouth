@@ -32,12 +32,16 @@ body.welcome li {
 	background-size: calc(74%) 500px, auto, auto, auto, auto;
 }
 
-.btn-sq:active, .btn-sq:focus, .btn-sq:target, .btn-sq:hover{
+.btn-sq:active, .btn-sq:focus, .btn-sq:target, .btn-sq:hover,
+.btn-sq-sm:active, .btn-sq-sm:focus, .btn-sq-sm:target, .btn-sq-sm:hover,
+.btn-sq-xs:active, .btn-sq-xs:focus, .btn-sq-xs:target, .btn-sq-xs:hover{
 	background-color: DARKGRAY !important;
 	color: #646464 !important;
 	border-color: #646464 !important;
 }
-.btn-sq {
+.btn-sq,
+.btn-sq-sm,
+.btn-sq-xs {
 	background-color: #f8f8f8 !important;
 	color: #646464 !important;
 	border-color: #646464 !important;

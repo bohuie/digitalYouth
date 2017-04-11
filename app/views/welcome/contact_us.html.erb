@@ -3,25 +3,27 @@
 	<%= render partial: "shared/site_tabs", locals: {active: "references", user_path: user_path(@user) } %>
 <% else %>
 	<div class="padding-15 row">
-		<div class="learn-more col-md-12">
+		<div class="learn-more col-xs-12 col-sm-12 col-md-12">
 			<h3 class="learn-text">Want to learn more about EdgeMap and what it has to offer?  Check us out <%= link_to 'here', welcome_index_path, style:"color:white;" %></h3>
 		</div>
 	</div>
 <% end %>
-<div class="row">
-	<h4>Contact Us</h4>
-	<p>Please fill out the form below to have an administrator check for your account informaiton. </p>
-</div>
+<div class="tab-content">
+	<div class="row">
+		<h4>Contact Us</h4>
+		<p>Please fill out the form below to have an administrator check for your account informaiton. </p>
+	</div>
 
-<%= simple_form_for @message, url: send_contact_us_path do |f| %>
-	<div class="row">
-		<%= f.input :email, label: "Contact email", required: true, input_html: { value: @user.email }, wrapper_html: { class: "padding-left-0 col-md-4" } %>
-		<%= f.input :name, required: true, input_html: { value: @user.formatted_name(@user) }, wrapper_html: { class: "col-md-4" } %>
-	</div>
-	<div class="row">
-		<%= f.input :content, required: true, as: :text, label: "Please include any other details here", wrapper_html: { class: "padding-left-0 col-md-8" }  %>
-	</div>
-	<div class="row">
-		<%= f.button :submit, "Send Request", class: "btn btn-primary" %>
-	</div>
-<% end %>
+	<%= simple_form_for @message, url: send_contact_us_path do |f| %>
+		<div class="row">
+			<%= f.input :email, label: "Contact email", required: true, input_html: { value: @user.email }, wrapper_html: { class: "padding-left-0 col-xs-12 col-sm-6 col-md-4" } %>
+			<%= f.input :name, required: true, input_html: { value: @user.formatted_name(@user) }, wrapper_html: { class: "padding-left-0 col-xs-12 col-sm-6 col-md-4" } %>
+		</div>
+		<div class="row">
+			<%= f.input :content, required: true, as: :text, label: "Please include any other details here", wrapper_html: { class: "padding-left-0 col-xs-12 col-sm-12 col-md-8" }  %>
+		</div>
+		<div class="row padding-top-10">
+			<%= f.button :submit, "Send Request", class: "btn btn-primary" %>
+		</div>
+	<% end %>
+</div>

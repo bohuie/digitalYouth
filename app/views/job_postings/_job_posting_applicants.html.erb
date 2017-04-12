@@ -12,8 +12,8 @@
       <th data-sortable="false" class="col-md-3">Applicant</th>
       <th data-sortable="true" class="right">Required Skills</th>
       <th data-sortable="true" class="right">Preferred Skills</th>
-      <th data-sortable="true" class="right">Status</th>
-      <th data-sortable="true">Actions</th>
+      <th data-sortable="true" class="right visible-sm visible-md visible-lg">Status</th>
+      <th data-sortable="true" class="padding-left-5 visible-sm visible-md visible-lg">Actions</th>
     </tr>
   </thead>
 
@@ -22,8 +22,15 @@
       <tr class="alternate">
         <td>
           <%= image_tag j.applicant.image.url(:thumb), class: "image-radius thumb-shadow" if !j.applicant.image.nil? %>
-          <%= link_to "#{j.applicant.first_name} #{j.applicant.last_name}", job_posting_application_path(j) %><br />
-          <%= j.message.truncate(100) %><%= link_to ' See more.', job_posting_application_path(j) %>
+          <div class="visible-md visible-lg">
+            <%= link_to "#{j.applicant.first_name} #{j.applicant.last_name}", job_posting_application_path(j) %><br />
+            <%= j.message.truncate(100) %><%= link_to ' See more.', job_posting_application_path(j) %>
+          </div>
+          <div class="visible-xs visible-sm">
+            <br />
+            <%= link_to "#{j.applicant.first_name} #{j.applicant.last_name}", job_posting_application_path(j) %><br />
+            <%= link_to ' See more.', job_posting_application_path(j) %>
+          </div>
         </td>
         <td>
           <% if !@req_skills.empty? %>
@@ -51,14 +58,26 @@
             </ul>
           <% end %>
         </td>
-        <td>
+        <td class="visible-sm visible-md visible-lg">
          <%= j.get_status_string %>
         </td>
         <td>
-          <%= link_to "View Profile", user_path(j.applicant), class: "btn btn-primary" %>
-          <%= link_to "Reject", update_job_posting_application_path(j,status:"Rejected"), class: "btn btn-danger", method: "patch" %>
-          <%= link_to "Consider", update_job_posting_application_path(j, status:"Considering"), class: "btn btn-info", method: "patch" %>
-          <%= link_to "Accept", update_job_posting_application_path(j, status:"Accepted"), class: "btn btn-success", method: "patch" %>
+          <div class="visible-sm">
+            <div class="col-sm-12">
+              <%= link_to "View Profile", user_path(j.applicant), class: "btn btn-primary" %>
+              <%= link_to "Reject", update_job_posting_application_path(j,status:"Rejected"), class: "btn btn-danger", method: "patch" %>
+            </div>
+            <div class="col-sm-12 padding-top-10">
+              <%= link_to "Consider", update_job_posting_application_path(j, status:"Considering"), class: "btn btn-info", method: "patch" %>
+              <%= link_to "Accept", update_job_posting_application_path(j, status:"Accepted"), class: "btn btn-success", method: "patch" %>
+            </div>
+          </div>
+          <div class="visible-md visible-lg">
+            <%= link_to "View Profile", user_path(j.applicant), class: "btn btn-primary" %>
+            <%= link_to "Reject", update_job_posting_application_path(j,status:"Rejected"), class: "btn btn-danger", method: "patch" %>
+            <%= link_to "Consider", update_job_posting_application_path(j, status:"Considering"), class: "btn btn-info", method: "patch" %>
+            <%= link_to "Accept", update_job_posting_application_path(j, status:"Accepted"), class: "btn btn-success", method: "patch" %>
+          </div>
         </td>
       </tr>
     <% end %>

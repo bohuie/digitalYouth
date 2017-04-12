@@ -260,7 +260,7 @@ private
 				# Add the list of user_skills the user has entered to the corpus
 				# Can be removed if needed. Added to try to make the recommendations closer to the users potential preferences
 				#corpus_arr.push(current_user.skills.pluck(:name))
-byebug
+
 				results = JobPosting.search more_like_this: {
 									fields: [:industry],
 									like: corpus_arr,
@@ -328,21 +328,22 @@ byebug
 			destroy = true
 			missing = false
 			args["job_posting_skills_attributes"].each do |index, m|
+				
 				if m["_destroy"] == "false"
 					destroy = false 
 					if m["skill_attributes"]["name"].blank?
-						#missing = true 
-						@job_posting.errors[:skill][index.to_i] = {} unless @job_posting.errors[:skill][index.to_i]
+						missing = true 
+						@job_posting.errors[:skill][index.to_i] = {} if @job_posting.errors[:skill][index.to_i].blank?
 						@job_posting.errors[:skill][index.to_i][:name] = "must have a name."
 					end
 					if m["survey_id"].blank?
-						#missing = true 
-						@job_posting.errors[:skill][index.to_i] = {} unless @job_posting.errors[:skill][index.to_i]
+						missing = true 
+						@job_posting.errors[:skill][index.to_i] = {} if @job_posting.errors[:skill][index.to_i].blank?
 						@job_posting.errors[:skill][index.to_i][:survey_id] = "must select a skill category." 
 					end
 					if m["importance"].blank?
-						#missing = true 
-						@job_posting.errors[:skill][index.to_i] = {} unless @job_posting.errors[:skill][index.to_i]
+						missing = true 
+						@job_posting.errors[:skill][index.to_i] = {} if @job_posting.errors[:skill][index.to_i].blank?
 						@job_posting.errors[:skill][index.to_i][:importance] = "must select an importance."
 					end
 				end

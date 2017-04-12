@@ -17,7 +17,7 @@
 	<% Survey.all.each do |s|%>
 		<div class="compare-box col-xs-11 col-sm-5 col-md-5">
 			<h5><%= s.format_title.html_safe %></h5>
-			<%= column_chart @survey_results[i], min: 0, max: 3, library: { hAxis: {slantedText: true, slantedTextAngle: 30 }, legend: { position: "right" }, chartArea: {left: 40,  width: '70%'}, vAxis: { ticks: [{v: 0, f: "None"}, {v: 1, f: "Few"}, {v:2, f:"Half"}, {v: 3, f:"Most"}]}} %>
+			<%= column_chart @survey_results[i], min: 0, max: 3, library: { hAxis: {slantedText: true, slantedTextAngle: 30 }, legend: { position: "right" }, chartArea: {left: 40, width: '70%'}, vAxis: { ticks: [{v: 0, f: "None"}, {v: 1, f: "Few"}, {v:2, f:"Half"}, {v: 3, f:"Most"}]}} %>
 			<% if @user.has_role? :employee %>
 				<%= link_to "Details", survey_compare_to_path(s.title, js: params[:js]) %>
 			<% elsif @user.has_role? :employer %>

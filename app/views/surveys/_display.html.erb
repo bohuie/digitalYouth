@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="col-sm-12 col-md-8">
+	<div class="col-xs-12 col-sm-12 col-md-8">
 		<% if survey_results[0][:name]=="Average Job Seeker" %>
 			<%= column_chart survey_results, min: 0, max: 3, library: { hAxis: {slantedText: true, slantedTextAngle: 30 }, legend: { position: "top" }, chartArea: {left: 50, width: '100%'}, series:{0 => {type: "line"}}, vAxis: { ticks: [{v: 0, f: "None"}, {v: 1, f: "Few"}, {v:2, f:"Half"}, {v: 3, f:"Most"}]}} %>
 		<% else %>
@@ -19,7 +19,7 @@
 
 <div class="row">
 <% @questions.each_with_index do |question, index| %>
-	<div class="col-sm-6 col-md-3">
+	<div class="col-xs-12 col-sm-6 col-md-3">
 	<h4><b><%= question.classification %></b></h4>
 
 	<ul>

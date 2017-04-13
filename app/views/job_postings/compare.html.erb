@@ -15,8 +15,8 @@ If they have not completed the survey, they are not displayed on the graph.  In 
 			<%= link_to "Details", compare_survey_path(s.title, job_posting: @job_posting.id) %>
 		</div>
 		<% if i % 2 == 0 %>
-			</div><div class="row">
-		<% else %>
+			</div>
+			<div class="row">
 		<% end %>
 		<% i = i+1 %>
 	<% end %>

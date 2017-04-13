@@ -20,13 +20,13 @@
 <div class="row">
 <% @questions.each_with_index do |question, index| %>
 	<div class="col-xs-12 col-sm-6 col-md-3">
-	<h4><b><%= question.classification %></b></h4>
+		<h4><b><%= question.classification %></b></h4>
 
-	<ul>
-		<% question.prompts.each do |p| %>
-			<li class="alternate"><%= p.prompt %></li>
-		<% end %>
-	</ul>
+		<ul>
+			<% question.prompts.each do |p| %>
+				<li class="alternate"><%= p.prompt %></li>
+			<% end %>
+		</ul>
 	</div>
 	<% if index%2 == 1 %>
 		<div class = "clearfix visible-sm"></div>

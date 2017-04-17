@@ -1,6 +1,13 @@
 <% if user_signed_in?  && current_user == @user %>
 	<% if current_user.has_role? :employee %>
+<<<<<<< HEAD
 		<% @user_buckets.each do |bucket| %>
+=======
+		<% @user_buckets.each_with_index do |bucket, index| %>
+			<% if defined?(number_buckets) && index >= number_buckets %>
+				<% break %>
+			<% end %>
+>>>>>>> master
 			<% case bucket[0] %>
 			<% when :new_user_project %>
 				<li style="margin: 10px 0px;">Need some help learning how to showcase your <%= link_to "projects?", bucket[1] %></li>
@@ -30,6 +37,12 @@
 		<% end %>
 	<% elsif current_user.has_role? :employer %>
 		<% @user_buckets.each do |bucket| %>
+<<<<<<< HEAD
+=======
+			<% if defined?(number_buckets) && index >= number_buckets %>
+				<% break %>
+			<% end %>
+>>>>>>> master
 			<% case bucket[0] %>
 			<% when :new_user_survey %>
 				<li style="margin: 10px 0px;">Did you know, you can view a job seekers' skills in a <%= link_to "graph form, and find common language for what it means?", bucket[1] %></li>
@@ -44,7 +57,11 @@
 			<% when :bio %>
 				<li style="margin: 10px 0px;">Your company biography is the first thing job seekers see on your page.  Include some info so they can know more about you.  Update it <%= link_to "here", user_path(current_user), onclick: "setHomeTab('bio')" %> </li>
 			<% when :new_app %>
+<<<<<<< HEAD
 				<li style="margin: 10px 0px;">You have a new job posting applicant, you can view them <%= link_to 'here', '#', onclick: "window.location='"+show_trackable_path(bucket[1])+"'" %>.</li>
+=======
+				<%= link_to 'App', '#', onclick: "window.location='"+show_trackable_path(bucket[1])+"'" %>
+>>>>>>> master
 			<% when :user_skill %>
 				<li style="margin: 10px 0px;">The most popular Job Seeker skill on EdgeMap is <%= bucket[1].titleize %>.</li>
 			<% when :job_skill %>
@@ -59,6 +76,7 @@
 				<li style="margin: 10px 0px;"><%= link_to bucket[0], bucket[1] %></li>
 			<% end %>
 		<% end %>
+<<<<<<< HEAD
 	<% else %>
 		<% @user_buckets.each do |bucket| %>
 			<% case bucket[0] %>
@@ -72,5 +90,7 @@
 				<li style="margin: 10px 0px;"><%= link_to bucket[0], bucket[1] %></li>
 			<% end %>
 		<% end %>
+=======
+>>>>>>> master
 	<% end %>
 <% end %>

@@ -1,8 +1,9 @@
-<div class ="row survey-box-row">
+<div class ="row">
 	<% i=1 %>
 	<% onclick="" %>
 	<% Survey.all.each do |s|%>
-		<% css_class = "col-md-3 survey-box" %>
+		<div class="col-xs-2 visible-xs"></div>
+		<% css_class = "col-xs-8 col-sm-5 col-md-3 survey-box" %>
 		<% if user.has_role? :employee %>
 			<% css_class += " unanswered" if !user.answered_surveys[i - 1] %>
 		<% else %>
@@ -16,11 +17,16 @@
 				<% div_onclick = "window.location = '#{edit_survey_path(s.title, job_posting: @job_posting.id)}'" %>
 			<% end %>
 		<% end %>
+		<% if user_signed_in? && current_user==user %>
+			<% name = "My Results" %>
+		<% else %>
+			<% name = user.formatted_name(current_user) %>
+		<% end %>
 		<div class ="<%= css_class %>" onclick="<%=raw div_onclick %>">
 			<h5><%= s.format_title.html_safe %></h5>
 			<%= column_chart [
 				{name: "Average Job Seeker", data: @average_results[i]},
-				{name: "My Results", data: results[i], library: {style: {opacity: "0.2"}}}
+				{name: name, data: results[i], library: {style: {opacity: "0.2"}}}
 				], height: "100px", min: 0, max: 3, library: { legend: { position: 'none' }, vAxis: { textPosition: 'none' }, hAxis: {textPosition: 'none'}, series:{0 => {type: "line"}}} %>
 			<% if user_signed_in? && current_user==user%>
 				<% if current_user.has_role?(:employee) && user.answered_surveys[i - 1] %>
@@ -36,13 +42,8 @@
 				<% end %>
 			<% end %>
 		</div>
-		<div class="col-md-1" style="padding: 0px;"></div>
-		<% if i % 3 == 0 && i < 12 %>
-			</div>
-
-			<div class ="row survey-box-row"> 
-			
-		<% end %>
+		<div class="col-xs-2 col-sm-1 col-md-1"></div>
+		<div class = "clearfix visible-xs"></div>
 		<% i += 1 %>
 	<% end %>
 </div>

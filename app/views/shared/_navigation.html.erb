@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default navbar-static-top">
   <div class="container container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
@@ -10,9 +10,9 @@
     </div>
     <div class="collapse navbar-collapse" id="navbar">
 
-      <%= form_tag "/search", method: "get", class: "navbar-form navbar-left", role:"search", id: 'search' do %>
+      <%= form_tag "/search", method: "get", class: "nav navbar-nav navbar-form", role:"search", id: 'search' do %>
         <div class="input-group">
-            <%= text_field_tag 'q', params[:q], class: 'round-border form-control', placeholder: "Search", autocomplete:"off"%>
+            <%= text_field_tag 'q', params[:q], class: 'round-border form-control', placeholder: "Search", autocomplete:"off", style: "width: 170px;" %>
             <%= hidden_field_tag 't', params[:t] %>
             <%= button_tag type: "submit", class: "btn btn-default margin-left-5", name: nil do %>
               <span class="glyphicon glyphicon-search"></span>
@@ -22,7 +22,7 @@
 
       <ul class="nav navbar-nav navbar-right">
         <li><a href='/search?utf8=✓&q=&t=JobPostings'>Job Postings</a></li>
-        <li><%= link_to 'About us', about_us_path %></li>
+        <li><%= link_to 'About Us', about_us_path %></li>
         <li><%= link_to 'Contact Us', contact_us_path %></li>
 
         <% if user_signed_in? %>

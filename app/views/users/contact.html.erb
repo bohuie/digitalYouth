@@ -7,11 +7,11 @@
 
 <%= simple_form_for :contact, {url: email_user_path } do |f| %>
 	<div class="row">
-		<div class="col-md-6">
+		<div class="col-xs-12 col-sm-6 col-md-6">
 			<%= f.input :subject, input_html: { value: "#{current_user.company_name} would like to talk to you."}, wrapper_html: { class: "row margin-left-0", style: "padding-top: 5px;" } %>
 			<%= f.input :email, input_html: { value: current_user.email }, label: "Contact Email.", wrapper_html: { class: "row margin-left-0 " } %>
 		</div>
-		<div class="col-md-6">
+		<div class="col-xs-12 col-sm-6 col-md-6">
 			<%= f.input :body, as: :text, wrapper_html: { style: "padding-left: 0px; width: 100%;" }, input_html: { rows: 5 } %>
 		</div>
 	</div>

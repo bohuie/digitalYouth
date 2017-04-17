@@ -1,14 +1,15 @@
 # config valid only for current version of Capistrano
-lock '3.6.1'
+lock '3.8.0'
 
 require "whenever/capistrano"
+require "capistrano/scm/git"
+install_plugin Capistrano::SCM::Git
 
 set :application, 'digitalYouth'
 set :repo_url, 'https://github.com/bohuie/digitalYouth'
 set :deploy_to, '/srv/www/vhosts/ubc.ca/ok/jobcannon/html/public'
 #set :tmp_dir, '/srv/www/vhosts/ubc.ca/ok/jobcannon/html/public/tmp'
 #set :tmp_dir, '~/tmp'
-set :scm, :git
 set :branch, "master"
 
 set :linked_files, %w(config/application.yml)

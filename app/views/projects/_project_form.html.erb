@@ -19,8 +19,8 @@
 </script>
 
 <%= simple_form_for @project do |f| %>
-	<div class="row">
-		<div class="col-md-3">
+	<div class="project-info-row row">
+		<div class="col-xs-12 col-sm-5 col-md-3">
 			<%= f.input :image, as: :file, wrapper_html: { class: 'margin-all-0 row' }, label: "Image.  Must be .jpg, .jpeg, or .png." %>
 			<div class="margin-all-0 row" id="target">
 				<% if @project.image.blank? %>
@@ -30,15 +30,15 @@
 				<% end %>
 			</div>
 		</div>
-		<div class="col-md-9" style="min-height: 260px;">
+		<div class="project-info-padding col-xs-11 col-sm-6 col-md-6">
 			<%= f.input :title, required: true, wrapper_html: { class: 'margin-all-0 row'} %>
 			<%= f.input :project_date, wrapper_html: { class: 'margin-all-0 row'}, discard_day: true, order: [:month, :year] %>
 		
-			<%= f.input :description, required: true, as: :text, input_html: {rows: "4"}, wrapper_html: { class: 'padding-left-0 margin-all-0 row' } %>
+			<%= f.input :description, required: true, as: :text, input_html: {rows: "4", class: "col-md-12"}, wrapper_html: { class: 'padding-0 margin-all-0 col-xs-12 col-sm-12 col-md-12' } %>
 		
 		</div>
-		
-	</div>
+	</div>	
+
 	<%id=0%>
 	<div class="row" id="project-skills">
 		<% if @project_skills.nil? %>

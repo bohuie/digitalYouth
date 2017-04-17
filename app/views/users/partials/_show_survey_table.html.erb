@@ -17,11 +17,16 @@
 				<% div_onclick = "window.location = '#{edit_survey_path(s.title, job_posting: @job_posting.id)}'" %>
 			<% end %>
 		<% end %>
+		<% if user_signed_in? && current_user==user %>
+			<% name = "My Results" %>
+		<% else %>
+			<% name = user.formatted_name(current_user) %>
+		<% end %>
 		<div class ="<%= css_class %>" onclick="<%=raw div_onclick %>">
 			<h5><%= s.format_title.html_safe %></h5>
 			<%= column_chart [
 				{name: "Average Job Seeker", data: @average_results[i]},
-				{name: "My Results", data: results[i], library: {style: {opacity: "0.2"}}}
+				{name: name, data: results[i], library: {style: {opacity: "0.2"}}}
 				], height: "100px", min: 0, max: 3, library: { legend: { position: 'none' }, vAxis: { textPosition: 'none' }, hAxis: {textPosition: 'none'}, series:{0 => {type: "line"}}} %>
 			<% if user_signed_in? && current_user==user%>
 				<% if current_user.has_role?(:employee) && user.answered_surveys[i - 1] %>

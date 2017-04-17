@@ -21,6 +21,9 @@ Rails.application.routes.draw do
   get 'search' => 'searches#index'
   get 'search/:id' => 'searches#navigate', as: :search_nav
 
+  #Resource Links
+  patch 'reousrce_links/all' => 'resource_links#update_all', as: :update_all_resource_links
+
   # Notifications
   # Analytics
   get 'analytics' => 'analytics#index'

@@ -488,6 +488,28 @@
 	</div>
 
 <% elsif @user.has_role? :admin%>
-	You are an admin!
+	<div class="tab-content profileButtonContent">
+		<div id="announcements">
+			<%= simple_form_for @announcements, url: update_all_resource_links_path do |f| %>
+				<% @announcements.each_with_index do |an, index| %>
+					<div class="row">
+					<%= f.simple_fields_for '['+index.to_s+']' do |builder| %>
+						<%= builder.input :message, as: :text, input_html: { value: an.message }, wrapper_html: { class: 'col-xs-8 col-sm-10 col-md-8' } %>
+						<%= builder.input :id, as: :hidden, input_html: { value: an.id } %>
+					<% end %>
+					</div>
+				<% end %>
+				<%= f.button "Create", :action => "create", controller: "resource_links", :remote => true %>
+				<br />
+				<%= f.submit "Update", class: "btn btn-primary" %>
+			<% end %>
+		</div>
+		<div id="resource-link">
+			<ul>
+				<% @buckets.each do |bucket| %>
+					<li><%= bucket.message %><br /><%= bucket.link %></li>
+				<% end %>
+			</ul>
+		</div>
 <% end %>
 

@@ -179,6 +179,43 @@
          <li <%= jobClass %> onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=<%= pre+"\'jobs\'"+user_path+post%> style="min-width: calc(<%= 100/tabCount %>% - 6px)">
             <a data-toggle="tab" href="#jobs">JOBS</a>
          </li>
+      <% elsif @user.has_role?(:admin) %>
+
+         <!-- preprocess variables -->
+         <% user_path = defined?(user_path) && !user_path.blank? ? ',"' + user_path + '"' : ''%>
+
+         <!-- setup pre and post suffix -->
+         <% pre = user_signed_in? && @current_user==@user ? "setHomeTab(" : "setNavTab(" %>
+         <% post = ");" %>
+
+          <!-- Setup class-active variables -->
+         <% announcmentsClass = "" %>
+         <% linksClass = "" %>
+         
+         <!-- Count variable -->
+         <% tabCount = 2 %>
+
+         <% if active == "notification" %>
+            <% notifClass = "class=active" %>
+            <% tabCount += 1 %> <!-- Notification Tab -->
+         <% elsif active == "resource-links" %>
+            <% linksClass = "class=active" %>
+         <% else %>
+            <% announcmentsClass = "class=active" %>
+         <% end %>
+
+         <!-- Display Tabs -->
+         <% if active == "notification" %>
+            <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); style="min-width: calc(<%= 100/tabCount %>% - 6px)">
+               <a data-toggle="tab" href="#">NOTIFICATIONS</a>
+            </li>
+         <% end %>
+         <li <%= announcmentsClass %> onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=<%= pre+"\'announcments\'"+user_path+post%> style="min-width: calc(<%= 100/tabCount %>% - 6px)">
+            <a data-toggle="tab" href="#announcements">SYSTEMS ANNOUNCEMENTS</a>
+         </li> 
+         <li <%= linksClass %> onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this); onclick=<%= pre+"\'resource-links\'"+user_path+post%> style="min-width: calc(<%= 100/tabCount %>% - 6px)">
+            <a data-toggle="tab" href="#resource-links">RESOURCE LINKS</a>
+         </li>
       <% end %>
    </ul>
 </div>

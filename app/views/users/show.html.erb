@@ -1,11 +1,11 @@
 <%= render "users/shared/profile" %>
 <% if @user.has_role? :employee %>
 <!-- Employee Profile -->
- 		<% suclass = "tab-pane fade" %>
-    	<% apclass = "tab-pane fade" %>
-    	<% prclass = "tab-pane fade" %>
-    	<% skclass = "tab-pane fade" %>
-    	<% reclass = "tab-pane fade" %>
+ 	<% suclass = "tab-pane fade" %>
+    <% apclass = "tab-pane fade" %>
+    <% prclass = "tab-pane fade" %>
+    <% skclass = "tab-pane fade" %>
+    <% reclass = "tab-pane fade" %>
     <% if user_signed_in? && current_user==@user %>		
   		<% if session[:home_tab] == "applications" %>
   			<% active = "applications" %>
@@ -362,154 +362,216 @@
   		</div>
 	</div>
 <% elsif @user.has_role? :employer %>
-  		<% aclass = "tab-pane fade" %>
-    	<% jclass = "tab-pane fade" %>
-		<% if user_signed_in? && current_user==@user %>
-  			<% if session[:home_tab] == "jobs" %>
-  				<% active = "jobs" %>
-  				<% jclass = jclass + " in active" %>
-  			<% else %>
-  				<% active = "about" %>
-  				<% aclass = aclass + " in active" %>
-  			<% end %>
-		<% else %>
-  			<% if session[:nav_tab] == "jobs" %>
-  				<% active = "jobs" %>
-  				<% jclass = jclass + " in active" %>
-  			<% else %>
-  				<% active = "about" %>
-  				<% aclass = aclass + " in active" %>
-  			<% end %>
-		<% end %>
+  	<% aclass = "tab-pane fade" %>
+    <% jclass = "tab-pane fade" %>
+	<% if user_signed_in? && current_user==@user %>
+  		<% if session[:home_tab] == "jobs" %>
+  			<% active = "jobs" %>
+  			<% jclass = jclass + " in active" %>
+  		<% else %>
+  			<% active = "about" %>
+  			<% aclass = aclass + " in active" %>
+  		<% end %>
+	<% else %>
+  		<% if session[:nav_tab] == "jobs" %>
+  			<% active = "jobs" %>
+  			<% jclass = jclass + " in active" %>
+  		<% else %>
+  			<% active = "about" %>
+  			<% aclass = aclass + " in active" %>
+  		<% end %>
+	<% end %>
 
-		<%= render partial: "shared/site_tabs", locals: {active: active} %>
+	<%= render partial: "shared/site_tabs", locals: {active: active} %>
 
-		<div class="tab-content profileButtonContent">
+	<div class="tab-content profileButtonContent">
 
-			<div id="about" class="<%= aclass %>">
+		<div id="about" class="<%= aclass %>">
+			<div class="row">
+				<div class="padding-left-0 col-xs-12 col-sm-12 col-md-12">
+					<h4><b>About <%= @user.company_name %></b></h4>
+				</div>
+			</div>
+			<% if user_signed_in? && current_user == @user %>
 				<div class="row">
 					<div class="padding-left-0 col-xs-12 col-sm-12 col-md-12">
-						<h4><b>About <%= @user.company_name %></b></h4>
+						<p>Feel free to update your company bio and public message below.</p>
 					</div>
 				</div>
+				<%= simple_form_for @user do |u| %>
+					<div class="row">
+						<%= u.input :bio, as: :text, input_html: {cols: 50, rows: 7}, wrapper_html: { class: "padding-left-0 col-xs-12 col-sm-12 col-md-8" }, label_html: { class: "padding-left-0" } %>
+					</div>
+					<br />
+					<div class="row">
+						<div class="padding-left-0 col-xs-12 col-sm-12 col-md-2">
+							<%= u.submit "Update Bio", name: 'bio', class: "btn btn-primary" %>
+						</div>
+					</div>
+				<% end %>
+			<% else %>
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12">
+						<p>Here you can read about <%= @user.company_name %>.</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12">
+						<% if @user.bio.nil? %>
+							<p>No biography has been enetered yet.  Please check back later.</p>
+						<% else %>
+							<b>Bio</b><br />
+							<p><%= @user.bio %></p>
+						<% end %>
+					</div>
+				</div>
+			<% end %>
+		</div>
+		<div id="jobs" class="<%= jclass %>">
+				
+			<h4><b>Job Postings</b></h4>
+
+			<% if user_signed_in? && current_user == @user %>
+				<p>Here you can create new job postings or change them as needed.  Once job seekers have applied, you can view their applications and profiles as well.</p>
+				<div class="padding-15 row" ><%= link_to "Create a New Posting", new_job_posting_path, class: "btn btn-primary" %></div>
+
+			<% else %>
+				<p>Here you can view any job postings from <%= @user.company_name %>.</p>
+			<% end %>
+			<% if @job_postings.nil? %>
 				<% if user_signed_in? && current_user == @user %>
-					<div class="row">
-						<div class="padding-left-0 col-xs-12 col-sm-12 col-md-12">
-							<p>Feel free to update your company bio and public message below.</p>
-						</div>
-					</div>
-					<%= simple_form_for @user do |u| %>
-						<div class="row">
-							<%= u.input :bio, as: :text, input_html: {cols: 50, rows: 7}, wrapper_html: { class: "padding-left-0 col-xs-12 col-sm-12 col-md-8" }, label_html: { class: "padding-left-0" } %>
-						</div>
-						<br />
-						<div class="row">
-							<div class="padding-left-0 col-xs-12 col-sm-12 col-md-2">
-								<%= u.submit "Update Bio", name: 'bio', class: "btn btn-primary" %>
-							</div>
-						</div>
-					<% end %>
+					<p>You have no job postings.  Please create one below</p>
 				<% else %>
-					<div class="row">
-						<div class="col-xs-12 col-sm-12 col-md-12">
-							<p>Here you can read about <%= @user.company_name %>.</p>
+					<p><%= @user.company_name %> has no job postings right now.  Check back leter.</p>
+				<% end %>
+			<% else %>
+				<% @job_postings.each do |j| %>
+					<div id="postings" class="padding-top-10 alternate row">
+						<div class="col-xs-12 col-sm-3 col-md-2">
+							<%= link_to "#{j.title}\n", job_posting_path(j) %><br />
+							<%= raw(j.get_type_string+"<br />") if !j.job_type.nil? && !j.get_type_string.nil? %>
+							<p><%= j.city %>, <%=j.province %></p>
 						</div>
-					</div>
-					<div class="row">
-						<div class="col-xs-12 col-sm-12 col-md-12">
-							<% if @user.bio.nil? %>
-								<p>No biography has been enetered yet.  Please check back later.</p>
+						<div class="col-xs-12 col-sm-4 col-md-4">
+							<%= j.job_category.name if !j.job_category.blank? %><br />
+							<%= raw("Open date: #{j.open_date.strftime('%B %d, %Y')}<br>")   if !j.open_date.blank? %>
+							<%= raw("Close date: #{j.close_date.strftime('%B %d, %Y')}<br>") if !j.close_date.blank? %>
+						</div>
+						<div class="margin-top-5 col-xs-12 col-sm-5 col-md-6">
+							<% if user_signed_in? && current_user == @user %>
+								<div class="padding-left-0 visible-xs visible-sm col-xs-12 col-sm-12">
+									<%= link_to "View", job_posting_path(j), class: "btn btn-primary" %>
+									<%= link_to "Edit Posting", edit_job_posting_path(j), class: "btn btn-warning"%>
+								</div>
+								<div class="padding-left-0 padding-top-10 visible-xs visible-sm col-xs-12 col-sm-12">
+									<% application_count = j.job_posting_applications.where(status:0..Float::INFINITY).count %>
+									<%= link_to raw("Applications <span class=\"badge\">#{application_count.to_s}</span>"), '#', class: "btn btn-success", onclick: "setHomeTab(\'applicants\',\'"+job_posting_path(j)+"\');" %>						
+									<%= link_to "Delete", job_posting_path(j), method: "delete", data: {confirm: "Are you sure you want to delete this posting?"}, class: "btn btn-danger"%>
+								</div>
+								<div class="padding-left-0 padding-top-10 visible-md visible-lg col-md-12">
+									<%= link_to "View", job_posting_path(j), class: "btn btn-primary" %>
+									<%= link_to "Edit Posting", edit_job_posting_path(j), class: "btn btn-warning"%>
+									<% application_count = j.job_posting_applications.where(status:0..Float::INFINITY).count %>
+									<%= link_to raw("Applications <span class=\"badge\">#{application_count.to_s}</span>"), '#', class: "btn btn-success", onclick: "setHomeTab(\'applicants\',\'"+job_posting_path(j)+"\');" %>						
+									<%= link_to "Delete", job_posting_path(j), method: "delete", data: {confirm: "Are you sure you want to delete this posting?"}, class: "btn btn-danger"%>
+								</div>
 							<% else %>
-								<b>Bio</b><br />
-								<p><%= @user.bio %></p>
+								<%= link_to "View", job_posting_path(j), class: "btn btn-primary" %>
 							<% end %>
 						</div>
 					</div>
+					<br>
 				<% end %>
-			</div>
-			<div id="jobs" class="<%= jclass %>">
-				
-				<h4><b>Job Postings</b></h4>
-
-				<% if user_signed_in? && current_user == @user %>
-					<p>Here you can create new job postings or change them as needed.  Once job seekers have applied, you can view their applications and profiles as well.</p>
-					<div class="padding-15 row" ><%= link_to "Create a New Posting", new_job_posting_path, class: "btn btn-primary" %></div>
-
-				<% else %>
-					<p>Here you can view any job postings from <%= @user.company_name %>.</p>
-				<% end %>
-				<% if @job_postings.nil? %>
-					<% if user_signed_in? && current_user == @user %>
-						<p>You have no job postings.  Please create one below</p>
-					<% else %>
-						<p><%= @user.company_name %> has no job postings right now.  Check back leter.</p>
-					<% end %>
-				<% else %>
-					<% @job_postings.each do |j| %>
-						<div id="postings" class="padding-top-10 alternate row">
-							<div class="col-xs-12 col-sm-3 col-md-2">
-								<%= link_to "#{j.title}\n", job_posting_path(j) %><br />
-								<%= raw(j.get_type_string+"<br />") if !j.job_type.nil? && !j.get_type_string.nil? %>
-								<p><%= j.city %>, <%=j.province %></p>
-							</div>
-							<div class="col-xs-12 col-sm-4 col-md-4">
-								<%= j.job_category.name if !j.job_category.blank? %><br />
-								<%= raw("Open date: #{j.open_date.strftime('%B %d, %Y')}<br>")   if !j.open_date.blank? %>
-								<%= raw("Close date: #{j.close_date.strftime('%B %d, %Y')}<br>") if !j.close_date.blank? %>
-							</div>
-							<div class="margin-top-5 col-xs-12 col-sm-5 col-md-6">
-								<% if user_signed_in? && current_user == @user %>
-									<div class="padding-left-0 visible-xs visible-sm col-xs-12 col-sm-12">
-										<%= link_to "View", job_posting_path(j), class: "btn btn-primary" %>
-										<%= link_to "Edit Posting", edit_job_posting_path(j), class: "btn btn-warning"%>
-									</div>
-									<div class="padding-left-0 padding-top-10 visible-xs visible-sm col-xs-12 col-sm-12">
-										<% application_count = j.job_posting_applications.where(status:0..Float::INFINITY).count %>
-										<%= link_to raw("Applications <span class=\"badge\">#{application_count.to_s}</span>"), '#', class: "btn btn-success", onclick: "setHomeTab(\'applicants\',\'"+job_posting_path(j)+"\');" %>						
-										<%= link_to "Delete", job_posting_path(j), method: "delete", data: {confirm: "Are you sure you want to delete this posting?"}, class: "btn btn-danger"%>
-									</div>
-									<div class="padding-left-0 padding-top-10 visible-md visible-lg col-md-12">
-										<%= link_to "View", job_posting_path(j), class: "btn btn-primary" %>
-										<%= link_to "Edit Posting", edit_job_posting_path(j), class: "btn btn-warning"%>
-										<% application_count = j.job_posting_applications.where(status:0..Float::INFINITY).count %>
-										<%= link_to raw("Applications <span class=\"badge\">#{application_count.to_s}</span>"), '#', class: "btn btn-success", onclick: "setHomeTab(\'applicants\',\'"+job_posting_path(j)+"\');" %>						
-										<%= link_to "Delete", job_posting_path(j), method: "delete", data: {confirm: "Are you sure you want to delete this posting?"}, class: "btn btn-danger"%>
-									</div>
-								<% else %>
-									<%= link_to "View", job_posting_path(j), class: "btn btn-primary" %>
-								<% end %>
-							</div>
-						</div>
-						<br>
-					<% end %>
-				<% end %>
-			</div>
+			<% end %>
 		</div>
 	</div>
 
 <% elsif @user.has_role? :admin%>
+	<% aclass = "tab-pane fade" %>
+    <% rclass = "tab-pane fade" %>
+
+    <% if user_signed_in? && current_user==@user %>
+  		<% if session[:home_tab] == "resource-links" %>
+  			<% active = "resource-links" %>
+  			<% rclass = rclass + " in active" %>
+  		<% else %>
+  			<% active = "announcements" %>
+  			<% aclass = aclass + " in active" %>
+  		<% end %>
+  	<% else %>
+  		<% if session[:nav_tab] == "resource-links" %>
+  			<% active = "resource-links" %>
+  			<% rclass = rclass + " in active" %>
+  		<% else %>
+  			<% active = "announcements" %>
+  			<% aclass = aclass + " in active" %>
+  		<% end %>
+  	<% end %>
+
+
+	<%= render partial: "shared/site_tabs", locals: {active: active} %>
 	<div class="tab-content profileButtonContent">
-		<div id="announcements">
-			<%= simple_form_for @announcements, url: update_all_resource_links_path do |f| %>
+		<div id="announcements" class="<%= aclass %>">
+			<%= simple_form_for @announcements, url: update_all_announcements_path do |f| %>
+				<div class="row" id="announcement-messages">
+				<%= f.submit "Update Changes", class: "btn btn-primary" %>
+				<br />
 				<% @announcements.each_with_index do |an, index| %>
-					<div class="row">
-					<%= f.simple_fields_for '['+index.to_s+']' do |builder| %>
-						<%= builder.input :message, as: :text, input_html: { value: an.message }, wrapper_html: { class: 'col-xs-8 col-sm-10 col-md-8' } %>
+					<div class="row" id="announcement-<%=index%>">
+					<%= f.simple_fields_for index.to_s do |builder| %>
 						<%= builder.input :id, as: :hidden, input_html: { value: an.id } %>
+						<%= builder.input :announcement, as: :hidden, input_html: { value: true } %>
+						<%= builder.input :message, as: :text, input_html: { value: an.message }, wrapper_html: { class: 'padding-top-10 col-xs-8 col-sm-10 col-md-8' }, label: "System Announcement" %>
+						<div class="padding-top-43 padding-left-0 col-xs-1 col-sm-1 col-md-1">
+    						<%= builder.input :destroy, as: :hidden, input_html: {id: "announcement-destroy-#{index}" }%>
+							<span class="glyphicon glyphicon-remove glyphicon-red" onclick="remove_announcement('<%=index%>')"></span>
+						</div>
 					<% end %>
 					</div>
 				<% end %>
-				<%= f.button "Create", :action => "create", controller: "resource_links", :remote => true %>
+				</div>
 				<br />
-				<%= f.submit "Update", class: "btn btn-primary" %>
+				<%= link_to_add_announcement_fields "Add New Announcement", f, "btn btn-primary" %>
 			<% end %>
 		</div>
-		<div id="resource-link">
-			<ul>
-				<% @buckets.each do |bucket| %>
-					<li><%= bucket.message %><br /><%= bucket.link %></li>
+		<div id="resource-links" class="<%= rclass %>">
+				<h4>Resource Links</h4>
+				<p>Add new resource links below.  All links checked with Job Seeker have a chance to show up in their home page stickey notes, and all links checke dwith Job Provider can show up in their home page stickey notes.  If you want a link to show up on the home page, you can check that box.</p>
+				<%= simple_form_for @buckets, url: update_all_resource_links_path do |f| %>
+				<div class="row" id="links">
+				<%= f.submit "Update Changes", class: "btn btn-primary" %>
+				<br />
+				<% if @buckets.length > 0 %>
+					<hr class="grey">
 				<% end %>
-			</ul>
+				<% @buckets.each_with_index do |bucket, index| %>
+					<div class="row" id="resource-link-<%=index%>">
+					<%= f.simple_fields_for index.to_s do |builder| %>
+						<%= builder.input :id, as: :hidden, input_html: { value: bucket.id } %>
+						<div class="padding-top-10 col-md-7">
+						<%= builder.input :announcement, as: :hidden, input_html: { value: false } %>
+						<%= builder.input :message, input_html: { value: bucket.message }, wrapper_html: { class: 'col-md-12' }, label: "Description" %>
+						<%= builder.input :link, input_html: { value: bucket.link }, wrapper_html: { class: 'col-md-12' }, label: "Resource Link" %>
+						</div>
+						<div class="padding-top-10 col-md-4">
+						<b>Choose where or who can see these resource links:</b>
+						<%= builder.input :home_page, as: :boolean, wrapper_html: { class: "padding-top-10 col-md-12"}, input_html: { checked: bucket.home_page } %>
+						<%= builder.input :job_seeker, as: :boolean, wrapper_html: { class: "padding-top-10 col-md-12"}, input_html: { checked: bucket.job_seeker } %>
+						<%= builder.input :job_provider, as: :boolean, wrapper_html: { class: "padding-top-10 col-md-12"}, input_html: { checked: bucket.job_provider } %>
+						</div>
+						<div class="padding-top-43 padding-left-0 col-xs-1 col-sm-1 col-md-1">
+    						<%= builder.input :destroy, as: :hidden, input_html: {id: "resource-link-destroy-#{index}" }%>
+							<span class="glyphicon glyphicon-remove glyphicon-red" onclick="remove_resource_link('<%=index%>')"></span>
+						</div>
+					<% end %>
+					</div>
+					<hr class="grey" id="hr-<%=index%>">
+				<% end %>
+				</div>
+				<br />
+				<%= link_to_add_resource_link_fields "Add New Resource Link", f, "btn btn-primary" %>
+			<% end %>
 		</div>
+	</div>
 <% end %>
 

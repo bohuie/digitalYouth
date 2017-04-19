@@ -119,6 +119,7 @@ class ApplicationController < ActionController::Base
 
         #Job Recommendations
 
+        #Resource Links
         ResourceLink.limit(5).where(job_seeker:true).order("RANDOM()").each do |filler| #Grab up to 5 random links
           user_bucket << [filler.message, filler.link]
         end
@@ -190,21 +191,9 @@ class ApplicationController < ActionController::Base
         end
 
         #Useful Links - Increase array up to 8 size to ensure there is enough list items - Ensure at least 2 random links
-        length = user_bucket.length
-        links = Array.new
-        links[0] = ["Recommended Reading - Tips for Millenials in the workspace", "http://www.businessknowhow.com/manage/millenials.htm"]
-        links[1] = ["Recommended Reading - Millenial traits", "https://business.linkedin.com/talent-solutions/blog/2013/12/8-millennials-traits-you-should-know-about-before-you-hire-them"]
-        links[2] = ["Recommended Reading - What Millenials want", "http://wallstreetinsanity.com/15-important-qualities-millennials-look-for-where-they-work/"]
-        links[3] = ["Recommended Reading - Motivating employees", "https://businesscollective.com/37-ideas-for-motivating-your-employees/"]
-        links[4] = ["Recommended Reading - Employee retension", "http://hr.blr.com/whitepapers/Staffing-Training/Employee-Turnover/Strategies-for-Retaining-Employees-and-Minimizing-"]
-        if length < 6 # 8-2, ensure 2 random links
-          fillers = links.sample(6-length)
-        else
-          fillers = links.sample(2)
-        end
-
-        fillers.each do |filler|
-          user_bucket << [filler[0], filler[1]]
+        #Resource Links
+        ResourceLink.limit(5).where(job_provider:true).order("RANDOM()").each do |filler| #Grab up to 5 random links
+          user_bucket << [filler.message, filler.link]
         end
       #Admin
       else 

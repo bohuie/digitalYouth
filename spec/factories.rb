@@ -1,6 +1,12 @@
 include ActionDispatch::TestProcess
 
 FactoryGirl.define do
+  factory :resource_link do
+    home_page false
+    job_provider false
+    job_seeker false
+    announcement false
+  end
   factory :message do
     
   end

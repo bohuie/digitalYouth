@@ -32,7 +32,7 @@
 			<% end %>
 		<% end %>
 	<% elsif current_user.has_role? :employer %>
-		<% @user_buckets.each do |bucket| %>
+		<% @user_buckets.each_with_index do |bucket, index| %>
 			<% if defined?(number_buckets) && index >= number_buckets %>
 				<% break %>
 			<% end %>
@@ -50,7 +50,7 @@
 			<% when :bio %>
 				<li style="margin: 10px 0px;">Your company biography is the first thing job seekers see on your page.  Include some info so they can know more about you.  Update it <%= link_to "here", user_path(current_user), onclick: "setHomeTab('bio')" %> </li>
 			<% when :new_app %>
-				<%= link_to 'App', '#', onclick: "window.location='"+show_trackable_path(bucket[1])+"'" %>
+				<li style="margin: 10px 0px;">You have a new job posting applicant, you can view them <%= link_to 'here', '#', onclick: "window.location='"+show_trackable_path(bucket[1])+"'" %>.</li>
 			<% when :user_skill %>
 				<li style="margin: 10px 0px;">The most popular Job Seeker skill on EdgeMap is <%= bucket[1].titleize %>.</li>
 			<% when :job_skill %>
@@ -61,6 +61,22 @@
 				<li style="margin: 10px 0px;">You have a job posting that has expired and has no applicants.  You can extend it <%= link_to "here", edit_job_posting_path(bucket[1]) %></li>
 			<% when :expired_with_apps %>
 				<li style="margin: 10px 0px;">You have a job posting that has expired and has some applicants.  You can look at them <%= link_to 'here', '#', onclick: "setHomeTab(\'applicants\',\'"+job_posting_path(bucket[1])+"\');", data: { toggle: "tab" } %></li>
+			<% else %>
+				<li style="margin: 10px 0px;"><%= link_to bucket[0], bucket[1] %></li>
+			<% end %>
+		<% end %>
+	<% else %>
+		<% @user_buckets.each_with_index do |bucket, index| %>
+			<% if defined?(number_buckets) && index >= number_buckets %>
+				<% break %>
+			<% end %>
+			<% case bucket[0] %>
+			<% when :user_skill %>
+				<li style="margin: 10px 0px;">The most popular Job Seeker skill on EdgeMap is <%= bucket[1].titleize %>.</li>
+			<% when :job_skill %>
+				<li style="margin: 10px 0px;">The most sought after skill by Job Providers on EdgeMap is <%= bucket[1].titleize %>.</li>
+			<% when :online %>
+				<li style="margin: 10px 0px;"><%= I18n.t('users', count: bucket[1]) %> online right now.</li>
 			<% else %>
 				<li style="margin: 10px 0px;"><%= link_to bucket[0], bucket[1] %></li>
 			<% end %>

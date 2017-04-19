@@ -6,7 +6,7 @@ class UsersController < ApplicationController
 	before_action :profile_owner, only: [:edit, :update, :destroy]
 	skip_before_action :verify_authenticity_token, only: [:nav_tab] #ignore home_tab, only done when it is the current user and logged in
 	before_action :job_provider_only, only: [:contact, :send_mail]
-
+	before_action :skip_unless_admin, only: [:show]
 	
 	def index
 		@users = User.all
@@ -58,11 +58,14 @@ class UsersController < ApplicationController
 			if user_signed_in? && current_user == @user
 				@job_postings = @user.job_postings.order(title: :asc, province: :asc, city: :asc, id: :asc)
 			else
-			@job_postings = @user.job_postings;
-		end
+				@job_postings = @user.job_postings;
+			end
 			if user_signed_in? && current_user.id == @user.id
 				@job_posting = current_user.job_postings.build
 			end
+		else
+			@announcements = ResourceLink.where(announcement: true).order(:created_at).to_a
+			@buckets = ResourceLink.where(announcement: false).to_a
 		end
 	end
 
@@ -255,6 +258,19 @@ class UsersController < ApplicationController
 		unless current_user.has_role? :employer
 			flash[:warning] = "Sorry, we couldn't find that page."
 			redirect_back_or
+		end
+	end
+
+	def skip_unless_admin
+		@user = User.find(params[:id])
+		if @user.has_role?(:admin)
+			if !user_signed_in?
+				flash[:warning] = "Sorry, we couldn't find that page."
+				redirect_to	root_path
+			elsif @user != current_user
+				flash[:warning] = "Sorry, we couldn't find that page."
+				redirect_to	user_path(current_user)
+			end
 		end
 	end
 end

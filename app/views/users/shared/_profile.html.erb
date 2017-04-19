@@ -105,4 +105,44 @@
 	</div>
 <% else %>
 	<!-- admin -->
+	<div class ="profileContainer row">
+		<div class ="profileContainerImage">
+			<% if defined? edit %>
+				<div class="profile-image fix-display medium-shadow">
+					<%= image_tag @user.image.url(:medium), alt:"User Icon", id: "profile" %>
+				</div>
+			<% else %>
+				<div class="profile-image medium-shadow">
+					<%= image_tag @user.image.url(:medium), alt:"User Icon" %>
+				</div>
+			<% end %>
+		</div>
+		<%if @user == current_user %>
+		<div class ="profileContainerContent col-xs-9 col-sm-8 col-md-4">
+		<% else %>
+		<div class ="profileContainerContent col-xs-9 col-sm-8 col-md-8">
+		<% end %>
+			<h2> <%= link_to "Admin", @user %></h2>
+			
+			<h5>
+				<% if !@user.linkedin.nil? %>
+					<%= link_to 'Linkedin', @user.linkedin, id: 'linkedin', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+				<% end %>
+				<% if !@user.twitter.nil? %>
+					<%= link_to 'Twitter', @user.twitter, id: 'twitter', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+				<% end %>
+				<% if !@user.facebook.nil? %>
+					<%= link_to 'Facebook', @user.facebook, id: 'facebook', onmouseover: 'buttonOpac(this)', onmouseout:'buttonRevOpac(this)' %> 
+				<% end %>
+			</h5>
+			<h5><%= @user.summary %></h5>
+		</div>
+		<% if user_signed_in? && @user == current_user %>
+			<div class="bulletin-board col-xs-12 col-sm-12 col-md-5 pull-right">
+				<ul>
+					<%= render 'shared/user_buckets' %>
+				</ul>
+			</div>
+		<% end %>
+	</div>
 <% end %>

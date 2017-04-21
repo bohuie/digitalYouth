@@ -2,8 +2,6 @@
 lock '3.8.0'
 
 require "whenever/capistrano"
-require "capistrano/scm/git"
-install_plugin Capistrano::SCM::Git
 
 set :application, 'digitalYouth'
 set :repo_url, 'https://github.com/bohuie/digitalYouth'

@@ -10,6 +10,10 @@ class WelcomeController < ApplicationController
       @user = current_user
       @user_buckets = user_bucket
     end
+
+    @announcments =  ResourceLink.where(announcement: true).order(:created_at)
+    @job_seeker_links = ResourceLink.where(announcement: false, job_seeker: true, home_page: true)
+    @job_provider_links = ResourceLink.where(announcement: false, job_provider: true, home_page: true)
   end
 
   def about_us

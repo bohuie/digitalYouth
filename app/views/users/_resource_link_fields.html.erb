@@ -2,8 +2,8 @@
 	<div class="padding-top-10 col-md-7">
 		<%= f.input :id, as: :hidden %>
 		<%= f.input :announcement, as: :hidden, input_html: { value: false } %>
-		<%= f.input :message, wrapper_html: { class: 'col-md-12' }, label: "Description" %>
-		<%= f.input :link, wrapper_html: { class: 'col-md-12' }, label: "Resource Link" %>
+		<%= f.input :message, wrapper_html: { class: 'col-md-12' }, label: "Description", input_html: { id: 'description-'+id } %>
+		<%= f.input :link, wrapper_html: { class: 'col-md-12' }, label: "Resource Link", required: true, input_html: { id: 'link-'+id } %>
 	</div>
 	<div class="padding-top-10 col-md-4">
 		<b>Choose where or who can see these resource links:</b>

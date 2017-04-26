@@ -1,17 +1,22 @@
 <div class="row" id="resource-link-<%=id%>">
-	<div class="padding-top-10 col-md-7">
+	<div class="padding-top-10 col-md-7 col-sm-11 col-xs-11">
 		<%= f.input :id, as: :hidden %>
 		<%= f.input :announcement, as: :hidden, input_html: { value: false } %>
-		<%= f.input :message, wrapper_html: { class: 'col-md-12' }, label: "Description", input_html: { id: 'description-'+id } %>
-		<%= f.input :link, wrapper_html: { class: 'col-md-12' }, label: "Resource Link", required: true, input_html: { id: 'link-'+id } %>
+		<%= f.input :message, wrapper_html: { class: 'col-md-12 col-sm-12 col-xs-12' }, label: "Description", input_html: { id: 'description-'+id } %>
+		<%= f.input :link, wrapper_html: { class: 'padding-top-10 col-md-12 col-sm-12 col-xs-12' }, label: "Resource Link", required: true, input_html: { id: 'link-'+id } %>
 	</div>
-	<div class="padding-top-10 col-md-4">
-		<b>Choose where or who can see these resource links:</b>
-		<%= f.input :home_page, as: :boolean, wrapper_html: { class: "padding-top-10 col-md-12"} %>
-		<%= f.input :job_seeker, as: :boolean, wrapper_html: { class: "padding-top-10 col-md-12"} %>
-		<%= f.input :job_provider, as: :boolean, wrapper_html: { class: "padding-top-10 col-md-12"} %>
+	<div class="padding-top-43 padding-left-0 visible-sm visible-xs col-sm-1 col-xs-1">
+    	<%= f.input :destroy, as: :hidden, input_html: {id: "resource-link-destroy-#{id}" }%>
+		<span class="glyphicon glyphicon-remove glyphicon-red" onclick="remove_resource_link('<%=id%>')"></span>
 	</div>
-	<div class="padding-top-43 padding-left-0 col-xs-1 col-sm-1 col-md-1">
+	<div class="padding-top-10 col-md-4 col-sm-12 col-xs-12 ">
+		<b class="col-md-12 col-sm-12 col-xs-12">Choose where or who can see these resource links:</b>
+		<%= f.input :home_page_job_seeker, label: "Home Page - Job Seekers", as: :boolean, wrapper_html: { class: "padding-top-10 col-md-6 col-sm-6 col-xs-12"} %>
+		<%= f.input :bucket_job_seeker, label: "Stickey Note - Job Seekers", as: :boolean, wrapper_html: { class: "padding-top-10 col-md-6 col-sm-6 col-xs-12"} %>
+		<%= f.input :home_page_job_provider, label: "Home Page - Job Providers", as: :boolean, wrapper_html: { class: "padding-top-10 col-md-6 col-sm-6 col-xs-12"} %>
+		<%= f.input :bucket_job_provider, label: "Stickey Note - Job Providers", as: :boolean, wrapper_html: { class: "padding-top-10 col-md-6 col-sm-6 col-xs-12"} %>
+	</div>
+	<div class="padding-top-43 padding-left-0 visible-md visible-lg col-md-1">
     	<%= f.input :destroy, as: :hidden, input_html: {id: "resource-link-destroy-#{id}" }%>
 		<span class="glyphicon glyphicon-remove glyphicon-red" onclick="remove_resource_link('<%=id%>')"></span>
 	</div>

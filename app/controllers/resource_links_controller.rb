@@ -71,6 +71,6 @@ class ResourceLinksController < ApplicationController
 	end
 
 	def resource_link_params(index)
-		params.require("resource_link").require(index).permit(:message, :announcement, :link, :home_page, :job_provider, :job_seeker)
+		params.require("resource_link").require(index).permit(:message, :announcement, :link, :home_page_job_seeker, :home_page_job_provider, :bucket_job_provider, :bucket_job_seeker)
 	end
 end

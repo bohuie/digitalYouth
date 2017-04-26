@@ -548,18 +548,23 @@
 					<div class="row" id="resource-link-<%=index%>">
 					<%= f.simple_fields_for index.to_s do |builder| %>
 						<%= builder.input :id, as: :hidden, input_html: { value: bucket.id } %>
-						<div class="padding-top-10 col-md-7">
-						<%= builder.input :announcement, as: :hidden, input_html: { value: false } %>
-						<%= builder.input :message, input_html: { value: bucket.message }, wrapper_html: { class: 'col-md-12' }, label: "Description" %>
-						<%= builder.input :link, input_html: { value: bucket.link }, wrapper_html: { class: 'col-md-12' }, label: "Resource Link" %>
+						<div class="padding-top-10 col-md-7 col-sm-11 col-xs-11">
+							<%= builder.input :announcement, as: :hidden, input_html: { value: false } %>
+							<%= builder.input :message, input_html: { value: bucket.message }, wrapper_html: { class: 'col-md-12 col-sm-12 col-xs-12' }, label: "Description" %>
+							<%= builder.input :link, input_html: { value: bucket.link }, wrapper_html: { class: 'padding-top-10 col-md-12 col-sm-12 col-xs-12' }, label: "Resource Link" %>
 						</div>
-						<div class="padding-top-10 col-md-4">
-						<b>Choose where or who can see these resource links:</b>
-						<%= builder.input :home_page, as: :boolean, wrapper_html: { class: "padding-top-10 col-md-12"}, input_html: { checked: bucket.home_page } %>
-						<%= builder.input :job_seeker, as: :boolean, wrapper_html: { class: "padding-top-10 col-md-12"}, input_html: { checked: bucket.job_seeker } %>
-						<%= builder.input :job_provider, as: :boolean, wrapper_html: { class: "padding-top-10 col-md-12"}, input_html: { checked: bucket.job_provider } %>
+						<div class="padding-top-43 padding-left-0 visible-sm visible-xs col-sm-1 col-xs-1">
+    						<%= builder.input :destroy, as: :hidden, input_html: {id: "resource-link-destroy-#{index}" }%>
+							<span class="glyphicon glyphicon-remove glyphicon-red" onclick="remove_resource_link('<%=index%>')"></span>
 						</div>
-						<div class="padding-top-43 padding-left-0 col-xs-1 col-sm-1 col-md-1">
+						<div class="padding-top-10 col-md-4 col-sm-12 col-xs-12 ">
+							<b class="col-md-12 col-sm-12 col-xs-12">Choose where or who can see these resource links:</b>
+							<%= builder.input :home_page_job_seeker, label: "Home Page - Job Seekers", as: :boolean, wrapper_html: { class: "padding-top-10 col-md-6 col-sm-6 col-xs-12"}, input_html: { checked: bucket.home_page_job_seeker } %>
+							<%= builder.input :bucket_job_seeker, label: "Stickey Note - Job Seekers", as: :boolean, wrapper_html: { class: "padding-top-10 col-md-6 col-sm-6 col-xs-12"}, input_html: { checked: bucket.bucket_job_seeker } %>
+							<%= builder.input :home_page_job_provider, label: "Home Page - Job Providers", as: :boolean, wrapper_html: { class: "padding-top-10 col-md-6 col-sm-6 col-xs-12"}, input_html: { checked: bucket.home_page_job_provider } %>
+							<%= builder.input :bucket_job_provider, label: "Stickey Note - Job Providers", as: :boolean, wrapper_html: { class: "padding-top-10 col-md-6 col-sm-6 col-xs-12"}, input_html: { checked: bucket.bucket_job_provider } %>
+						</div>
+						<div class="padding-top-43 padding-left-0 visible-md visible-lg col-md-1">
     						<%= builder.input :destroy, as: :hidden, input_html: {id: "resource-link-destroy-#{index}" }%>
 							<span class="glyphicon glyphicon-remove glyphicon-red" onclick="remove_resource_link('<%=index%>')"></span>
 						</div>

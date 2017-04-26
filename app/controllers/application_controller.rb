@@ -120,7 +120,7 @@ class ApplicationController < ActionController::Base
         #Job Recommendations
 
         #Resource Links
-        ResourceLink.limit(5).where(job_seeker:true).order("RANDOM()").each do |filler| #Grab up to 5 random links
+        ResourceLink.limit(5).where(bucket_job_seeker:true).order("RANDOM()").each do |filler| #Grab up to 5 random links
           user_bucket << [filler.message, filler.link]
         end
       #Job Provider buckets
@@ -192,7 +192,7 @@ class ApplicationController < ActionController::Base
 
         #Useful Links - Increase array up to 8 size to ensure there is enough list items - Ensure at least 2 random links
         #Resource Links
-        ResourceLink.limit(5).where(job_provider:true).order("RANDOM()").each do |filler| #Grab up to 5 random links
+        ResourceLink.limit(5).where(bucket_job_provider:true).order("RANDOM()").each do |filler| #Grab up to 5 random links
           user_bucket << [filler.message, filler.link]
         end
       #Admin

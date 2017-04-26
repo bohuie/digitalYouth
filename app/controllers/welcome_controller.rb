@@ -12,8 +12,8 @@ class WelcomeController < ApplicationController
     end
 
     @announcments =  ResourceLink.where(announcement: true).order(:created_at)
-    @job_seeker_links = ResourceLink.where(announcement: false, job_seeker: true, home_page: true)
-    @job_provider_links = ResourceLink.where(announcement: false, job_provider: true, home_page: true)
+    @job_seeker_links = ResourceLink.where(announcement: false, home_page_job_seeker: true)
+    @job_provider_links = ResourceLink.where(announcement: false, home_page_job_provider: true)
   end
 
   def about_us

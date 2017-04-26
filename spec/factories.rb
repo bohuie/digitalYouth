@@ -1,6 +1,9 @@
 include ActionDispatch::TestProcess
 
 FactoryGirl.define do
+  factory :contact_user_email do
+    
+  end
   factory :resource_link do
     home_page false
     job_provider false

@@ -7,6 +7,8 @@
 	<%= render 'welcome/shared/job_seeker_landing' %>
 <% elsif current_user.has_role?(:employer) %>
 	<%= render 'welcome/shared/job_provider_landing' %>
+<% elsif current_user.has_role?(:admin) %>
+	<%= render 'welcome/shared/admin_landing' %>
 <% else %>
 	<%= render 'welcome/shared/landing' %>
 <% end %>

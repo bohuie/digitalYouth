@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170417204835) do
+ActiveRecord::Schema.define(version: 20170426195051) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,6 +58,11 @@ ActiveRecord::Schema.define(version: 20170417204835) do
   end
 
   add_index "consents", ["user_id"], name: "index_consents_on_user_id", using: :btree
+
+  create_table "contact_user_emails", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "identities", force: :cascade do |t|
     t.integer  "user_id"
@@ -205,14 +210,15 @@ ActiveRecord::Schema.define(version: 20170417204835) do
   end
 
   create_table "resource_links", force: :cascade do |t|
-    t.boolean  "home_page"
-    t.boolean  "job_provider"
-    t.boolean  "job_seeker"
+    t.boolean  "home_page_job_provider"
+    t.boolean  "bucket_job_provider"
+    t.boolean  "bucket_job_seeker"
     t.boolean  "announcement"
     t.string   "link"
     t.string   "message"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.boolean  "home_page_job_seeker"
   end
 
   create_table "responses", force: :cascade do |t|

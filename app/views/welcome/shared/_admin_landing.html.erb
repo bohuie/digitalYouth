@@ -1,0 +1,35 @@
+<div class="signupbox col-md-5 col-xs-5">
+	<div class="row">
+		<div class="titlebox">
+			<h4><b>Welcome Site Admin</b></h4>
+		</div>
+	</div>
+	<br />
+	<div class="row">
+		<div class="visible-md visible-lg col-md-12">
+			<ul style="text-align: left;">
+				<h4>
+					<%= render 'shared/user_buckets' %>
+				</h4>
+			</ul>
+		</div>
+		<div class="visible-sm col-sm-12">
+			<ul style="text-align: left;">
+				<h4>
+					<%= render 'shared/user_buckets', number_buckets: 2 %>
+				</h4>
+			</ul>
+		</div>
+		<div class="visible-xs col-xs-12">
+			<ul style="text-align: left;">
+				<h4>
+					<%= render 'shared/user_buckets', number_buckets: 1 %>
+				</h4>
+			</ul>
+		</div>
+	</div>
+	<br />
+	<div class="footerbox row user-footer">
+		<%= link_to 'Go To My Profile', user_path(current_user), style: "color: white;" %>
+	</div>
+</div>

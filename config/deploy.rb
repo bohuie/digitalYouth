@@ -12,7 +12,7 @@ set :branch, "admin"
 #set :branch, ENV.fetch('REVISION', 'admin')
 
 set :linked_files, %w(config/application.yml)
-set :linked_dir, %w{public/system}
+set :linked_dirs, %w{public}
 
 set :stages, "production"
 

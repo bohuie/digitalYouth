@@ -9,8 +9,10 @@ set :deploy_to, '/srv/www/vhosts/ubc.ca/ok/jobcannon/html/public'
 #set :tmp_dir, '/srv/www/vhosts/ubc.ca/ok/jobcannon/html/public/tmp'
 #set :tmp_dir, '~/tmp'
 set :branch, "master"
+#set :branch, ENV.fetch('REVISION', 'admin')
 
 set :linked_files, %w(config/application.yml)
+set :linked_dirs, %w{public}
 
 set :stages, "production"
 

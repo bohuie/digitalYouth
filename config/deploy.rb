@@ -12,7 +12,7 @@ set :branch, "admin"
 #set :branch, ENV.fetch('REVISION', 'admin')
 
 set :linked_files, %w(config/application.yml)
-set :linked_dir, fetch(:linked_dirs) +  %w{public/system}
+set :linked_dir, %w{public/system}
 
 set :stages, "production"
 
@@ -41,7 +41,7 @@ server "edgemap.ok.ubc.ca", :roles => [:app, :web, :db], :primary => true, user:
 
 
 namespace :deploy do
-
+  after 'deploy:symlink:shared'
   desc "Symlink the application.yml file"
   task :symlink_config do
     on roles(:app) do

@@ -8,7 +8,7 @@ set :repo_url, 'https://github.com/bohuie/digitalYouth'
 set :deploy_to, '/srv/www/vhosts/ubc.ca/ok/jobcannon/html/public'
 #set :tmp_dir, '/srv/www/vhosts/ubc.ca/ok/jobcannon/html/public/tmp'
 #set :tmp_dir, '~/tmp'
-set :branch, "admin"
+set :branch, "master"
 #set :branch, ENV.fetch('REVISION', 'admin')
 
 set :linked_files, %w(config/application.yml)

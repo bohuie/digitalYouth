@@ -521,7 +521,8 @@
 					<%= f.simple_fields_for index.to_s do |builder| %>
 						<%= builder.input :id, as: :hidden, input_html: { value: an.id } %>
 						<%= builder.input :announcement, as: :hidden, input_html: { value: true } %>
-						<%= builder.input :message, as: :text, input_html: { value: an.message }, wrapper_html: { class: 'padding-top-10 col-xs-8 col-sm-10 col-md-8' }, label: "System Announcement" %>
+						<%= builder.input :message, as: :text, input_html: { value: an.message, id: "announcement-message-"+index.to_s }, wrapper_html: { class: 'padding-top-10 col-xs-8 col-sm-10 col-md-8' }, label: "System Announcement" %>
+						<%= builder.input :hide, as: :boolean, input_html: { value: an.hide }, wrapper_html: { class: 'padding-top-43 col-md-1' } %>
 						<div class="padding-top-43 padding-left-0 col-xs-1 col-sm-1 col-md-1">
     						<%= builder.input :destroy, as: :hidden, input_html: {id: "announcement-destroy-#{index}" }%>
 							<span class="glyphicon glyphicon-remove glyphicon-red" onclick="remove_announcement('<%=index%>')"></span>

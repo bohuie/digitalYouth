@@ -155,7 +155,7 @@ function add_announcement_fields(association, content){
 function remove_announcement(id){
 	$('#announcement-destroy-'+id).val(true);
 	$('#announcement-'+id).fadeOut(100);
-	$('#resource_link_'+id+'_message').removeAttr('required');
+	$('#announcement-message-'+id).removeAttr('required');
 }
 
 function add_resource_link_fields(association, content){

@@ -1,7 +1,7 @@
 <div class='row' id="announcement-<%=id%>">
 	<%= f.input :id, as: :hidden %>
 	<%= f.input :announcement, as: :hidden, input_html: { value: true } 	 %>
-    <%= f.input :message, as: :text, wrapper_html: { class: 'col-xs-8 col-sm-10 col-md-8' }, label: "System Announcement", input_html: { id: 'message-'+id } %>
+    <%= f.input :message, as: :text, wrapper_html: { class: 'col-xs-8 col-sm-10 col-md-8' }, label: "System Announcement", input_html: { id: 'announcement-message-'+id } %>
     <%= f.input :destroy, as: :hidden, input_html: {id: "announcement-destroy-#{id}" }%>
     <div class="padding-top-43 padding-left-0 col-xs-1 col-sm-1 col-md-1">
 		<span class="glyphicon glyphicon-remove glyphicon-red" onclick="remove_announcement('<%=id%>')"></span>

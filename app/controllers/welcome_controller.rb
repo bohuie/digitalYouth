@@ -11,7 +11,7 @@ class WelcomeController < ApplicationController
       @user_buckets = user_bucket
     end
 
-    @announcments =  ResourceLink.where(announcement: true).order(:created_at)
+    @announcments =  ResourceLink.where(announcement: true, hide: false).order(:created_at)
     @job_seeker_links = ResourceLink.where(announcement: false, home_page_job_seeker: true)
     @job_provider_links = ResourceLink.where(announcement: false, home_page_job_provider: true)
   end

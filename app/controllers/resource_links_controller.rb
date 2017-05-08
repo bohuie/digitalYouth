@@ -67,7 +67,7 @@ class ResourceLinksController < ApplicationController
 	end
 
 	def announcement_params(index)
-		params.require("resource_link").require(index).permit(:message, :announcement)
+		params.require("resource_link").require(index).permit(:message, :announcement, :hide)
 	end
 
 	def resource_link_params(index)

@@ -155,7 +155,7 @@ function add_announcement_fields(association, content){
 function remove_announcement(id){
 	$('#announcement-destroy-'+id).val(true);
 	$('#announcement-'+id).fadeOut(100);
-	$('#message-'+id).removeAttr('required');
+	$('#announcement-message-'+id).removeAttr('required');
 }
 
 function add_resource_link_fields(association, content){
@@ -168,6 +168,7 @@ function add_resource_link_fields(association, content){
 
 function remove_resource_link(id){
 	$('#resource-link-destroy-'+id).val(true);
+	$('#resource-link-md-destroy-'+id).val(true);
 	$('#resource-link-'+id).fadeOut(100);
 	$('#hr-'+id).fadeOut(100);
 	$('#description-'+id).removeAttr('required');

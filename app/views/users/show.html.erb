@@ -512,7 +512,7 @@
 	<%= render partial: "shared/site_tabs", locals: {active: active} %>
 	<div class="tab-content profileButtonContent">
 		<div id="announcements" class="<%= aclass %>">
-			<%= simple_form_for @announcements, url: update_all_announcements_path do |f| %>
+			<%= simple_form_for @announcements, url: update_all_announcements_path, method: :patch do |f| %>
 				<div class="row" id="announcement-messages">
 				<%= f.submit "Update Changes", class: "btn btn-primary" %>
 				<br />
@@ -521,7 +521,8 @@
 					<%= f.simple_fields_for index.to_s do |builder| %>
 						<%= builder.input :id, as: :hidden, input_html: { value: an.id } %>
 						<%= builder.input :announcement, as: :hidden, input_html: { value: true } %>
-						<%= builder.input :message, as: :text, input_html: { value: an.message }, wrapper_html: { class: 'padding-top-10 col-xs-8 col-sm-10 col-md-8' }, label: "System Announcement" %>
+						<%= builder.input :message, as: :text, input_html: { value: an.message, id: "announcement-message-"+index.to_s }, wrapper_html: { class: 'padding-top-10 col-xs-8 col-sm-9 col-md-8' }, label: "System Announcement" %>
+						<%= builder.input :hide, as: :boolean, input_html: { checked: an.hide }, wrapper_html: { class: 'padding-top-43 col-xs-3 col-sm-2 col-md-1' } %>
 						<div class="padding-top-43 padding-left-0 col-xs-1 col-sm-1 col-md-1">
     						<%= builder.input :destroy, as: :hidden, input_html: {id: "announcement-destroy-#{index}" }%>
 							<span class="glyphicon glyphicon-remove glyphicon-red" onclick="remove_announcement('<%=index%>')"></span>
@@ -535,43 +536,43 @@
 			<% end %>
 		</div>
 		<div id="resource-links" class="<%= rclass %>">
-				<h4>Resource Links</h4>
-				<p>Add new resource links below.  All links checked with Job Seeker have a chance to show up in their home page stickey notes, and all links checke dwith Job Provider can show up in their home page stickey notes.  If you want a link to show up on the home page, you can check that box.</p>
-				<%= simple_form_for @buckets, url: update_all_resource_links_path do |f| %>
+			<h4>Resource Links</h4>
+			<p>Add new resource links below.  All links checked with Job Seeker have a chance to show up in their home page stickey notes, and all links checke dwith Job Provider can show up in their home page stickey notes.  If you want a link to show up on the home page, you can check that box.</p>
+			<%= simple_form_for @buckets, url: update_all_resource_links_path, method: :patch do |f| %>
 				<div class="row" id="links">
-				<%= f.submit "Update Changes", class: "btn btn-primary" %>
-				<br />
-				<% if @buckets.length > 0 %>
-					<hr class="grey">
-				<% end %>
-				<% @buckets.each_with_index do |bucket, index| %>
-					<div class="row" id="resource-link-<%=index%>">
-					<%= f.simple_fields_for index.to_s do |builder| %>
-						<%= builder.input :id, as: :hidden, input_html: { value: bucket.id } %>
-						<div class="padding-top-10 col-md-7 col-sm-11 col-xs-11">
-							<%= builder.input :announcement, as: :hidden, input_html: { value: false } %>
-							<%= builder.input :message, input_html: { value: bucket.message }, wrapper_html: { class: 'col-md-12 col-sm-12 col-xs-12' }, label: "Description" %>
-							<%= builder.input :link, input_html: { value: bucket.link }, wrapper_html: { class: 'padding-top-10 col-md-12 col-sm-12 col-xs-12' }, label: "Resource Link" %>
-						</div>
-						<div class="padding-top-43 padding-left-0 visible-sm visible-xs col-sm-1 col-xs-1">
-    						<%= builder.input :destroy, as: :hidden, input_html: {id: "resource-link-destroy-#{index}" }%>
-							<span class="glyphicon glyphicon-remove glyphicon-red" onclick="remove_resource_link('<%=index%>')"></span>
-						</div>
-						<div class="padding-top-10 col-md-4 col-sm-12 col-xs-12 ">
-							<b class="col-md-12 col-sm-12 col-xs-12">Choose where or who can see these resource links:</b>
-							<%= builder.input :home_page_job_seeker, label: "Home Page - Job Seekers", as: :boolean, wrapper_html: { class: "padding-top-10 col-md-6 col-sm-6 col-xs-12"}, input_html: { checked: bucket.home_page_job_seeker } %>
-							<%= builder.input :bucket_job_seeker, label: "Stickey Note - Job Seekers", as: :boolean, wrapper_html: { class: "padding-top-10 col-md-6 col-sm-6 col-xs-12"}, input_html: { checked: bucket.bucket_job_seeker } %>
-							<%= builder.input :home_page_job_provider, label: "Home Page - Job Providers", as: :boolean, wrapper_html: { class: "padding-top-10 col-md-6 col-sm-6 col-xs-12"}, input_html: { checked: bucket.home_page_job_provider } %>
-							<%= builder.input :bucket_job_provider, label: "Stickey Note - Job Providers", as: :boolean, wrapper_html: { class: "padding-top-10 col-md-6 col-sm-6 col-xs-12"}, input_html: { checked: bucket.bucket_job_provider } %>
-						</div>
-						<div class="padding-top-43 padding-left-0 visible-md visible-lg col-md-1">
-    						<%= builder.input :destroy, as: :hidden, input_html: {id: "resource-link-destroy-#{index}" }%>
-							<span class="glyphicon glyphicon-remove glyphicon-red" onclick="remove_resource_link('<%=index%>')"></span>
-						</div>
+					<%= f.submit "Update Changes", class: "btn btn-primary" %>
+					<br />
+					<% if @buckets.length > 0 %>
+						<hr class="grey">
 					<% end %>
-					</div>
-					<hr class="grey" id="hr-<%=index%>">
-				<% end %>
+					<% @buckets.each_with_index do |bucket, index| %>
+						<div class="row" id="resource-link-<%=index%>">
+							<%= f.simple_fields_for index.to_s do |builder| %>
+								<%= builder.input :id, as: :hidden, input_html: { value: bucket.id } %>
+								<div class="padding-top-10 col-md-7 col-sm-11 col-xs-11">
+									<%= builder.input :announcement, as: :hidden, input_html: { value: false } %>
+									<%= builder.input :message, input_html: { value: bucket.message }, wrapper_html: { class: 'col-md-12 col-sm-12 col-xs-12' }, label: "Description" %>
+									<%= builder.input :link, input_html: { value: bucket.link }, wrapper_html: { class: 'padding-top-10 col-md-12 col-sm-12 col-xs-12' }, label: "Resource Link" %>
+								</div>
+								<div class="padding-top-43 padding-left-0 visible-sm visible-xs col-sm-1 col-xs-1">
+    								<%= builder.input :destroy, as: :hidden, input_html: {id: "resource-link-destroy-#{index}" }%>
+									<span class="glyphicon glyphicon-remove glyphicon-red" onclick="remove_resource_link('<%=index%>')"></span>
+								</div>
+								<div class="padding-top-10 col-md-4 col-sm-12 col-xs-12 ">
+									<b class="col-md-12 col-sm-12 col-xs-12">Choose where or who can see these resource links:</b>
+									<%= builder.input :home_page_job_seeker, label: "Home Page - Job Seekers", as: :boolean, wrapper_html: { class: "padding-top-10 col-md-6 col-sm-6 col-xs-12"}, input_html: { checked: bucket.home_page_job_seeker } %>
+									<%= builder.input :bucket_job_seeker, label: "Stickey Note - Job Seekers", as: :boolean, wrapper_html: { class: "padding-top-10 col-md-6 col-sm-6 col-xs-12"}, input_html: { checked: bucket.bucket_job_seeker } %>
+									<%= builder.input :home_page_job_provider, label: "Home Page - Job Providers", as: :boolean, wrapper_html: { class: "padding-top-10 col-md-6 col-sm-6 col-xs-12"}, input_html: { checked: bucket.home_page_job_provider } %>
+									<%= builder.input :bucket_job_provider, label: "Stickey Note - Job Providers", as: :boolean, wrapper_html: { class: "padding-top-10 col-md-6 col-sm-6 col-xs-12"}, input_html: { checked: bucket.bucket_job_provider } %>
+								</div>
+								<div class="padding-top-43 padding-left-0 visible-md visible-lg col-md-1">
+    								<%= builder.input :destroy, as: :hidden, input_html: {id: "resource-link-md-destroy-#{index}" }%>
+									<span class="glyphicon glyphicon-remove glyphicon-red" onclick="remove_resource_link('<%=index%>')"></span>
+								</div>
+							<% end %>
+						</div>
+						<hr class="grey" id="hr-<%=index%>">
+					<% end %>
 				</div>
 				<br />
 				<%= link_to_add_resource_link_fields "Add New Resource Link", f, "btn btn-primary" %>

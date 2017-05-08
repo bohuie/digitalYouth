@@ -65,7 +65,13 @@ class UsersController < ApplicationController
 			end
 		else
 			@announcements = ResourceLink.where(announcement: true).order(:created_at).to_a
+			if @announcements.empty?
+				@announcements[0] = ResourceLink.new
+			end
 			@buckets = ResourceLink.where(announcement: false).order(:bucket_job_seeker, :home_page_job_seeker, :bucket_job_provider).to_a
+			if @buckets.empty?
+				@buckets[0] = ResourceLink.new
+			end
 		end
 	end
 

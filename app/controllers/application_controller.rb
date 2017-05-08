@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-  	root_path
+    root_path
   end
 
   # Redirect to stored location (or specified)
@@ -217,7 +217,7 @@ class ApplicationController < ActionController::Base
       end
 
       items = Array.new
-      while( items.length < amount)
+      while( items.length < amount && items.length < user_bucket.length)
         item = user_bucket.sample
         unless items.include?(item)
           items << item

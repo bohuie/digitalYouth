@@ -565,7 +565,7 @@
 									<%= builder.input :bucket_job_provider, label: "Stickey Note - Job Providers", as: :boolean, wrapper_html: { class: "padding-top-10 col-md-6 col-sm-6 col-xs-12"}, input_html: { checked: bucket.bucket_job_provider } %>
 								</div>
 								<div class="padding-top-43 padding-left-0 visible-md visible-lg col-md-1">
-    								<%= builder.input :destroy, as: :hidden, input_html: {id: "resource-link-destroy-#{index}" }%>
+    								<%= builder.input :destroy, as: :hidden, input_html: {id: "resource-link-md-destroy-#{index}" }%>
 									<span class="glyphicon glyphicon-remove glyphicon-red" onclick="remove_resource_link('<%=index%>')"></span>
 								</div>
 							<% end %>

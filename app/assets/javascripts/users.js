@@ -168,6 +168,7 @@ function add_resource_link_fields(association, content){
 
 function remove_resource_link(id){
 	$('#resource-link-destroy-'+id).val(true);
+	$('#resource-link-md-destroy-'+id).val(true);
 	$('#resource-link-'+id).fadeOut(100);
 	$('#hr-'+id).fadeOut(100);
 	$('#description-'+id).removeAttr('required');

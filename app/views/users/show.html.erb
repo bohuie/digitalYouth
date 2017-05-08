@@ -512,7 +512,7 @@
 	<%= render partial: "shared/site_tabs", locals: {active: active} %>
 	<div class="tab-content profileButtonContent">
 		<div id="announcements" class="<%= aclass %>">
-			<%= simple_form_for @announcements, url: update_all_announcements_path do |f| %>
+			<%= simple_form_for @announcements, url: update_all_announcements_path, method: :patch do |f| %>
 				<div class="row" id="announcement-messages">
 				<%= f.submit "Update Changes", class: "btn btn-primary" %>
 				<br />

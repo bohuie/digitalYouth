@@ -144,3 +144,33 @@ function setNavTab(value, url)
 	}
 }
 
+function add_announcement_fields(association, content){
+    var announcements = 0;
+    $('#announcement-messages').children().each(function(){if(this.id.includes("announcement-")) announcements++;});
+    var new_id = announcements;
+    var regexp = new RegExp("resource_links", "g");
+    $('#announcement-messages').append(content.replace(regexp, new_id));
+}
+
+function remove_announcement(id){
+	$('#announcement-destroy-'+id).val(true);
+	$('#announcement-'+id).fadeOut(100);
+	$('#announcement-message-'+id).removeAttr('required');
+}
+
+function add_resource_link_fields(association, content){
+    var resource_links = 0;
+    $('#links').children().each(function(){if(this.id.includes("resource-link-")) resource_links++;});
+    var new_id = resource_links;
+    var regexp = new RegExp("resource_links", "g");
+    $('#links').append(content.replace(regexp, new_id));
+}
+
+function remove_resource_link(id){
+	$('#resource-link-destroy-'+id).val(true);
+	$('#resource-link-md-destroy-'+id).val(true);
+	$('#resource-link-'+id).fadeOut(100);
+	$('#hr-'+id).fadeOut(100);
+	$('#description-'+id).removeAttr('required');
+	$('#link-'+id).removeAttr('required');
+}

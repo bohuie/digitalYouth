@@ -31,9 +31,9 @@ class JobPosting < ActiveRecord::Base
 		data = Hash.new
  		data[:title] = title.titleize
  		if self.user_id == 0
-	  		data[:company_name] = company_name.titleize
+	  		data[:company_name] = company_name.titleize if company_name
 	  	else
-	  		data[:company_name] = self.user.company_name.titleize
+	  		data[:company_name] = self.user.company_name.titleize if self.user
 	  	end
 	  	data[:city] = city.titleize.strip
 	  	data[:province] = province.upcase.strip

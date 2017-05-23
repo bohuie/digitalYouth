@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-  	root_path
+    root_path
   end
 
   # Redirect to stored location (or specified)
@@ -61,7 +61,6 @@ class ApplicationController < ActionController::Base
         # 4 - 6 months, weighting at 2
         # 6 - 12 months, weighting at 1
         # After 12 months, none
-
         if current_user.created_at >= Date.today - 2.month
           weight = 4
         elsif current_user.created_at < Date.today - 2.month && current_user.created_at >= Date.today - 4.month
@@ -120,22 +119,9 @@ class ApplicationController < ActionController::Base
 
         #Job Recommendations
 
-        #Useful Links - Increase array up to 8 size to ensure there is enough list items - Ensure at least 2 random links
-        length = user_bucket.length
-        links = Array.new
-        links[0] = ["Recommended Reading - Tips for first job", "https://www.livecareer.com/quintessential/teen-first-job"]
-        links[1] = ["Recommended Reading - Common interview questions", "http://careers.workopolis.com/advice/the-most-commonly-asked-job-interview-questions-and-how-to-answer-them/"]
-        links[2] = ["Recommended Reading - Tips for a cover letter", "https://www.themuse.com/advice/how-to-write-a-cover-letter-31-tips-you-need-to-know"]
-        links[3] = ["Recommended Reading - Prepare for the interview", "http://www.relaunchyourcareer.co.uk/job-interviews/six-secrets-to-doing-well-at-interview/"]
-        links[4] = ["Recommended Reading - Interview tips", "https://biginterview.com/blog/2015/02/how-to-sell-yourself-in-an-interview.html"]
-        if length < 6 # 8-2, ensure 2 random links
-          fillers = links.sample(6-length)
-        else
-          fillers = links.sample(2)
-        end
-
-        fillers.each do |filler|
-          user_bucket << [filler[0], filler[1]]
+        #Resource Links
+        ResourceLink.limit(5).where(bucket_job_seeker:true).order("RANDOM()").each do |filler| #Grab up to 5 random links
+          user_bucket << [filler.message, filler.link]
         end
       #Job Provider buckets
       elsif current_user.has_role? :employer
@@ -205,26 +191,33 @@ class ApplicationController < ActionController::Base
         end
 
         #Useful Links - Increase array up to 8 size to ensure there is enough list items - Ensure at least 2 random links
-        length = user_bucket.length
-        links = Array.new
-        links[0] = ["Recommended Reading - Tips for Millenials in the workspace", "http://www.businessknowhow.com/manage/millenials.htm"]
-        links[1] = ["Recommended Reading - Millenial traits", "https://business.linkedin.com/talent-solutions/blog/2013/12/8-millennials-traits-you-should-know-about-before-you-hire-them"]
-        links[2] = ["Recommended Reading - What Millenials want", "http://wallstreetinsanity.com/15-important-qualities-millennials-look-for-where-they-work/"]
-        links[3] = ["Recommended Reading - Motivating employees", "https://businesscollective.com/37-ideas-for-motivating-your-employees/"]
-        links[4] = ["Recommended Reading - Employee retension", "http://hr.blr.com/whitepapers/Staffing-Training/Employee-Turnover/Strategies-for-Retaining-Employees-and-Minimizing-"]
-        if length < 6 # 8-2, ensure 2 random links
-          fillers = links.sample(6-length)
-        else
-          fillers = links.sample(2)
+        #Resource Links
+        ResourceLink.limit(5).where(bucket_job_provider:true).order("RANDOM()").each do |filler| #Grab up to 5 random links
+          user_bucket << [filler.message, filler.link]
+        end
+      #Admin
+      else 
+        user_bucket = Array.new
+
+        #Most Common User Skill
+        user_skill = UserSkill.group(:skill_id).order('count_id DESC').limit(1).count(:id)
+        if user_skill
+          user_bucket << [:user_skill, Skill.find(user_skill.keys[0]).name]
         end
 
-        fillers.each do |filler|
-          user_bucket << [filler[0], filler[1]]
+        #Most Common Job Posting Skill
+        job_skill = JobPostingSkill.group(:skill_id).order('count_id DESC').limit(1).count(:id)
+        if job_skill
+          #user_bucket << [:job_skill, Skill.find(job_skill.keys[0]).name]
+        end
+
+        ResourceLink.limit(5).where(announcement: false).order("RANDOM()").each do |filler| #Grab up to 5 random links, both job seeker and provider
+          user_bucket << [filler.message, filler.link]
         end
       end
 
       items = Array.new
-      while( items.length < amount)
+      while( items.length < amount && items.length < user_bucket.length)
         item = user_bucket.sample
         unless items.include?(item)
           items << item

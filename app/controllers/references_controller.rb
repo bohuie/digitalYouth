@@ -3,7 +3,6 @@ class ReferencesController < ApplicationController
 	before_action :authenticate_user!, except: [:new, :create]
 	before_action :reference_owner, only: [:update, :destroy]
 	before_action :check_email_fields, only: [:send_mail]
-	before_action :check_reference_fields, only: [:create]
 
 	def index # Shows a users unconfirmed, confirmed references and reference requests
 		@confirmed_references = Reference.where(user_id: current_user.id, confirmed: true)
@@ -73,8 +72,13 @@ class ReferencesController < ApplicationController
 	end
 
 	def create # Post action which creates the reference
-		@url_string = request.referer.rpartition('/')[-1] if !request.referer.nil? # Retrieves the random part of the url on the new page
+		if !request.referer.nil? && params[:url].blank?
+			@url_string = request.referer.rpartition('/')[-1] # Retrieves the random part of the url on the new page
+		elsif !params[:url].blank?
+			@url_string = params[:url]
+		end
 		@reference_redirection = ReferenceRedirection.find_by(reference_url: @url_string)
+		params[:url] = @url_string
 		if !@reference_redirection.nil?
 			@owner = false
 			params[:reference][:user_id] = @reference_redirection.user_id
@@ -92,12 +96,21 @@ class ReferencesController < ApplicationController
 					redirect_to root_path , flash: {success: "Thank you for making a reference!"}
 				end
 			else
+				if user_signed_in?
+					@user = current_user
+					if user_signed_in? && @user == current_user
+						@user_buckets = user_bucket(4)
+					end
+				end
+				@referUser = User.find(@reference_redirection.user_id)
+				@reference_link = ReferenceRedirection.where(reference_url: params[:url]).first
 				if !@verified
 					flash[:warning] = "Please redo the Captcha"
 				else
 					flash[:warning] = "There was an issue in creating your reference"
-				end 
-				redirect_back_or new_reference_path(@url_string)
+				end
+				@id = @url_string
+				render 'new'
 			end
 		else
 			flash[:danger] = "Invalid reference link"
@@ -145,6 +158,7 @@ private
 		elsif args[:first_name].blank? || args[:last_name].blank?|| args[:company].blank? || args[:position].blank? || args[:reference_body].blank?  
 			flash[:warning] = "Missing required fields"
 		end
-		redirect_back_or new_reference_path(request.referer.rpartition('/')[-1]) if !flash[:warning].blank?
+		redirect_to new_reference_path(id: request.referer.rpartition('/')[-1], reference: params[:reference])if !flash[:warning].blank?
+		#redirect_back_or new_reference_path(request.referer.rpartition('/')[-1]) if !flash[:warning].blank?
 	end
 end

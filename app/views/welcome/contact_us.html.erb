@@ -16,8 +16,8 @@
 
 	<%= simple_form_for @message, url: send_contact_us_path do |f| %>
 		<div class="row">
-			<%= f.input :email, label: "Contact email", required: true, input_html: { value: @user.email }, wrapper_html: { class: "padding-left-0 col-xs-12 col-sm-6 col-md-4" } %>
-			<%= f.input :name, required: true, input_html: { value: @user.formatted_name(@user) }, wrapper_html: { class: "padding-left-0 col-xs-12 col-sm-6 col-md-4" } %>
+			<%= f.input :email, label: "Contact email", required: true, input_html: { value: @user ? @user.email : '' }, wrapper_html: { class: "padding-left-0 col-xs-12 col-sm-6 col-md-4" } %>
+			<%= f.input :name, required: true, input_html: { value: @user ? @user.formatted_name(@user) : '' }, wrapper_html: { class: "padding-left-0 col-xs-12 col-sm-6 col-md-4" } %>
 		</div>
 		<div class="row">
 			<%= f.input :content, required: true, as: :text, label: "Please include any other details here", wrapper_html: { class: "padding-left-0 col-xs-12 col-sm-12 col-md-8" }  %>

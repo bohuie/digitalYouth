@@ -23,6 +23,7 @@
       <ul class="nav navbar-nav navbar-right">
         <% if user_signed_in? && current_user.has_role?(:admin) %>
           <li><%= link_to 'Admin', rails_admin_path %></li>
+          <li><%= link_to 'Analytics', analytics_path %></li>
         <% end %>
         <li><a href='/search?utf8=✓&q=&t=JobPostings'>Job Postings</a></li>
         <li><%= link_to 'About Us', about_us_path %></li>

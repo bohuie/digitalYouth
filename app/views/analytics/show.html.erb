@@ -1,17 +1,13 @@
 <p> <%=@visit.inspect%> </p>
 
 <div class="row">
-	<div class="col-md-4">
+	<div class="col-md-6 col-sm-6 col-xs-12">
 		<h4>Events by type</h4>
 		<%= pie_chart @events.group(:name).count %>
 	</div>
 
-	<div class="col-md-4">
+	<div class="col-md-6 col-sm-6 col-xs-12">
 		<h4>Page times</h4>
 		<%= pie_chart @page_times %>
-	</div>
-
-	<div class="col-md-4">
-
 	</div>
 </div>

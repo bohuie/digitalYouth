@@ -50,10 +50,8 @@ class User < ActiveRecord::Base
     has_attached_file :resume
     validates_attachment_content_type :resume, content_type: [
         'application/msword',
-        'application/pdf',
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        'application/vnd.oasis.opendocument.text'
-      ], message: "must be pdf, .doc, .docx, or .odt type."
+        'application/pdf'
+      ], message: "must be pdf, .doc, or .docx, type."
 
     validates_format_of :email, :without => TEMP_EMAIL_REGEX, on: :update
     validates :province, presence: true

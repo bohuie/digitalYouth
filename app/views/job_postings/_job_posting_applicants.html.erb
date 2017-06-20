@@ -24,7 +24,7 @@
           <%= image_tag j.applicant.image.url(:thumb), class: "image-radius thumb-shadow" if !j.applicant.image.nil? %>
           <div class="visible-md visible-lg">
             <%= link_to "#{j.applicant.first_name} #{j.applicant.last_name}", job_posting_application_path(j) %><br />
-            <%= j.message.truncate(100) %><%= link_to ' See more.', job_posting_application_path(j) %>
+            <%= j.message.truncate(100) %><br /><%= link_to ' See more.', job_posting_application_path(j) %>
           </div>
           <div class="visible-xs visible-sm">
             <br />

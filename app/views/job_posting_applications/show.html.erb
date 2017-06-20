@@ -26,44 +26,47 @@
 		</div>
 
 		<div class="row">
-			<div class="padding-left-0 col-md-2">
+			<div class="padding-left-0 col-xs-4 col-sm-3 col-md-2">
 				<%= image_tag @job_posting_application.applicant.image.url(:small), class: "image-radius small-shadow" if !@job_posting_application.applicant.image.nil? %>
 				<h4> <%="#{@job_posting_application.applicant.first_name} #{@job_posting_application.applicant.last_name}"%></h4>
 				<% unless @job_posting_application.applicant.resume.blank? %>
              		<p>Current Resume: <%= link_to @job_posting_application.applicant.resume.original_filename, @job_posting_application.applicant.resume.url, target: '_blank' %></p>
             	<% end %>
 			</div>
-			<div class="col-md-4">
+			<div class="col-xs-8 col-sm-8 col-md-4">
 				<h4><b>Applicant Message:</b></h4>
 				<%= raw("<p>#{@job_posting_application.message}</p>") if !@job_posting_application.message.blank? %>
 			</div>
-			<div class="col-md-6">
+			<div class="padding-left-0 col-xs-12 col-sm-12 col-md-6">
 				<p>Below are all the skills required and preferred by <%= @job_posting.user.company_name %> for this job.  A checkmark, <small><span class="glyphicon glyphicon-ok"></span></small>, means you have the skill, and an x, <small><span class="glyphicon glyphicon-remove"></span></small>, means you do not.</p>
-				<% if !@req_skills.empty? %>
-					<h4><b>Required Skills</b></h4>
-					<ul class="custom-bullet">
-						<%@req_skills.each do |r| %>
-							<% if @user_required_matches.detect { |h| h[:user_skill].skill==r.skill } %>
-								<li class="yes"><%=r.skill.name.titleize%></li>
-							<% else %>
-								<li class="no"><%=r.skill.name.titleize%></li>
+				<div class="padding-left-0 col-xs-12 col-sm-6 col-md-6">
+					<% if !@req_skills.empty? %>
+						<h4><b>Required Skills</b></h4>
+						<ul class="custom-bullet">
+							<%@req_skills.each do |r| %>
+								<% if @user_required_matches.detect { |h| h[:user_skill].skill==r.skill } %>
+									<li class="yes"><%=r.skill.name.titleize%></li>
+								<% else %>
+									<li class="no"><%=r.skill.name.titleize%></li>
+								<% end %>
 							<% end %>
-						<% end %>
-					</ul>
-				<% end %>
-
-				<% if !@pref_skills.empty? %>
-					<h4><b>Preferred Skills</b></h4>
-					<ul class="custom-bullet">
-						<%@pref_skills.each do |p| %>
-							<% if @user_preferred_matches.detect { |h| h[:user_skill].skill==p.skill } %>
-								<li class="yes"><%=p.skill.name.titleize%></li>
-							<% else %>
-								<li class="no"><%=p.skill.name.titleize%></li>
+						</ul>
+					<% end %>
+				</div>
+				<div class="padding-left-0 col-xs-12 col-sm-6 col-md-6">
+					<% if !@pref_skills.empty? %>
+						<h4><b>Preferred Skills</b></h4>
+						<ul class="custom-bullet">
+							<%@pref_skills.each do |p| %>
+								<% if @user_preferred_matches.detect { |h| h[:user_skill].skill==p.skill } %>
+									<li class="yes"><%=p.skill.name.titleize%></li>
+								<% else %>
+									<li class="no"><%=p.skill.name.titleize%></li>
+								<% end %>
 							<% end %>
-						<% end %>
-					</ul>
-				<% end %>
+						</ul>
+					<% end %>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -82,48 +85,51 @@
 	</div>
 
 	<div class="row">
-		<div class="col-md-2">
+		<div class="col-xs-4 col-sm-3 col-md-2">
 			<%= image_tag @job_posting_application.applicant.image.url(:small), class: "image-radius small-shadow" if !@job_posting_application.applicant.image.nil? %>
 			<h4> <%="#{@job_posting_application.applicant.first_name} #{@job_posting_application.applicant.last_name}"%></h4>
 			<% unless @job_posting_application.applicant.resume.blank? %>
       	 		<p>Current Resume: <%= link_to @job_posting_application.applicant.resume.original_filename, @job_posting_application.applicant.resume.url, target: '_blank' %></p>
            	<% end %>
 		</div>
-		<div class="col-md-4">
+		<div class="col-xs-8 col-sm-8 col-md-4">
 			<h4><b>Applicant Message:</b></h4>
 			<%= raw("<p>#{@job_posting_application.message}</p>") if !@job_posting_application.message.blank? %>
 		</div>
-		<div class="col-md-6">
+		<div class="col-xs-12 col-sm-12 col-md-6">
 			<% if @job_posting_application.applicant.id == current_user.id %>
 				<p>Below are all the skills required and preferred by <%= @job_posting.user.company_name %> for this job.  A checkmark, <small><span class="glyphicon glyphicon-ok"></span></small>, means you have the skill, and an x, <small><span class="glyphicon glyphicon-remove"></span></small>, means you do not.</p>
 			<% else %>
 				<p>Below are the skills required and preferrred for this posting.  A checkmark, <small><span class="glyphicon glyphicon-ok"></span></small>, means <%= @job_posting_application.applicant.first_name %> has the skill, and an x, <small><span class="glyphicon glyphicon-remove"></span></small>, means they do not.</p>
 			<% end %>
-			<% if !@req_skills.empty? %>
-				<h4><b>Required Skills</b></h4>
-				<ul class="custom-bullet">
-					<%@req_skills.each do |r| %>
-						<% if @user_required_matches.detect { |h| h[:user_skill].skill==r.skill } %>
-							<li class="yes"><%=r.skill.name.titleize%></li>
-						<% else %>
-							<li class="no"><%=r.skill.name.titleize%></li>
+			<div class="col-xs-12 col-sm-6 col-md-6">
+				<% if !@req_skills.empty? %>
+					<h4><b>Required Skills</b></h4>
+					<ul class="custom-bullet">
+						<%@req_skills.each do |r| %>
+							<% if @user_required_matches.detect { |h| h[:user_skill].skill==r.skill } %>
+								<li class="yes"><%=r.skill.name.titleize%></li>
+							<% else %>
+								<li class="no"><%=r.skill.name.titleize%></li>
+							<% end %>
 						<% end %>
-					<% end %>
-				</ul>
-			<% end %>
-
-			<% if !@pref_skills.empty? %>
-				<h4><b>Preferred Skills</b></h4>
-				<ul class="custom-bullet">
-					<%@pref_skills.each do |p| %>
-						<% if @user_preferred_matches.detect { |h| h[:user_skill].skill==p.skill } %>
-							<li class="yes"><%=p.skill.name.titleize%></li>
-						<% else %>
-							<li class="no"><%=p.skill.name.titleize%></li>
+					</ul>
+				<% end %>
+			</div>
+			<div class="col-xs-12 col-sm-6 col-md-6">
+				<% if !@pref_skills.empty? %>
+					<h4><b>Preferred Skills</b></h4>
+					<ul class="custom-bullet">
+						<%@pref_skills.each do |p| %>
+							<% if @user_preferred_matches.detect { |h| h[:user_skill].skill==p.skill } %>
+								<li class="yes"><%=p.skill.name.titleize%></li>
+							<% else %>
+								<li class="no"><%=p.skill.name.titleize%></li>
+							<% end %>
 						<% end %>
-					<% end %>
-				</ul>
-			<% end %>
+					</ul>
+				<% end %>
+			</div>
 		</div>
 	</div>
 

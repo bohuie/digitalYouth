@@ -50,16 +50,29 @@
 	<% end %>
 <%= simple_form_for @reference do |r| %>
 	<div class="row">
-		<div class="col-md-6">
-			<%= r.input :first_name, required: true, input_html: {value: @reference_link.first_name}%>
-			<%= r.input :last_name, input_html: {value: @reference_link.last_name} %>
-			<%= r.input :reference_body, required: true, wrapper_html: { class: 'padding-left-0' } %>
+		<div class="col-md-6 col-sm-6">
+			<%= r.input :first_name, required: true, input_html: {value: @reference.first_name ? @reference.first_name : @reference_link.first_name }%>
 		</div>
-		<div class="col-md-6">
-			<%= r.input :company, required: true %>
-			<%= r.input :position, required: true %>
+		<div class="col-md-6 col-sm-6">
+			<%= r.input :company, required: true, input_html: {value: @reference.company ? @reference.company : '' } %>
 		</div>
-</div>
-		<%= recaptcha_tags %><br>
-		<%= r.button :submit, class: "btn btn-primary" %>
-	<% end -%>
+	</div>
+	<div class="row">
+		<div class="col-md-6 col-sm-6">
+			<%= r.input :last_name, input_html: {value: @reference.last_name ? @reference.last_name : @reference_link.last_name } %>
+		</div>
+		<div class="col-md-6 col-sm-6">
+			<%= r.input :position, required: true, input_html: {value: @reference.position ? @reference.position : '' } %>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6 col-sm-6">
+			<%= r.input :reference_body, required: true, wrapper_html: { class: 'padding-left-0' }, input_html: { value: @reference.reference_body ? @reference.reference_body : ''} %>
+		</div>
+	</div>
+	<% if @id %>
+		<%= hidden_field_tag(:url, @id) %>
+	<% end %>
+	<%= recaptcha_tags %><br>
+	<%= r.button :submit, class: "btn btn-primary" %>
+<% end -%>

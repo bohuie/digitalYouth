@@ -11,82 +11,81 @@
 	<% survey_index = 0 %>
 	<% if @user_skills.blank? %>
 		<% survey_index = 1 %>
-		<div class ="row survey-box-row">
-			<div class="col-md-1"></div>
+		<div class ="row">
+			<div class="col-xs-2 visible-xs"></div>
 			<% Survey.all.each do |s|%>
-				<div class="col-md-2" style="min-height: 150px">
+				<div class="col-xs-8 col-sm-5 col-md-3" style="min-height: 150px">
 					<h5><u><b><%= s.title %></b></u></h5>
 					<p>No skills yet</p>
 				</div>
-				<div class="col-md-1"></div>
-				<% if survey_index % 3 == 0 && survey_index < 12 %>
-					</div>
-					<div class ="row survey-box-row"> 
-						<div class="col-md-1"></div>
+				<div class="col-xs-2 col-sm-1 col-md-1"></div>
+				<% if survey_index % 2 == 0 %>
+				<div class = "clearfix visible-sm "></div>
 				<% end %>
+				<div class = "clearfix visible-xs "></div>
 				<% survey_index += 1 %>
 			<% end %>
 		</div>
 	<% else %>
-		<% @user_skills.each do |user_skill| %>
-			<% while survey_index < user_skill.survey_id do %>
-				<!-- No Skills -->
-				<% if survey_index != 0 && @user_skills.where(survey_id: survey_index).blank? %> 
-					</ul>
-					<p>No skills yet</p>
-					</div>
-					<div class="col-md-1"></div>
-				<!-- Close skill box -->
-				<% elsif survey_index != 0 && !@user_skills.where(survey_id: survey_index).blank? %>
-					</ul>
-					</div>
-					<div class="col-md-1"></div>
+		<div class ="row">
+			<% @user_skills.each do |user_skill| %>
+				<% while survey_index < user_skill.survey_id do %>
+					<!-- No Skills -->
+					<% if survey_index != 0 && @user_skills.where(survey_id: survey_index).blank? %> 
+						</ul>
+						<p>No skills yet</p>
+						</div>
+						<div class="col-xs-2 col-sm-1 col-md-1"></div>
+						<% if survey_index % 2 == 0 %>
+							<div class = "clearfix visible-sm "></div>
+						<% end %>
+						<div class = "clearfix visible-xs "></div>
+					<!-- Close skill box -->
+					<% elsif survey_index != 0 && !@user_skills.where(survey_id: survey_index).blank? %>
+						</ul>
+						</div>
+						<div class="col-xs-2 col-sm-1 col-md-1"></div>
+					<% end %>
+					<% if survey_index % 2 == 0 %>
+						<div class = "clearfix visible-sm "></div>
+					<% end %>
+					<div class = "clearfix visible-xs "></div>
+					<% survey_index += 1 %>
+
+					<div class="col-xs-2 visible-xs"></div>
+					<div class="col-xs-8 col-sm-5 col-md-3" style="min-height: 150px">
+						<h5><u><b><%= SURVEYS[survey_index] %></b></u></h5>
+						<ul>
 				<% end %>
-
-				<% survey_index += 1 %>
-
-				<!-- Start Case -->
-				<% if survey_index == 1 %>
-					<div class ="row survey-box-row">
-						<div class="col-md-1"></div>
-				<!-- New Row Case -->
-				<% elsif survey_index % 3 == 1 %>
-					</div>
-					<div class ="row survey-box-row">
-						<div class="col-md-1"></div>
-				<% end %>
-
-				<div class="col-md-2" style="min-height: 150px">
+				<%= fields_for 'user_skills[]', user_skill do |us| %>
+					<li class="skill-padding">
+        				<%= us.text_field :name, value: user_skill.skill.name, class: "form-control-skill string" %><%= link_to '', delete_user_skill_path(user_skill.id), data: {confirm: "Are you sure you want to delete this skill?"}, method: "delete", class: "glyphicon glyphicon-remove a-red" %>
+        				<%= us.hidden_field :survey_id, value: survey_index %>
+        			</li>
+        		<% end %>
+      		<% end %>
+        	<!-- Close open UL, guaranteed to have one, and Col-md-2 from survey title -->
+        	</ul>
+        	</div>
+       		<div class="col-xs-2 col-sm-1 col-md-1"></div>
+        	<% if survey_index % 2 == 0 %>
+				<div class = "clearfix visible-sm "></div>
+			<% end %>
+			<div class = "clearfix visible-xs "></div>
+       		<!-- All Surveys after the form are empty -->
+        	<% while survey_index < SURVEYS.length do %>
+        		<% survey_index += 1 %>
+				<div class="col-xs-2 visible-xs"></div>
+				<div class="col-xs-8 col-sm-5 col-md-3" style="min-height: 150px">
 					<h5><u><b><%= SURVEYS[survey_index] %></b></u></h5>
-					<ul>
-			<% end %>
-			<%= fields_for 'user_skills[]', user_skill do |us| %>
-				<li class="skill-padding">
-        			<%= us.text_field :name, value: user_skill.skill.name, class: "form-control-skill string" %><%= link_to '', delete_user_skill_path(user_skill.id), data: {confirm: "Are you sure you want to delete this skill?"}, method: "delete", class: "glyphicon glyphicon-remove a-red" %>
-        			<%= us.hidden_field :survey_id, value: survey_index %>
-        		</li>
-        	<% end %>
-        <% end %>
-        <!-- Close open UL, guaranteed to have one, and Col-md-2 from survey title -->
-        </ul>
-        </div>
-        <div class="col-md-1"></div>
-        <!-- All Surveys after the form are empty -->
-        <% while survey_index < SURVEYS.length do %>
-        	<% survey_index += 1 %>
-        	<% if survey_index % 3 == 1 %>
+					<p>No skills yet</p>
 				</div>
-				<div class ="row survey-box-row">
-					<div class="col-md-1"></div>
-			<% end %>
-			<div class="col-md-2" style="min-height: 150px">
-				<h5><u><b><%= SURVEYS[survey_index] %></b></u></h5>
-				<p>No skills yet</p>
-			</div>
-			<div class="col-md-1"></div>
-        <% end %>
-        <!-- Close final row -->
+				<div class="col-xs-2 col-sm-1 col-md-1"></div>
+				<% if survey_index % 2 == 0 %>
+					<div class = "clearfix visible-sm "></div>
+				<% end %>
+				<div class = "clearfix visible-xs "></div>
+        	<% end %>
         </div>
     <% end %>
 <% end %>
-</div>

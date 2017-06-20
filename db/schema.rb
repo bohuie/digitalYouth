@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170320200217) do
+ActiveRecord::Schema.define(version: 20170508202055) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,6 +58,11 @@ ActiveRecord::Schema.define(version: 20170320200217) do
   end
 
   add_index "consents", ["user_id"], name: "index_consents_on_user_id", using: :btree
+
+  create_table "contact_user_emails", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "identities", force: :cascade do |t|
     t.integer  "user_id"
@@ -204,6 +209,19 @@ ActiveRecord::Schema.define(version: 20170320200217) do
     t.datetime "updated_at",                     null: false
   end
 
+  create_table "resource_links", force: :cascade do |t|
+    t.boolean  "home_page_job_provider"
+    t.boolean  "home_page_job_seeker"
+    t.boolean  "bucket_job_provider"
+    t.boolean  "bucket_job_seeker"
+    t.boolean  "announcement"
+    t.string   "link"
+    t.string   "message"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.boolean  "hide"
+  end
+
   create_table "responses", force: :cascade do |t|
     t.integer  "scores",                      array: true
     t.integer  "question_ids",                array: true
@@ -279,6 +297,7 @@ ActiveRecord::Schema.define(version: 20170320200217) do
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
     t.string   "gender"
+    t.integer  "birth_year"
     t.string   "github"
     t.string   "linkedin"
     t.string   "twitter"

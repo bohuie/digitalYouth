@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default navbar-static-top">
   <div class="container container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
@@ -10,9 +10,9 @@
     </div>
     <div class="collapse navbar-collapse" id="navbar">
 
-      <%= form_tag "/search", method: "get", class: "navbar-form navbar-left", role:"search", id: 'search' do %>
+      <%= form_tag "/search", method: "get", class: "nav navbar-nav navbar-form", role:"search", id: 'search' do %>
         <div class="input-group">
-            <%= text_field_tag 'q', params[:q], class: 'round-border form-control', placeholder: "Search", autocomplete:"off"%>
+            <%= text_field_tag 'q', params[:q], class: 'round-border form-control', placeholder: "Search", autocomplete:"off", style: "width: 170px;" %>
             <%= hidden_field_tag 't', params[:t] %>
             <%= button_tag type: "submit", class: "btn btn-default margin-left-5", name: nil do %>
               <span class="glyphicon glyphicon-search"></span>
@@ -21,8 +21,12 @@
       <% end %>
 
       <ul class="nav navbar-nav navbar-right">
+        <% if user_signed_in? && current_user.has_role?(:admin) %>
+          <li><%= link_to 'Admin', rails_admin_path %></li>
+          <li><%= link_to 'Analytics', analytics_path %></li>
+        <% end %>
         <li><a href='/search?utf8=✓&q=&t=JobPostings'>Job Postings</a></li>
-        <li><%= link_to 'About us', about_us_path %></li>
+        <li><%= link_to 'About Us', about_us_path %></li>
         <li><%= link_to 'Contact Us', contact_us_path %></li>
 
         <% if user_signed_in? %>
@@ -48,10 +52,14 @@
                 <%= image_tag current_user.image.url(:thumb), alt:"User Icon", class: "profile-image menu-image thumb-shadow" %>
                 <div class="menu-name">
                   <% if current_user.has_role?(:employee) %>
-                    <%= (current_user.first_name+" "+current_user.last_name).truncate(20) %><br /><%= link_to "View Profile", user_path(current_user) %>
+                    <%= (current_user.first_name+" "+current_user.last_name).truncate(20) %>
                   <% elsif current_user.has_role?(:employer) %>
-                    <%= current_user.company_name %><br /><%= link_to "View Profile", user_path(current_user) %>
+                    <%= current_user.company_name %>
+                  <% else %>
+                    Admin
                   <% end %>
+                  <br />
+                  <%= link_to "View Profile", user_path(current_user) %>
                 </div>
                 <div style="clear:both;"></div>
               </li>

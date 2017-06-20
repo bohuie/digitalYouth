@@ -1,26 +1,26 @@
 <%= render "users/shared/profile" %>
 
 <div class="container" id="profileButtons">
-  <ul class="nav nav-tabs profileButtonContent">
-    <li class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#personal">User Info</a></li>
-    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#email">Change Email</a></li>
-    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#password">Change Password</a></li>
-    <li onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#media">Social Media</a></li>
+  <ul class="nav nav-tabs profileButtonContent navigation-style" style="width:100%">
+    <li style="min-width: calc(25% - 6px)" class="active" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#personal">User Info</a></li>
+    <li style="min-width: calc(25% - 6px)" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#email">Change Email</a></li>
+    <li style="min-width: calc(25% - 6px)" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#password">Change Password</a></li>
+    <li style="min-width: calc(25% - 6px)" onmouseover=buttonOpac(this); onmouseout=buttonRevOpac(this);><a data-toggle="tab" href="#media">Social Media</a></li>
   </ul>
   <div class="tab-content profileButtonContent">
     <div id="personal" class="tab-pane fade in active">
     <div class="row">
-      <div class="padding-left-0 col-md-8 col-sm-8"><h4><b>User Info</b></h4></div>
+      <div class="padding-left-0 col-xs-6 col-sm-8 col-md-8"><h4><b>User Info</b></h4></div>
       <% if current_user.has_role?(:employee) %>
-        <div class="privacy col-md-4 col-sm-4"><h4><b>Privacy</b></h4></div>
+        <div class="grey-background col-xs-6 col-md-4 col-sm-4"><h4><b>Privacy</b></h4></div>
       <% end %>
       </div>
       <div class="row">
-      <div class="padding-left-0 col-md-8 col-sm-8">
+      <div class="padding-left-0 col-xs-6 col-sm-8 col-md-8">
         <p> Below is the information for your account.</p>
       </div>
       <% if current_user.has_role?(:employee) %>
-      <div class="privacy col-md-4 col-sm-4">
+      <div class="grey-background col-xs-6 col-sm-4 col-md-4">
         <p>Change your privacy settings, to control what is displayed to other users.</p>
         </div>
       <% end %>
@@ -28,120 +28,178 @@
       <%= simple_form_for (@user) do |info| %>
         <% if @user.has_role?(:employer) %>
           <div class="row">
-            <%= info.input :company_name, required: true, wrapper_html: { class: "padding-left-0 col-md-4 col-sm-4" } %>
+            <%= info.input :company_name, required: true, wrapper_html: { class: "padding-left-0 col-xs-6 col-sm-4 col-md-4" } %>
           </div>
         <% end %>
-        <div class="row">
-          <%= info.input :first_name, required: true, wrapper_html: { class: "padding-left-0 col-md-4 col-sm-4" } %>
-            
-          <%= info.input :last_name, required: true, wrapper_html: { class: "col-md-4 col-sm-4" } %>
-
+        <div class="row grey-background">
+          <div class="padding-left-0 col-xs-6 col-sm-8 col-md-8 white-background">
+            <%= info.input :first_name, required: true, wrapper_html: { class: "padding-left-0 col-xs-12 col-sm-6 col-md-6" } %>
+            <%= info.input :last_name, required: true, wrapper_html: { class: "padding-left-0 col-xs-12 col-sm-6 col-md-6" } %>
+            <!-- Workaround for Colouring columns -->
+            <div class="visible-xs col-xs-1 white-background" style="padding-bottom: 5px;"></div>
+            <div class="visible-sm col-sm-1 white-background" style="padding-bottom: 5px;"></div>
+            <div class="visible-md col-md-1 white-background" style="padding-bottom: 5px;"></div>
+            <div class="visible-lg col-lg-1 white-background" style="padding-bottom: 5px;"></div>
+          </div>
           <% if current_user.has_role?(:employee) %>
-            <div class="privacy padding-top-10 col-md-4 col-sm-4">
+            <div class="padding-top-10 col-xs-6 col-sm-4 col-md-4">
               <p>Display Name?</p>
-              <%= info.input :show_name, label: false, label_html: { class: "min-width-120" }, as: :radio_buttons,  item_wrapper_class: 'radio-inline margin-top-0' %>
+              <%= info.input :show_name, label: false, as: :radio_buttons,  item_wrapper_class: 'radio-inline padding-0 margin-top-0' %>
             </div>
+            <div class="col-xs-6 visible-xs" style="height: 60px"></div>
           <% end %>
         </div>
 
         <% if @user.has_role?(:employee) %>
-          <div class="row">
-            <%= info.input :job_title, wrapper_html: { class: "padding-top-10 padding-left-0 col-md-4 col-sm-4" } %>
-            <%= info.input :current_company, label: "Company", wrapper_html: { class: "padding-top-10 col-md-4 col-sm-4" } %>
-            <div class="privacy col-md-4 col-sm-4" style="padding-top: 20px;">
-            <p>Display Current Job Position?</p>
-            <%= info.input :show_job, label: false, as: :radio_buttons, item_wrapper_class: "radio-inline margin-top-0" %>
+          <div class="row grey-background">
+             <div class="padding-left-0 col-xs-6 col-sm-8 col-md-8 white-background">
+              <%= info.input :job_title, wrapper_html: { class: "padding-top-10 padding-left-0 col-xs-12 col-sm-6 col-md-6" } %>
+              <%= info.input :current_company, label: "Company", wrapper_html: { class: "padding-top-10 padding-left-0 col-xs-12 col-sm-6 col-md-6" } %>
+              <!-- Workaround for Colouring columns -->
+              <div class="visible-xs col-xs-1 white-background" style="padding-bottom: 1px;"></div>
+              <div class="visible-sm col-sm-1 white-background" style="padding-bottom: 10px;"></div>
+              <div class="visible-md col-md-1 white-background" style="padding-bottom: 10px;"></div>
+              <div class="visible-lg col-lg-1 white-background" style="padding-bottom: 10px;"></div>
+            </div>
+            <div class="col-xs-6 col-sm-4 col-md-4" style="padding-top: 20px;">
+              <p>Display Current Job Position?</p>
+              <%= info.input :show_job, label: false, as: :radio_buttons, item_wrapper_class: "radio-inline padding-0 margin-top-0" %>
             </div>
           </div>
         <% end %>
 
-        <div class="row">
-          <%= info.input :street_address, wrapper_html: { class: "padding-top-10 padding-left-0 col-md-8 col-sm-8" }  %>
+        <div class="row grey-background">
+          <div class="padding-left-0 col-xs-6 col-sm-8 col-md-8 white-background">
+            <%= info.input :street_address, wrapper_html: { class: "padding-top-10 padding-left-0 col-xs-12 col-sm-12 col-md-12" }  %>
+            <!-- Workaround for Colouring columns -->
+            <div class="visible-xs col-xs-1 white-background" style="padding-bottom: 1px;"></div>
+            <div class="visible-sm col-sm-1 white-background" style="padding-bottom: 0px;"></div>
+            <div class="visible-md col-md-1 white-background" style="padding-bottom: 1px;"></div>
+            <div class="visible-lg col-lg-1 white-background" style="padding-bottom: 1px;"></div>
+          </div>
           <% if current_user.has_role?(:employee) %>
-            <div class="privacy col-md-4 col-sm-4">
+            <div class="col-xs-6 col-sm-4 col-md-4">
               <p style="padding-top:40px;">Never displayed.</p>
             </div>
           <% end %>
         </div>
-        <div class="row">
-          <%= info.input :city, required: true, wrapper_html: { class: "padding-top-10 padding-left-0 col-md-3 col-sm-3" } %>
-
-          <%= info.input :province, required: true, collection: PROVINCES, wrapper_html: { class: "padding-top-10 col-md-2 col-sm-2" } %>
+        <div class="row grey-background">
+          <div class="padding-left-0 col-xs-6 col-sm-8 col-md-8 white-background">
+          <%= info.input :city, required: true, wrapper_html: { class: "padding-top-10 padding-left-0 col-xs-12 col-sm-4 col-md-4" } %>
+          <%= info.input :province, required: true, collection: PROVINCES, wrapper_html: { class: "padding-top-10 padding-left-0 col-xs-12 col-sm-4 col-md-4" } %>
+            <% if current_user.has_role?(:employee) %>
+              <%= info.input :postal_code, label_html: { style: 'min-width: 216px;' }, required: true, wrapper_html: { class: "padding-top-10 padding-left-0 col-xs-12 col-sm-4 col-md-4" } %>
+            <% else %>
+              <%= info.input :postal_code, required: true, wrapper_html: { class: "padding-top-10 padding-left-0 col-xs-12 col-sm-4 col-md-4" } %>
+            <% end %>
+            <!-- Workaround for Colouring columns -->
+            <div class="visible-xs col-xs-1 white-background" style="padding-bottom: 0px;"></div>
+            <div class="visible-sm col-sm-1 white-background" style="padding-bottom: 32px;"></div>
+            <div class="visible-md col-md-1 white-background" style="padding-bottom: 15px;"></div>
+            <div class="visible-lg col-lg-1 white-background" style="padding-bottom: 15px;"></div>
+          </div>
           <% if current_user.has_role?(:employee) %>
-            <%= info.input :postal_code, label_html: { style: 'min-width: 216px;' }, required: true, wrapper_html: { class: "padding-top-10 col-md-3 col-sm-3" } %>
-          <% else %>
-            <%= info.input :postal_code, required: true, wrapper_html: { class: "padding-top-10 col-md-3 col-sm-3" } %>
-          <% end %>
-
-          <% if current_user.has_role?(:employee) %>
-            <div class="privacy col-md-4 col-sm-4" style="padding-top: 20px;">
+            <div class="padding-top-10 col-xs-6 col-sm-4 col-md-4">
               <p>Display City and Province?<br />
               (Postal Code is never displayed.)</p>
-              <%= info.input :show_location, label: false, label_html: { class: "min-width-120" }, as: :radio_buttons,  item_wrapper_class: 'radio-inline margin-top-0' %>
+              <%= info.input :show_location, label: false, as: :radio_buttons,  item_wrapper_class: 'radio-inline padding-0 margin-top-0' %>
             </div>
           <% end %>
         </div>
         <div class="row">
           <% if current_user.has_role?(:employee) %>
-            <div class="padding-0 col-md-8 col-sm-8"><hr></div>
-            <div class="privacy padding-0 col-md-4 col-sm-4"><hr></div>
+            <div class="padding-0 col-xs-6 col-sm-8 col-md-8"><hr></div>
+            <div class="grey-background padding-0 col-xs-6 col-sm-4 col-md-4"><hr></div>
           <% else %>
             <hr>
           <% end %>
         </div>
         <% if current_user.has_role? :employee %>
-          <div class="row">
-            <div class="padding-top-10 padding-left-0 col-md-8 col-sm-8">
-              <%= info.input :resume, as: :file, label: "Upload Private Resume.  Must be .pdf, .doc, .docx, or .odt type.", input_html: {style: 'display: inline;'} %>
+          <div class="row grey-background">
+            <div class="padding-top-10 padding-left-0 col-xs-6 col-sm-8 col-md-8 white-background">
+              <%= info.input :resume, as: :file, label: "Upload Private Resume.  Must be .pdf, .doc, .docx, or .odt type.", wrapper_html: { class: "padding-top-10 padding-left-0 col-xs-12 col-sm-12 col-md-12" }, input_html: { style: "max-width: 100%;"} %>
               <% unless @user.resume.blank? %>
                 <p>Current Resume: <%= link_to @user.resume.original_filename, @user.resume.url, target: '_blank' %></p>
               <% end %>
+              <!-- Workaround for Colouring columns -->
+              <div class="visible-xs col-xs-1 white-background" style="padding-bottom: 5px;"></div>
+              <div class="visible-sm col-sm-1 white-background" style="padding-bottom: 20px;"></div>
+              <div class="visible-md col-md-1 white-background" style="padding-bottom: 0px;"></div>
+              <div class="visible-lg col-lg-1 white-background" style="padding-bottom: 0px;"></div>
             </div>
-            <div class="privacy col-md-4 col-sm-4" style="padding-top:15px;">
+            <div class="privacy col-xs-6 col-md-4 col-sm-4" style="padding-top:15px;">
               <p>Only displayed to Job Providers in your job applications to them.</p>
             </div>
           </div>
         <% end %>
-        <div class="row">
-          <div class="padding-top-10 padding-left-0 col-md-8 col-sm-8">
-            <%= info.input :image, as: :file, label: "Upload Profile Picture", input_html: {style: 'display: inline;'} %>
+        <div class="row grey-background">
+          <div class="padding-top-10 padding-left-0 col-xs-6 col-sm-8 col-md-8 white-background">
+            <%= info.input :image, as: :file, label: "Upload Profile Picture", wrapper_html: { class: "padding-top-10 padding-left-0 col-xs-12 col-sm-12 col-md-12" }, input_html: { style: "max-width: 100%;"} %>
             <p>You will be able to crop and edit your photo in the next screen.</p>
+            <!-- Workaround for Colouring columns -->
+            <div class="visible-xs col-xs-1 white-background" style="padding-bottom: 0px;"></div>
+            <div class="visible-sm col-sm-1 white-background" style="padding-bottom: 0px;"></div>
+            <div class="visible-md col-md-1 white-background" style="padding-bottom: 0px;"></div>
+            <div class="visible-lg col-lg-1 white-background" style="padding-bottom: 0px;"></div>
           </div>
           <% if current_user.has_role?(:employee) %>
-          <div class="privacy col-md-4 col-sm-4" style="padding-top: 5px;">
-          <p>Display Picture?</p>
-          <%= info.input :show_picture, label: false, label_html: { class: "min-width-120" }, as: :radio_buttons,  item_wrapper_class: 'radio-inline margin-top-0' %>
-          </div>
+            <div class="col-xs-6 col-sm-4 col-md-4" style="padding-top: 25px;">
+              <p>Display Picture?</p>
+              <%= info.input :show_picture, label: false, as: :radio_buttons,  item_wrapper_class: 'radio-inline padding-0 margin-top-0' %>
+            </div>
           <% end %>
         </div>
-        <div class="row">
-          <%= info.input :gender, required: true, collection: GENDERS, as: :radio_buttons, item_wrapper_class: 'radio-inline margin-top-0', wrapper_html: { class: "padding-top-10 padding-left-0 col-md-8 col-sm-8" } %>
+        <div class="row grey-background">
+          <div class="padding-top-10 padding-left-0 col-xs-6 col-sm-8 col-md-8 white-background">
+            <p style="margin:0;">Gender
+              <%= info.input :gender, required: true, label: false, collection: GENDERS, as: :radio_buttons, item_wrapper_class: 'radio-inline padding-left-0 margin-top-0', wrapper_html: { class: "padding-0 col-md-8 col-sm-8" } %>
+            </p>
+            <!-- Workaround for Colouring columns -->
+            <div class="visible-xs col-xs-1 white-background" style="padding-bottom: 30px;"></div>
+            <div class="visible-sm col-sm-1 white-background" style="padding-bottom: 40px;"></div>
+            <div class="visible-md col-md-1 white-background" style="padding-bottom: 30px;"></div>
+            <div class="visible-lg col-lg-1 white-background" style="padding-bottom: 0px;"></div>
+          </div>
           <% if current_user.has_role?(:employee) %>
-            <div class="privacy col-md-4 col-sm-4" style="margin-top:-10px; padding-top:20px;">
+            <div class="col-xs-6 col-sm-4 col-md-4" style="padding-top:20px;">
               <p>Never displayed.  Used for default image choice.</p>
             </div>
           <% end %>
         </div>
-        <div class="row">
-          <%= info.input :birth_date, required: true, as: :date, start_year: Date.today.year-100, end_year: Date.today.year, wrapper_html: { class: "padding-top-10 padding-left-0 col-md-8 col-sm-8" } %>
+        <div class="row grey-background">
+          <div class="padding-top-10 padding-left-0 col-xs-6 col-sm-8 col-md-8 white-background">
+            <%= info.input :birth_date, required: true, as: :date, start_year: Date.today.year-100, end_year: Date.today.year, wrapper_html: { class: "padding-top-10 padding-left-0 col-xs-12 col-md-12 col-sm-12" } %>
+            <!-- Workaround for Colouring columns -->
+            <div class="visible-xs col-xs-1 white-background" style="padding-bottom: 0px;"></div>
+            <div class="visible-sm col-sm-1 white-background" style="padding-bottom: 0px;"></div>
+            <div class="visible-md col-md-1 white-background" style="padding-bottom: 0px;"></div>
+            <div class="visible-lg col-lg-1 white-background" style="padding-bottom: 0px;"></div>
+          </div>
           <% if current_user.has_role?(:employee) %>
-            <div class="privacy col-md-4 col-sm-4" style="padding-top:40px;">
+            <div class="col-xs-6 col-sm-4 col-md-4" style="padding-top:40px;">
               <p>Never displayed.</p>
             </div>
           <% end %>
         </div>
         <div class="row">
           <% if current_user.has_role?(:employee) %>
-            <div class="padding-0 col-md-8 col-sm-8"><hr></div>
-            <div class="privacy padding-0 col-md-4 col-sm-4"><hr></div>
+            <div class="padding-0 col-xs-6 col-sm-8 col-md-8"><hr></div>
+            <div class="grey-background padding-0 col-xs-6 col-sm-4 col-md-4"><hr></div>
           <% else %>
             <hr>
           <% end %>
         </div>
-        <div class="row">
-        <%= info.input :summary, as: :text, wrapper_html: { class: "padding-left-0 col-md-8 col-sm-8" }, input_html: { maxlength: 200 }, label: "Summary (max 200 characters)", label_html: { class: "padding-top-10 padding-left-0" } %>
+        <div class="row grey-background">
+        <div class="padding-top-10 padding-left-0 col-xs-6 col-sm-8 col-md-8 white-background">
+          <%= info.input :summary, as: :text, wrapper_html: { class: "padding-left-0 col-xs-12 col-md-12 col-sm-12" }, input_html: { maxlength: 200 }, label: "Summary (max 200 characters)", label_html: { class: "padding-top-10 padding-left-0" } %>
+            <!-- Workaround for Colouring columns -->
+            <div class="visible-xs col-xs-1 white-background" style="padding-bottom: 0px;"></div>
+            <div class="visible-sm col-sm-1 white-background" style="padding-bottom: 0px;"></div>
+            <div class="visible-md col-md-1 white-background" style="padding-bottom: 0px;"></div>
+            <div class="visible-lg col-lg-1 white-background" style="padding-bottom: 0px;"></div>
+        </div>
         <% if current_user.has_role?(:employee) %>
-          <div class="privacy col-md-4 col-sm-4">
+          <div class="col-xs-6 col-sm-4 col-md-4">
             <p style="padding-top:60px;">Always displayed.</p>
           </div>
         <% end %>
@@ -159,13 +217,13 @@
       <p>Use this form to change your email address.</p>
       <%= simple_form_for (@user) do |email| %>
         <div class="padding-bottom-10 row">
-          <%= email.input :email, label:"Please enter in your old email for confiramtion.", wrapper_html: { class: "padding-left-0 col-md-5" } %>
+          <%= email.input :email, label:"Please enter in your old email for confiramtion.", wrapper_html: { class: "padding-left-0 col-xs-12 col-sm-8 col-md-5" } %>
         </div>
         <div class="padding-bottom-10 row">
-          <%= email.input :email_password, label: "Please confirm the change with your current password.", wrapper_html: { class: "padding-left-0 col-md-5" } %>
+          <%= email.input :email_password, label: "Please confirm the change with your current password.", wrapper_html: { class: "padding-left-0 col-xs-12 col-sm-8 col-md-5" } %>
         </div>
         <div class="padding-bottom-10 row">
-          <%= email.input :new_email, label: "Enter the new email you want to use.", wrapper_html: { class: "padding-left-0 col-md-5" } %>
+          <%= email.input :new_email, label: "Enter the new email you want to use.", wrapper_html: { class: "padding-left-0 col-xs-12 col-sm-8 col-md-5" } %>
         </div>
         <%= email.submit 'Change Email', name: 'email', class: 'btn btn-primary'  %>
       <% end %>
@@ -176,13 +234,13 @@
       <p>Use this form to change your password.</p>
       <%= simple_form_for (@user) do |pwd| %>
         <div class="padding-bottom-10 row">
-          <%= pwd.input :current_password, label: "Old password", wrapper_html: { class: "padding-left-0 col-md-5" } %>
+          <%= pwd.input :current_password, label: "Old password", wrapper_html: { class: "padding-left-0 col-xs-12 col-sm-8 col-md-5" } %>
         </div>
         <div class="padding-bottom-10 row">
-          <%= pwd.input :password, label: "New password", wrapper_html: { class: "padding-left-0 col-md-5" } %>
+          <%= pwd.input :password, label: "New password", wrapper_html: { class: "padding-left-0 col-xs-12 col-sm-8 col-md-5" } %>
         </div>
         <div class="padding-bottom-10 row">
-          <%= pwd.input :confirm_password, label: "Confirm new password", wrapper_html: { class: "padding-left-0 col-md-5" } %>
+          <%= pwd.input :confirm_password, label: "Confirm new password", wrapper_html: { class: "padding-left-0 col-xs-12 col-sm-8 col-md-5" } %>
         </div>
         <%= pwd.submit 'Change Password', name: 'password', class: 'btn btn-primary'  %>
       <% end %>
@@ -191,22 +249,22 @@
     <div id="media" class="tab-pane fade">
       <h4><b>Social Media</b></h4>
       <div class="row">
-        <div class="padding-left-0 col-md-6 col-sm-6">
+        <div class="padding-left-0 col-xs-6 col-sm-6 col-md-6">
           <p>Feel free to add URL links to your social media accounts below.  These will help showcase your social media skills, projects, or other items to potential job providers.</p>
         </div>
-        <div class="col-md-6 col-sm-6">
+        <div class="col-xs-6 col-sm-6 col-md-6">
           <p>Connect Accounts.  You may connect the below accounts to EdgeMap to allow for quicker logging in.  Connecting accounts does not display them on your profile.</p>
         </div>
       </div>
       <%= simple_form_for (@user) do |sm| %>
         <div class="row">
-          <%= sm.input :facebook, wrapper_html: { class: "padding-left-0 col-md-6 col-sm-6" } %>
+          <%= sm.input :facebook, wrapper_html: { class: "padding-left-0 col-xs-6 col-sm-6 col-md-6" } %>
           <% if current_user.identities.pluck(:provider).include?('facebook') %>
-            <div class="connected col-md-6 col-sm-6">
+            <div class="connected col-xs-6 col-sm-6 col-md-6">
               Facebook Connected
             </div>
           <% else %>
-            <div class="col-md-6 col-sm-6">
+            <div class="col-xs-6 col-sm-6 col-md-6">
               <%= link_to omniauth_authorize_path('user', 'facebook'), class: "btn btn-block btn-social btn-facebook connect" do %>
                 <span class="fa fa-facebook"></span> Connect with Facebook
               <% end %>
@@ -214,13 +272,13 @@
           <% end %>
         </div>
         <div class="row">
-          <%= sm.input :twitter, wrapper_html: { class: "padding-left-0 col-md-6 col-sm-6" } %>
+          <%= sm.input :twitter, wrapper_html: { class: "padding-left-0 col-xs-6 col-sm-6 col-md-6" } %>
           <% if current_user.identities.pluck(:provider).include?('twitter') %>
-            <div class="connected col-md-6 col-sm-6">
+            <div class="connected col-xs-6 col-sm-6 col-md-6">
               Twitter Connected
             </div>
           <% else %>
-            <div class="col-md-6 col-sm-6">
+            <div class="col-xs-6 col-sm-6 col-md-6">
               <%= link_to omniauth_authorize_path('user', 'twitter'), class: "btn btn-block btn-social btn-twitter connect" do %>
                 <span class="fa fa-twitter"></span> Connect with Twitter
               <% end %>
@@ -228,13 +286,13 @@
           <% end %>
         </div>
         <div class="row">
-          <%= sm.input :github, wrapper_html: { class: "padding-left-0 col-md-6 col-sm-6" } %>
+          <%= sm.input :github, wrapper_html: { class: "padding-left-0 col-xs-6 col-sm-6 col-md-6" } %>
           <% if current_user.identities.pluck(:provider).include?('github') %>
-            <div class="connected col-md-6 col-sm-6">
+            <div class="connected col-xs-6 col-sm-6 col-md-6">
               Github Connected
             </div>
           <% else %>
-            <div class="col-md-6 col-sm-6">
+            <div class="col-xs-6 col-sm-6 col-md-6">
               <%= link_to omniauth_authorize_path('user', 'github'), class: "btn btn-block btn-social btn-github connect" do %>
                 <span class="fa fa-github"></span> Connect with Github
               <% end %>
@@ -242,13 +300,13 @@
           <% end %>
         </div>
         <div class="row">
-          <%= sm.input :linkedin, wrapper_html: { class: "padding-left-0 col-md-6 col-sm-6" } %>
+          <%= sm.input :linkedin, wrapper_html: { class: "padding-left-0 col-xs-6 col-sm-6 col-md-6" } %>
           <% if current_user.identities.pluck(:provider).include?('linkedin') %>
-            <div class="connected col-md-6 col-sm-6">
+            <div class="connected col-xs-6 col-sm-6 col-md-6">
               LinkedIn Connected
             </div>
           <% else %>
-            <div class="col-md-6 col-sm-6">
+            <div class="col-xs-6 col-sm-6 col-md-6">
               <%= link_to omniauth_authorize_path('user', 'linkedin'), class: "btn btn-block btn-social btn-linkedin connect" do %>
                 <span class="fa fa-linkedin"></span> Connect with LinkedIn
               <% end %>

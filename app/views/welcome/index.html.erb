@@ -1,5 +1,5 @@
 <div class="row landing" style="margin-left: 0px; margin-right: 0px;">
-	<div class="col-md-6 col-xs-6">
+	<div class="col-xs-4 col-sm-6 col-md-6">
 	</div>
 <% if !user_signed_in? %>
 	<%= render 'welcome/shared/landing' %>
@@ -7,42 +7,39 @@
 	<%= render 'welcome/shared/job_seeker_landing' %>
 <% elsif current_user.has_role?(:employer) %>
 	<%= render 'welcome/shared/job_provider_landing' %>
+<% elsif current_user.has_role?(:admin) %>
+	<%= render 'welcome/shared/admin_landing' %>
 <% else %>
 	<%= render 'welcome/shared/landing' %>
 <% end %>
-	<div class="col-md-1 col-xs-1">
+	<div class="col-xs-1 col-sm-1 col-md-1">
 	</div>
 </div>
 <div class="row" style="padding-top:70px;">
-	<div class="col-md-4">
+	<div class="col-xs-12 col-sm-4 col-md-4">
 		<h3 style="padding-bottom: 3px;">Tips for Job Seekers</h3>
 		<ul style="text-align: left;">
-			<li><a href="https://www.livecareer.com/quintessential/teen-first-job">Tips for first job</a></li>
-			<li><a href="http://careers.workopolis.com/advice/the-most-commonly-asked-job-interview-questions-and-how-to-answer-them/">Common interview questions</a></li>
-			<li><a href="https://www.themuse.com/advice/how-to-write-a-cover-letter-31-tips-you-need-to-know">Tips for a cover letter</a></li>
-			<li><a href="http://www.relaunchyourcareer.co.uk/job-interviews/six-secrets-to-doing-well-at-interview/">Prepare for the interview</a></li>
-			<li><a href="https://biginterview.com/blog/2015/02/how-to-sell-yourself-in-an-interview.html">Interview tips</a></li>
+			<% @job_seeker_links.each do |js| %>
+				<li><%= link_to js.message, js.link %></li>
+			<% end %>
 		</ul>
 	</div>
 
-	<div class="col-md-4">
+	<div class="col-xs-12 col-sm-4 col-md-4">
 		<h3 style="padding-bottom: 3px;">Tips for Job Providers</h3>
 		<ul style="text-align: left;">
-			<li><a href="http://www.businessknowhow.com/manage/millenials.htm">Tips for Millenials in the workspace</a></li>
-			<li><a href="https://business.linkedin.com/talent-solutions/blog/2013/12/8-millennials-traits-you-should-know-about-before-you-hire-them">Millenial traits</a></li>
-			<li><a href="http://wallstreetinsanity.com/15-important-qualities-millennials-look-for-where-they-work/">What Millenials want</a></li>
-			<li><a href="https://businesscollective.com/37-ideas-for-motivating-your-employees/">Motivating employees</a></li>
-			<li><a href="http://hr.blr.com/whitepapers/Staffing-Training/Employee-Turnover/Strategies-for-Retaining-Employees-and-Minimizing-">Employee retension</a></li>
+			<% @job_provider_links.each do |jp| %>
+				<li><%= link_to jp.message, jp.link %></li>
+			<% end %>
 		</ul>
 	</div>
 
-	<div class="col-md-4">
+	<div class="col-xs-12 col-sm-4 col-md-4">
 		<h3 style="padding-bottom: 3px;">System Announcements</h3>
 		<ul style="text-align: left;">
-			<li>Wednesday, March 29, 11:00pm: Job seekers can now edit and delete skills</li>
-			<li>Friday, March 24, 11:30am: Server maintenance completed, site is back up and job postings with search is working</li>
-			<li>Thursday, March 23, 11pm: Server maintenance, site down</li>
-			<li>Wednesday, March 22, 10am: Searching for job postings is under construction</li>
+			<% @announcments.each do |an| %>
+				<li><%= an.message %></li>
+			<% end %>
 		</ul>
 	</div>
 </div>
